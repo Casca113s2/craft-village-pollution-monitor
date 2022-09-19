@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+		<property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>		
+		<property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:orcl</property>
+		<property name="hibernate.connection.username">cv_user</property>
+		<property name="hibernate.connection.password">cv_user</property>
+		
+		<!-- <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>		
+		<property name="hibernate.connection.url">jdbc:mysql://127.0.0.1:3306/cv_user</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password">Casca113s2@</property>
+		<property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
+		<property name="hbm2ddl.auto">update</property> -->
+		
+		<property name="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</property>
+		<property name="hibernate.search.autoregister_listeners">true</property>
+		<property name="hibernate.validator.apply_to_ddl">false</property>
+		<property name="hibernate.connection.pool_size">100</property>
+		<property name="hibernate.show_sql">false</property>
+		
+		<property name="hibernate.c3p0.min_size">50</property>
+		<property name="hibernate.c3p0.max_size">100</property>
+		<property name="hibernate.c3p0.max_statements">50</property>
+		<property name="hibernate.c3p0.timeout">300</property>     
+    	<property name="hibernate.c3p0.idle_test_periods">3000</property> 
+
+		<mapping class="craftvillage.datalayer.entities.UrSession" />
+		<mapping class="craftvillage.datalayer.entities.AdProvince" />
+		<mapping class="craftvillage.datalayer.entities.SrSurveyQuestionAnswer" />
+		<mapping class="craftvillage.datalayer.entities.AdDistrict" />
+		<mapping class="craftvillage.datalayer.entities.UrUser" />
+		<mapping class="craftvillage.datalayer.entities.AdCountry" />
+		<mapping class="craftvillage.datalayer.entities.SrActive" />
+		<mapping class="craftvillage.datalayer.entities.SrSurvey" />
+		<mapping class="craftvillage.datalayer.entities.UserSurveyAnswer" />
+		<mapping class="craftvillage.datalayer.entities.SrAnswer" />
+		<mapping class="craftvillage.datalayer.entities.UrRole" />
+		<mapping class="craftvillage.datalayer.entities.UserSurvey" />
+		<mapping class="craftvillage.datalayer.entities.SrImg" />
+		<mapping class="craftvillage.datalayer.entities.SrQuestion" />
+		<mapping class="craftvillage.datalayer.entities.SrSurveyQuestion" />
+		<mapping class="craftvillage.datalayer.entities.SrCode" />
+		<mapping class="craftvillage.datalayer.entities.AdWard" />
+		
+		<mapping class="craftvillage.bizlayer.support_api.location.entities.Ward" />
+		<mapping class="craftvillage.bizlayer.support_api.location.entities.ReWard" />
+		
+	</session-factory>
+</hibernate-configuration>

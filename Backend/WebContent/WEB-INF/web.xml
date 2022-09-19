@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	version="3.1" metadata-complete="true">
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/spring/root-context.xml</param-value>
+	</context-param>
+
+	<!-- Creates the Spring Container shared by all Servlets and Filters -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- Processes application requests -->
+	<servlet>
+		<servlet-name>freemarker</servlet-name>
+		<servlet-class>org.hippoecm.hst.servlet.HstFreemarkerServlet</servlet-class>
+		<!-- FreemarkerServlet settings: -->
+		<init-param>
+			<param-name>TemplatePath</param-name>
+			<param-value>/</param-value>
+		</init-param>
+		<init-param>
+			<param-name>ContentType</param-name>
+			<param-value>text/html; charset=UTF-8</param-value>
+			<!-- Forces UTF-8 output encoding! -->
+		</init-param>
+		<!-- 'template_exception_handler' determines what Freemarker does when 
+			it encounters an error: - "ignore" lets Freemarker log an exception and then 
+			continue rendering. - "debug" lets Freemarker log a stack trace, stops rendering 
+			and re-throws the exception. - "rethrow" does not let Freemarker log a stack 
+			trace, stops rendering and re-throws the exception. By default, if no template_exception_handler 
+			as above is configured, an extended "ignore" type template exception handler 
+			will be configured which provides additional detail logging but like the 
+			"ignore" handler will continue rendering. <init-param> <param-name>template_exception_handler</param-name> 
+			<param-value>debug</param-value> </init-param> -->
+		<load-on-startup>200</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+
+		<servlet-name>freemarker</servlet-name>
+		<url-pattern>*.ftl</url-pattern>
+	</servlet-mapping>
+
+</web-app>

@@ -1,0 +1,65 @@
+<#import "/spring.ftl" as spring />
+<#assign xhtmlCompliant = true in spring>
+
+
+<div class="headerSection">
+	<div class="welcomeSection">
+		<div class="form-group">
+			<h1>Welcome</h1>
+			<p>This is the form for local authorities. If you don't belong to this group please go back and make sure to start with the correct form!
+			<br>This data collection is done under compliance with these terms make sure you read these terms carefully.</p>
+			<h3><span style="color: #ff4747">*</span>I have read and accept these terms!</h3>
+			<div class="form-check">
+			<input class="form-check-input" id="temp_yes" type="radio" name="temp" value = "temp_yes">
+			<lable class="form-check-lable" for="temp_yes">Yes</lable></div>
+			<div class="form-check">
+			<input class="form-check-input" id="temp_no" type="radio" name="temp" value = "temp_no">
+			<lable class="form-check-lable" for="temp_no">No</lable></div>
+		</div>
+		</div>
+		<div class="userInformation"><h1>User information</h1>
+		<div class="form-group">
+			<lable for="phoneNumber">Telephone number</lable>
+			<input class="form-control" id="phoneNumber" type="text" name="phoneNumber">
+		</div>
+		<div class="form-group">
+			<h4>I want to participate in the prize contest….</h4>
+			<small>You need to provide a valid telephone number in order to participate in the contest.</small>
+			<div class="form-check"><input class="form-check-input" id="providerTelephone_yes" type="radio" name="provideTelephone" value = "providerTelephone_yes">
+			<lable class="form-check-lable" for="providerTelephone1">Yes</lable></div>
+			<div class="form-check"><input class="form-check-input" id="providerTelephone_no" type="radio" name="provideTelephone" value = "providerTelephone_no" >
+			<lable class="form-check-lable" for="providerTelephone2">No</lable></div>
+		</div>
+		<div class="form-group">
+			<p>Data about the datacollector</p>
+			<h4>Profession</h4>
+			<div class="form-check"><input class="form-check-input" id="Local_producer" type="radio" name="job" value = "Local_producer">
+			<lable class="form-check-lable" for="Local_producer">Local producer</lable></div>
+			<div class="form-check"><input class="form-check-input" id="Administration_officer" type="radio" name="job" value ="Administration_officer" >
+			<lable class="form-check-lable" for="Administration_officer">Administration officer</lable></div>
+			<div class="form-check"><input class="form-check-input" id="Service_sector_employee" type="radio" name="job" value = "Service_sector_employee">
+			<lable class="form-check-lable" for="Service_sector_employee">Service sector employee</lable></div>
+			<div class="form-check"><input class="form-check-input" id="Thigher_education" type="radio" name="job" value = "Thigher_education">
+			<lable class="form-check-lable" for="Thigher_education">Thigher education</lable></div>
+			<div class="form-check"><input class="form-check-input" id="Remote_sensing" type="radio" name="job" value = "Remote_sensing">
+			<lable class="form-check-lable" for="Remote_sensing">Remote sensing</lable></div>
+			<div class="form-check"><input class="form-check-input" id="other" type="radio" name="job" value="other">
+			<lable class="form-check-lable" for="other">other</lable></div>
+		</div>
+		<div class="form-group">
+			<lable for="age">Age</lable>
+			<input class="form-control" id="age"  type="text" name="age">
+		</div>
+		<div class="form-group">
+			<h4>Gender</h4>
+			<div class="form-check"><input class="form-check-input" type="radio" id="female" name="gender" value = "female">
+			<lable class="form-check-lable" for="female">Female</lable></div>
+			<div class="form-check"><input class="form-check-input" type="radio" id="male" name="gender" value="male">
+			<lable class="form-check-lable" for="male">Male</lable></div>
+		</div>
+		<div class="form-group>
+			<lable for="otherInfo">Other information</lable>
+			<input type="text" id="otherInfo" name="otherInfo">
+		</div>
+		</div>
+</div>
