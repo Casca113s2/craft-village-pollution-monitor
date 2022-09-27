@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+
+    <!-- Title Page-->
+    <title>Dashboard</title>
+
+    <!-- Fontfaces CSS-->
+    <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/fontawesome-free-6.2.0-web/css/fontawesome.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/fontawesome-free-6.2.0-web/css/all.min.css}" rel="stylesheet}" media="all">
+    <link th:href="@{/vendor/mdi-font/css/material-design-iconic-font.min.css}" rel="stylesheet" media="all">
+
+    <!-- Bootstrap CSS-->
+    <link th:href="@{/vendor/bootstrap-4.1/bootstrap.min.css}" rel="stylesheet" media="all">
+
+    <!-- Vendor CSS-->
+    <link th:href="@{/vendor/animsition/animsition.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/wow/animate.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/slick/slick.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/select2/select2.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/perfect-scrollbar/perfect-scrollbar.css}" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
+
+</head>
+
+<body class="animsition">
+    <div class="page-wrapper">
+        <!-- MENU SIDEBAR-->
+        <aside class="menu-sidebar d-none d-lg-block">
+            <div class="menu-sidebar__content js-scrollbar1">
+                <nav class="navbar-sidebar">
+                    <ul class="list-unstyled navbar__list">
+                        <li class="active">
+                            <a href="#">
+                                <i class="fa-solid fa-circle-info"></i>Khai báo</a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa-solid fa-feather"></i>Chính sách</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <!-- END MENU SIDEBAR-->
+
+        <!-- PAGE CONTAINER-->
+        <div class="page-container">
+            <!-- HEADER DESKTOP-->
+            <header class="header-desktop">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="header-wrap">
+                            <form class="form-header" action="" method="POST">
+                            </form>
+                            <div class="header-button">
+                                <div class="noti-wrap">
+                                    <div class="noti__item js-item-menu">
+                                        <i class="zmdi zmdi-notifications"></i>
+                                        <span class="quantity">3</span>
+                                        <div class="notifi-dropdown js-dropdown">
+                                            <div class="notifi__title">
+                                                <p>You have 3 Notifications</p>
+                                            </div>
+                                            <div class="notifi__item">
+                                                <div class="bg-c1 img-cir img-40">
+                                                    <i class="zmdi zmdi-email-open"></i>
+                                                </div>
+                                                <div class="content">
+                                                    <p>You got a email notification</p>
+                                                    <span class="date">April 12, 2018 06:50</span>
+                                                </div>
+                                            </div>
+                                            <div class="notifi__footer">
+                                                <a href="#">All notifications</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="account-wrap">
+                                    <div class="account-item clearfix js-item-menu">
+                                        <div class="image">
+                                            <img th:src="@{/images/icon/avatar.png}" alt="John Doe" />
+                                        </div>
+                                        <div class="content">
+                                            <a class="js-acc-btn" href="#">john doe</a>
+                                        </div>
+                                        <div class="account-dropdown js-dropdown">
+                                            <div class="info clearfix">
+                                                <div class="image">
+                                                    <a href="#">
+                                                        <img th:src="@{/images/icon/avatar.png}" alt="John Doe" />
+                                                    </a>
+                                                </div>
+                                                <div class="content">
+                                                    <h5 class="name">
+                                                        <a href="#">john doe</a>
+                                                    </h5>
+                                                    <span class="email">johndoe@example.com</span>
+                                                </div>
+                                            </div>
+                                            <div class="account-dropdown__body">
+                                                <div class="account-dropdown__item">
+                                                    <a href="#">
+                                                        <i class="zmdi zmdi-account"></i>Account</a>
+                                                </div>
+                                                <div class="account-dropdown__item">
+                                                    <a href="#">
+                                                        <i class="zmdi zmdi-settings"></i>Change password</a>
+                                                </div>
+                                            </div>
+                                            <div class="account-dropdown__footer">
+                                                <a href="#">
+                                                    <i class="zmdi zmdi-power"></i>Logout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- HEADER DESKTOP-->
+
+            <!-- MAIN CONTENT-->
+            <div class="main-content">
+                <a href="#" class="gototop">
+                    <i class="fa fa-arrow-up fa-lg"></i>
+                </a>
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="card">
+                                    <div class="card-header">Hộ sản xuất</div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label>Họ tên</label>
+                                            <input class="au-input au-input--full" type="text" name="full-name"
+                                                placeholder="Nhập họ tên">
+                                        </div>
+        
+                                        <div class="form-group">
+                                            <label>Chọn Tỉnh/Thành phố</label>
+                                            <div class="form-group">
+                                                <select class="au-input au-input--full" name="province" style="padding: 10px;">
+                                                    <option selected="selected">---</option>
+                                                    <th:block th:each="province : ${provinceList}">
+                                                    	<option th:value="${province.provinceId}" th:utext="${province.provinceName}"></option>
+                                                    </th:block>
+                                                </select>
+                                                <div class="dropDownSelect2"></div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="form-group">
+                                            <label>Chọn Quận/Huyện</label>
+                                            <div class="form-group">
+                                                <select class="au-input au-input--full" name="district" style="padding: 10px;">
+                                                    <option selected="selected">---</option>
+                                                    <option value="">Cẩm Lệ</option>
+                                                    <option value="">Hải Châu</option>
+                                                    <option value="">Ngũ Hành Sơn</option>
+                                                </select>
+                                                <div class="dropDownSelect2"></div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="form-group">
+                                            <label>Chọn Xã/Phường</label>
+                                            <div class="form-group">
+                                                <select class="au-input au-input--full" name="ward" style="padding: 10px;">
+                                                    <option selected="selected">---</option>
+                                                    <option value="">Thạc Gián</option>
+                                                    <option value="">Khuê Trung</option>
+                                                    <option value="">Hòa Minh</option>
+                                                </select>
+                                                <div class="dropDownSelect2"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Làng nghề</label>
+                                            <div class="form-group">
+                                                <select class="au-input au-input--full" name="ward" style="padding: 10px;">
+                                                    <option selected="selected">---</option>
+                                                    <option value="">Thạc Gián</option>
+                                                    <option value="">Khuê Trung</option>
+                                                    <option value="">Hòa Minh</option>
+                                                </select>
+                                                <div class="dropDownSelect2"></div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary" style="margin-left: auto; margin-right: 0; display: block;">Khai báo</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="card">
+                                    <div class="card-header">Làng nghề mới</div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label>Chọn Tỉnh/Thành phố</label>
+                                            <div class="form-group">
+                                                <select class="au-input au-input--full" name="province" style="padding: 10px;">
+                                                    <option selected="selected">---</option>
+                                                    <th:block th:each="province : ${provinceList}">
+                                                    	<option th:value="${province.provinceId}" th:utext="${province.provinceName}"></option>
+                                                    </th:block>
+                                                </select>
+                                                <div class="dropDownSelect2"></div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="form-group">
+                                            <label>Chọn Quận/Huyện</label>
+                                            <div class="form-group">
+                                                <select class="au-input au-input--full" name="district" style="padding: 10px;">
+                                                    <option selected="selected">---</option>
+                                                    <option value="">Cẩm Lệ</option>
+                                                    <option value="">Hải Châu</option>
+                                                    <option value="">Ngũ Hành Sơn</option>
+                                                </select>
+                                                <div class="dropDownSelect2"></div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="form-group">
+                                            <label>Chọn Xã/Phường</label>
+                                            <div class="form-group">
+                                                <select class="au-input au-input--full" name="ward" style="padding: 10px;">
+                                                    <option selected="selected">---</option>
+                                                    <option value="">Thạc Gián</option>
+                                                    <option value="">Khuê Trung</option>
+                                                    <option value="">Hòa Minh</option>
+                                                </select>
+                                                <div class="dropDownSelect2"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Địa chỉ</label>
+                                            <input class="au-input au-input--full" type="text" name=""
+                                                placeholder="Nhập địa chỉ">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Tọa độ</label>
+                                            <div style="display: flex;">
+                                                <input class="au-input" type="text" name="" style="margin: auto;"
+                                                    placeholder="Kinh độ">
+                                                <input class="au-input" type="text" name="" style="margin: auto;"
+                                                    placeholder="Vĩ độ">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Tên làng nghề</label>
+                                            <input class="au-input au-input--full" type="text" name=""
+                                                placeholder="Nhập tên làng nghề">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Mô tả</label>
+                                            <textarea class="au-input au-input--full" name=""></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary" style="margin-left: auto; margin-right: 0; display: block;">Khai báo</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-header">Thông tin sản xuất</div>
+                                    <form id="form-new-village">
+                                        <div class="card-body" style="display: flex;">
+                                            <div class="w-50 p-r-20 p-l-20">
+                                                <div class="form-group">
+                                                    <label>Sản lượng</label>
+                                                    <input class="au-input au-input--full" type="text" name="quantity">
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label>Tốc độ tăng trưởng so với năm ngoái</label>
+                                                    <input class="au-input au-input--full" type="text" name="growth">
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label>Số người</label>
+                                                    <input class="au-input au-input--full" type="text" name="num-people">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Phân phối sử dụng nhiên liệu</label>
+                                                    <input class="au-input au-input--full" type="text" name="fuel">
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label>Đốt cháy</label>
+                                                    <input class="au-input au-input--full" type="text" name="burn">
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label>Quá trình sản xuất</label>
+                                                    <input class="au-input au-input--full" type="text" name="production-process">
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label>Vật liệu đầu vào</label>
+                                                    <input class="au-input au-input--full" type="text" name="input-materials">
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label>Nước đầu vào</label>
+                                                    <input class="au-input au-input--full" type="text" name="input-water">
+                                                </div>
+                                            </div>
+
+                                            <div class="w-50 p-l-20">
+                                                <div class="form-group">
+                                                    <label>Đơn vị sản xuất</label>
+                                                    <div class="form-check">
+                                                        <div class="radio">
+                                                            <label for="radio1" class="form-check-label ">
+                                                                <input type="radio" id="radio1" name="production-unit" value="option1"
+                                                                    class="form-check-input" checked>tấn/năm
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label for="radio2" class="form-check-label ">
+                                                                <input type="radio" id="radio2" name="production-unit" value="option2"
+                                                                    class="form-check-input">m3/năm
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label for="radio3" class="form-check-label ">
+                                                                <input type="radio" id="radio3" name="production-unit" value="option3"
+                                                                    class="form-check-input">1000 đơn vị/năm
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Sử dụng than</label>
+                                                    <div class="form-check">
+                                                        <div class="radio">
+                                                            <label for="radio1" class="form-check-label ">
+                                                                <input type="radio" id="radio1" name="charcoal" value="option1" checked
+                                                                    class="form-check-input">Có
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label for="radio2" class="form-check-label ">
+                                                                <input type="radio" id="radio2" name="charcoal" value="option2"
+                                                                    class="form-check-input">Không
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Sử dụng sinh khối</label>
+                                                    <div class="form-check">
+                                                        <div class="radio">
+                                                            <label for="radio1" class="form-check-label ">
+                                                                <input type="radio" id="radio1" name="biomass" value="option1" checked
+                                                                    class="form-check-input">Có
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label for="radio2" class="form-check-label ">
+                                                                <input type="radio" id="radio2" name="biomass" value="option2" 
+                                                                    class="form-check-input">Không
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label>Sử dụng chất thải rắn làm nhiên liệu</label>
+                                                    <div class="form-check">
+                                                        <div class="radio">
+                                                            <label for="radio1" class="form-check-label ">
+                                                                <input type="radio" id="radio1" name="solid-waste" value="option1" checked
+                                                                    class="form-check-input">Có
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label for="radio2" class="form-check-label ">
+                                                                <input type="radio" id="radio2" name="solid-waste" value="option2"
+                                                                    class="form-check-input">Không
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Sử dụng khí ga</label>
+                                                    <div class="form-check">
+                                                        <div class="radio">
+                                                            <label for="radio1" class="form-check-label ">
+                                                                <input type="radio" id="radio1" name="gas" value="option1" checked
+                                                                    class="form-check-input">Có
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label for="radio2" class="form-check-label ">
+                                                                <input type="radio" id="radio2" name="gas" value="option2" checked
+                                                                    class="form-check-input">Không
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label>Sử dụng dầu</label>
+                                                    <div class="form-check">
+                                                        <div class="radio">
+                                                            <label for="radio1" class="form-check-label ">
+                                                                <input type="radio" id="radio1" name="oil" value="option1" checked
+                                                                    class="form-check-input">Có
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label for="radio2" class="form-check-label ">
+                                                                <input type="radio" id="radio2" name="oil" value="option2"
+                                                                    class="form-check-input">Không
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Sử dụng điện</label>
+                                                    <div class="form-check">
+                                                        <div class="radio">
+                                                            <label for="radio1" class="form-check-label ">
+                                                                <input type="radio" id="radio1" name="electricity" value="option1" checked
+                                                                    class="form-check-input">Có
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label for="radio2" class="form-check-label ">
+                                                                <input type="radio" id="radio2" name="electricity" value="option2"
+                                                                    class="form-check-input">Không
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div style="text-align: right;" class="p-b-20 p-r-20">
+                                        <button class="btn btn-light">Làm mới</button>
+                                        <button class="btn btn-primary">Khai báo</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END MAIN CONTENT-->
+            <!-- END PAGE CONTAINER-->
+        </div>
+
+    </div>
+
+    <!-- Jquery JS-->
+    <script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
+    <!-- Bootstrap JS-->
+    <script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
+    <!-- Vendor JS       -->
+    <script th:src="@{/vendor/slick/slick.min.js}">
+    </script>
+    <script th:src="@{/vendor/wow/wow.min.js}"></script>
+    <script th:src="@{/vendor/animsition/animsition.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
+    </script>
+    <script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
+    <script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
+    </script>
+    <script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
+    <script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
+    <script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
+    <script th:src="@{/vendor/select2/select2.min.js}">
+    </script>
+
+    <!-- Main JS-->
+    <script th:src="@{/js/main.js}"></script>
+	<script type="text/javascript">
+		
+	</script>
+</body>
+
+</html>
+<!-- end document-->

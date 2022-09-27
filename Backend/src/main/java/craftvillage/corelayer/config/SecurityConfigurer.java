@@ -56,7 +56,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 										url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_CHECK_VILLAGE);
 		http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 			http.authorizeRequests().antMatchers(
-										"/",
+										"/web/**",
 										url_user + "/" + ConstantParameter.ServiceUser._USER_LOGIN,
 										url_user + "/" + ConstantParameter.ServiceUser._USER_REGISTER,
 										url_user + "/" + ConstantParameter.ServiceUser._USER_LOGOUT_TEST,
@@ -70,22 +70,22 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 										url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_WARD,
 										url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_UPLOAD_FILE,
 										url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_VILLAGE
-					).permitAll()
-			.antMatchers(				url + "/hello",
-//										url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_VILLAGE,
-										url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_ADDRESS,
-										url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_CHECK_VILLAGE,
-										url_user + "/" + ConstantParameter.ServiceUser._USER_GET_DATA,
-										url_user + "/" + ConstantParameter.ServiceUser._USER_CHANGE_PASS,										
-										url_user + "/" + ConstantParameter.ServiceUser._USER_LOGOUT,
-										url_user + "/" + ConstantParameter.ServiceUser._USER_UPDATE_INFOR,										
-										url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_SUBMIT, 
-										url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_GET_INFOR,
-										url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_GET_SURVEY,										
-										url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_UPLOAD_FILE,
-										url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_DETECT
-					).access("hasRole('ROLE_USER')")
-			.anyRequest().authenticated();
+					).permitAll();
+//			.antMatchers(				url + "/hello",
+////										url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_VILLAGE,
+//										url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_ADDRESS,
+//										url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_CHECK_VILLAGE,
+//										url_user + "/" + ConstantParameter.ServiceUser._USER_GET_DATA,
+//										url_user + "/" + ConstantParameter.ServiceUser._USER_CHANGE_PASS,										
+//										url_user + "/" + ConstantParameter.ServiceUser._USER_LOGOUT,
+//										url_user + "/" + ConstantParameter.ServiceUser._USER_UPDATE_INFOR,										
+//										url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_SUBMIT, 
+//										url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_GET_INFOR,
+//										url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_GET_SURVEY,										
+//										url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_UPLOAD_FILE,
+//										url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_DETECT
+//					).access("hasRole('ROLE_USER')")
+//			.anyRequest().authenticated();
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 		http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
 	}
