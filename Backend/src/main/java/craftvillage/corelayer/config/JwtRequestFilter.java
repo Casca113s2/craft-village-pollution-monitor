@@ -44,9 +44,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		
 		String username = null;
 		String jwt = null;
-		String requestBearer = request.getHeader("Authorization");
-		
-		
+		String requestBearer = "";
+		try{
+			requestBearer = request.getHeader("Authorization");
+		}
+		catch(Exception e){
+			requestBearer = request.getCookies()[0].getValue();
+			System.out.println(requestBearer);
+		};
 		
 			if (requestBearer!=null  && requestBearer.startsWith("Bearer "))
 			{
@@ -55,7 +60,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 				if (username !=null && JwtService.checkToken(jwt)== true && SecurityContextHolder.getContext().getAuthentication() == null)
 				{
 					UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-					
 					if (jwtUtil.validateToken(jwt, userDetails))
 					{
 						// kiểm tra xem token có hợp lệ ko , nếu có thì đưa thông tin vào security context
@@ -66,10 +70,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 						
 						usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 						//set tất cả thông tin cho Seturity Context
-						SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-						
-						
-						
+						SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);	
 		 			}
 				}
 			}

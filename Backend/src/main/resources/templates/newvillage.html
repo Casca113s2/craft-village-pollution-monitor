@@ -1,33 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <!-- Required meta tags-->
     <meta charset="UTF-8">
 
     <!-- Title Page-->
-    <title>Dashboard</title>
+    <title>New village</title>
 
     <!-- Fontfaces CSS-->
-    <link href="css/font-face.css" rel="stylesheet" media="all">
-    <link href="vendor/fontawesome-free-6.2.0-web/css/fontawesome.min.css" rel="stylesheet" media="all">
-    <link href="vendor/fontawesome-free-6.2.0-web/css/all.min.css" rel="stylesheet" media="all">
-    <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/fontawesome-free-6.2.0-web/css/all.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/mdi-font/css/material-design-iconic-font.min.css}" rel="stylesheet" media="all">
 
     <!-- Bootstrap CSS-->
-    <link href="vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/bootstrap-4.1/bootstrap.min.css}" rel="stylesheet" media="all">
 
     <!-- Vendor CSS-->
-    <link href="vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
-    <link href="vendor/wow/animate.css" rel="stylesheet" media="all">
-    <link href="vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
-    <link href="vendor/slick/slick.css" rel="stylesheet" media="all">
-    <link href="vendor/select2/select2.min.css" rel="stylesheet" media="all">
-    <link href="vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/animsition/animsition.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/wow/animate.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/slick/slick.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/select2/select2.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/perfect-scrollbar/perfect-scrollbar.css}" rel="stylesheet" media="all">
 
     <!-- Main CSS-->
-    <link href="css/theme.css" rel="stylesheet" media="all">
+    <link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
 
 </head>
 
@@ -36,37 +35,37 @@
         <!-- MENU SIDEBAR-->
         <aside class="menu-sidebar d-none d-lg-block">
             <div class="logo">
-                <a href="#">
-                    <img src="images/icon/logo.png" alt="Cool Admin" />
+                <a  >
+                    <img th:src="@{/images/icon/logo.png}" alt="Cool Admin" />
                 </a>
             </div>
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
                         <li>
-                            <a href="index.html">
+                            <a th:href="@{/web/authority/index}">
                                 <i class="fa-solid fa-chart-column"></i>Dashboard</a>
                         </li>
-                        <li class="has-sub active">
-                            <a class="js-arrow open" href="#">
-                                <i class="fa-solid fa-users"></i>Household</a>
+                        <li class="has-sub">
+                            <a class="js-arrow open"  >
+                                <i class="fa-solid fa-users"></i>Village</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
-                                <li>
-                                    <a href="new-household.html">
+                                <li class="active">
+                                    <a th:href="@{/web/authority/newvillage}">
                                         <i class="fa-solid fa-user-plus"></i>New</a>
                                 </li>
                                 <li>
-                                    <a href="household-data.html">
+                                    <a th:href="@{/web/authority/villagedata}">
                                         <i class="fa-solid fa-database"></i>Data</a>
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="table.html">
+                            <a th:href="table.html">
                                 <i class="fa-solid fa-file-lines"></i>Survey</a>
                         </li>
                         <li>
-                            <a href="map.html">
+                            <a th:href="map.html">
                                 <i class="fas fa-map-marker-alt"></i>Maps</a>
                         </li>
                     </ul>
@@ -99,7 +98,7 @@
                                             </div>
                                             <div class="email__item">
                                                 <div class="image img-cir img-40">
-                                                    <img src="images/icon/avatar-06.jpg" alt="Cynthia Harvey" />
+                                                    <img th:src="@{/images/icon/avatar-06.jpg}" alt="Cynthia Harvey" />
                                                 </div>
                                                 <div class="content">
                                                     <p>Meeting about new dashboard...</p>
@@ -107,7 +106,7 @@
                                                 </div>
                                             </div>
                                             <div class="email__footer">
-                                                <a href="#">See all emails</a>
+                                                <a  >See all emails</a>
                                             </div>
                                         </div>
                                     </div>
@@ -128,7 +127,7 @@
                                                 </div>
                                             </div>
                                             <div class="notifi__footer">
-                                                <a href="#">All notifications</a>
+                                                <a  >All notifications</a>
                                             </div>
                                         </div>
                                     </div>
@@ -136,37 +135,37 @@
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
-                                            <img src="images/icon/avatar.png" alt="John Doe" />
+                                            <img th:src="@{/images/icon/avatar.png}" alt="John Doe" />
                                         </div>
                                         <div class="content">
-                                            <a class="js-acc-btn" href="#">john doe</a>
+                                            <a class="js-acc-btn"  >john doe</a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
                                                 <div class="image">
-                                                    <a href="#">
-                                                        <img src="images/icon/avatar.png" alt="John Doe" />
+                                                    <a  >
+                                                        <img th:src="@{/images/icon/avatar.png}" alt="John Doe" />
                                                     </a>
                                                 </div>
                                                 <div class="content">
                                                     <h5 class="name">
-                                                        <a href="#">john doe</a>
+                                                        <a  >john doe</a>
                                                     </h5>
                                                     <span class="email">johndoe@example.com</span>
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
-                                                    <a href="#">
+                                                    <a  >
                                                         <i class="zmdi zmdi-account"></i>Account</a>
                                                 </div>
                                                 <div class="account-dropdown__item">
-                                                    <a href="#">
+                                                    <a  >
                                                         <i class="zmdi zmdi-settings"></i>Change password</a>
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__footer">
-                                                <a href="#">
+                                                <a  >
                                                     <i class="zmdi zmdi-power"></i>Logout</a>
                                             </div>
                                         </div>
@@ -181,6 +180,9 @@
 
             <!-- MAIN CONTENT-->
             <div class="main-content">
+            	<a href="#" class="gototop">
+                    <i class="fa fa-arrow-up fa-lg"></i>
+                </a>
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="row">
@@ -191,8 +193,7 @@
                                             <div class="table-data__tool-left">
                                                 <div class="rs-select2--light rs-select2--md">
                                                     <select class="js-select2" name="property">
-                                                        <option value="date" selected="selected">Date</option>
-                                                        <option value="name">Name</option>
+                                                        <option value="ward" selected="selected">ward</option>
                                                         <option value="village">Village</option>
                                                     </select>
                                                     <div class="dropDownSelect2"></div>
@@ -212,46 +213,45 @@
                                             <table class="table table-data2">
                                                 <thead>
                                                     <tr>
-                                                        <th>date</th>
-                                                        <th>ID</th>
-                                                        <th>name</th>
+                                                    	<th>ID</th>
+                                                        <th>Ward</th>
                                                         <th>Village</th>
-                                                        <th>Email</th>
+                                                        <th>Coordinate</th>
                                                         <th>state</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr class="tr-shadow">
-                                                        <td>2018-09-29</td>
-                                                        <td>301</td>
-                                                        <td>Lê Văn Minh</td>
-                                                        <td>Làng mộc Kim Bồng</td>
-                                                        <td>minhle1989@gmail.com</td>
-                                                        <td>
-                                                            <span class="status">Pending</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="table-data-feature">
-                                                                <button id="btn-accept" class="item btn btn-success" data-toggle="tooltip" data-placement="top" title="Accept">
-                                                                    <i class="fa-solid fa-check"></i>
-                                                                </button>
-                                                                <button id="btn-denied" class="item btn btn-danger" data-toggle="tooltip" data-placement="top" title="Denied">
-                                                                    <i class="fa-sharp fa-solid fa-xmark"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="spacer"></tr>
+                                                	<th:block th:each="village : ${pendingVillages}">
+	                                                    <tr class="tr-shadow">
+	                                                        <td th:utext="${village.villageId}"></td>
+	                                                        <td th:utext="${village.villageName}"></td>
+	                                                        <td th:utext="${village.adWard.wardName}"></td>
+	                                                        <td th:utext="${village.coordinate}"></td>
+	                                                        <td>
+	                                                            <span class="status">Pending</span>
+	                                                        </td>
+	                                                        <td>
+	                                                            <div class="table-data-feature">
+	                                                                <button id="btn-accept" class="item btn btn-success" data-toggle="tooltip" data-placement="top" title="Accept">
+	                                                                    <i class="fa-solid fa-check"></i>
+	                                                                </button>
+	                                                                <button id="btn-denied" class="item btn btn-danger" data-toggle="tooltip" data-placement="top" title="Denied">
+	                                                                    <i class="fa-sharp fa-solid fa-xmark"></i>
+	                                                                </button>
+	                                                            </div>
+	                                                        </td>
+	                                                        <td style="display: none" th:utext="${village.note}"></td>
+	                                                        <td style="display: none" th:utext="${village.adWard.wardId}"></td>
+	                                                    </tr>
+	                                                    <tr class="spacer"></tr>
+                                                    </th:block>
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                 <!-- END DATA TABLE -->
                             </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header">Information</div>
-                            <div class="card-body"></div>
+                        	
                         </div>
                     </div>
                 </div>
@@ -260,48 +260,78 @@
 
     </div>
 
-    <!-- Jquery JS-->
-    <script src="vendor/jquery-3.2.1.min.js"></script>
+     <!-- Jquery JS-->
+    <script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
     <!-- Bootstrap JS-->
-    <script src="vendor/bootstrap-4.1/popper.min.js"></script>
-    <script src="vendor/bootstrap-4.1/bootstrap.min.js"></script>
+    <script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
     <!-- Vendor JS       -->
-    <script src="vendor/slick/slick.min.js">
+    <script th:src="@{/vendor/slick/slick.min.js}">
     </script>
-    <script src="vendor/wow/wow.min.js"></script>
-    <script src="vendor/animsition/animsition.min.js"></script>
-    <script src="vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+    <script th:src="@{/vendor/wow/wow.min.js}"></script>
+    <script th:src="@{/vendor/animsition/animsition.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
     </script>
-    <script src="vendor/counter-up/jquery.waypoints.min.js"></script>
-    <script src="vendor/counter-up/jquery.counterup.min.js">
+    <script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
+    <script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
     </script>
-    <script src="vendor/circle-progress/circle-progress.min.js"></script>
-    <script src="vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="vendor/chartjs/Chart.bundle.min.js"></script>
-    <script src="vendor/select2/select2.min.js">
+    <script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
+    <script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
+    <script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
+    <script th:src="@{/vendor/select2/select2.min.js}">
     </script>
 
     <!-- Main JS-->
-    <script src="js/main.js"></script>
+    <script th:src="@{/js/main.js}"></script>
     <script>
 
         $.each($('.item.btn.btn-success'), function(index, element){
             $(element).on('click', function(event){
-                let statusNode = $(this).parent().parent().parent().children()[5].childNodes[1]
-                let deniedBtn = $(this).parent().children()[1]
-                statusNode.innerText = 'Accepted'
-                statusNode.classList.add('accept')
-                deniedBtn.disabled = true
+                let statusNode = $(this).parent().parent().parent().children()[4].childNodes[1];
+                let deniedBtn = $(this).parent().children()[1];
+                let villageId = $(this).parent().parent().parent().children()[0].innerText;
+                $.ajax({
+    		        type: "POST",
+    		        url: "/web/authority/newhousehold/accept",
+    		        data: { villageId : villageId },
+    		        success: function(data){
+    		          	if(data){
+    		          		statusNode.innerText = 'Accepted';
+    		                statusNode.classList.add('accept');
+    		                deniedBtn.disabled = true;
+    		          	}
+    		        }
+    		    });   
             })
         })
         $.each($('.item.btn.btn-danger'), function(index, element){
             $(element).on('click', function(event){
-                let statusNode = $(this).parent().parent().parent().children()[5].childNodes[1]
-                let acceptBtn = $(this).parent().children()[0]
-                statusNode.innerText = 'Denied'
-                statusNode.classList.add('denied')
-                acceptBtn.disabled = true
+                let statusNode = $(this).parent().parent().parent().children()[4].childNodes[1];
+                let acceptBtn = $(this).parent().children()[0];
+                let villageId = $(this).parent().parent().parent().children()[0].innerText;
+                $.ajax({
+    		        type: "POST",
+    		        url: "/web/authority/newhousehold/deny",
+    		        data: { villageId : villageId },
+    		        success: function(data){
+    		          	if(data){
+    		          		statusNode.innerText = 'Denied';
+    		                statusNode.classList.add('denied');
+    		                acceptBtn.disabled = true;
+    		          	}
+    		        }
+    		    }); 
             })
+        })
+        $.each($('.tr-shadow'), function(index, element){
+        	$(element).on('click', function(event){
+        		$('#village').val($(this).children()[1].innerText);
+        		let coordinate = $(this).children()[3].innerText.split(", ");
+        		$('#longitude').val(coordinate[0]);
+        		$('#latitude').val(coordinate[1]);
+        		$('#note').val($(this).children()[7].innerText);
+        		$('#ward').val($(this).children()[8].innerText);
+        	})
         })
         
     </script>

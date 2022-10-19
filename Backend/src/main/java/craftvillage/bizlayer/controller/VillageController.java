@@ -12,6 +12,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,6 +48,30 @@ public class VillageController {
 	private AddressServices addressService;
 	@Autowired
 	private VillageServices villageService;
+	
+	
+	/**
+	 * Function : newVillage : Submit lang nghe moi tu personal user
+	 * 
+	 * @param newVillage
+	 * @param principal
+	 * @return new village id
+	 */
+	@PostMapping("/newvillage")
+	public int newVillage(@RequestBody Map<String, String> newVillage) {
+		int wardId = Integer.parseInt(newVillage.get("wardId"));
+		String coordinate = newVillage.get("longitude") + ", " + newVillage.get("latitude");
+		Village village = new Village();
+		village.setAdWard(addressService.getAdward(wardId));
+		village.setCoordinate(coordinate);
+		village.setHasAdded(0);
+		village.setNote(newVillage.get("note"));
+		village.setVillageName(newVillage.get("villageName"));
+		villageService.newVillage(village);
+		return village.getVillageId();
+	}
+	
+	
 	/**
 	 * Function : VillageInfoSubmit : Submit thông tin làng nghề
 	 * 
@@ -253,10 +278,11 @@ public class VillageController {
 //		villageInfo.put("villageNote", villageNote);
 //		logger.info(villageInfo.toString());	
 //		return villageInfo;	
-		
-		
+			
 	}
 
+	//request new village
+	
 	/**
 	 * Fake Survey Village
 	 * 

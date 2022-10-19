@@ -90,21 +90,10 @@ public class MyUserDetailsService implements UserDetailsService {
 			return user;
 	}
 
-	public int RegisterUsername(String username , String password , String role , String firstname , String lastname , String birthday , String phone , String address , String email ,int sex, Date activeDate
-) throws ClassNotFoundException, SQLException, ParseException
+	public int RegisterUsername(String username, String password, String role, String firstname, String lastname,
+			String phone, String email, Date activeDate) throws ClassNotFoundException, SQLException, ParseException
 	{
-		Date birth = null;
 		String pass = passwordEncoder.encode(password);
-		System.out.println("Demo " + birthday.charAt(4));
-		if (birthday.charAt(4) == '-') {
-
-			birth = new SimpleDateFormat("yyyy-MM-dd").parse(birthday);
-			String birthString = new SimpleDateFormat("dd/MM/yyyy").format(birth);
-			birth = new SimpleDateFormat("dd/MM/yyyy").parse(birthString);
-		} else {
-			birth = new SimpleDateFormat("dd/MM/yyyy").parse(birthday);
-		}
-		System.out.println(birth);
 		int roleID;
 		if (role.equals("USER"))
 			roleID = 1;
@@ -112,33 +101,7 @@ public class MyUserDetailsService implements UserDetailsService {
 			roleID = 3;
 		else
 			roleID = 0;
-		return (registerServ.registeAnUser(username, pass, roleID, firstname, lastname, address, phone, birth, email,
-				sex,activeDate));
-		
-//			Date birth = null;
-//			String pass = passwordEncoder.encode(password);
-//			System.out.println("Demo " + birthday.charAt(4));
-//			if (birthday.charAt(4) == '-')
-//			{
-//				 
-//				 birth = new SimpleDateFormat("yyyy-MM-dd").parse(birthday);
-//				 String birthString = new SimpleDateFormat("dd/MM/yyyy").format(birth);
-//				 birth = new SimpleDateFormat("dd/MM/yyyy").parse(birthString);
-//			}
-//			else
-//			{
-//				 birth = new SimpleDateFormat("dd/MM/yyyy").parse(birthday);
-//			}
-//			System.out.println(birth);
-//			int roleID; 
-//			if (role.equals("USER"))
-//				roleID = 1; 
-//			else if (role.equals("MANAGER"))
-//				roleID = 3;
-//			else
-//				roleID = 0;
-//			return (registerServ.registeAnUser(username, pass, roleID,firstname,lastname,address,phone,birth,email,sex));
-		
+		return (registerServ.registeAnUser(username, pass, roleID, firstname, lastname, phone, email, activeDate));	
 	}
 	
 	public boolean AddSession(String username , String sessionID)
@@ -160,10 +123,9 @@ public class MyUserDetailsService implements UserDetailsService {
 		return userServ.changePassword(username, pass);
 	}
 	
-	public boolean updateUserInfo(String username , String firstname , String lastname , String birthday , String phone , String address, String email,int sex , String type) throws ParseException
+	public boolean updateUserInfo(String username , String firstname , String lastname , String phone , String email, String type) throws ParseException
 	{
-		Date date = new SimpleDateFormat("dd/MM/yyyy").parse(birthday);
-		return userServ.updateInfo(username, firstname, lastname, address, phone, date, email, sex ,type);
+		return userServ.updateInfo(username, firstname, lastname, phone,email,type);
 	}
 	public boolean updateType(String username , String type)
 	{
@@ -187,23 +149,16 @@ public class MyUserDetailsService implements UserDetailsService {
 	}
 	public int checkActiveCode(String ActiveCode , Date DateNow , String ActiveCodeSubmit , Date ActiveDate)
 	{
-		 long Limit = (DateNow.getTime() - ActiveDate.getTime());
-		System.out.println(DateNow);
-		System.out.println(DateNow.getTime());
-		System.out.println(ActiveDate.getTime());
-		System.out.println(DateNow.getTime() - ActiveDate.getTime());
 		if ((DateNow.getTime() - ActiveDate.getTime()) <= 900000   )
 		{
-			System.out.print("Minh 1");
 			if (ActiveCodeSubmit.equals(ActiveCode))
-			{
-				System.out.print("Minh 2 ");
+				//match code
 				return 1;
-			}
 			else
+				//wrong code
 				return 0;
 		}
-		System.out.print("Minh 3");
+		//expired code
 		return 2;
 	}
 	public boolean changeType(String username , String typeUser)

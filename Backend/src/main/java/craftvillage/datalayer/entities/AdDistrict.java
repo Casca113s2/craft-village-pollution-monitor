@@ -33,6 +33,8 @@ public class AdDistrict implements java.io.Serializable {
 	private String districtName;
 	@JsonIgnore
 	private Set<AdWard> adWards = new HashSet<AdWard>(0);
+	@JsonIgnore
+	private Set<UrUser> authorities = new HashSet<UrUser>(0);
 
 	public AdDistrict() {
 	}
@@ -87,6 +89,15 @@ public class AdDistrict implements java.io.Serializable {
 	public void setDistrictName(String districtName) {
 		this.districtName = districtName;
 	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "district")
+	public Set<UrUser> getAuthorites() {
+		return this.authorities;
+	}
+	public void setAuthorites(Set<UrUser> authorities) {
+		this.authorities = authorities;
+	}
+	
 	@OrderBy("wardId ASC")
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "adDistrict")
 	public Set<AdWard> getAdWards() {

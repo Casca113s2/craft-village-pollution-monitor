@@ -45,18 +45,15 @@ public class UserServ {
 		return lstPhone.isEmpty();
 	}
 
-	public boolean updateInfo(String account, String urFirstname, String urLastname, String urAddress, String urPhone,
-			Date urBirthdate, String urEmail, int urSex, String type) {
+	public boolean updateInfo(String account, String urFirstname, String urLastname, String urPhone,
+			String urEmail, String type) {
 		CrudDao<UrUser> userDao = new CrudDao<>(UrUser.class);
 		if (this.findByAccount(account) != null) {
 			UrUser userUpdate = this.findByAccount(account);
-			userUpdate.setAddress(urAddress);
-			userUpdate.setBirthdate(urBirthdate);
 			userUpdate.setEmail(urEmail);
 			userUpdate.setFirstname(urFirstname);
 			userUpdate.setLastname(urLastname);
 			userUpdate.setPhone(urPhone);
-			userUpdate.setSex(urSex);
 			userUpdate.setType(type);
 			System.out.println("username " + userUpdate.getAccount() + " " + userUpdate.getType() );
 			boolean check = userDao.addObject(userUpdate);

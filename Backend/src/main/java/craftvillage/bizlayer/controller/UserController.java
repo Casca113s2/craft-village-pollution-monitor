@@ -216,15 +216,11 @@ public class UserController {
 
 		String username = formRegister.get("username");
 		String password = formRegister.get("password");
-//		String Role = "USER";
 		String Role = formRegister.get("role");
 		String firstname = formRegister.get("firstname");
 		String lastname = formRegister.get("lastname");
-		String birthday = formRegister.get("birthday");
 		String phone = formRegister.get("phone");
-		String address = formRegister.get("address");
 		String email = formRegister.get("email");
-		int sex = Integer.parseInt(formRegister.get("sex"));
 
 		String activeDate = formRegister.get("activeDate");
 		String activeCode = new String(Base64.decodeBase64(formRegister.get("activeCode").getBytes()));
@@ -234,27 +230,40 @@ public class UserController {
 		int i = userDeailsService.checkActiveCode(activeCode, DateNow, activeCodeSubmit, ActiveDate);
 
 		switch (i) {
+			//valid code
 			case 1: {
-				int register = userDeailsService.RegisterUsername(username, password, Role, firstname, lastname, birthday,
-						phone, address, email, sex, ActiveDate);
-				String num = Integer.toString(register);
+				int register = userDeailsService.RegisterUsername(username, password, Role, firstname, lastname,
+						phone, email, ActiveDate);
+				// success
 				if (register == 1) {
 					surveyServices.addUserSurvey(username);
-					console.put("key", num);
+					console.put("key", "11");
+					console.put("message", "Đăng ký thành công!");
 				} else if (register == 2) {
-					console.put("key", num);
+					console.put("key", "12");
+					console.put("message", "Người dùng này đã tồn tại!");
 				} else if (register == 3) {
-					console.put("key", num);
+					console.put("key", "13");
+					console.put("message", "Email này đã được sử dụng!");
+				} else if (register == 4) {
+					console.put("key", "14");
+					console.put("message", "Số điện thoại này đã được sử dụng!");
+				} else if (register == 0) {
+					console.put("key", "10");
+					console.put("message", "Đăng ký thất bại!");
 				}
-				console.put("key", num);
 				break;
 			}
+			// invalid code
 			case 0: {
-				console.put("key", "4");
+				console.put("key", "0");
+				console.put("message", "Sai mã xác nhận!");
 				break;
 			}
+			// expired code
 			case 2: {
-				console.put("key", "5");
+				console.put("key", "2");
+				console.put("message", "Mã xác nhận đã hết hạn!");
 				break;
 			}
 		}
@@ -367,16 +376,11 @@ public class UserController {
 		String username = updateUserForm.get("username");
 		String firstname = updateUserForm.get("firstname");
 		String lastname = updateUserForm.get("lastname");
-		String birthday = updateUserForm.get("birthday");
 		String phone = updateUserForm.get("phone");
-		String address = updateUserForm.get("address");
 		String email = updateUserForm.get("email");
-		String sex = updateUserForm.get("sex");
-		int sexInt = Integer.parseInt(sex);
 		String type = updateUserForm.get("type");
 
-		return userDeailsService.updateUserInfo(username, firstname, lastname, birthday, phone, address, email, sexInt,
-				type);
+		return userDeailsService.updateUserInfo(username, firstname, lastname, phone, email, type);
 	}
 
 	public JwtUtil getJwtTokenUtil() {
@@ -453,8 +457,8 @@ public class UserController {
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 
 		mailMessage.setTo(email);
-		mailMessage.setSubject("Active User Mail");
-		mailMessage.setText("Để xác minh tài khoản của bạn , hãy điền mã xác minh : " + Activecode);
+		mailMessage.setSubject("Active Mail");
+		mailMessage.setText("Xã xác minh : " + Activecode);
 		mailService.sendEmail(mailMessage);
 		String activeCode = new String(Base64.encodeBase64(Activecode.getBytes()));
 		console.put("activeCode", activeCode);

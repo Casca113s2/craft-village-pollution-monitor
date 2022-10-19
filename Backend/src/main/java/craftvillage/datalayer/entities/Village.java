@@ -1,6 +1,7 @@
 package craftvillage.datalayer.entities;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -33,6 +34,7 @@ public class Village implements java.io.Serializable {
 	private int hasAdded;
 	
 	private Set<TempVillage> tempVillages = new HashSet<TempVillage>();
+	private Set<UrUser> households = new HashSet<UrUser>();
 	public Village() {
 	}
 
@@ -93,7 +95,15 @@ public class Village implements java.io.Serializable {
 	public AdWard getAdWard() {
 		return adWard;
 	}
-
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "village", targetEntity = UrUser.class)
+	public Set<UrUser> getHouseholds() {
+		return households;
+	}
+	public void setHouseholds(Set<UrUser> households) {
+		this.households = households;
+	}
+	
 	public void setAdWard(AdWard adWard) {
 		this.adWard = adWard;
 	}

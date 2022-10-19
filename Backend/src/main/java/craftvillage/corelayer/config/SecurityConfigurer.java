@@ -40,7 +40,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 		String url_village = url + ConstantParameter.ServiceVillage._VILLAGE_SERVICE;
 		
 		//http.csrf().disable();
-		http.csrf().ignoringAntMatchers(url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_GET_COMPLETED,
+		http.csrf().ignoringAntMatchers("/web/**",
+										"/craftvillage/api/village/newvillage",
+										url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_GET_COMPLETED,
 										url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_GET_INPROGRESS,
 										url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_UPLOAD_FILE,										
 										url_user + "/" + ConstantParameter.ServiceUser._USER_LOGIN,
@@ -57,6 +59,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 		http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 			http.authorizeRequests().antMatchers(
 										"/web/**",
+										"/craftvillage/api/village/newvillage",
 										url_user + "/" + ConstantParameter.ServiceUser._USER_LOGIN,
 										url_user + "/" + ConstantParameter.ServiceUser._USER_REGISTER,
 										url_user + "/" + ConstantParameter.ServiceUser._USER_LOGOUT_TEST,

@@ -6,12 +6,11 @@
     <meta charset="UTF-8">
 
     <!-- Title Page-->
-    <title>Dashboard</title>
+    <title>Khai báo</title>
 
     <!-- Fontfaces CSS-->
     <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
-    <link th:href="@{/vendor/fontawesome-free-6.2.0-web/css/fontawesome.min.css}" rel="stylesheet" media="all">
-    <link th:href="@{/vendor/fontawesome-free-6.2.0-web/css/all.min.css}" rel="stylesheet}" media="all">
+    <link th:href="@{/vendor/fontawesome-free-6.2.0-web/css/all.min.css}" rel="stylesheet" media="all">
     <link th:href="@{/vendor/mdi-font/css/material-design-iconic-font.min.css}" rel="stylesheet" media="all">
 
     <!-- Bootstrap CSS-->
@@ -143,6 +142,7 @@
                                 <div class="card">
                                     <div class="card-header">Hộ sản xuất</div>
                                     <div class="card-body">
+                                    <form>
                                         <div class="form-group">
                                             <label>Họ tên</label>
                                             <input class="au-input au-input--full" type="text" name="full-name"
@@ -152,8 +152,8 @@
                                         <div class="form-group">
                                             <label>Chọn Tỉnh/Thành phố</label>
                                             <div class="form-group">
-                                                <select class="au-input au-input--full" name="province" style="padding: 10px;">
-                                                    <option selected="selected">---</option>
+                                                <select id="select-province1" class="au-input au-input--full" name="province" style="padding: 10px;">
+                                                    <option value="0" selected="selected">---</option>
                                                     <th:block th:each="province : ${provinceList}">
                                                     	<option th:value="${province.provinceId}" th:utext="${province.provinceName}"></option>
                                                     </th:block>
@@ -165,11 +165,8 @@
                                         <div class="form-group">
                                             <label>Chọn Quận/Huyện</label>
                                             <div class="form-group">
-                                                <select class="au-input au-input--full" name="district" style="padding: 10px;">
-                                                    <option selected="selected">---</option>
-                                                    <option value="">Cẩm Lệ</option>
-                                                    <option value="">Hải Châu</option>
-                                                    <option value="">Ngũ Hành Sơn</option>
+                                                <select id="select-district1" class="au-input au-input--full" name="district" style="padding: 10px;">
+                                                    <option value="0" selected="selected">---</option>
                                                 </select>
                                                 <div class="dropDownSelect2"></div>
                                             </div>
@@ -178,11 +175,8 @@
                                         <div class="form-group">
                                             <label>Chọn Xã/Phường</label>
                                             <div class="form-group">
-                                                <select class="au-input au-input--full" name="ward" style="padding: 10px;">
-                                                    <option selected="selected">---</option>
-                                                    <option value="">Thạc Gián</option>
-                                                    <option value="">Khuê Trung</option>
-                                                    <option value="">Hòa Minh</option>
+                                                <select id="select-ward1" class="au-input au-input--full" name="ward" style="padding: 10px;">
+                                                    <option value="0" selected="selected">---</option>
                                                 </select>
                                                 <div class="dropDownSelect2"></div>
                                             </div>
@@ -190,16 +184,14 @@
                                         <div class="form-group">
                                             <label>Làng nghề</label>
                                             <div class="form-group">
-                                                <select class="au-input au-input--full" name="ward" style="padding: 10px;">
-                                                    <option selected="selected">---</option>
-                                                    <option value="">Thạc Gián</option>
-                                                    <option value="">Khuê Trung</option>
-                                                    <option value="">Hòa Minh</option>
+                                                <select id="select-village" class="au-input au-input--full" name="ward" style="padding: 10px;">
+                                                    <option value="0" selected="selected">---</option>
                                                 </select>
                                                 <div class="dropDownSelect2"></div>
                                             </div>
                                         </div>
                                         <button class="btn btn-primary" style="margin-left: auto; margin-right: 0; display: block;">Khai báo</button>
+                                	</form>
                                     </div>
                                 </div>
                             </div>
@@ -207,11 +199,12 @@
                                 <div class="card">
                                     <div class="card-header">Làng nghề mới</div>
                                     <div class="card-body">
+                                    <form id="form2" th:action="@{/web/household/newvillage}" method="post">
                                         <div class="form-group">
                                             <label>Chọn Tỉnh/Thành phố</label>
                                             <div class="form-group">
-                                                <select class="au-input au-input--full" name="province" style="padding: 10px;">
-                                                    <option selected="selected">---</option>
+                                                <select id="select-province2" class="au-input au-input--full" name="province" style="padding: 10px;">
+                                                    <option value="0" selected="selected">---</option>
                                                     <th:block th:each="province : ${provinceList}">
                                                     	<option th:value="${province.provinceId}" th:utext="${province.provinceName}"></option>
                                                     </th:block>
@@ -223,11 +216,8 @@
                                         <div class="form-group">
                                             <label>Chọn Quận/Huyện</label>
                                             <div class="form-group">
-                                                <select class="au-input au-input--full" name="district" style="padding: 10px;">
-                                                    <option selected="selected">---</option>
-                                                    <option value="">Cẩm Lệ</option>
-                                                    <option value="">Hải Châu</option>
-                                                    <option value="">Ngũ Hành Sơn</option>
+                                                <select id="select-district2" class="au-input au-input--full" name="district" style="padding: 10px;">
+                                                    <option value="0" selected="selected">---</option>
                                                 </select>
                                                 <div class="dropDownSelect2"></div>
                                             </div>
@@ -236,39 +226,41 @@
                                         <div class="form-group">
                                             <label>Chọn Xã/Phường</label>
                                             <div class="form-group">
-                                                <select class="au-input au-input--full" name="ward" style="padding: 10px;">
-                                                    <option selected="selected">---</option>
-                                                    <option value="">Thạc Gián</option>
-                                                    <option value="">Khuê Trung</option>
-                                                    <option value="">Hòa Minh</option>
+                                                <select id="select-ward2" class="au-input au-input--full" name="ward" style="padding: 10px;">
+                                                    <option selected="selected" value="0">---</option>
+                                               
                                                 </select>
                                                 <div class="dropDownSelect2"></div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label>Địa chỉ</label>
-                                            <input class="au-input au-input--full" type="text" name=""
-                                                placeholder="Nhập địa chỉ">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Tọa độ</label>
-                                            <div style="display: flex;">
-                                                <input class="au-input" type="text" name="" style="margin: auto;"
-                                                    placeholder="Kinh độ">
-                                                <input class="au-input" type="text" name="" style="margin: auto;"
-                                                    placeholder="Vĩ độ">
+                                        <div class="row form-group">
+                                                <div class="col-6">
+                                                    <label for="x_card_code" class="control-label mb-1">Longitude</label>
+                                                    <div class="input-group">
+                                                        <input id="longitude" name="longitude" type="text" class="form-control cc-cvc">
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label for="x_card_code" class="control-label mb-1">Latitude</label>
+                                                    <div class="input-group">
+                                                        <input id="latitude" name="latitude" type="text" class="form-control cc-cvc">
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
                                         <div class="form-group">
                                             <label>Tên làng nghề</label>
-                                            <input class="au-input au-input--full" type="text" name=""
+                                            <input class="au-input au-input--full" type="text" name="villageName"
                                                 placeholder="Nhập tên làng nghề">
                                         </div>
                                         <div class="form-group">
                                             <label>Mô tả</label>
-                                            <textarea class="au-input au-input--full" name=""></textarea>
+                                            <textarea class="au-input au-input--full" name="note"></textarea>
                                         </div>
+                                        <div id="error-message2" class="alert alert-danger message" role="alert" style="margin-top:5px"></div>
+										<div id="success-message2" class="alert alert-success message" role="alert" style="margin-top:5px"></div>
                                         <button type="submit" class="btn btn-primary" style="margin-left: auto; margin-right: 0; display: block;">Khai báo</button>
+                                    </form>
                                     </div>
                                 </div>
                             </div>
@@ -491,7 +483,141 @@
     <!-- Main JS-->
     <script th:src="@{/js/main.js}"></script>
 	<script type="text/javascript">
+		$('#select-province2').on('change', function() {
+		  	$.get("/craftvillage/api/address/getdistrictlist?provinceid=" + this.value, function(data){
+		  		$('#select-district2').empty()
+		  		for(let i=0;i < data.length; i++){
+		  			$('#select-district2').append($('<option>',
+		  					{
+			  				    value: data[i].districtId,
+			  				    text : data[i].districtName
+		  					}));
+		  		}
+		  	});
+		});
 		
+		$('#select-district2').on('change', function() {
+		  	$.get("/craftvillage/api/address/getwardlist?districtid=" + this.value, function(data){
+		  		$('#select-ward2').empty()
+		  		for(let i=0;i < data.length; i++){
+		  			$('#select-ward2').append($('<option>',
+		  					{
+			  				    value: data[i].wardId,
+			  				    text : data[i].wardName
+		  					}));
+		  		}
+		  	});
+		});
+		
+		$('#select-province1').on('change', function() {
+		  	$.get("/craftvillage/api/address/getdistrictlist?provinceid=" + this.value, function(data){
+		  		$('#select-district1').empty()
+		  		for(let i=0;i < data.length; i++){
+		  			$('#select-district1').append($('<option>',
+		  					{
+			  				    value: data[i].districtId,
+			  				    text : data[i].districtName
+		  					}));
+		  		}
+		  	});
+		});
+		
+		$('#select-district1').on('change', function() {
+		  	$.get("/craftvillage/api/address/getwardlist?districtid=" + this.value, function(data){
+		  		$('#select-ward1').empty()
+		  		for(let i=0;i < data.length; i++){
+		  			$('#select-ward1').append($('<option>',
+		  					{
+			  				    value: data[i].wardId,
+			  				    text : data[i].wardName
+		  					}));
+		  		}
+		  	});
+		});
+		
+		$('#select-ward1').on('change', function() {
+		  	$.get("/craftvillage/api/address/getvillage?wardid=" + this.value, function(data){
+		  		$('#select-village').empty()
+		  		for(let i=0;i < data.length; i++){
+		  			$('#select-village').append($('<option>',
+		  					{
+			  				    value: data[i].villageId,
+			  				    text : data[i].villageName
+		  					}));
+		  		}
+		  	});
+		});
+		
+		$('#form1').submit(function(e){
+			e.preventDefault();
+		    var form = $(this);
+		    for (const item of form.serializeArray()){
+		    	if(item.value == '0' || item.value.length == 0){
+		    		$('#success-message1').removeClass("display");
+		    		$('#error-message1').text("Vui lòng điền đầy đủ thông tin!");
+		    		$('#error-message1').addClass("display");
+					return;		    		
+		    	}
+		    }
+		    
+		    var actionUrl = form.attr('action');
+		    
+		    $.ajax({
+		        type: "POST",
+		        url: actionUrl,
+		        data: form.serialize(),
+		        success: function(data){
+		        	if(!data){
+			        	$('#success-message1').removeClass("display");
+			    		$('#error-message1').text("Phát hiện lỗi!");
+			    		$('#error-message1').addClass("display");
+		        	}
+		        	else{
+		        		$('#success-message1').text("Yêu cầu đã được gửi");
+		        		$('#success-message1').addClass("display");
+			    		$('#error-message1').removeClass("display");
+		        	}
+		        }
+		    });
+		})
+		
+		$('#form2').submit(function(e){
+			e.preventDefault();
+		    var form = $(this);
+		    for (const item of form.serializeArray()){
+		    	if(item.value == '0' || item.value.length == 0){
+		    		$('#success-message2').removeClass("display");
+		    		$('#error-message2').text("Vui lòng điền đầy đủ thông tin!");
+		    		$('#error-message2').addClass("display");
+					return;		    		
+		    	}
+		    }
+		    
+		    var actionUrl = form.attr('action');
+		    
+		    $.ajax({
+		        type: "POST",
+		        url: actionUrl,
+		        data: form.serialize(),
+		        success: function(data){
+		        	if(data == 0){
+			        	$('#success-message2').removeClass("display");
+			    		$('#error-message2').text("Phát hiện lỗi!");
+			    		$('#error-message2').addClass("display");
+		        	}
+		        	else if(data == 1){
+		        		$('#success-message2').removeClass("display");
+			    		$('#error-message2').text("Làng nghề đã tồn tại!");
+			    		$('#error-message2').addClass("display")
+		        	}
+		        	else if(data == 2){
+		        		$('#success-message2').text("Yêu cầu đã được gửi");
+		        		$('#success-message2').addClass("display");
+			    		$('#error-message2').removeClass("display");
+		        	}
+		        }
+		    });
+		})
 	</script>
 </body>
 

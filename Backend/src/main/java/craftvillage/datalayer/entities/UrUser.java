@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.PrePersist;
@@ -22,7 +23,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import craftvillage.corelayer.utilities.ConstantParameter;
@@ -38,21 +41,42 @@ public class UrUser implements java.io.Serializable {
 	private String account;
 	private String password;
 	private String firstname;
-	private String address;
 	private String phone;
-	private Date birthdate;
 	private String lastname;
 	private String email;
 	private String activeCode;
 	private Date activeDate;
-	private int sex;
 	private String type;
 	
 	
 	private Set<UserSurvey> userSurveys = new HashSet<UserSurvey>(0);
 	private Set<UrRole> urRoles = new HashSet<UrRole>(0);
 	private Set<UrSession> urSessions = new HashSet<UrSession>(0);
+	private Village village;
+	private AdDistrict district;
+	
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Village.class)
+	@JoinColumn(name = "VILLAGE_ID")
+	public Village getVillage() {
+		return village;
+	}
 
+	public void setVillage(Village village) {
+		this.village = village;
+	}
+
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY, targetEntity = AdDistrict.class)
+	@JoinColumn(name = "DISTRICT_ID")
+	public AdDistrict getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(AdDistrict district) {
+		this.district = district;
+	}
+	
 	@PrePersist
 	public void prePersist() {
 	    if(this.type == null) this.type = "PrivatePerson";
@@ -66,19 +90,16 @@ public class UrUser implements java.io.Serializable {
 		this.account = account;
 	}
 
-	public UrUser(int id, String account, String password, String firstname, String address, String phone,
-			Date birthdate, String lastname, String email, int sex, String type, Set<UserSurvey> userSurveys, Set<UrRole> urRoles,
+	public UrUser(int id, String account, String password, String firstname, String phone,
+			String lastname, String email, String type, Set<UserSurvey> userSurveys, Set<UrRole> urRoles,
 			Set<UrSession> urSessions) {
 		this.id = id;
 		this.account = account;
 		this.password = password;
 		this.firstname = firstname;
-		this.address = address;
 		this.phone = phone;
-		this.birthdate = birthdate;
 		this.lastname = lastname;
 		this.email = email;
-		this.sex = sex;
 		this.userSurveys = userSurveys;
 		this.urRoles = urRoles;
 		this.urSessions = urSessions;
@@ -123,14 +144,6 @@ public class UrUser implements java.io.Serializable {
 		this.firstname = firstname;
 	}
 
-	@Column(name = "ADDRESS", length = 100)
-	public String getAddress() {
-		return this.address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
 
 	@Column(name = "PHONE", length = 100)
 	public String getPhone() {
@@ -139,17 +152,6 @@ public class UrUser implements java.io.Serializable {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	@Temporal(TemporalType.DATE)
-	@Column(name = "BIRTHDATE", length = 7)
-	public Date getBirthdate() {
-		return this.birthdate;
-	}
-
-	public void setBirthdate(Date birthdate) {
-		this.birthdate = birthdate;
 	}
 
 	@Column(name = "LASTNAME", length = 100)
@@ -170,14 +172,6 @@ public class UrUser implements java.io.Serializable {
 		this.email = email;
 	}
 
-	@Column(name = "SEX", precision = 22, scale = 0)
-	public int getSex() {
-		return this.sex;
-	}
-
-	public void setSex(int sex) {
-		this.sex = sex;
-	}
 	@Column(name = "ACTIVE_CODE", length = 100)
 	public String getActiveCode() {
 		return activeCode;

@@ -29,7 +29,7 @@ public class AdCountry implements java.io.Serializable {
 	private String zipcode;
 	private String countryName;
 	@JsonIgnore
-	private Set<AdProvince> adProvinces = new HashSet<AdProvince>(0);
+	private Set<AdProvince> adProvinces;
 
 	public AdCountry() {
 	}

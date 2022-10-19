@@ -14,6 +14,7 @@ import craftvillage.datalayer.entities.Village;
 
 @Repository
 public class VillageServ {
+	
 	public boolean addVillage(Village village) {
 		CrudDao<Village> vil = new CrudDao<>(Village.class);
 		boolean check = vil.addObject(village);

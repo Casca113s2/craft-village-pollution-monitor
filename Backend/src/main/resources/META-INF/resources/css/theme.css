@@ -14643,6 +14643,12 @@ section {
     padding-top: 12px;
 }
 
-.gototop.active{
+.active{
     visibility: visible;
+}
+.message {
+	display: none;
+}
+.display {
+	display: block;
 }

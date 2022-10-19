@@ -10,7 +10,6 @@
 
     <!-- Fontfaces CSS-->
     <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
-    <link th:href="@{/vendor/fontawesome-free-6.2.0-web/css/fontawesome.min.css}" rel="stylesheet" media="all">
     <link th:href="@{/vendor/fontawesome-free-6.2.0-web/css/all.min.css}" rel="stylesheet}" media="all">
     <link th:href="@{/vendor/mdi-font/css/material-design-iconic-font.min.css}" rel="stylesheet" media="all">
 
@@ -44,19 +43,19 @@
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
                         <li class="active">
-                            <a th:href="@{/index.html}">
+                            <a th:href="@{/web/authority/index}">
                                 <i class="fa-solid fa-chart-column"></i>Dashboard</a>
                         </li>
                         <li class="has-sub">
                             <a class="js-arrow open"  >
-                                <i class="fa-solid fa-users"></i>Household</a>
+                                <i class="fa-solid fa-users"></i>Village</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
                                 <li>
-                                    <a th:href="@{/new-household.html}">
+                                    <a th:href="@{/web/authority/newvillage}">
                                         <i class="fa-solid fa-user-plus"></i>New</a>
                                 </li>
                                 <li>
-                                    <a th:href="@{/household-data.html}">
+                                    <a th:href="@{/web/authority/villagedata}">
                                         <i class="fa-solid fa-database"></i>Data</a>
                                 </li>
                             </ul>
