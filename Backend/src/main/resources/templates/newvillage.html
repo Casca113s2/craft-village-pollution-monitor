@@ -334,6 +334,42 @@
         	})
         })
         
+        $('#form').submit(function(e){
+			e.preventDefault();
+		    var form = $(this);
+		    for (const item of form.serializeArray()){
+		    	if(item.value == '0' || item.value.length == 0){
+		    		$('#success-message').removeClass("display");
+		    		$('#error-message').text("Vui lòng điền đầy đủ thông tin!");
+		    		$('#error-message').addClass("display");
+					return;		    		
+		    	}
+		    }
+		    var actionUrl = form.attr('action');
+		    
+		    $.ajax({
+		        type: "POST",
+		        url: actionUrl,
+		        data: form.serialize(),
+		        success: function(data){
+		        	if(data == 0){
+			        	$('#success-message').removeClass("display");
+			    		$('#error-message').text("Phát hiện lỗi!");
+			    		$('#error-message').addClass("display");
+		        	}
+		        	else if(data == 1){
+		        		$('#success-message').removeClass("display");
+			    		$('#error-message').text("Làng nghề đã tồn tại!");
+			    		$('#error-message').addClass("display")
+		        	}
+		        	else if(data == 2){
+			    		$('#error-message').removeClass("display");
+		        		$('#success-message').text("Tạo thành công!");
+		        		$('#success-message').addClass("display");
+		        	}
+		        }
+		    });
+		})
     </script>
 
 </body>

@@ -79,16 +79,17 @@ public class VillageController {
 	 * @param principal
 	 * @return true : submit thành công false : submit thất bại
 	 */
+	//cần sửa code
 	@RequestMapping(value = "/" + ConstantParameter.ServiceVillage._VILLAGE_SUBMIT, method = RequestMethod.POST)
 	public boolean VillageInfoSubmit(@RequestBody Map<String, String> VillageInfoForm, Principal principal) {
 		System.out.println("VillageInfoSubmit");
 		String username = principal.getName();
-		String villageName = VillageInfoForm.get("villageName");
-		String coordinate = VillageInfoForm.get("coordinate");
+		String villageName = VillageInfoForm.get("villageName");//bỏ
+		String coordinate = VillageInfoForm.get("coordinate");//bỏ
 		String villageId = VillageInfoForm.get("villageId");
-		String totalQuestion = VillageInfoForm.get("totalQuestion");
-		String totalAnswer = VillageInfoForm.get("totalAnswer");
-		String totalImage = VillageInfoForm.get("totalImage");
+		String totalQuestion = VillageInfoForm.get("totalQuestion");//bỏ
+		String totalAnswer = VillageInfoForm.get("totalAnswer");//bỏ
+		String totalImage = VillageInfoForm.get("totalImage");//bỏ
 		int hasAdded = Integer.parseInt(VillageInfoForm.get("hasAdded"));
 		System.out.println("has added value: " + hasAdded);
 		if(hasAdded == 0) {
@@ -101,9 +102,9 @@ public class VillageController {
 			}
 			
 			userSurvey.setCraftId(Integer.parseInt(villageId));
-			userSurvey.setTotalQuestion(Integer.parseInt(totalQuestion));
-			userSurvey.setTotalAnswer(Integer.parseInt(totalAnswer));
-			userSurvey.setTotalImage(Integer.parseInt(totalImage));
+			userSurvey.setTotalQuestion(Integer.parseInt(totalQuestion));//bỏ
+			userSurvey.setTotalAnswer(Integer.parseInt(totalAnswer));//bỏ
+			userSurvey.setTotalImage(Integer.parseInt(totalImage));//bỏ
 			surveyServices.addUserSurvey(userSurvey);
 			Village village = addressService.getVillageInfo(Integer.parseInt(villageId));
 			return addressService.SubmitVillageInfo(villageName, coordinate, userSurvey, village);
@@ -147,6 +148,7 @@ public class VillageController {
 		
 	}
 
+	//bỏ
 	/**
 	 * Từ khảo sát lấy thông tin làng nghề
 	 * 
@@ -239,71 +241,6 @@ public class VillageController {
 		}
 		
 		return res;
-		
-//		System.out.print("Woohoo! I Here!\n");
-//		
-//		Coordinate coordinate = new Coordinate(Double.parseDouble(longitude), Double.parseDouble(latitude));
-//		
-//		Village village = villageService.findVillageByCoordinate(coordinate);
-//		System.out.println("coordinate: " + coordinate.x+" - "+coordinate.y);	
-//		
-//		Map<String, String> villageInfo = new HashMap<>();
-//		
-//		if(village==null)
-//		{
-//			villageInfo.put("message", "can't detect");
-//			return villageInfo;
-//		}
-//		
-//		String villageId = String.valueOf(village.getVillageId());
-//		String strHasAdded = String.valueOf(village.getHasAdded());
-//		String wardId = String.valueOf(village.getAdWard().getWardId());
-//		String districtId = String.valueOf(village.getAdWard().getAdDistrict().getDistrictId());
-//		String provinceId = String.valueOf(village.getAdWard().getAdDistrict().getAdProvince().getProvinceId());
-//		String wardName = String.valueOf(village.getAdWard().getWardName());
-//		String districtName = String.valueOf(village.getAdWard().getAdDistrict().getDistrictName());
-//		String provinceName = String.valueOf(village.getAdWard().getAdDistrict().getAdProvince().getProvinceName());
-//		String villageNote = village.getNote();
-//
-//		villageInfo.put("villageId", villageId);
-//		villageInfo.put("hasAdded", strHasAdded);
-//		villageInfo.put("villageName", village.getVillageName());
-//
-//		villageInfo.put("wardId", wardId);
-//		villageInfo.put("wardName", wardName);
-//		villageInfo.put("districtId", districtId);
-//		villageInfo.put("districtName", districtName);
-//		villageInfo.put("provinceId", provinceId);
-//		villageInfo.put("provinceName", provinceName);
-//		villageInfo.put("villageNote", villageNote);
-//		logger.info(villageInfo.toString());	
-//		return villageInfo;	
-			
-	}
-
-	//request new village
-	
-	/**
-	 * Fake Survey Village
-	 * 
-	 * @param villageId
-	 * @return
-	 */
-	@RequestMapping(value = "/" + ConstantParameter.ServiceVillage._VILLAGE_GET_SURVEY, method = RequestMethod.GET, produces = "application/json")
-	public AnswerModel getVillageSurvey(@RequestParam("id") int villageId) {
-
-		AnswerModel answerModel = new AnswerModel();
-		Set<UserSurveyAnswer> answers = new HashSet<>();
-		answers.add(new UserSurveyAnswer(219, 28, "50", ""));
-		answers.add(new UserSurveyAnswer(231, 36, "68", ""));
-		answers.add(new UserSurveyAnswer(243, 55, "19_20_21", ""));
-
-		SrSurvey srSurvey = surveyServices.getSurveyByActiveId(1);
-		answerModel.setAnswers(answers);
-		answerModel.setSurveys(srSurvey);
-		answerModel.setSrActiveId(1);
-		logger.info(answerModel.toString());
-		return answerModel;
 	}
 
 	public MyUserDetailsService getUserDeailsService() {
