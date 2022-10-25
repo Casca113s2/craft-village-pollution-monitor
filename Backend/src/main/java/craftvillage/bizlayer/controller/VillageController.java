@@ -60,15 +60,16 @@ public class VillageController {
 	@PostMapping("/newvillage")
 	public int newVillage(@RequestBody Map<String, String> newVillage) {
 		int wardId = Integer.parseInt(newVillage.get("wardId"));
+		int hasAdded = Integer.parseInt(newVillage.get("hasAdded"));
 		String coordinate = newVillage.get("longitude") + ", " + newVillage.get("latitude");
 		Village village = new Village();
 		village.setAdWard(addressService.getAdward(wardId));
 		village.setCoordinate(coordinate);
-		village.setHasAdded(0);
+		village.setHasAdded(hasAdded);
 		village.setNote(newVillage.get("note"));
 		village.setVillageName(newVillage.get("villageName"));
-		villageService.newVillage(village);
-		return village.getVillageId();
+		int id = villageService.newVillage(village);
+		return id;
 	}
 	
 	
@@ -282,29 +283,6 @@ public class VillageController {
 	}
 
 	//request new village
-	
-	/**
-	 * Fake Survey Village
-	 * 
-	 * @param villageId
-	 * @return
-	 */
-	@RequestMapping(value = "/" + ConstantParameter.ServiceVillage._VILLAGE_GET_SURVEY, method = RequestMethod.GET, produces = "application/json")
-	public AnswerModel getVillageSurvey(@RequestParam("id") int villageId) {
-
-		AnswerModel answerModel = new AnswerModel();
-		Set<UserSurveyAnswer> answers = new HashSet<>();
-		answers.add(new UserSurveyAnswer(219, 28, "50", ""));
-		answers.add(new UserSurveyAnswer(231, 36, "68", ""));
-		answers.add(new UserSurveyAnswer(243, 55, "19_20_21", ""));
-
-		SrSurvey srSurvey = surveyServices.getSurveyByActiveId(1);
-		answerModel.setAnswers(answers);
-		answerModel.setSurveys(srSurvey);
-		answerModel.setSrActiveId(1);
-		logger.info(answerModel.toString());
-		return answerModel;
-	}
 
 	public MyUserDetailsService getUserDeailsService() {
 		return userDeailsService;

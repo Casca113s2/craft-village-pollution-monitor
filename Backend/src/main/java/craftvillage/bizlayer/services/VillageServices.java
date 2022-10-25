@@ -22,9 +22,8 @@ public class VillageServices {
 	public int newVillage(Village village) {
 		try {
 			if(villageRepo.countByVillageName(village.getVillageName())>0)
-				return 1;
-			villageRepo.save(village);
-			return 2;
+				return -1;
+			return villageRepo.save(village).getVillageId();
 		}
 		catch(Exception e) {
 			return 0;
