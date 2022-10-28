@@ -58,29 +58,6 @@ public class UserController {
 	@Autowired
 	private ServletContext sc;
 
-	/**
-	 * Funciton : apilogout : Đăng xuất khỏi hệ thống
-	 * 
-	 * @param request
-	 * @return true/false :
-	 */
-	@RequestMapping(value = "/" + ConstantParameter.ServiceUser._USER_LOGOUT_TEST, method = RequestMethod.GET)
-	public boolean apilogouttest(Principal principal, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		SecurityContextHolder.getContext().setAuthentication(null);
-		session.invalidate();
-		return true;
-
-//		String username = principal.getName();
-//		if (jwtService.removeUsername(username))
-//		{
-//			SecurityContextHolder.getContext().setAuthentication(null);
-//			session.invalidate();
-//			return true;
-//		}
-//		return false;
-	}
-
 	@RequestMapping(value = "/" + ConstantParameter.ServiceUser._USER_LOGOUT, method = RequestMethod.GET)
 	public boolean apilogout(Principal principal, HttpServletRequest request) {
 
@@ -358,11 +335,8 @@ public class UserController {
 	 * @param username
 	 * @param firstname
 	 * @param lastname
-	 * @param birthday
 	 * @param phone
-	 * @param address
 	 * @param email
-	 * @param sex
 	 * @param request
 	 * @return true/false
 	 * @throws ParseException

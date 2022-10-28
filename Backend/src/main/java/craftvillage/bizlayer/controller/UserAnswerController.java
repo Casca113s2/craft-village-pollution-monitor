@@ -155,8 +155,6 @@ public class UserAnswerController {
 		UserSurvey userSurvey = surveyServices.getUserSurvey(user, "InProgress");
 		System.out.println("Deleted Answer");
 		surveyServices.DeletedAnswer(user, "InProgress");
-		surveyServices.DeleteImage(user, "InProgress", sc.getRealPath("/"));
-		addressService.DeleteTempVillage(user, "InProgress");
 		System.out.println(userSurvey.getId());
 		surveyServices.changeStatus(userSurvey.getId(), "Active");
 		return true;
@@ -169,73 +167,6 @@ public class UserAnswerController {
 	 * @return Village : trả về thông tin làng nghề được gợi ý
 	 * @throws Exception 
 	 */
-
-	@RequestMapping(value = "/" + ConstantParameter.ServiceAnswer._ANSWER_UPLOAD_FILE, method = RequestMethod.POST)
-	public boolean UploadFile(@RequestBody MultipartFile file, Principal principal)
-			throws Exception {
-		
-		System.out.println("Demo");
-		double lat = 0, lon = 0;
-		// System.out.println("Test : " + latitude + "Demo: " + longitude);
-		String filename = file.getOriginalFilename();
-		
-		System.out.println("FileName :" + filename);
-		
-		System.out.println(fileService.findByFileName(filename));
-		if (fileService.findByFileName(filename) != null)
-		{			
-			return false;
-		}
-		
-		String username = principal.getName();
-		filename = FileService.createFileName(filename, username);
-		
-		BufferedInputStream inputStream = new BufferedInputStream(file.getInputStream());
-		Metadata metadata = ImageMetadataReader.readMetadata(inputStream, true);
-		
-		for (Directory directory : metadata.getDirectories()) {
-			for (Tag tag : directory.getTags()) {
-				String tagName = tag.getTagName();
-				String desc = tag.getDescription();
-				//System.out.println(tagName + ": " + desc);
-				
-				if (tagName.equals("GPS Longitude")) {
-					String[] t = desc.split(" ");
-					t[0] = t[0].substring(0, t[0].length() - 1);
-					t[1] = t[1].substring(0, t[1].length() - 1);
-					t[2] = t[2].substring(0, t[2].length() - 1);
-
-					lon = addressService.convertCoordinates(Double.parseDouble(t[0]), Double.parseDouble(t[1]),
-							Double.parseDouble(t[2]));
-
-				} else if (tagName.equals("GPS Latitude")) {
-					String[] t = desc.split(" ");
-					t[0] = t[0].substring(0, t[0].length() - 1);
-					t[1] = t[1].substring(0, t[1].length() - 1);
-					t[2] = t[2].substring(0, t[2].length() - 1);
-					lat = addressService.convertCoordinates(Double.parseDouble(t[0]), Double.parseDouble(t[1]),
-							Double.parseDouble(t[2]));
-
-				}
-
-			}
-		}
-
-		UrUser user = userDetailsService.getUrUser(username);
-		UserSurvey userSurvey = surveyServices.getUserSurvey(user, "Active");
-		if (userSurvey == null) {
-			userSurvey = surveyServices.getUserSurvey(user, "InProgress");
-		}
-		
-		String filePath = fileService.storeFile(file , sc.getRealPath("/") , username, filename);
-		System.out.println("FilePath " + filePath);
-		Date dateNow = new Date();
-
-		surveyServices.addFilePath(filePath, dateNow, userSurvey, lat, lon, filename);
-
-		return true;
-	}
-
 	public MyUserDetailsService getUserDetailsService() {
 		return userDetailsService;
 	}

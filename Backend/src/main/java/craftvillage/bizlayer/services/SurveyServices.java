@@ -60,11 +60,6 @@ public class SurveyServices {
 		return answerServ.DeletedAnswer(user , status);
 	}
 	
-	public boolean DeleteImage(UrUser user , String status, String rootPath)
-	{
-		return answerServ.DeletedImage(user, status, rootPath);
-	}
-	
 	public UserSurvey getSubmitSurvey(String account , int activeId) {
 		return surveyServ.getSubmitSurvey(account, activeId);
 	}
@@ -143,13 +138,4 @@ public class SurveyServices {
 		return userServ.setDateSubmitSurvey(userSurveyId, dateSubmitSurvey);
 	}
 	
-	public boolean addFilePath(String filePath , Date dateNow , UserSurvey userSurvey , double X_COORDINATE , double Y_COORDINATE , String filename)
-	{
-		return userServ.addFilePath(filePath, dateNow, userSurvey, X_COORDINATE, Y_COORDINATE, filename);
-	}
-	
-	public String[] findfileNamebyId(int userSurveyId)
-	{
-		return answerServ.findFileNameById(userSurveyId);
-	}
 }

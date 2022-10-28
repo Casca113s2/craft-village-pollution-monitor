@@ -26,7 +26,6 @@ import com.drew.metadata.exif.ExifIFD0Directory;
 import com.drew.metadata.jpeg.JpegDirectory;
 
 import craftvillage.corelayer.utilities.ConstantParameter;
-import craftvillage.datalayer.entities.SrImg;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.services.AnswerServ;
 
@@ -141,11 +140,6 @@ public class FileService {
         return destinationImage;
     }
     
-    public SrImg findByFileName (String fileName)
-    {
-    	return answerServ.findbyFileName(fileName);
-    }
-    
     public String base64Encode(String Path) throws IOException
     {
     	File file = new File(Path);
@@ -156,20 +150,5 @@ public class FileService {
         return encodedString;
     }
     
-    public boolean deleteFile(String filename, String pathFile, UrUser user , String status)
-    {
-    	return answerServ.DeleteImageByFileName(filename, pathFile, user, status);
-    }
-    
-    public static String createFileName(String originName, String username) {
-    	
-    	String basename = FilenameUtils.getBaseName(originName);
-    	String extension = FilenameUtils.getExtension(originName);
-    	
-    	if (!username.equals("")) {
-    		basename = username.toUpperCase() + "_" + basename;
-    	}
-    	
-    	return basename + "." + extension;
-    }
+ 
 }

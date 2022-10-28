@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import craftvillage.datalayer.dao.CrudDao;
 import craftvillage.datalayer.entities.SrActive;
-import craftvillage.datalayer.entities.SrImg;
 import craftvillage.datalayer.entities.SrSurvey;
 import craftvillage.datalayer.entities.UrRole;
 import craftvillage.datalayer.entities.UrUser;
@@ -142,10 +141,6 @@ public class UserServ {
 				userS.setSrActive(x);
 				userS.setUrUser(this.findByAccount(account));
 				userS.setIsTemporary("Active");
-				userS.setCraftId(0);
-				userS.setTotalQuestion(0);
-				userS.setTotalAnswer(0);
-				userS.setTotalImage(0);
 				userSDao.addObject(userS);
 			}
 			return true;
@@ -159,10 +154,6 @@ public class UserServ {
 		userS.setSrActive(surveyActiveDao.findById(srActiveId));
 		userS.setUrUser(this.findByAccount(account));
 		userS.setIsTemporary("Active");
-		userS.setCraftId(0);
-		userS.setTotalQuestion(0);
-		userS.setTotalAnswer(0);
-		userS.setTotalImage(0);
 		
 		return userSDao.addObject(userS);
 		
@@ -259,20 +250,6 @@ public class UserServ {
 		return userSurveyDao.addObject(userSurvey);
 	}
 	
-	public boolean addFilePath(String filePath , Date dateNow , UserSurvey userSurvey , double X_COORDINATE , double Y_COORDINATE , String filename)
-	{
-		CrudDao<SrImg> imageDao = new CrudDao<>(SrImg.class);		
-		SrImg srImage = new SrImg();
-		
-			srImage.setUrImgName(filename);
-			srImage.setDateCreate(dateNow);
-			srImage.setUserSurvey(userSurvey);
-			srImage.setXCoordinate(X_COORDINATE);
-			srImage.setYCoordinate(Y_COORDINATE);
-			srImage.setUrImgPath(filePath);
-			return imageDao.addObject(srImage);
-		
-	}
 	
 	public boolean checkVillage(int villageId, UrUser user , String status)
 	{

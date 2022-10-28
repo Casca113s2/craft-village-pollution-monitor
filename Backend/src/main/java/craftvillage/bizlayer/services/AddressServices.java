@@ -55,10 +55,6 @@ public class AddressServices {
 	public Set<Village> getPickVillage(int wardId) {
 		return addressServ.getPickVillage(wardId);
 	}
-	public boolean SubmitVillageInfo(String villageName , String coordinate , UserSurvey userSurvey , Village village)
-	{
-		return addressServ.SubmitVillageInfo(villageName, coordinate, userSurvey, village);
-	}
 	public Village getVillageInfo(int villageId)
 	{
 		return addressServ.getVillageInfo(villageId);
@@ -66,10 +62,6 @@ public class AddressServices {
 	public List<Village> getAllVillage()
 	{
 		return addressServ.getAllVillage();
-	}
-	public boolean DeleteTempVillage(UrUser user , String status)
-	{
-		return addressServ.DeleteTempVillage(user, status);
 	}
 	public boolean checkVillage(int villageId , UrUser user , String status)
 	{

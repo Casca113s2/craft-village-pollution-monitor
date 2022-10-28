@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import craftvillage.bizlayer.support_api.location.Coordinate;
 import craftvillage.datalayer.dao.CrudDao;
-import craftvillage.datalayer.entities.SrImg;
 import craftvillage.datalayer.entities.UserSurvey;
 import craftvillage.datalayer.entities.UserSurveyAnswer;
 import craftvillage.datalayer.entities.Village;

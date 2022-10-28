@@ -33,7 +33,7 @@ public class Village implements java.io.Serializable {
 	//nghia
 	private int hasAdded;
 	
-	private Set<TempVillage> tempVillages = new HashSet<TempVillage>();
+	private Set<UserSurvey> userSurveys = new HashSet<UserSurvey>();
 	private Set<UrUser> households = new HashSet<UrUser>();
 	public Village() {
 	}
@@ -108,13 +108,13 @@ public class Village implements java.io.Serializable {
 		this.adWard = adWard;
 	}
 	@OrderBy("Id ASC")
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "village")
-	public Set<TempVillage> getTempVillages() {
-		return tempVillages;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "village", targetEntity = UserSurvey.class)
+	public Set<UserSurvey> getTempVillages() {
+		return userSurveys;
 	}
 
-	public void setTempVillages(Set<TempVillage> tempVillages) {
-		this.tempVillages = tempVillages;
+	public void setTempVillages(Set<UserSurvey> userSurveys) {
+		this.userSurveys = userSurveys;
 	}
 
 

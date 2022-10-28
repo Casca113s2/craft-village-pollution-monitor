@@ -17,8 +17,6 @@ import craftvillage.datalayer.entities.AdCountry;
 import craftvillage.datalayer.entities.AdDistrict;
 import craftvillage.datalayer.entities.AdProvince;
 import craftvillage.datalayer.entities.AdWard;
-import craftvillage.datalayer.entities.SrImg;
-import craftvillage.datalayer.entities.TempVillage;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.UserSurvey;
 import craftvillage.datalayer.entities.UserSurveyAnswer;
@@ -96,28 +94,7 @@ public class AddressServ {
 		Set<Village> lst = adwardDao.findById(wardId).getVillages();
 		return lst;
 	}
-	public boolean SubmitVillageInfo(String villageName , String coordinate , UserSurvey userSurvey , Village village)
-	{
-		System.out.print("SubmitVillageInfo");
-		CrudDao<TempVillage> villageDao = new CrudDao<>(TempVillage.class);
-		String hql1 = "SELECT c FROM TempVillage c Where c.userSurvey.id = '" + userSurvey.getId() + "'";
-		List<TempVillage> lst = new ArrayList<TempVillage>();
-		
-		TempVillage tempVillage = new TempVillage();
-		lst = villageDao.queyObject(hql1);
-		if (lst.isEmpty() == false)
-			 tempVillage = villageDao.queyObject(hql1).get(0);
-		tempVillage.setName(villageName);
-		tempVillage.setCoordinate(coordinate);
-		tempVillage.setUserSurvey(userSurvey);
-		tempVillage.setVillage(village);
-		
-		boolean check = villageDao.addObject(tempVillage);
-		return check;
-	}
-	
-	
-	
+
 	
 	public Village getVillageInfo(int villageId)
 	{
@@ -131,16 +108,4 @@ public class AddressServ {
 		return villageLst;
 	}
 	
-	public boolean DeleteTempVillage(UrUser user , String status)
-	{
-		CrudDao<TempVillage> tempVillageDao = new CrudDao<>(TempVillage.class);
-		CrudDao<UserSurvey> userSurveyDao = new CrudDao<>(UserSurvey.class);
-		
-		String hql1 = "SELECT c FROM UserSurvey c Where c.urUser.id = '" + user.getId()
-				+ "' and c.srActive.forRole = '" + user.getType() + "' and c.isTemporary ='" + status + "'";
-		UserSurvey userSurvey = userSurveyDao.queyObject(hql1).get(0);
-		String sqlDelete = "DELETE FROM TempVillage c Where c.userSurvey.id = '" + userSurvey.getId() + "'";
-		tempVillageDao.deleteAllByQuery(sqlDelete);
-		return true;
-	}
 }

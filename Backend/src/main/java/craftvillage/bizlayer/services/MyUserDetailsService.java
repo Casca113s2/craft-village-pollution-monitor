@@ -100,7 +100,7 @@ public class MyUserDetailsService implements UserDetailsService {
 		else if (role.equals("HOUSEHOLD"))
 			roleID = 3;
 		else
-			roleID = 0;
+			roleID = 2;
 		return (registerServ.registeAnUser(username, pass, roleID, firstname, lastname, phone, email, activeDate));	
 	}
 	

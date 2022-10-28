@@ -35,60 +35,15 @@ public class UserSurvey implements java.io.Serializable {
 
 	private int id;
 	private UrUser urUser;
-	private Double XCoordinate;
-	private Double YCoordinate;
 	private String isTemporary;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateSubmitSurvey;
-	private int craftId;
-	private Integer totalQuestion;
-	private Integer totalAnswer;
-	private Integer totalImage;
+	private String image;
+	private String coordinate;
+	
 	private SrActive srActive;
 	private Set<UserSurveyAnswer> userSurveyAnswers = new LinkedHashSet<UserSurveyAnswer>(0);
-	private Set<SrImg> srImgs = new LinkedHashSet<SrImg>(0);
-	private Set<TempVillage> tempVillages = new HashSet<TempVillage>();
-	public UserSurvey() {
-	}
-
-	public UserSurvey(int id, UrUser urUser, SrActive srActive) {
-		this.id = id;
-		this.urUser = urUser;
-		this.srActive = srActive;
-	}
-	
-	public UserSurvey(int id, UrUser urUser, Double xCoordinate, Double yCoordinate, String isTemporary, int craftId,
-			int totalQuestion, int totalAnswer, int totalImage, SrActive srActive,
-			Set<UserSurveyAnswer> userSurveyAnswers, Set<SrImg> srImgs , Date dateSubmitSurvey) {
-		super();
-		this.id = id;
-		this.urUser = urUser;
-		this.XCoordinate = xCoordinate;
-		this.YCoordinate = yCoordinate;
-		this.isTemporary = isTemporary;
-		this.craftId = craftId;
-		this.totalQuestion = totalQuestion;
-		this.totalAnswer = totalAnswer;
-		this.totalImage = totalImage;
-		this.srActive = srActive;
-		this.userSurveyAnswers = userSurveyAnswers;
-		this.srImgs = srImgs;
-		this.dateSubmitSurvey = dateSubmitSurvey;
-		//this.tempVillages = tempVillages;
-	}
-
-//	public UserSurvey(int id, UrUser urUser, SrActive srActive, Double XCoordinate, Double YCoordinate,
-//			String isTemporary, int craftId, Set<UserSurveyAnswer> userSurveyAnswers, Set<SrImg> srImgs) {
-//		this.id = id;
-//		this.urUser = urUser;
-//		this.srActive = srActive;
-//		this.XCoordinate = XCoordinate;
-//		this.YCoordinate = YCoordinate;
-//		this.isTemporary = isTemporary;
-//		this.craftId = craftId;
-//		this.userSurveyAnswers = userSurveyAnswers;
-//		this.srImgs = srImgs;
-//	}
+	private Village village;
 
 	@Id
 	@OrderBy("id ASC")
@@ -122,24 +77,6 @@ public class UserSurvey implements java.io.Serializable {
 		this.srActive = srActive;
 	}
 
-	@Column(name = "X_COORDINATE", precision = 126, scale = 0)
-	public Double getXCoordinate() {
-		return this.XCoordinate;
-	}
-
-	public void setXCoordinate(Double XCoordinate) {
-		this.XCoordinate = XCoordinate;
-	}
-
-	@Column(name = "Y_COORDINATE", precision = 126, scale = 0)
-	public Double getYCoordinate() {
-		return this.YCoordinate;
-	}
-
-	public void setYCoordinate(Double YCoordinate) {
-		this.YCoordinate = YCoordinate;
-	}
-
 	@Column(name = "IS_TEMPORARY", length = 40)
 	public String getIsTemporary() {
 		return this.isTemporary;
@@ -148,44 +85,20 @@ public class UserSurvey implements java.io.Serializable {
 	public void setIsTemporary(String isTemporary) {
 		this.isTemporary = isTemporary;
 	}
-
-	@Column(name = "CRAFT_ID", precision = 22, scale = 0)
-	public int getCraftId() {
-		return this.craftId;
-	}
-
-	public void setCraftId(int craftId) {
-		this.craftId = craftId;
-	}
-//mở ra	
-	@Column(name = "TOTAL_ANSWER", precision = 22, scale = 0)
-	public Integer getTotalAnswer() {
-		return this.totalAnswer;
-	}
-
-	public void setTotalAnswer(Integer totalAnswer) {
-		this.totalAnswer = totalAnswer;
-	}
-	
-	@Column(name = "TOTAL_QUESTION", precision = 22, scale = 0)
-	public Integer getTotalQuestion() {
-		return totalQuestion;
-	}
-	public void setTotalQuestion(Integer totalQuestion) {
-		this.totalQuestion = totalQuestion;
-	}
-
-	
-	@Column(name = "TOTAL_IMAGE", precision = 22, scale = 0)
-	public Integer getTotalImage() {
-		return this.totalImage;
-	}
-	public void setTotalImage(Integer totalImage) {
-		this.totalImage = totalImage;
-	}
 	
 
 //end	
+	
+	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Village.class)
+	@JoinColumn(name = "VILLAGE_ID")
+	public Village getVillage() {
+		return village;
+	}
+	
+	public void setVillage(Village village) {
+		this.village = village;
+	}
+	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "userSurvey")
 	public Set<UserSurveyAnswer> getUserSurveyAnswers() {
 		return this.userSurveyAnswers;
@@ -194,24 +107,6 @@ public class UserSurvey implements java.io.Serializable {
 
 	public void setUserSurveyAnswers(Set<UserSurveyAnswer> userSurveyAnswers) {
 		this.userSurveyAnswers = userSurveyAnswers;
-	}
-
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "userSurvey")
-	public Set<SrImg> getSrImgs() {
-		return this.srImgs;
-	}
-
-	public void setSrImgs(Set<SrImg> srImgs) {
-		this.srImgs = srImgs;
-	}
-	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "userSurvey")
-	public Set<TempVillage> getTempVillages() {
-		return tempVillages;
-	}
-
-	public void setTempVillages(Set<TempVillage> tempVillages) {
-		this.tempVillages = tempVillages;
 	}
 	
 	@JsonFormat(pattern="dd-MM-yyyy hh:mm:ss")
@@ -226,4 +121,21 @@ public class UserSurvey implements java.io.Serializable {
 		this.dateSubmitSurvey = dateSubmitSurvey;
 	}
 
+	@Column(name = "IMAGE")
+	public String getImage() {
+		return this.image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+	
+	@Column(name = "COORDINATE")
+	public String getCoordinate() {
+		return this.coordinate;
+	}
+
+	public void setCoordinate(String coordinate) {
+		this.coordinate = coordinate;
+	}
 }

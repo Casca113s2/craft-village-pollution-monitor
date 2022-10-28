@@ -63,6 +63,8 @@ public class RegisterServ {
 			
 			if(roleId == 1) 
 				newUser.setType("PrivatePerson");
+			else if(roleId == 2)
+				newUser.setType("LocalAuthority");
 			else if(roleId == 3)
 				newUser.setType("Household");
 			boolean check = userDao.addObject(newUser);

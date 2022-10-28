@@ -87,46 +87,41 @@ public class SurveyController {
 	 * @param status
 	 * @return ArrayList<SrActiveInfo>
 	 */
-	@RequestMapping(value = "/" + ConstantParameter.ServiceSurvey._SURVEY_GET_ACTIVE_INFOR, method = RequestMethod.GET, produces = "application/json")
-	@ResponseBody
-	public ArrayList<SrActiveInfo> getSurveyActiveInfo(HttpServletRequest request, Principal principal,
-			@RequestParam("status") String status) {
-		String account = principal.getName();
-		UrUser user = userDetailsService.getUrUser(account);
-		List<UserSurvey> userSurvey = surveyServices.getSrActiveInfoByStatus(user , status );
-		ArrayList<SrActiveInfo> srActiveInfos = new ArrayList<>();
-		for (UserSurvey i : userSurvey) {
-			//String[] filename = {null,null,null};
-			SrActiveInfo srActiveInfo = new SrActiveInfo();
-			Village village = addressService.getVillageInfo(i.getCraftId());
-			srActiveInfo.setUserSurveyId(i.getId());
-			System.out.println(i.getId());
-			srActiveInfo.setSurveyActiveID(i.getSrActive().getId());
-			srActiveInfo.setDateActive(i.getSrActive().getDateActive());
-			srActiveInfo.setDateEnd(i.getSrActive().getDateEnd());
-			srActiveInfo.setSurveyName(i.getSrActive().getSrSurvey().getCampainName());
-			srActiveInfo.setSurveyId(i.getSrActive().getSrSurvey().getId());
-			srActiveInfo.setTotalQuestion(i.getTotalQuestion());
-			srActiveInfo.setTotalAnswer(i.getTotalAnswer());
-			srActiveInfo.setTotalImage(i.getTotalImage());
-			srActiveInfo.setVillageName(village.getVillageName());
-			srActiveInfo.setTypeSurvey(i.getSrActive().getForRole());
-			srActiveInfo.setFilename(surveyServices.findfileNamebyId(i.getId()));
-			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-			String dateSubmitSurvey = dateFormat.format(i.getDateSubmitSurvey());
-			srActiveInfo.setDateSubmitSurvey(dateSubmitSurvey);
-			srActiveInfos.add(srActiveInfo);
-			
-		}
-//		System.out.println(Calendar.getInstance().getTime());
-//		Collections.sort(srActiveInfos, new Comparator<SrActiveInfo>() {
-//			@Override
-//            public int compare(SrActiveInfo x, SrActiveInfo y) {
-//                return -x.getDateSubmitSurvey().compareTo(y.getDateSubmitSurvey());
-//            }
-//		});
-		return srActiveInfos;
-	}
+//	@RequestMapping(value = "/" + ConstantParameter.ServiceSurvey._SURVEY_GET_ACTIVE_INFOR, method = RequestMethod.GET, produces = "application/json")
+//	@ResponseBody
+//	public ArrayList<SrActiveInfo> getSurveyActiveInfo(HttpServletRequest request, Principal principal,
+//			@RequestParam("status") String status) {
+//		String account = principal.getName();
+//		UrUser user = userDetailsService.getUrUser(account);
+//		List<UserSurvey> userSurvey = surveyServices.getSrActiveInfoByStatus(user , status );
+//		ArrayList<SrActiveInfo> srActiveInfos = new ArrayList<>();
+//		for (UserSurvey i : userSurvey) {
+//			SrActiveInfo srActiveInfo = new SrActiveInfo();
+//			Village village = addressService.getVillageInfo(i.getVillage().getVillageId());
+//			srActiveInfo.setUserSurveyId(i.getId());
+//			System.out.println(i.getId());
+//			srActiveInfo.setSurveyActiveID(i.getSrActive().getId());
+//			srActiveInfo.setDateActive(i.getSrActive().getDateActive());
+//			srActiveInfo.setDateEnd(i.getSrActive().getDateEnd());
+//			srActiveInfo.setSurveyName(i.getSrActive().getSrSurvey().getCampainName());
+//			srActiveInfo.setSurveyId(i.getSrActive().getSrSurvey().getId());
+//			srActiveInfo.setVillageName(village.getVillageName());
+//			srActiveInfo.setTypeSurvey(i.getSrActive().getForRole());
+//			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+//			String dateSubmitSurvey = dateFormat.format(i.getDateSubmitSurvey());
+//			srActiveInfo.setDateSubmitSurvey(dateSubmitSurvey);
+//			srActiveInfos.add(srActiveInfo);
+//			
+//		}
+////		System.out.println(Calendar.getInstance().getTime());
+////		Collections.sort(srActiveInfos, new Comparator<SrActiveInfo>() {
+////			@Override
+////            public int compare(SrActiveInfo x, SrActiveInfo y) {
+////                return -x.getDateSubmitSurvey().compareTo(y.getDateSubmitSurvey());
+////            }
+////		});
+//		return srActiveInfos;
+//	}
 
 	/**
 	 * Function : getSurvey
