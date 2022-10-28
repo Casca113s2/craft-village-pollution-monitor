@@ -28,7 +28,6 @@ import craftvillage.bizlayer.support_api.location.Coordinate;
 import craftvillage.corelayer.utilities.ConstantParameter;
 import craftvillage.datalayer.entities.AdWard;
 import craftvillage.datalayer.entities.SrSurvey;
-import craftvillage.datalayer.entities.TempVillage;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.UserSurvey;
 import craftvillage.datalayer.entities.UserSurveyAnswer;
@@ -80,119 +79,31 @@ public class VillageController {
 	 * @param principal
 	 * @return true : submit thành công false : submit thất bại
 	 */
-	//cần sửa code
 	@RequestMapping(value = "/" + ConstantParameter.ServiceVillage._VILLAGE_SUBMIT, method = RequestMethod.POST)
 	public boolean VillageInfoSubmit(@RequestBody Map<String, String> VillageInfoForm, Principal principal) {
 		System.out.println("VillageInfoSubmit");
 		String username = principal.getName();
-		String villageName = VillageInfoForm.get("villageName");//bỏ
-		String coordinate = VillageInfoForm.get("coordinate");//bỏ
 		String villageId = VillageInfoForm.get("villageId");
-		String totalQuestion = VillageInfoForm.get("totalQuestion");//bỏ
-		String totalAnswer = VillageInfoForm.get("totalAnswer");//bỏ
-		String totalImage = VillageInfoForm.get("totalImage");//bỏ
+		String coordinate = VillageInfoForm.get("longitude") + ", " + VillageInfoForm.get("latitude");
+		String image = VillageInfoForm.get("image");
 		int hasAdded = Integer.parseInt(VillageInfoForm.get("hasAdded"));
 		System.out.println("has added value: " + hasAdded);
-		if(hasAdded == 0) {
-			System.out.println("pick village info submit");
-			UrUser user = userDeailsService.getUrUser(username);
-			UserSurvey userSurvey = surveyServices.getUserSurvey(user, "Active");
-			if (userSurvey == null) {
-				userSurvey = surveyServices.getUserSurvey(user, "InProgress");
-				System.out.println("VillageInfoSubmit inprogress");
-			}
-			
-			userSurvey.setCraftId(Integer.parseInt(villageId));
-			userSurvey.setTotalQuestion(Integer.parseInt(totalQuestion));//bỏ
-			userSurvey.setTotalAnswer(Integer.parseInt(totalAnswer));//bỏ
-			userSurvey.setTotalImage(Integer.parseInt(totalImage));//bỏ
-			surveyServices.addUserSurvey(userSurvey);
-			Village village = addressService.getVillageInfo(Integer.parseInt(villageId));
-			return addressService.SubmitVillageInfo(villageName, coordinate, userSurvey, village);
-		}else {
-			System.out.println("add village info submit");
-			int adWardId = Integer.parseInt(VillageInfoForm.get("adWardId"));
-			String note = VillageInfoForm.get("note");
-			//thêm village
-			Village newVillage = new Village();
-			newVillage.setVillageName(villageName);
-			newVillage.setCoordinate(coordinate);
-			AdWard adWard = addressService.getAdward(adWardId);
-			newVillage.setAdWard(adWard);
-			newVillage.setNote(note);
-			newVillage.setHasAdded(hasAdded);
-			Village.showInfoVillage(newVillage);
-			boolean checkAddVillage = villageService.addVillage(newVillage);
-			if(checkAddVillage) {
-				newVillage = villageService.findVillageByObject(newVillage);
-				
-				UrUser user = userDeailsService.getUrUser(username);
-				UserSurvey userSurvey = surveyServices.getUserSurvey(user, "Active");
-				if (userSurvey == null) {
-					userSurvey = surveyServices.getUserSurvey(user, "InProgress");
-					System.out.println("VillageInfoSubmit inprogress");
-				}
-				
-				userSurvey.setCraftId(newVillage.getVillageId());
-				userSurvey.setTotalQuestion(Integer.parseInt(totalQuestion));
-				userSurvey.setTotalAnswer(Integer.parseInt(totalAnswer));
-				userSurvey.setTotalImage(Integer.parseInt(totalImage));
-				surveyServices.addUserSurvey(userSurvey);
-				Village village = addressService.getVillageInfo(newVillage.getVillageId());
-				return addressService.SubmitVillageInfo(villageName, coordinate, userSurvey, newVillage);
-			}else {
-				return false;
-			}
-			
-			
+		System.out.println("pick village info submit");
+		UrUser user = userDeailsService.getUrUser(username);
+		UserSurvey userSurvey = surveyServices.getUserSurvey(user, "Active");
+		if (userSurvey == null) {
+			userSurvey = surveyServices.getUserSurvey(user, "InProgress");
+			System.out.println("VillageInfoSubmit inprogress");
 		}
 		
-	}
-
-	//bỏ
-	/**
-	 * Từ khảo sát lấy thông tin làng nghề
-	 * 
-	 * @param userSurveyId
-	 * @param principal
-	 * @return
-	 */
-	@RequestMapping(value = "/" + ConstantParameter.ServiceVillage._VILLAGE_GET_INFOR, method = RequestMethod.GET, produces = "application/json")
-	@ResponseBody
-	public Map<String, String> getVillageInfo(@RequestParam("id") int userSurveyId, Principal principal) {
-		//String username = principal.getName();
-		//UrUser user = userDeailsService.getUrUser(username);
-		UserSurvey userSurvey = surveyServices.getUserSurveyById(userSurveyId);
-		System.out.println("userSurvey ID " + userSurveyId);	
-		TempVillage tempVillage = new TempVillage();
-		System.out.println("userSurvey TempVillage Size " + userSurvey.getTempVillages().size());
-		for (TempVillage x : userSurvey.getTempVillages()) {
-			tempVillage = x;
-			break;
-		}
-		
-		String villageId = String.valueOf(tempVillage.getVillage().getVillageId());
 		Village village = addressService.getVillageInfo(Integer.parseInt(villageId));
-		String strHasAdded = String.valueOf(village.getHasAdded());
-		String wardId = String.valueOf(tempVillage.getVillage().getAdWard().getWardId());
-		String districtId = String.valueOf(tempVillage.getVillage().getAdWard().getAdDistrict().getDistrictId());
-		String provinceId = String
-				.valueOf(tempVillage.getVillage().getAdWard().getAdDistrict().getAdProvince().getProvinceId());
-		String villageNote = tempVillage.getVillage().getNote();
-		Map<String, String> villageInfo = new HashMap<>();
-
-		villageInfo.put("villageId", villageId);
-		villageInfo.put("hasAdded", strHasAdded);
-		villageInfo.put("villageName", village.getVillageName());
-		villageInfo.put("coordinate", village.getCoordinate());
+		userSurvey.setVillage(village);
+		userSurvey.setCoordinate(coordinate);
+		userSurvey.setImage(image);
+		return surveyServices.addUserSurvey(userSurvey);
 		
-		villageInfo.put("wardId", wardId);
-		villageInfo.put("districtId", districtId);
-		villageInfo.put("provinceId", provinceId);
-		villageInfo.put("villageNote", villageNote);
-		logger.info(villageInfo.toString());	
-		return villageInfo;
 	}
+
 	
 	/**
 	 * Dò làng nghề theo tọa độ
@@ -244,7 +155,6 @@ public class VillageController {
 		return res;
 	}
 
-	}
 	public MyUserDetailsService getUserDeailsService() {
 		return userDeailsService;
 	}
