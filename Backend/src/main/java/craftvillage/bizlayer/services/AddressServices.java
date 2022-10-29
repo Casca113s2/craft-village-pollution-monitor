@@ -13,6 +13,7 @@ import craftvillage.datalayer.entities.AdWard;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.UserSurvey;
 import craftvillage.datalayer.entities.Village;
+import craftvillage.datalayer.repositories.DistrictRepository;
 import craftvillage.datalayer.services.AddressServ;
 import craftvillage.datalayer.services.UserServ;
 @Service
@@ -20,6 +21,8 @@ public class AddressServices {
 	@Autowired
 	AddressServ addressServ = new AddressServ();
 	UserServ userServ = new UserServ();
+	@Autowired
+	DistrictRepository districtRepo;
 	public List<AdCountry> getCountryList() {
 		
 		return addressServ.getCountryList();
@@ -44,6 +47,9 @@ public class AddressServices {
 	}
 	public String getInfoDictrict(int dictrictId) {
 		return addressServ.getInfoDictrict(dictrictId);
+	}
+	public AdDistrict getAdDistrict(int districtId) {
+		return districtRepo.getOne(districtId);
 	}
 	public String getInfoWard(int wardId) {
 		return addressServ.getInfoWard(wardId);

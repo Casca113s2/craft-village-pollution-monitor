@@ -42,6 +42,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 		//http.csrf().disable();
 		http.csrf().ignoringAntMatchers("/web/**",
 										"/craftvillage/api/village/newvillage",
+										"/admin-site/**",
 										url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_GET_COMPLETED,
 										url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_GET_INPROGRESS,
 										url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_UPLOAD_FILE,										
@@ -60,6 +61,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 			http.authorizeRequests().antMatchers(
 										"/web/**",
 										"/craftvillage/api/village/newvillage",
+										"/admin-site/**",
 										url_user + "/" + ConstantParameter.ServiceUser._USER_LOGIN,
 										url_user + "/" + ConstantParameter.ServiceUser._USER_REGISTER,
 										url_user + "/" + ConstantParameter.ServiceUser._USER_LOGOUT_TEST,

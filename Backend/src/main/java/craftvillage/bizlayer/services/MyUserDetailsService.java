@@ -37,6 +37,7 @@ import org.springframework.stereotype.Service;
 import craftvillage.datalayer.entities.SrSurvey;
 import craftvillage.datalayer.entities.UrRole;
 import craftvillage.datalayer.entities.UrUser;
+import craftvillage.datalayer.repositories.UserRepository;
 import craftvillage.datalayer.services.LoginServ;
 import craftvillage.datalayer.services.RegisterServ;
 import craftvillage.datalayer.services.SurveyServ;
@@ -58,7 +59,6 @@ public class MyUserDetailsService implements UserDetailsService {
 	private SurveyServ surveyServ = new SurveyServ();
 	@Autowired
 	private UserServ userServ = new UserServ();
-	
 //	@Autowired
 //	private UrAnswerServ urAnswerServ = new UrAnswerServ();
 
@@ -89,7 +89,9 @@ public class MyUserDetailsService implements UserDetailsService {
 			System.out.println(user);
 			return user;
 	}
-
+	
+	
+	
 	public int RegisterUsername(String username, String password, String role, String firstname, String lastname,
 			String phone, String email, Date activeDate) throws ClassNotFoundException, SQLException, ParseException
 	{

@@ -111,7 +111,7 @@ public class UserSurvey implements java.io.Serializable {
 	
 	@JsonFormat(pattern="dd-MM-yyyy hh:mm:ss")
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "DateSubmitSurvey", precision = 126, scale = 0)
+	@Column(name = "DATE_SUBMIT_SURVEY", precision = 126, scale = 0)
 	@OrderBy("DESC")
 	public Date getDateSubmitSurvey() {
 		return dateSubmitSurvey;

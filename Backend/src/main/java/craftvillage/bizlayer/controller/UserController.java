@@ -50,7 +50,7 @@ public class UserController {
 	@Autowired
 	private JwtService jwtService;
 	@Autowired
-	private MyUserDetailsService userDeailsService;
+	private MyUserDetailsService userDetailsService;
 	@Autowired
 	private SurveyServices surveyServices;
 	@Autowired
@@ -100,7 +100,7 @@ public class UserController {
 		HttpSession session = request.getSession();
 
 		String sessionid = session.getId();
-		UserDetails user = userDeailsService.loadUserByUsername(username);
+		UserDetails user = userDetailsService.loadUserByUsername(username);
 		if (user == null) {
 			console.put("token", null);
 			console.put("error", "ERR_USER_NOT_EXIST");
@@ -116,7 +116,7 @@ public class UserController {
 					jwtService.addJwtModel(jwtmodel);
 					console.put("token", jwt);
 					console.put("error", null);
-					userDeailsService.AddSession(username, sessionid);
+					userDetailsService.AddSession(username, sessionid);
 
 					return console;
 				} else {
@@ -137,7 +137,7 @@ public class UserController {
 
 							console.put("token", jwt);
 							console.put("error", null);
-							userDeailsService.AddSession(username, sessionid);
+							userDetailsService.AddSession(username, sessionid);
 
 							return console;
 						}
@@ -149,7 +149,7 @@ public class UserController {
 				jwtService.addJwtModel(jwtmodel);
 				console.put("token", jwt);
 				console.put("error", null);
-				userDeailsService.AddSession(username, sessionid);
+				userDetailsService.AddSession(username, sessionid);
 
 				return console;
 
@@ -204,12 +204,12 @@ public class UserController {
 		Date ActiveDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(activeDate);
 		String activeCodeSubmit = formRegister.get("activeCodeSubmit");
 		Date DateNow = new Date();
-		int i = userDeailsService.checkActiveCode(activeCode, DateNow, activeCodeSubmit, ActiveDate);
+		int i = userDetailsService.checkActiveCode(activeCode, DateNow, activeCodeSubmit, ActiveDate);
 
 		switch (i) {
 			//valid code
 			case 1: {
-				int register = userDeailsService.RegisterUsername(username, password, Role, firstname, lastname,
+				int register = userDetailsService.RegisterUsername(username, password, Role, firstname, lastname,
 						phone, email, ActiveDate);
 				// success
 				if (register == 1) {
@@ -289,7 +289,7 @@ public class UserController {
 	@ResponseBody
 	public UrUser getdata(Principal principal, HttpServletRequest request) {
 		String username = principal.getName();
-		UrUser user = userDeailsService.getUrUser(username);
+		UrUser user = userDetailsService.getUrUser(username);
 		return user;
 	}
 
@@ -309,10 +309,10 @@ public class UserController {
 		String oldPass = ChangePassForm.get("oldPass");
 		String newPass = ChangePassForm.get("newPass");
 
-		UserDetails user = userDeailsService.loadUserByUsername(username);
+		UserDetails user = userDetailsService.loadUserByUsername(username);
 		if (passwordEncoder.matches(oldPass, user.getPassword()) == false)
 			return false;
-		return userDeailsService.changePass(newPass, username);
+		return userDetailsService.changePass(newPass, username);
 	}
 
 	/**
@@ -326,7 +326,7 @@ public class UserController {
 	public String forgetPassword(@RequestBody Map<String, String> forgetpass) {
 
 		String username = forgetpass.get("username");
-		return userDeailsService.getEmailUser(username);
+		return userDetailsService.getEmailUser(username);
 	}
 
 	/**
@@ -354,7 +354,7 @@ public class UserController {
 		String email = updateUserForm.get("email");
 		String type = updateUserForm.get("type");
 
-		return userDeailsService.updateUserInfo(username, firstname, lastname, phone, email, type);
+		return userDetailsService.updateUserInfo(username, firstname, lastname, phone, email, type);
 	}
 
 	public JwtUtil getJwtTokenUtil() {
@@ -374,11 +374,11 @@ public class UserController {
 	}
 
 	public MyUserDetailsService getUserDeailsService() {
-		return userDeailsService;
+		return userDetailsService;
 	}
 
 	public void setUserDeailsService(MyUserDetailsService userDeailsService) {
-		this.userDeailsService = userDeailsService;
+		this.userDetailsService = userDeailsService;
 	}
 
 	public SurveyServices getSurveyServices() {
@@ -394,7 +394,7 @@ public class UserController {
 
 		String email = getPassForm.get("email"), username = getPassForm.get("username");
 
-		if (userDeailsService.checkEmailUser(email, username) == false) {
+		if (userDetailsService.checkEmailUser(email, username) == false) {
 
 			return false;
 		}
@@ -406,7 +406,7 @@ public class UserController {
 		mailMessage.setText("Mật khẩu của bạn hiện tại là  : " + password);
 
 		mailService.sendEmail(mailMessage);
-		userDeailsService.changePass(password, username);
+		userDetailsService.changePass(password, username);
 
 		return true;
 	}
