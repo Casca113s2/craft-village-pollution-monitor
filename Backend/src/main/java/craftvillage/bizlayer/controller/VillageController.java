@@ -3,6 +3,7 @@
 //import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -81,25 +82,22 @@ public class VillageController {
 	 */
 	@RequestMapping(value = "/" + ConstantParameter.ServiceVillage._VILLAGE_SUBMIT, method = RequestMethod.POST)
 	public boolean VillageInfoSubmit(@RequestBody Map<String, String> VillageInfoForm, Principal principal) {
-		System.out.println("VillageInfoSubmit");
 		String username = principal.getName();
 		String villageId = VillageInfoForm.get("villageId");
 		String coordinate = VillageInfoForm.get("longitude") + ", " + VillageInfoForm.get("latitude");
 		String image = VillageInfoForm.get("image");
-		int hasAdded = Integer.parseInt(VillageInfoForm.get("hasAdded"));
-		System.out.println("has added value: " + hasAdded);
-		System.out.println("pick village info submit");
 		UrUser user = userDeailsService.getUrUser(username);
-		UserSurvey userSurvey = surveyServices.getUserSurvey(user, "Active");
-		if (userSurvey == null) {
-			userSurvey = surveyServices.getUserSurvey(user, "InProgress");
-			System.out.println("VillageInfoSubmit inprogress");
-		}
-		
+		UserSurvey userSurvey = new UserSurvey();
 		Village village = addressService.getVillageInfo(Integer.parseInt(villageId));
+		userSurvey.setDateSubmitSurvey(new Date());
 		userSurvey.setVillage(village);
 		userSurvey.setCoordinate(coordinate);
 		userSurvey.setImage(image);
+		userSurvey.setUrUser(user);
+		if(village.getHasAdded() == 0)
+			userSurvey.setIsTemporary("Inactive");
+		else
+			userSurvey.setIsTemporary("Active");
 		return surveyServices.addUserSurvey(userSurvey);
 		
 	}
