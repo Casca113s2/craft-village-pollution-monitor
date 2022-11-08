@@ -213,7 +213,6 @@ public class UserController {
 						phone, email, ActiveDate);
 				// success
 				if (register == 1) {
-					surveyServices.addUserSurvey(username);
 					console.put("key", "11");
 					console.put("message", "Đăng ký thành công!");
 				} else if (register == 2) {

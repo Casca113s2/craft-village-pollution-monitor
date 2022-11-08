@@ -1,8 +1,14 @@
 package craftvillage.web.controller;
 
+import java.security.Principal;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Set;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +20,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import craftvillage.bizlayer.services.AddressServices;
+import craftvillage.bizlayer.services.SurveyServices;
+import craftvillage.bizlayer.services.UserService;
 import craftvillage.bizlayer.services.VillageServices;
+import craftvillage.datalayer.entities.AdDistrict;
+import craftvillage.datalayer.entities.AdWard;
+import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.Village;
 
 
@@ -28,14 +39,53 @@ public class AuthorityController {
 	@Autowired
 	AddressServices addressService;
 	
+	@Autowired
+	UserService userService;
+	
+	@Autowired
+	SurveyServices surveyService;
+	
 	@GetMapping("/index")
-	public String index() {
+	public String index(Model model, Principal principal) {
+		int numberOfVillage = 0;
+		int numberOfNewVillage = 0;
+		int numberOfNewSurvey = 0;
+		AdDistrict district = userService.findByUsername(principal.getName()).getDistrict();
+		Calendar localCalendar = Calendar.getInstance(TimeZone.getDefault());
+		int currentMonth = localCalendar.get(Calendar.MONTH);
+		Set<UrUser> newHouseholds = new HashSet<UrUser>();
+		for (AdWard ward : district.getAdWards()) {
+			for (Village village : ward.getVillages()) {
+				newHouseholds.addAll(village.getHouseholds());
+				if(village.getHasAdded() == 1)
+					numberOfVillage += 1;
+				else
+					numberOfNewVillage += 1;
+				numberOfNewSurvey += surveyService.countMonthlySurvey(village);
+			}
+		}
+		newHouseholds.stream().filter(household -> household.getActiveDate().toInstant()
+													.atZone(ZoneId.systemDefault()).toLocalDate()
+													.getMonthValue() == currentMonth);
+		model.addAttribute("numberOfNewHousehold", newHouseholds.size());
+		model.addAttribute("numberOfNewSurvey", numberOfNewSurvey);
+		model.addAttribute("numberOfVillage", numberOfVillage);
+		model.addAttribute("numberOfNewVillage", numberOfNewVillage);
 		return "index";
 	}
 	@GetMapping("/newvillage")
-	public String newHousehold(Model model) {
-		List<Village> list = villageService.getAll();
-		model.addAttribute("pendingVillages", list.stream().filter(village -> village.getHasAdded()==0).collect(Collectors.toList()));
+	public String newHousehold(Model model, Principal principal) {
+		AdDistrict district = userService.findByUsername(principal.getName()).getDistrict();
+		Set<AdWard> wards = district.getAdWards();
+		Set<Village> villages = new HashSet<Village>();
+		for (AdWard ward : wards) {
+			for (Village village : ward.getVillages()) {
+				if(village.getHasAdded() == 0)
+					villages.add(village);
+			}
+		}
+		model.addAttribute("pendingVillages", villages);
+		model.addAttribute("wards", wards);
 		return "newvillage";
 	}
 	

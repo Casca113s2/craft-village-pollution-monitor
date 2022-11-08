@@ -34,11 +34,6 @@
     <div class="page-wrapper">
         <!-- MENU SIDEBAR-->
         <aside class="menu-sidebar d-none d-lg-block">
-            <div class="logo">
-                <a  >
-                    <img th:src="@{/images/icon/logo.png}" alt="Cool Admin" />
-                </a>
-            </div>
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
@@ -47,7 +42,7 @@
                                 <i class="fa-solid fa-chart-column"></i>Dashboard</a>
                         </li>
                         <li class="has-sub">
-                            <a class="js-arrow open"  >
+                            <a class="js-arrow open" href="#" >
                                 <i class="fa-solid fa-users"></i>Village</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
                                 <li class="active">
@@ -165,7 +160,7 @@
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__footer">
-                                                <a  >
+                                                <a id="btn-logout">
                                                     <i class="zmdi zmdi-power"></i>Logout</a>
                                             </div>
                                         </div>
@@ -186,7 +181,7 @@
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-8">
                                 <!-- DATA TABLE -->                                      
                                     <div class="tab-pane fade active show" id="nav-new-household" role="tabpanel" aria-labelledby="nav-new-household-tab">
                                         <div class="table-data__tool">
@@ -251,7 +246,53 @@
                                     </div>
                                 <!-- END DATA TABLE -->
                             </div>
-                        	
+                        	<div class="col-md-3" style="position:fixed; right: 20px;">
+                        	<div class="card">
+                                    <div class="card-header">Làng nghề mới</div>
+                                    <div class="card-body">
+                                    <form id="form" th:action="@{/web/authority/newvillage}" method="post">
+                                        <div class="form-group">
+                                            <label>Chọn Xã/Phường</label>
+                                            <div class="form-group">
+                                                <select id="select-ward2" class="au-input au-input--full" name="ward" style="padding: 10px;">
+                                                    <th:block th:each="ward : ${wards}">
+                                                    	<option th:value="${ward.wardId}" th:utext="${ward.wardName}"></option>
+                                                    </th:block>
+                                                </select>
+                                                <div class="dropDownSelect2"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Tên làng nghề</label>
+                                            <input id="village" class="au-input au-input--full" type="text" name="villageName"
+                                                placeholder="Nhập tên làng nghề">
+                                        </div>
+                                        <div class="row form-group">
+                                                <div class="col-6">
+                                                    <label for="x_card_code" class="control-label mb-1">Kinh độ</label>
+                                                    <div class="input-group">
+                                                        <input id="longitude" name="longitude" type="text" class="form-control cc-cvc">
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label for="x_card_code" class="control-label mb-1">Vĩ độ</label>
+                                                    <div class="input-group">
+                                                        <input id="latitude" name="latitude" type="text" class="form-control cc-cvc">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <div class="form-group">
+                                            <label>Mô tả</label>
+                                            <textarea id="note" class="au-input au-input--full" name="note"></textarea>
+                                        </div>
+                                        <div id="error-message" class="alert alert-danger message" role="alert" style="margin-top:5px"></div>
+										<div id="success-message" class="alert alert-success message" role="alert" style="margin-top:5px"></div>
+                                        <button type="submit" class="btn btn-primary" style="margin-left: auto; margin-right: 0; display: block;">Tạo</button>
+                                    </form>
+                                    </div>
+                                </div>
+                        	</div>
                         </div>
                     </div>
                 </div>
@@ -329,8 +370,8 @@
         		let coordinate = $(this).children()[3].innerText.split(", ");
         		$('#longitude').val(coordinate[0]);
         		$('#latitude').val(coordinate[1]);
-        		$('#note').val($(this).children()[7].innerText);
-        		$('#ward').val($(this).children()[8].innerText);
+        		$('#note').val($(this).children()[6].innerText);
+        		$('#select-ward2').val($(this).children()[7].innerText);
         	})
         })
         

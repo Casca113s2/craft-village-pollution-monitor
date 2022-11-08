@@ -1,5 +1,6 @@
 package craftvillage.web.controller;
 
+import java.security.Principal;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import craftvillage.bizlayer.services.AddressServices;
+import craftvillage.bizlayer.services.UserService;
 import craftvillage.bizlayer.services.VillageServices;
+import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.Village;
 
 @Controller
@@ -24,8 +27,13 @@ public class HouseholdController {
 	@Autowired
 	private VillageServices villageService;
 	
+	@Autowired
+	private UserService userService;
+	
 	@GetMapping("/declare")
-	public String getForm(Model model) {
+	public String getForm(Model model, Principal principal) {
+		UrUser user = userService.findByUsername(principal.getName());
+		model.addAttribute("village", user.getVillage());
 		model.addAttribute("provinceList", addressService.getProvinceList(234));
 		return "household";
 	}
@@ -41,5 +49,14 @@ public class HouseholdController {
 		village.setAdWard(addressService.getAdward(Integer.parseInt(form.get("ward"))));
 		int result = villageService.newVillage(village);
 		return result;
+	}
+	
+	@PostMapping("/village")
+	@ResponseBody
+	public boolean village(@RequestParam Map<String, String>form, Principal principal) {
+		UrUser user = userService.findByUsername(principal.getName());
+		int villageId = Integer.parseInt(form.get("village"));
+		user.setVillage(villageService.findVillageById(villageId));
+		return userService.save(user) == null ? true : false;
 	}
 }

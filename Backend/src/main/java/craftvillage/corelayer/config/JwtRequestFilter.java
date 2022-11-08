@@ -38,10 +38,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException{
 		
-		// TODO Auto-generated method stub
-		//final String authorizationHeader = request.getParameter("a");
-		//System.out.println("Minhhhhhhhhhhhhhh1 " + cookie[0].getValue() );
-		
 		String username = null;
 		String jwt = null;
 		String requestBearer = "";
@@ -49,11 +45,21 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			requestBearer = request.getHeader("Authorization");
 		}
 		catch(Exception e){
-			requestBearer = request.getCookies()[0].getValue();
-			System.out.println(requestBearer);
+			System.out.println("Token is null");
 		};
-		
-			if (requestBearer!=null  && requestBearer.startsWith("Bearer "))
+		if(requestBearer == null) {
+			Cookie[] cookies = request.getCookies();
+	        if (cookies != null) {
+	            for (Cookie cookie : cookies) {
+	                if (cookie.getName().equals("token")) {
+	                	requestBearer = cookie.getValue();
+	                	
+	                    break;
+	                }
+	            }
+	        }
+		}
+			if (requestBearer!=null  && requestBearer.startsWith("Bearer"))
 			{
 				jwt = requestBearer.substring(7);
 				username =jwtUtil.extractUsername(jwt);
@@ -70,7 +76,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 						
 						usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 						//set tất cả thông tin cho Seturity Context
-						SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);	
+						SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 		 			}
 				}
 			}

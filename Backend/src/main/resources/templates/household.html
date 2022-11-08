@@ -117,7 +117,7 @@
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__footer">
-                                                <a href="#">
+                                                <a id="btn-logout">
                                                     <i class="zmdi zmdi-power"></i>Logout</a>
                                             </div>
                                         </div>
@@ -142,13 +142,7 @@
                                 <div class="card">
                                     <div class="card-header">Hộ sản xuất</div>
                                     <div class="card-body">
-                                    <form>
-                                        <div class="form-group">
-                                            <label>Họ tên</label>
-                                            <input class="au-input au-input--full" type="text" name="full-name"
-                                                placeholder="Nhập họ tên">
-                                        </div>
-        
+                                    <form id="form1" th:action="@{/web/household/village}" method="post">
                                         <div class="form-group">
                                             <label>Chọn Tỉnh/Thành phố</label>
                                             <div class="form-group">
@@ -184,12 +178,14 @@
                                         <div class="form-group">
                                             <label>Làng nghề</label>
                                             <div class="form-group">
-                                                <select id="select-village" class="au-input au-input--full" name="ward" style="padding: 10px;">
+                                                <select id="select-village" class="au-input au-input--full" name="village" style="padding: 10px;">
                                                     <option value="0" selected="selected">---</option>
                                                 </select>
                                                 <div class="dropDownSelect2"></div>
                                             </div>
                                         </div>
+                                        <div id="error-message1" class="alert alert-danger message" role="alert" style="margin-top:5px"></div>
+										<div id="success-message1" class="alert alert-success message" role="alert" style="margin-top:5px"></div>
                                         <button class="btn btn-primary" style="margin-left: auto; margin-right: 0; display: block;">Khai báo</button>
                                 	</form>
                                     </div>
@@ -235,14 +231,14 @@
                                         </div>
                                         <div class="row form-group">
                                                 <div class="col-6">
-                                                    <label for="x_card_code" class="control-label mb-1">Longitude</label>
+                                                    <label for="x_card_code" class="control-label mb-1">Kinh độ</label>
                                                     <div class="input-group">
                                                         <input id="longitude" name="longitude" type="text" class="form-control cc-cvc">
 
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
-                                                    <label for="x_card_code" class="control-label mb-1">Latitude</label>
+                                                    <label for="x_card_code" class="control-label mb-1">Vĩ độ</label>
                                                     <div class="input-group">
                                                         <input id="latitude" name="latitude" type="text" class="form-control cc-cvc">
                                                     </div>
@@ -486,6 +482,11 @@
 		$('#select-province2').on('change', function() {
 		  	$.get("/craftvillage/api/address/getdistrictlist?provinceid=" + this.value, function(data){
 		  		$('#select-district2').empty()
+		  		$('#select-district2').append($('<option>',
+		  					{
+			  				    value: '0',
+			  				    text : '---'
+		  					}));
 		  		for(let i=0;i < data.length; i++){
 		  			$('#select-district2').append($('<option>',
 		  					{
@@ -498,7 +499,12 @@
 		
 		$('#select-district2').on('change', function() {
 		  	$.get("/craftvillage/api/address/getwardlist?districtid=" + this.value, function(data){
-		  		$('#select-ward2').empty()
+		  		$('#select-ward2').empty();
+		  		$('#select-ward2').append($('<option>',
+	  					{
+		  				    value: '0',
+		  				    text : '---'
+	  					}));
 		  		for(let i=0;i < data.length; i++){
 		  			$('#select-ward2').append($('<option>',
 		  					{
@@ -512,6 +518,11 @@
 		$('#select-province1').on('change', function() {
 		  	$.get("/craftvillage/api/address/getdistrictlist?provinceid=" + this.value, function(data){
 		  		$('#select-district1').empty()
+		  		$('#select-district1').append($('<option>',
+		  					{
+			  				    value: '0',
+			  				    text : '---'
+		  					}));
 		  		for(let i=0;i < data.length; i++){
 		  			$('#select-district1').append($('<option>',
 		  					{
@@ -525,6 +536,11 @@
 		$('#select-district1').on('change', function() {
 		  	$.get("/craftvillage/api/address/getwardlist?districtid=" + this.value, function(data){
 		  		$('#select-ward1').empty()
+		  		$('#select-ward1').append($('<option>',
+		  					{
+			  				    value: '0',
+			  				    text : '---'
+		  					}));
 		  		for(let i=0;i < data.length; i++){
 		  			$('#select-ward1').append($('<option>',
 		  					{
@@ -537,7 +553,12 @@
 		
 		$('#select-ward1').on('change', function() {
 		  	$.get("/craftvillage/api/address/getvillage?wardid=" + this.value, function(data){
-		  		$('#select-village').empty()
+		  		$('#select-village').empty();
+		  		$('#select-village').append($('<option>',
+	  					{
+		  				    value: '0',
+		  				    text : '---'
+	  					}));
 		  		for(let i=0;i < data.length; i++){
 		  			$('#select-village').append($('<option>',
 		  					{
@@ -552,7 +573,7 @@
 			e.preventDefault();
 		    var form = $(this);
 		    for (const item of form.serializeArray()){
-		    	if(item.value == '0' || item.value.length == 0){
+		    	if(item.value == '0'){
 		    		$('#success-message1').removeClass("display");
 		    		$('#error-message1').text("Vui lòng điền đầy đủ thông tin!");
 		    		$('#error-message1').addClass("display");

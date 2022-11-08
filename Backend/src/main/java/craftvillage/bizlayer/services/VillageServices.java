@@ -62,9 +62,9 @@ public class VillageServices {
 	public Village findVillageByObject(Village village) {
 		return villageServ.findVillageByObject(village);
 	}
-//	public Village findVillageByCoordinate(Coordinate coordinate) {
-//		return villageServ.findVillageByCoordinate(coordinate);
-//	}
+	public Village findVillageById(int id) {
+		return villageRepo.getOne(id);
+	}
 	
 	public List<Village> findVillageByCoordinate(Coordinate coordinate) {
 		return villageServ.findVillageByCoordinate(coordinate);

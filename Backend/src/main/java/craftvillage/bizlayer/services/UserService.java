@@ -14,4 +14,8 @@ public class UserService {
 	public UrUser save(UrUser user) {
 		return userRepo.save(user);
 	}
+	
+	public UrUser findByUsername(String username) {
+		return userRepo.findByAccount(username);
+	}
 }

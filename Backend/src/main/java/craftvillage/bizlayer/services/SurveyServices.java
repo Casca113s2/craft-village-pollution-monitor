@@ -1,10 +1,13 @@
 package craftvillage.bizlayer.services;
 
+import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TimeZone;
 
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ import craftvillage.datalayer.entities.SrSurveyQuestion;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.UserSurvey;
 import craftvillage.datalayer.entities.UserSurveyAnswer;
+import craftvillage.datalayer.entities.Village;
 import craftvillage.datalayer.services.AddressServ;
 import craftvillage.datalayer.services.AnswerServ;
 import craftvillage.datalayer.services.QuestionServ;
@@ -35,6 +39,19 @@ public class SurveyServices {
 	AnswerServ answerServ = new AnswerServ();
 	@Autowired
 	QuestionServ questionServ = new QuestionServ();
+	
+	public int countMonthlySurvey(Village village) {
+		int count = 0;
+		Calendar localCalendar = Calendar.getInstance(TimeZone.getDefault());
+		int currentMonth = localCalendar.get(Calendar.MONTH);
+		for (UserSurvey survey : village.getUserSurveys()) {
+			int surveyMonth = survey.getDateSubmitSurvey().toInstant()
+					.atZone(ZoneId.systemDefault()).toLocalDate().getMonthValue();
+			if(surveyMonth == currentMonth)
+				count++;
+		}
+		return count;
+	}
 	
 	public boolean AddSurvey(String campainName, String campainGoal, int urUserID) {
 

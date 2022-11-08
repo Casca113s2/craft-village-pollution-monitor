@@ -109,11 +109,11 @@ public class Village implements java.io.Serializable {
 	}
 	@OrderBy("Id ASC")
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "village", targetEntity = UserSurvey.class)
-	public Set<UserSurvey> getTempVillages() {
+	public Set<UserSurvey> getUserSurveys() {
 		return userSurveys;
 	}
 
-	public void setTempVillages(Set<UserSurvey> userSurveys) {
+	public void setUserSurveys(Set<UserSurvey> userSurveys) {
 		this.userSurveys = userSurveys;
 	}
 

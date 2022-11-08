@@ -40,7 +40,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 		String url_village = url + ConstantParameter.ServiceVillage._VILLAGE_SERVICE;
 		
 		//http.csrf().disable();
-		http.csrf().ignoringAntMatchers("/web/**",
+		http.csrf().ignoringAntMatchers(
 										"/craftvillage/api/village/newvillage",
 										"/admin-site/**",
 										url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_GET_COMPLETED,
@@ -57,11 +57,12 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 										url_image + "/" + ConstantParameter.ServiceImage._IMAGE_GET_PICTURE,
 										url_image + "/" + ConstantParameter.ServiceImage._IMAGE_DEL_PICTURE,																				
 										url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_CHECK_VILLAGE);
+		
 		http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-			http.authorizeRequests().antMatchers(
-										"/web/**",
+		http.authorizeRequests().antMatchers(
+										"/",
+										"/web/login",
 										"/craftvillage/api/village/newvillage",
-										"/admin-site/**",
 										url_user + "/" + ConstantParameter.ServiceUser._USER_LOGIN,
 										url_user + "/" + ConstantParameter.ServiceUser._USER_REGISTER,
 										url_user + "/" + ConstantParameter.ServiceUser._USER_LOGOUT_TEST,
@@ -91,6 +92,17 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 //										url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_DETECT
 //					).access("hasRole('ROLE_USER')")
 //			.anyRequest().authenticated();
+		http.authorizeRequests().antMatchers(
+											"/web/home"
+								).hasAnyAuthority("HOUSEHOLD","LOCALAUTHORITY","ADMIN")
+								.antMatchers(
+											"/web/household/**"
+								).hasAuthority("HOUSEHOLD")
+								.antMatchers(
+										"/web/authority/**"
+								).hasAuthority("LOCALAUTHORITY")
+								.antMatchers("/admin-site/**")
+								.hasAuthority("ADMIN");
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 		http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
 	}
