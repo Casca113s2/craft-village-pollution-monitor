@@ -76,33 +76,26 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 										url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_WARD,
 										url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_UPLOAD_FILE,
 										url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_VILLAGE
-					).permitAll();
-//			.antMatchers(				url + "/hello",
-////										url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_VILLAGE,
-//										url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_ADDRESS,
-//										url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_CHECK_VILLAGE,
-//										url_user + "/" + ConstantParameter.ServiceUser._USER_GET_DATA,
-//										url_user + "/" + ConstantParameter.ServiceUser._USER_CHANGE_PASS,										
-//										url_user + "/" + ConstantParameter.ServiceUser._USER_LOGOUT,
-//										url_user + "/" + ConstantParameter.ServiceUser._USER_UPDATE_INFOR,										
-//										url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_SUBMIT, 
-//										url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_GET_INFOR,
-//										url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_GET_SURVEY,										
-//										url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_UPLOAD_FILE,
-//										url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_DETECT
-//					).access("hasRole('ROLE_USER')")
-//			.anyRequest().authenticated();
-		http.authorizeRequests().antMatchers(
-											"/web/home"
-								).hasAnyAuthority("HOUSEHOLD","LOCALAUTHORITY","ADMIN")
-								.antMatchers(
-											"/web/household/**"
-								).hasAuthority("HOUSEHOLD")
-								.antMatchers(
-										"/web/authority/**"
-								).hasAuthority("LOCALAUTHORITY")
-								.antMatchers("/admin-site/**")
-								.hasAuthority("ADMIN");
+					).permitAll()
+			.antMatchers(				url + "/hello",
+//										url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_VILLAGE,
+										url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_ADDRESS,
+										url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_CHECK_VILLAGE,
+										url_user + "/" + ConstantParameter.ServiceUser._USER_GET_DATA,
+										url_user + "/" + ConstantParameter.ServiceUser._USER_CHANGE_PASS,										
+										url_user + "/" + ConstantParameter.ServiceUser._USER_LOGOUT,
+										url_user + "/" + ConstantParameter.ServiceUser._USER_UPDATE_INFOR,										
+										url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_SUBMIT, 
+										url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_GET_INFOR,
+										url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_GET_SURVEY,										
+										url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_UPLOAD_FILE,
+										url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_DETECT
+					).access("hasRole('ROLE_USER')")
+		.antMatchers("/web/home").hasAnyAuthority("HOUSEHOLD","LOCALAUTHORITY","ADMIN")
+		.antMatchers("/web/household/**").hasAuthority("HOUSEHOLD")
+		.antMatchers("/web/authority/**").hasAuthority("LOCALAUTHORITY")
+		.antMatchers("/admin-site/**").hasAuthority("ADMIN")
+		.anyRequest().authenticated();
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 		http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
 	}
