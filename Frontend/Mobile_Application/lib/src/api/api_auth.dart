@@ -27,7 +27,8 @@ class ApiAuth {
     String token = sharedPreferences.getString("token");
     try {
       var response = await http.get(
-          Uri.parse(ConstantParameter.getAddressUrl() + ServiceUser.logoutApp()),
+          Uri.parse(
+              ConstantParameter.getAddressUrl() + ServiceUser.logoutApp()),
           headers: {
             HttpHeaders.authorizationHeader: "Bearer $token"
           }).catchError((err) {
@@ -85,7 +86,7 @@ class ApiAuth {
     //       ServiceVillage.detectVillage() +
     //       "?latitude=$latitude" +
     //       "&longitude=$longitude");
-    
+
     var response = await http.get(
       Uri.parse(ConstantParameter.getAddressUrl() +
           ServiceVillage.detectVillage() +
@@ -100,7 +101,8 @@ class ApiAuth {
     });
 
     // print("IM HERE RIGHT NOW!");
-    print("Location Detect Response Status Code: " + response.statusCode.toString());
+    print("Location Detect Response Status Code: " +
+        response.statusCode.toString());
     if (response.statusCode == 200) {
       // print("Code: 200!-LOCATION");
       jsonResponse = json.decode(response.body);
@@ -117,10 +119,6 @@ class ApiAuth {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var jsonResponse = null;
 
-    // print("ACTIVE CODE DETECTION URL: " + ConstantParameter.getAddressUrl() +
-    //       ServiceUser.sendMail() +
-    //       "?email=$email");
-
     var response = await http
         .get(
       Uri.parse(ConstantParameter.getAddressUrl() +
@@ -133,7 +131,6 @@ class ApiAuth {
 
     // print("Response Status Code: " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      // print("Code: 200!-Active code");
       jsonResponse = json.decode(response.body);
       print(jsonResponse.toString());
       onSuccess(jsonResponse);
@@ -150,7 +147,6 @@ class ApiAuth {
       String firstName,
       String lastName,
       String phone,
-      String birthday,
       String email,
       String activeDate,
       String activeCode,
@@ -158,13 +154,8 @@ class ApiAuth {
       Function onSuccess,
       Function(String) onSignupError) async {
     var jsonResponse;
-    // Map data = {'name': email, 'pass': pass};
-    //var response = await http.get("http://192.168.3.110:8080/register?name=$email&pass=$pass");
-    //  var response = await http.get(
-    //      "$apiUrl/register?name=$username&pass=$pass&firstname=$firstName&lastname=$lastName&birthday=$birthday&phone=$phone&address=hue&email=$email&sex=1");
-    //var response = await http.post("http://192.168.3.110:8080/register", body: data);
 
-    print(ConstantParameter.getAddressUrl() + ServiceUser.register());
+    // print(ConstantParameter.getAddressUrl() + ServiceUser.register());
 
     var response = await http
         .post(
@@ -178,11 +169,8 @@ class ApiAuth {
         'password': pass,
         'firstname': firstName,
         'lastname': lastName,
-        'birthday': birthday,
         'email': email,
         'phone': phone,
-        'address': 'hue',
-        'sex': '1',
         'activeDate': activeDate,
         'activeCode': activeCode,
         'activeCodeSubmit': inputActiveCode
@@ -197,16 +185,20 @@ class ApiAuth {
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
       String key = jsonResponse['key'];
-      if (key == "1") {
-        onSuccess();
+      if (key == "11") {
+        onSuccess("Đăng kí thành công!");
+      } else if (key == "12") {
+        onSignupError("Người dùng đã tồn tại!");
+      } else if (key == "13") {
+        onSignupError("Email đã đã được sử dụng!");
+      } else if (key == "14") {
+        onSignupError("Số điện thoại đã được sử dụng!");
+      } else if (key == "0") {
+        onSignupError("Sai mã xác nhận!");
       } else if (key == "2") {
-        onSignupError("Username đã tồn tại");
-      } else if (key == "3") {
-        onSignupError("Email đã tồn tại");
-      } else if (key == "4") {
-        onSignupError("Sai mã kích hoạt");
+        onSignupError("Mã xác nhận hết hạn!");
       } else {
-        onSuccess();
+        onSignupError("Đăng ký thất bại");
       }
     } else {
       onSignupError("Đăng ký thất bại");
@@ -218,9 +210,11 @@ class ApiAuth {
       Function(String) onSignInError) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var jsonResponse = null;
+
     print("LOGIN URL: " +
         ConstantParameter.getAddressUrl() +
         ServiceUser.loginApp());
+
     var response = await http
         .post(
       Uri.parse(ConstantParameter.getAddressUrl() + ServiceUser.loginApp()),
@@ -282,7 +276,6 @@ class ApiAuth {
       jsonResponse = response.body;
       //   print(jsonResponse);
       if (jsonResponse == "true") {
-        //  print(jsonResponse);
         onSuccess();
       } else {
         onChangePassError("Mật khẩu không đúng, xin vui lòng nhập lại");
@@ -479,7 +472,6 @@ class ApiAuth {
       String firstName,
       String lastName,
       String phone,
-      String birthday,
       String email,
       String type,
       Function onSuccess,
@@ -499,9 +491,7 @@ class ApiAuth {
         'username': username,
         'firstname': firstName,
         'lastname': lastName,
-        'birthday': birthday,
         'phone': phone,
-        'address': "hue",
         'email': email,
         'sex': '1',
         'type': type
@@ -564,6 +554,7 @@ class ApiAuth {
         }).catchError((err) {
       onError("Có lỗi trong đường truyền, vui lòng thử lại sau.");
     });
+
     if (response.statusCode == 200) {
       jsonResponse = response.body;
       if (jsonResponse == "true") {
@@ -591,7 +582,8 @@ class ApiAuth {
     String token = sharedPreferences.getString("token");
     var jsonResponse = null;
     var response = await http.post(
-        Uri.parse(ConstantParameter.getAddressUrl() + ServiceVillage.submitVillage()),
+        Uri.parse(
+            ConstantParameter.getAddressUrl() + ServiceVillage.submitVillage()),
         body: json.encode(<String, String>{
           'villageName': vil.villageName,
           'coordinate': vil.coordinate,
@@ -620,6 +612,43 @@ class ApiAuth {
       }
     } else {
       onError("Submit thất bại, xin thử lại sau");
+    }
+  }
+
+  Future<int> createNewVillage(String adWardId, Village village) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String token = sharedPreferences.getString("token");
+
+    String lat = village.coordinate.split(',')[1];
+    String long = village.coordinate.split(',')[0];
+
+    print("adWardId: " + adWardId);
+    var jsonResponse = null;
+    var response = await http.post(
+        Uri.parse(ConstantParameter.getAddressUrl() +
+            ServiceVillage.createNewVillage()),
+        body: json.encode(<String, String>{
+          'wardId': adWardId,
+          'villageName': village.villageName,
+          'note': village.note,
+          'longitude': long,
+          'latitude': lat,
+        }),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token",
+          'Content-Type': 'application/json; charset=UTF-8'
+        }).catchError((err) {
+      print("Có lỗi trong đường truyền, vui lòng thử lại sau.");
+    });
+
+    print("Create village code: " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      jsonResponse = json.decode(response.body);
+      print("Code: 200! " + jsonResponse['village_id']);
+      return jsonResponse['village_id'];
+    } else {
+      print("Tạo làng nghề thất bại, xin thử lại sau");
+      return null;
     }
   }
 
@@ -703,7 +732,8 @@ class ApiAuth {
     var jsonResponse = null;
 
     var response = await http.get(
-        Uri.parse(ConstantParameter.getAddressUrl() + ServiceAnswer.resetUserSurvey()),
+        Uri.parse(ConstantParameter.getAddressUrl() +
+            ServiceAnswer.resetUserSurvey()),
         headers: {
           HttpHeaders.authorizationHeader: "Bearer $token",
           'Content-Type': 'application/json'
@@ -1014,7 +1044,8 @@ class ApiAuth {
     var jsonResponse = null;
     var response = await http
         .post(
-      Uri.parse(ConstantParameter.getAddressUrl() + ServiceAddress.checkVillage())
+      Uri.parse(
+          ConstantParameter.getAddressUrl() + ServiceAddress.checkVillage())
       // '$apiUrl/checkvillage'
       ,
       headers: <String, String>{
@@ -1062,8 +1093,8 @@ class ApiAuth {
     // var response = await request.send().catchError((err){
     //    onError("Có lỗi trong đường truyền, vui lòng thử lại sau.");
     // });
-    var response =
-        await http.get(Uri.parse("https://api.jsonbin.io/b/5fb792a704be4f05c927fbdc"));
+    var response = await http
+        .get(Uri.parse("https://api.jsonbin.io/b/5fb792a704be4f05c927fbdc"));
     print(response.statusCode);
     if (response.statusCode == 200) {
       // print('done upload file image');

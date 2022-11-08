@@ -409,6 +409,7 @@ class ServiceVillage {
   static String _VILLAGE_GET_INFOR = "getvillageinfo";
   static String _VILLAGE_GET_SURVEY = "getvillagesurvey";
   static String _VILLAGE_DETECT = "detectvillage";
+  static String _VILLAGE_NEW = "newvillage"; //new village
 
   ServiceVillage(String service, String submitVillage, String getVillageInfo,
       String getVillageSurvey, String detectVillage) {
@@ -454,5 +455,9 @@ class ServiceVillage {
 
   static String getVillageSurvey() {
     return "$_VILLAGE_SERVICE/$_VILLAGE_GET_SURVEY";
+  }
+
+  static String createNewVillage() {
+    return "$_VILLAGE_SERVICE/$_VILLAGE_NEW";
   }
 }

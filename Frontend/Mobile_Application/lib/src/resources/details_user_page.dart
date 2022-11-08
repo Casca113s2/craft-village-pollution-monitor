@@ -248,32 +248,32 @@ class _DetailsUserPageState extends State<DetailsUserPage> {
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(6)))),
                             ))),
-                Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: StreamBuilder(
-                        stream: auth.birthdayStream,
-                        builder: (context, snapshot) => MaskedTextField(
-                              maskedTextFieldController: _birthdayController,
-                              mask: "xx/xx/xxxx",
-                              maxLength: 10,
-                              keyboardType: TextInputType.number,
-                              inputDecoration: new InputDecoration(
-                                  errorText:
-                                      snapshot.hasError ? snapshot.error : null,
-                                  labelText: LanguageConfig.getBirthday(),
-                                  labelStyle: TextStyle(
-                                      color: Colors.grey[700], fontSize: 18),
-                                  prefixIcon: Container(
-                                    padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-                                    width: 5,
-                                    child: Image.asset("ic_birthday.png"),
-                                  ),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Color(0xffCED002), width: 1),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(6)))),
-                            ))),
+                // Padding(
+                //     padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                //     child: StreamBuilder(
+                //         stream: auth.birthdayStream,
+                //         builder: (context, snapshot) => MaskedTextField(
+                //               maskedTextFieldController: _birthdayController,
+                //               mask: "xx/xx/xxxx",
+                //               maxLength: 10,
+                //               keyboardType: TextInputType.number,
+                //               inputDecoration: new InputDecoration(
+                //                   errorText:
+                //                       snapshot.hasError ? snapshot.error : null,
+                //                   labelText: LanguageConfig.getBirthday(),
+                //                   labelStyle: TextStyle(
+                //                       color: Colors.grey[700], fontSize: 18),
+                //                   prefixIcon: Container(
+                //                     padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                //                     width: 5,
+                //                     child: Image.asset("ic_birthday.png"),
+                //                   ),
+                //                   border: OutlineInputBorder(
+                //                       borderSide: BorderSide(
+                //                           color: Color(0xffCED002), width: 1),
+                //                       borderRadius: BorderRadius.all(
+                //                           Radius.circular(6)))),
+                //             ))),
                 Padding(
                     padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                     child: StreamBuilder(

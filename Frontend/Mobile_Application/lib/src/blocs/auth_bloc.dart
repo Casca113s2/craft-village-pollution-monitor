@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:fl_nynberapp/src/api/api_auth.dart';
 import 'package:fl_nynberapp/src/model/active_model.dart';
 import 'package:fl_nynberapp/src/model/address/village_model.dart';
@@ -23,12 +22,8 @@ class AuthBloc {
   StreamController _phoneController = new StreamController();
   StreamController _emailController = new StreamController();
   StreamController _userRoleController = new StreamController();
-
   StreamController _firstNameController = new StreamController.broadcast();
   StreamController _lastNameController = new StreamController.broadcast();
-  StreamController _birthdayController = new StreamController.broadcast();
-  StreamController _personalIdController = new StreamController.broadcast();
-  StreamController _addressController = new StreamController.broadcast();
 
   //change password
   StreamController _oldpassController = new StreamController();
@@ -41,10 +36,7 @@ class AuthBloc {
   Stream get lastNameStream => _lastNameController.stream;
   Stream get userRoleStream => _userRoleController.stream;
   Stream get phoneStream => _phoneController.stream;
-  Stream get birthdayStream => _birthdayController.stream;
   Stream get emailStream => _emailController.stream;
-  Stream get addressStream => _addressController.stream;
-  Stream get personalIdStream => _personalIdController.stream;
 
   void dispose() {
     _usernameController.close();
@@ -52,26 +44,23 @@ class AuthBloc {
     _repassController.close();
     _firstNameController.close();
     _phoneController.close();
-    _birthdayController.close();
     _emailController.close();
     _userRoleController.close();
-    _addressController.close();
 
     //password
     _oldpassController.close();
   }
 
   bool isValid(
-      String role,
-      String username,
-      String pass,
-      String repass,
-      String firstName,
-      String lastName,
-      String phone,
-      String birthday,
-      String email,
-      String personalId) {
+    String role,
+    String username,
+    String pass,
+    String repass,
+    String firstName,
+    String lastName,
+    String phone,
+    String email,
+  ) {
     final alphanumeric = RegExp(r'^[a-zA-Z0-9]+$');
 
     final phonenumeric = RegExp(r'^[0-9]+$');
@@ -102,7 +91,11 @@ class AuthBloc {
     }
     _repassController.sink.add("");
 
-    if (phone == null || phone.length == 0 || phone.length < 10 || phonenumeric.hasMatch(phone)) {
+    print(phonenumeric.hasMatch(phone));
+    if (phone == null ||
+        phone.length == 0 ||
+        phone.length < 10 ||
+        !phonenumeric.hasMatch(phone)) {
       _phoneController.sink
           .addError("Vui lòng nhập đúng định dạng số điện thoại");
       return false;
@@ -130,21 +123,6 @@ class AuthBloc {
         return false;
       }
       _firstNameController.sink.add("");
-
-      if (birthday == null ||
-          birthday.length == 0 ||
-          birthdayRequired.hasMatch(birthday) == false) {
-        _birthdayController.sink.addError("Vui lòng nhập đúng ngày sinh");
-        return false;
-      }
-      _birthdayController.sink.add("");
-
-      if (personalId == null || personalId.length == 0 || !(personalId.length == 9 || personalId.length == 12)) {
-        _personalIdController.sink
-            .addError("Vui lòng nhập đúng định dạng CMND");
-        return false;
-      }
-      _personalIdController.sink.add("");
     }
     _userRoleController.sink.add("");
 
@@ -176,7 +154,6 @@ class AuthBloc {
       String firstName,
       String lastName,
       String phone,
-      String birthday,
       String email,
       String activeDate,
       String activeCode,
@@ -192,7 +169,6 @@ class AuthBloc {
       firstName,
       lastName,
       phone,
-      birthday,
       email,
       activeDate,
       activeCode,
@@ -207,14 +183,13 @@ class AuthBloc {
       String firstName,
       String lastName,
       String phone,
-      String birthday,
       String email,
       String type,
       Function onSuccess,
       Function(String) onUpdateUserSuccess) {
     //_firAuth.signUp(username, name, pass, phone, onSuccess, onRegisterError);
-    _apiAuth.updateUser(username, firstName, lastName, phone, birthday, email,
-        type, onSuccess, onUpdateUserSuccess);
+    _apiAuth.updateUser(username, firstName, lastName, phone, email, type,
+        onSuccess, onUpdateUserSuccess);
   }
 
   signIn(String username, String pass, Function onSuccess,
@@ -293,9 +268,4 @@ class AuthBloc {
     return _apiAuth.activeUser(
         activeCode, activeDate, activeCodeSubmit, onSuccess, onError);
   }
-
-  // Future<ActiveUser> getActiveCode(
-  //     Function onSuccess, Function(String) onError) async {
-  //   return _apiAuth.getActiveCode(onSuccess, onError);
-  // }
 }

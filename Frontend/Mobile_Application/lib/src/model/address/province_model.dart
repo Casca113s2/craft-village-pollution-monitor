@@ -12,4 +12,7 @@ class Province{
       provinceName: json['provinceName'],
     );
   }
+
+  @override
+  bool operator ==(Object other) => other is Province && other.provinceName == this.provinceName;
 }

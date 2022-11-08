@@ -45,7 +45,6 @@ import 'package:path_provider/path_provider.dart';
 import "package:latlong/latlong.dart" as latLng;
 import 'package:flutter/services.dart';
 
-
 class CraftPage extends StatefulWidget {
   //final Position position;
   final int surveyActiveID;
@@ -589,7 +588,7 @@ class _CraftPageState extends State<CraftPage> {
                                   onPressed: () {
                                     showNoticeSubmitAndSaveDraft(
                                         context, "completed");
-                                    // _onSubmitClick("completed");
+                                    _onSubmitClick("completed");
                                   },
                                   child: Text(LanguageConfig.getSubmit(),
                                       style: TextStyle(
@@ -885,71 +884,71 @@ class _CraftPageState extends State<CraftPage> {
 
     //Display village information
     // if ((typeUser == "HouseHold") && (typeUser == "Hộ gia đình")) {
-      widgets.add(Padding(
-          padding: EdgeInsets.only(top: 10),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.grey[100],
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15),
-                  topRight: Radius.circular(15),
-                  bottomLeft: Radius.circular(15),
-                  bottomRight: Radius.circular(15)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 1,
-                  blurRadius: 2,
-                  offset: Offset(0, 3), // changes position of shadow
-                )
-              ],
-            ),
-            child: SizedBox(
-              width: double.infinity,
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  textStyle: const TextStyle(fontSize: 20),
-                ),
-                onPressed: () {
-                  setState(() {
-                    if (isDisplay)
-                      isDisplay = false;
-                    else
-                      isDisplay = true;
-                  });
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Align(
-                        alignment: lsQuestion.length != 0
-                            ? Alignment.centerLeft
-                            : Alignment.center,
-                        child: Container(
-                          child: Text(
-                            lsQuestion.length != 0
-                                ? LanguageConfig.getInputInfo()
-                                : (surveyActiveID != null
-                                    ? LanguageConfig.getWaiting()
-                                    : LanguageConfig.getNotice()),
-                            style: surveyActiveID != null
-                                ? TextStyle(fontSize: 20, color: Colors.black)
-                                : (TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                        )),
-                    Icon(
-                      isDisplay ? Icons.arrow_drop_up : Icons.arrow_drop_down,
-                      color: Colors.green,
-                      size: 30.0,
-                    )
-                  ],
-                ),
+    widgets.add(Padding(
+        padding: EdgeInsets.only(top: 10),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(15)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 1,
+                blurRadius: 2,
+                offset: Offset(0, 3), // changes position of shadow
+              )
+            ],
+          ),
+          child: SizedBox(
+            width: double.infinity,
+            child: TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              onPressed: () {
+                setState(() {
+                  if (isDisplay)
+                    isDisplay = false;
+                  else
+                    isDisplay = true;
+                });
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Align(
+                      alignment: lsQuestion.length != 0
+                          ? Alignment.centerLeft
+                          : Alignment.center,
+                      child: Container(
+                        child: Text(
+                          lsQuestion.length != 0
+                              ? LanguageConfig.getInputInfo()
+                              : (surveyActiveID != null
+                                  ? LanguageConfig.getWaiting()
+                                  : LanguageConfig.getNotice()),
+                          style: surveyActiveID != null
+                              ? TextStyle(fontSize: 20, color: Colors.black)
+                              : (TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      )),
+                  Icon(
+                    isDisplay ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                    color: Colors.green,
+                    size: 30.0,
+                  )
+                ],
               ),
             ),
-          )));
+          ),
+        )));
     // }
 
     widgets.add(surveyVillageInfo);
@@ -1429,7 +1428,7 @@ class _CraftPageState extends State<CraftPage> {
       return FloatingActionButton.extended(
         onPressed: () {
           showNoticeSubmitAndSaveDraft(context, "inprogress");
-          //_onSubmitClick("inprogress");
+          _onSubmitClick("inprogress");
         },
         label: Text(LanguageConfig.getSaveDraft()),
         //icon: Icon(Icons.save),
@@ -1440,176 +1439,195 @@ class _CraftPageState extends State<CraftPage> {
     }
   }
 
+  Village addIDToVillage(String adWardId, Village newVillage) {
+    Village village = newVillage;
+
+    Future createNewResult = villageBloc.createNewVillage(adWardId, village);
+
+    if (createNewResult != null) {
+      createNewResult.then((value) {
+        print("Village Id: " + value);
+        village.villageId = int.parse(value);
+      });
+    }
+
+    return village;
+  }
+
   _onSubmitClick(String typeSubmit) async {
-    print("type tab selection: $selectTabVillage");
-    lsAnswerUser = [];
-    bool notComplete = false;
-    toltalUserAnswerQuestion = 0;
-    for (int i = 0; i < listFirstQuest.length; i++) {
-      if (lsQuestion[listFirstQuest[i]].questionType ==
-          KindOfQuestion.RadioCheckbox) {
-        if (selectedAnswer[listFirstQuest[i]] != null) {
-          toltalUserAnswerQuestion++;
-        }
-      } else if (lsQuestion[listFirstQuest[i]].questionType ==
-          KindOfQuestion.Checkbox) {
-        bool check = false;
-        for (int k = 0; k < lsQuestion[listFirstQuest[i]].answer.length; k++) {
-          if (lsCheckbox[listFirstQuest[i]][k]) {
-            check = true;
-            break;
-          }
-        }
-        if (check) {
-          toltalUserAnswerQuestion++;
-        }
-      } else {
-        if (_listController[listFirstQuest[i]].text != "" &&
-            _listController[listFirstQuest[i]].text != null) {
-          toltalUserAnswerQuestion++;
-        }
-      }
-    }
-    print(
-        "totalQuest: $totalQuestion , totalAnswer: $toltalUserAnswerQuestion");
-    for (int i = 0; i < lsQuestion.length; i++) {
-      if (lsQuestion[i].questionType == KindOfQuestion.RadioCheckbox) {
-        if (selectedAnswer[i] == null)
-          notComplete = true;
-        else {
-          List<String> lsAnswerRadioCB = new List<String>();
+    // print("type tab selection: $selectTabVillage");
+    // lsAnswerUser = [];
+    // bool notComplete = false;
+    // toltalUserAnswerQuestion = 0;
+    // for (int i = 0; i < listFirstQuest.length; i++) {
+    //   if (lsQuestion[listFirstQuest[i]].questionType ==
+    //       KindOfQuestion.RadioCheckbox) {
+    //     if (selectedAnswer[listFirstQuest[i]] != null) {
+    //       toltalUserAnswerQuestion++;
+    //     }
+    //   } else if (lsQuestion[listFirstQuest[i]].questionType ==
+    //       KindOfQuestion.Checkbox) {
+    //     bool check = false;
+    //     for (int k = 0; k < lsQuestion[listFirstQuest[i]].answer.length; k++) {
+    //       if (lsCheckbox[listFirstQuest[i]][k]) {
+    //         check = true;
+    //         break;
+    //       }
+    //     }
+    //     if (check) {
+    //       toltalUserAnswerQuestion++;
+    //     }
+    //   } else {
+    //     if (_listController[listFirstQuest[i]].text != "" &&
+    //         _listController[listFirstQuest[i]].text != null) {
+    //       toltalUserAnswerQuestion++;
+    //     }
+    //   }
+    // }
+    // print(
+    //     "totalQuest: $totalQuestion , totalAnswer: $toltalUserAnswerQuestion");
+    // for (int i = 0; i < lsQuestion.length; i++) {
+    //   if (lsQuestion[i].questionType == KindOfQuestion.RadioCheckbox) {
+    //     if (selectedAnswer[i] == null)
+    //       notComplete = true;
+    //     else {
+    //       List<String> lsAnswerRadioCB = new List<String>();
 
-          lsAnswerRadioCB.add(selectedAnswer[i].id.toString());
-          lsAnswerUser.add(new AnswerUser(
-              activeID: surveyActiveID != null
-                  ? surveyActiveID
-                  : surveyStatus.activeID,
-              // userSurveyID: survey.id,
-              questionID: lsQuestion[i].id,
-              answerContent: lsAnswerRadioCB,
-              answerOtherContent: _listController[i].text));
-        }
-      } else if (lsQuestion[i].questionType == KindOfQuestion.Checkbox) {
-        List<String> lsAnswerRadioCB = [];
-        bool checkComplete = false;
-        for (int j = 0; j < lsQuestion[i].answer.length; j++) {
-          if (lsCheckbox[i][j]) {
-            checkComplete = true;
-            // notComplete = true;
-            lsAnswerRadioCB.add(lsQuestion[i].answer[j].id.toString());
-          }
-        }
-        if (!checkComplete) notComplete = true;
-        lsAnswerUser.add(new AnswerUser(
-            activeID:
-                surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
-            questionID: lsQuestion[i].id,
-            answerContent: lsAnswerRadioCB,
-            answerOtherContent: _listController[i].text));
-      } else if (lsQuestion[i].questionType == KindOfQuestion.TextField) {
-        List<String> lsAnswerTF = [];
-        lsAnswerTF.add(_listController[i].text);
-        lsAnswerUser.add(new AnswerUser(
-            activeID:
-                surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
-            questionID: lsQuestion[i].id,
-            answerContent: lsAnswerTF));
-      } else if (lsQuestion[i].questionType == KindOfQuestion.TextFieldNumber) {
-        List<String> lsAnswerTF = [];
-        lsAnswerTF.add(_listController[i].text);
-        lsAnswerUser.add(new AnswerUser(
-            activeID:
-                surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
-            questionID: lsQuestion[i].id,
-            answerContent: lsAnswerTF));
-      }
-    }
+    //       lsAnswerRadioCB.add(selectedAnswer[i].id.toString());
+    //       lsAnswerUser.add(new AnswerUser(
+    //           activeID: surveyActiveID != null
+    //               ? surveyActiveID
+    //               : surveyStatus.activeID,
+    //           // userSurveyID: survey.id,
+    //           questionID: lsQuestion[i].id,
+    //           answerContent: lsAnswerRadioCB,
+    //           answerOtherContent: _listController[i].text));
+    //     }
+    //   } else if (lsQuestion[i].questionType == KindOfQuestion.Checkbox) {
+    //     List<String> lsAnswerRadioCB = [];
+    //     bool checkComplete = false;
+    //     for (int j = 0; j < lsQuestion[i].answer.length; j++) {
+    //       if (lsCheckbox[i][j]) {
+    //         checkComplete = true;
+    //         // notComplete = true;
+    //         lsAnswerRadioCB.add(lsQuestion[i].answer[j].id.toString());
+    //       }
+    //     }
+    //     if (!checkComplete) notComplete = true;
+    //     lsAnswerUser.add(new AnswerUser(
+    //         activeID:
+    //             surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
+    //         questionID: lsQuestion[i].id,
+    //         answerContent: lsAnswerRadioCB,
+    //         answerOtherContent: _listController[i].text));
+    //   } else if (lsQuestion[i].questionType == KindOfQuestion.TextField) {
+    //     List<String> lsAnswerTF = [];
+    //     lsAnswerTF.add(_listController[i].text);
+    //     lsAnswerUser.add(new AnswerUser(
+    //         activeID:
+    //             surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
+    //         questionID: lsQuestion[i].id,
+    //         answerContent: lsAnswerTF));
+    //   } else if (lsQuestion[i].questionType == KindOfQuestion.TextFieldNumber) {
+    //     List<String> lsAnswerTF = [];
+    //     lsAnswerTF.add(_listController[i].text);
+    //     lsAnswerUser.add(new AnswerUser(
+    //         activeID:
+    //             surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
+    //         questionID: lsQuestion[i].id,
+    //         answerContent: lsAnswerTF));
+    //   }
+    // }
 
-    int totalImage = 0;
-    if (images[0] is ImageUploadModel) totalImage++;
-    // if (images[1] is ImageUploadModel) totalImage++;
-    // if (images[2] is ImageUploadModel) totalImage++;
-    totalQuestion = listFirstQuest.length;
-    print("lat: ${_latController.text}");
-    print("long: ${_longController.text}");
+    // int totalImage = 0;
+    // if (images[0] is ImageUploadModel) totalImage++;
+    // // if (images[1] is ImageUploadModel) totalImage++;
+    // // if (images[2] is ImageUploadModel) totalImage++;
+    // totalQuestion = listFirstQuest.length;
+    // print("lat: ${_latController.text}");
+    // print("long: ${_longController.text}");
 
-    String coord = "${_latController.text},${_longController.text}";
-    print(coord);
-    Village newVillage = new Village(
-        villageName: _addCraftVillage.text,
-        note: _addInfoCraftVillage.text,
-        coordinate: coord);
-    if (selectedVillage != null || newVillage != null) {
-      lsVil = [];
-      LoadingDialog.showLoadingDialog(context, LanguageConfig.getProcessing());
-      if (surveyActiveID != null) {
-        print("totalImage: $totalImage");
-        uploadAllImage().then((vl) {
-          villageBloc.submitVillage(
-              selectTabVillage == 0 ? selectedVillage : newVillage,
-              surveyActiveID != null
-                  ? surveyActiveID.toString()
-                  : surveyStatus.activeID.toString(),
-              totalQuestion.toString(),
-              toltalUserAnswerQuestion.toString(),
-              totalImage.toString(),
-              selectTabVillage.toString(),
-              selectedWard.wardId.toString(), () {
-            answerBloc.submitAnswerUser(lsAnswerUser,
-                surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
-                () {
-              LoadingDialog.hideLoadingDialog(context);
-              MsgDialog.showMsgDialogAndPushToScreenPage(
-                  context,
-                  LanguageConfig.getNotice(),
-                  typeSubmit == "completed"
-                      ? LanguageConfig.getCompletedInfo()
-                      : LanguageConfig.getSaveDraftInfo());
-            }, (msg) {
-              LoadingDialog.hideLoadingDialog(context);
-              MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
-            }, typeSubmit);
-          }, (msg) {
-            LoadingDialog.hideLoadingDialog(context);
-            MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
-          });
-        });
-      } else {
-        uploadAllImage().then((vl) {
-          villageBloc.submitVillage(
-              selectTabVillage == 0 ? selectedVillage : newVillage,
-              surveyActiveID != null
-                  ? surveyActiveID.toString()
-                  : surveyStatus.activeID.toString(),
-              totalQuestion.toString(),
-              toltalUserAnswerQuestion.toString(),
-              totalImage.toString(),
-              selectTabVillage.toString(),
-              selectedWard.wardId.toString(), () {
-            answerBloc.submitAnswerUser(lsAnswerUser,
-                surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
-                () {
-              LoadingDialog.hideLoadingDialog(context);
-              MsgDialog.showMsgDialogAndPushToScreenPage(
-                  context,
-                  LanguageConfig.getNotice(),
-                  typeSubmit == "completed"
-                      ? LanguageConfig.getCompletedInfo()
-                      : LanguageConfig.getSaveDraftInfo());
-            }, (msg) {
-              LoadingDialog.hideLoadingDialog(context);
-              MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
-            }, typeSubmit);
-          }, (msg) {
-            LoadingDialog.hideLoadingDialog(context);
-            MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
-          });
-        });
-      }
-    } else {
-      MsgDialog.showMsgDialog(context, LanguageConfig.getNotice(),
-          LanguageConfig.getWarningSubmit());
-    }
+    // String coord = "${_latController.text},${_longController.text}";
+    // print(coord);
+    // Village newVillage = new Village(
+    //     villageName: _addCraftVillage.text,
+    //     note: _addInfoCraftVillage.text,
+    //     coordinate: coord);
+    // if (selectedVillage != null || newVillage != null) {
+    //   lsVil = [];
+    //   LoadingDialog.showLoadingDialog(context, LanguageConfig.getProcessing());
+    //   if (surveyActiveID != null) {
+    //     print("totalImage: $totalImage");
+    //     uploadAllImage().then((vl) {
+    //       villageBloc.submitVillage(
+    //           selectTabVillage == 0
+    //               ? selectedVillage
+    //               : addIDToVillage(selectedWard.wardId.toString(), newVillage),
+    //           surveyActiveID != null
+    //               ? surveyActiveID.toString()
+    //               : surveyStatus.activeID.toString(),
+    //           totalQuestion.toString(),
+    //           toltalUserAnswerQuestion.toString(),
+    //           totalImage.toString(),
+    //           selectTabVillage.toString(),
+    //           selectedWard.wardId.toString(), () {
+    //         answerBloc.submitAnswerUser(lsAnswerUser,
+    //             surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
+    //             () {
+    //           LoadingDialog.hideLoadingDialog(context);
+    //           MsgDialog.showMsgDialogAndPushToScreenPage(
+    //               context,
+    //               LanguageConfig.getNotice(),
+    //               typeSubmit == "completed"
+    //                   ? LanguageConfig.getCompletedInfo()
+    //                   : LanguageConfig.getSaveDraftInfo());
+    //         }, (msg) {
+    //           LoadingDialog.hideLoadingDialog(context);
+    //           MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
+    //         }, typeSubmit);
+    //       }, (msg) {
+    //         LoadingDialog.hideLoadingDialog(context);
+    //         MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
+    //       });
+    //     });
+    //   } else {
+    //     uploadAllImage().then((vl) {
+    //       villageBloc.submitVillage(
+    //           selectTabVillage == 0
+    //               ? selectedVillage
+    //               : addIDToVillage(selectedWard.wardId.toString(), newVillage),
+    //           surveyActiveID != null
+    //               ? surveyActiveID.toString()
+    //               : surveyStatus.activeID.toString(),
+    //           totalQuestion.toString(),
+    //           toltalUserAnswerQuestion.toString(),
+    //           totalImage.toString(),
+    //           selectTabVillage.toString(),
+    //           selectedWard.wardId.toString(), () {
+    //         answerBloc.submitAnswerUser(lsAnswerUser,
+    //             surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
+    //             () {
+    //           LoadingDialog.hideLoadingDialog(context);
+    //           MsgDialog.showMsgDialogAndPushToScreenPage(
+    //               context,
+    //               LanguageConfig.getNotice(),
+    //               typeSubmit == "completed"
+    //                   ? LanguageConfig.getCompletedInfo()
+    //                   : LanguageConfig.getSaveDraftInfo());
+    //         }, (msg) {
+    //           LoadingDialog.hideLoadingDialog(context);
+    //           MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
+    //         }, typeSubmit);
+    //       }, (msg) {
+    //         LoadingDialog.hideLoadingDialog(context);
+    //         MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
+    //       });
+    //     });
+    //   }
+    // } else {
+    //   MsgDialog.showMsgDialog(context, LanguageConfig.getNotice(),
+    //       LanguageConfig.getWarningSubmit());
+    // }
     //}
   }
 
@@ -1681,9 +1699,10 @@ class _CraftPageState extends State<CraftPage> {
                   hint: Text("   " + LanguageConfig.getPickProvince()),
                   isExpanded: true,
                   value: selectedProvince,
-                  onChanged: (Province value) {
+                  onChanged: (Province province) {
                     setState(() {
-                      selectedProvince = value;
+                      print("Value province: " + province.provinceName);
+                      selectedProvince = province;
                       //set quận/huyện
                       _getDistrict(selectedProvince.provinceId);
                       polygonPickProvince.polygonPick = new Set();
@@ -2490,12 +2509,11 @@ class _CraftPageState extends State<CraftPage> {
       ));
     }
   }
-  
-  _onTakePhotoImageClick(int index, BuildContext context) async {
 
+  _onTakePhotoImageClick(int index, BuildContext context) async {
     bool serviceEnabled;
     LocationPermission permission;
-    
+
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       return Future.error('Location services are disabled.');
@@ -2505,7 +2523,6 @@ class _CraftPageState extends State<CraftPage> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
     } else {
-
       _imageFile = ImagePicker().getImage(source: ImageSource.camera);
       // _imageFile = ImagePicker().getImage(source: ImageSource.gallery);
 
@@ -3291,7 +3308,8 @@ class _CraftPageState extends State<CraftPage> {
       child: Text(LanguageConfig.getContinue()),
       onPressed: () {
         Navigator.pop(context);
-        _onSubmitClick(typeSubmit);
+        // _onSubmitClick(typeSubmit);
+
       },
     );
 
