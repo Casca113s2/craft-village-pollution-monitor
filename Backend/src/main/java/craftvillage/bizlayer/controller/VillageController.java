@@ -95,7 +95,7 @@ public class VillageController {
 		userSurvey.setImage(image);
 		userSurvey.setUrUser(user);
 		if(village.getHasAdded() == 0)
-			userSurvey.setIsTemporary("Inactive");
+			userSurvey.setIsTemporary("Deactive");
 		else
 			userSurvey.setIsTemporary("Active");
 		return surveyServices.addUserSurvey(userSurvey);

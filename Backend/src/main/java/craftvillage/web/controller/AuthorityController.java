@@ -50,7 +50,8 @@ public class AuthorityController {
 		int numberOfVillage = 0;
 		int numberOfNewVillage = 0;
 		int numberOfNewSurvey = 0;
-		AdDistrict district = userService.findByUsername(principal.getName()).getDistrict();
+		UrUser user = userService.findByUsername(principal.getName());
+		AdDistrict district = user.getDistrict();
 		Calendar localCalendar = Calendar.getInstance(TimeZone.getDefault());
 		int currentMonth = localCalendar.get(Calendar.MONTH);
 		Set<UrUser> newHouseholds = new HashSet<UrUser>();
@@ -71,11 +72,14 @@ public class AuthorityController {
 		model.addAttribute("numberOfNewSurvey", numberOfNewSurvey);
 		model.addAttribute("numberOfVillage", numberOfVillage);
 		model.addAttribute("numberOfNewVillage", numberOfNewVillage);
+		model.addAttribute("name", user.getFirstname() + " " + user.getLastname());
+		model.addAttribute("email", user.getEmail());
 		return "index";
 	}
 	@GetMapping("/newvillage")
 	public String newHousehold(Model model, Principal principal) {
-		AdDistrict district = userService.findByUsername(principal.getName()).getDistrict();
+		UrUser user = userService.findByUsername(principal.getName());
+		AdDistrict district = user.getDistrict();
 		Set<AdWard> wards = district.getAdWards();
 		Set<Village> villages = new HashSet<Village>();
 		for (AdWard ward : wards) {
@@ -86,6 +90,8 @@ public class AuthorityController {
 		}
 		model.addAttribute("pendingVillages", villages);
 		model.addAttribute("wards", wards);
+		model.addAttribute("name", user.getFirstname() + " " + user.getLastname());
+		model.addAttribute("email", user.getEmail());
 		return "newvillage";
 	}
 	
@@ -103,7 +109,10 @@ public class AuthorityController {
 	}
 	
 	@GetMapping("/villagedata")
-	public String villageData(Model model) {
+	public String villageData(Model model, Principal principal) {
+		UrUser user = userService.findByUsername(principal.getName());
+		model.addAttribute("name", user.getFirstname() + " " + user.getLastname());
+		model.addAttribute("email", user.getEmail());
 		return "villagedata";
 	}
 	
