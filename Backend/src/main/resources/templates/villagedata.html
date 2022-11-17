@@ -132,7 +132,7 @@
                                 <!-- DATA TABLE -->
                                 <table id="dataTable" class="table table-striped table-bordered" style="width:100%">
 							        <thead>
-							            <tr>
+							            <tr style="background-color: white">
 							                <th>ID</th>
 							                <th>Household</th>
 							                <th>Ward</th>
@@ -146,8 +146,8 @@
 							          			<td th:utext="${villageInfo.id}"></td>
 							          			<td th:utext="${villageInfo.household}"></td>
 							          			<td th:utext="${villageInfo.ward}"></td>
-							          			<td th:utext="${villageInfo.villageName}"></td>
-							          			<td th:utext="${village.date}"></td>
+							          			<td th:utext="${villageInfo.village}"></td>
+							          			<td th:utext="${villageInfo.date}"></td>
 							          		</tr>
 							          	</th:block>
 							        </tbody>

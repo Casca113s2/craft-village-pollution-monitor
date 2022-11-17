@@ -1706,3 +1706,16 @@ window.addEventListener('scroll', function(){
 btnTop.onclick = function(){
   window.pageYOffset = 0
 }
+(function ($) {
+  // USE STRICT
+  "use strict";
+
+  try {
+    
+    $('#btn-change-pass').tooltip();
+
+  } catch (error) {
+    console.log(error);
+  }
+
+})(jQuery);

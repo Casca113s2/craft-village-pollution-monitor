@@ -2,9 +2,7 @@ package craftvillage.datalayer.entities;
 // Generated Mar 10, 2020 9:28:01 AM by Hibernate Tools 4.3.5.Final
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,17 +15,13 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import craftvillage.corelayer.utilities.ConstantParameter;
 
 /**
@@ -37,217 +31,228 @@ import craftvillage.corelayer.utilities.ConstantParameter;
 @Table(name = "UR_USER", schema = ConstantParameter._SCHEMA_NAME)
 public class UrUser implements java.io.Serializable {
 
-	private int id;
-	private String account;
-	private String password;
-	private String firstname;
-	private String phone;
-	private String lastname;
-	private String email;
-	private String activeCode;
-	private Date activeDate;
-	private String type;
-	
-	
-	private Set<UserSurvey> userSurveys = new HashSet<UserSurvey>(0);
-	private Set<UrRole> urRoles = new HashSet<UrRole>(0);
-	private Set<UrSession> urSessions = new HashSet<UrSession>(0);
-	private Village village;
-	private AdDistrict district;
-	
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Village.class)
-	@JoinColumn(name = "VILLAGE_ID")
-	public Village getVillage() {
-		return village;
-	}
-
-	public void setVillage(Village village) {
-		this.village = village;
-	}
-
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = AdDistrict.class)
-	@JoinColumn(name = "DISTRICT_ID")
-	public AdDistrict getDistrict() {
-		return district;
-	}
-
-	public void setDistrict(AdDistrict district) {
-		this.district = district;
-	}
-	
-	@PrePersist
-	public void prePersist() {
-	    if(this.type == null) this.type = "PrivatePerson";
-	}
-	
-	public UrUser() {
-	}
-
-	public UrUser(int id, String account) {
-		this.id = id;
-		this.account = account;
-	}
-
-	public UrUser(int id, String account, String password, String firstname, String phone,
-			String lastname, String email, String type, Set<UserSurvey> userSurveys, Set<UrRole> urRoles,
-			Set<UrSession> urSessions) {
-		this.id = id;
-		this.account = account;
-		this.password = password;
-		this.firstname = firstname;
-		this.phone = phone;
-		this.lastname = lastname;
-		this.email = email;
-		this.userSurveys = userSurveys;
-		this.urRoles = urRoles;
-		this.urSessions = urSessions;
-		this.type = type;
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator="UR_USER_SEQ")
-	@Column(name = "ID", unique = true,nullable = false, precision = 22, scale = 0)
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	@Column(name = "ACCOUNT", nullable = false, length = 100)
-	public String getAccount() {
-		return this.account;
-	}
-
-	public void setAccount(String account) {
-		this.account = account;
-	}
-
-	@Column(name = "PASSWORD", length = 120)
-	public String getPassword() {
-		return this.password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	@Column(name = "FIRSTNAME", length = 100)
-	public String getFirstname() {
-		return this.firstname;
-	}
-
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
+  private int id;
+  private String account;
+  private String password;
+  private String firstname;
+  private String phone;
+  private String lastname;
+  private String email;
+  private String activeCode;
+  private Date activeDate;
+  private String type;
 
 
-	@Column(name = "PHONE", length = 100)
-	public String getPhone() {
-		return this.phone;
-	}
+  private Set<UserSurvey> userSurveys;
+  private Set<UrRole> urRoles;
+  private Set<UrSession> urSessions;
+  private Village village;
+  private AdDistrict district;
+  private Set<HouseholdSurvey> householdSurvey;
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+  @JsonIgnore
+  @ManyToOne(fetch = FetchType.LAZY, targetEntity = Village.class)
+  @JoinColumn(name = "VILLAGE_ID")
+  public Village getVillage() {
+    return village;
+  }
 
-	@Column(name = "LASTNAME", length = 100)
-	public String getLastname() {
-		return this.lastname;
-	}
+  public void setVillage(Village village) {
+    this.village = village;
+  }
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
+  @JsonIgnore
+  @ManyToOne(fetch = FetchType.LAZY, targetEntity = AdDistrict.class)
+  @JoinColumn(name = "DISTRICT_ID")
+  public AdDistrict getDistrict() {
+    return district;
+  }
 
-	@Column(name = "EMAIL", length = 100)
-	public String getEmail() {
-		return this.email;
-	}
+  public void setDistrict(AdDistrict district) {
+    this.district = district;
+  }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+  @PrePersist
+  public void prePersist() {
+    if (this.type == null)
+      this.type = "PrivatePerson";
+  }
 
-	@Column(name = "ACTIVE_CODE", length = 100)
-	public String getActiveCode() {
-		return activeCode;
-	}
+  public UrUser() {}
 
-	public void setActiveCode(String activeCode) {
-		this.activeCode = activeCode;
-	}
-	@JsonFormat(pattern="dd-MM-yyyy hh:mm:ss")
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "DATE_ACTIVE", length = 7)
-	public Date getActiveDate() {
-		return activeDate;
-	}
+  public UrUser(int id, String account) {
+    this.id = id;
+    this.account = account;
+  }
 
-	public void setActiveDate(Date activeDate) {
-		this.activeDate = activeDate;
-	}
+  public UrUser(int id, String account, String password, String firstname, String phone,
+      String lastname, String email, String type, Set<UserSurvey> userSurveys, Set<UrRole> urRoles,
+      Set<UrSession> urSessions) {
+    this.id = id;
+    this.account = account;
+    this.password = password;
+    this.firstname = firstname;
+    this.phone = phone;
+    this.lastname = lastname;
+    this.email = email;
+    this.userSurveys = userSurveys;
+    this.urRoles = urRoles;
+    this.urSessions = urSessions;
+    this.type = type;
+  }
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "urUser")
-	public Set<UserSurvey> getUserSurveys() {
-		return this.userSurveys;
-	}
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO, generator = "UR_USER_SEQ")
+  @Column(name = "ID", unique = true, nullable = false, precision = 22, scale = 0)
+  public int getId() {
+    return this.id;
+  }
 
-	public void setUserSurveys(Set<UserSurvey> userSurveys) {
-		this.userSurveys = userSurveys;
-	}
-	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-	@JoinTable(name = "USER_ROLE", schema = ConstantParameter._SCHEMA_NAME, 
-			joinColumns=@JoinColumn(name = "UR_ID", nullable = false, updatable = false),
-			inverseJoinColumns=@JoinColumn(name = "UR_ROLE_ID", nullable = false, updatable = false))
-	public Set<UrRole> getUrRoles() {
-		return this.urRoles;
-	}
+  public void setId(int id) {
+    this.id = id;
+  }
 
-	public void setUrRoles(Set<UrRole> urRoles) {
-		this.urRoles = urRoles;
-	}
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "urUser")
-	public Set<UrSession> getUrSessions() {
-		return this.urSessions;
-	}
+  @Column(name = "ACCOUNT", nullable = false, length = 100)
+  public String getAccount() {
+    return this.account;
+  }
 
-	public void setUrSessions(Set<UrSession> urSessions) {
-		this.urSessions = urSessions;
-	}
-	
-	@Column(name = "TYPE", nullable = false, length = 100)
-	public String getType() {
-		return type;
-	}
+  public void setAccount(String account) {
+    this.account = account;
+  }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+  @Column(name = "PASSWORD", length = 120)
+  public String getPassword() {
+    return this.password;
+  }
 
-	// add role
-	public void addRole(UrRole role) {
-		try {
-			urRoles.add(role);
-			role.getUrUsers().add(this);
-		} catch (Exception e) {
-			e.printStackTrace();
-			// TODO: handle exception
-		}
-	}
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
-	public void removeRole(UrRole role) {
-		try {
-			urRoles.add(role);
-			role.getUrUsers().add(this);
-		} catch (Exception e) {
-			e.printStackTrace();
-			// TODO: handle exception
-		}
-	}
+  @Column(name = "FIRSTNAME", length = 100)
+  public String getFirstname() {
+    return this.firstname;
+  }
+
+  public void setFirstname(String firstname) {
+    this.firstname = firstname;
+  }
+
+
+  @Column(name = "PHONE", length = 100)
+  public String getPhone() {
+    return this.phone;
+  }
+
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
+
+  @Column(name = "LASTNAME", length = 100)
+  public String getLastname() {
+    return this.lastname;
+  }
+
+  public void setLastname(String lastname) {
+    this.lastname = lastname;
+  }
+
+  @Column(name = "EMAIL", length = 100)
+  public String getEmail() {
+    return this.email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  @Column(name = "ACTIVE_CODE", length = 100)
+  public String getActiveCode() {
+    return activeCode;
+  }
+
+  public void setActiveCode(String activeCode) {
+    this.activeCode = activeCode;
+  }
+
+  @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss")
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "DATE_ACTIVE", length = 7)
+  public Date getActiveDate() {
+    return activeDate;
+  }
+
+  public void setActiveDate(Date activeDate) {
+    this.activeDate = activeDate;
+  }
+
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "urUser")
+  public Set<UserSurvey> getUserSurveys() {
+    return this.userSurveys;
+  }
+
+  public void setUserSurveys(Set<UserSurvey> userSurveys) {
+    this.userSurveys = userSurveys;
+  }
+
+  @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+  @JoinTable(name = "USER_ROLE", schema = ConstantParameter._SCHEMA_NAME,
+      joinColumns = @JoinColumn(name = "UR_ID", nullable = false, updatable = false),
+      inverseJoinColumns = @JoinColumn(name = "UR_ROLE_ID", nullable = false, updatable = false))
+  public Set<UrRole> getUrRoles() {
+    return this.urRoles;
+  }
+
+  public void setUrRoles(Set<UrRole> urRoles) {
+    this.urRoles = urRoles;
+  }
+
+  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "urUser")
+  public Set<UrSession> getUrSessions() {
+    return this.urSessions;
+  }
+
+  public void setUrSessions(Set<UrSession> urSessions) {
+    this.urSessions = urSessions;
+  }
+
+  @Column(name = "TYPE", nullable = false, length = 100)
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "household")
+  public Set<HouseholdSurvey> getHouseholdSurvey() {
+    return this.householdSurvey;
+  }
+
+  public void setHouseholdSurvey(Set<HouseholdSurvey> householdSurvey) {
+    this.householdSurvey = householdSurvey;
+  }
+
+  // add role
+  public void addRole(UrRole role) {
+    try {
+      urRoles.add(role);
+      role.getUrUsers().add(this);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void removeRole(UrRole role) {
+    try {
+      urRoles.add(role);
+      role.getUrUsers().add(this);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 
 }

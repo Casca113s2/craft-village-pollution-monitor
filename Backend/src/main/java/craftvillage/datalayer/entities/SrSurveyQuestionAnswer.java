@@ -1,10 +1,6 @@
 package craftvillage.datalayer.entities;
 // Generated Mar 10, 2020 9:28:01 AM by Hibernate Tools 4.3.5.Final
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,12 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import craftvillage.corelayer.utilities.ConstantParameter;
 
 /**
@@ -29,84 +21,73 @@ import craftvillage.corelayer.utilities.ConstantParameter;
 @Table(name = "SR_SURVEY_QUESTION_ANSWER", schema = ConstantParameter._SCHEMA_NAME)
 public class SrSurveyQuestionAnswer implements java.io.Serializable {
 
-	private int id;
-	private SrSurveyQuestion srSurveyQuestion;
-	private String answerContent;
-	private Double indicate;
-	private String answerType;
-	private Set<SrSurveyQuestion> srSurveyQuestions = new LinkedHashSet<SrSurveyQuestion>(0);
-	public SrSurveyQuestionAnswer() {
-	}
+  private int id;
+  private SrSurveyQuestion srSurveyQuestion;
+  private String answerContent;
+  private Double indicate;
+  private String answerType;
 
-	public SrSurveyQuestionAnswer(int id) {
-		this.id = id;
-	}
+  public SrSurveyQuestionAnswer() {}
 
-	public SrSurveyQuestionAnswer(int id, SrSurveyQuestion srSurveyQuestion, String answerContent,
-			Double indicate, String answerType) {
-		this.id = id;
-		this.srSurveyQuestion = srSurveyQuestion;
-		this.answerContent = answerContent;
-		this.indicate = indicate;
-		this.answerType = answerType;
-	}
+  public SrSurveyQuestionAnswer(int id) {
+    this.id = id;
+  }
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator="SR_SURVEY_QUESTION_ANSWER_SEQ")
-	@Column(name = "ID", unique = true, nullable = false, precision = 22, scale = 0)
-	public int getId() {
-		return this.id;
-	}
+  public SrSurveyQuestionAnswer(int id, SrSurveyQuestion srSurveyQuestion, String answerContent,
+      Double indicate, String answerType) {
+    this.id = id;
+    this.srSurveyQuestion = srSurveyQuestion;
+    this.answerContent = answerContent;
+    this.indicate = indicate;
+    this.answerType = answerType;
+  }
 
-	public void setId(int id) {
-		this.id = id;
-	}
-	@JsonBackReference
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "SR_SQ_ID")
-	public SrSurveyQuestion getSrSurveyQuestion() {
-		return this.srSurveyQuestion;
-	}
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO, generator = "SR_SURVEY_QUESTION_ANSWER_SEQ")
+  @Column(name = "ID", unique = true, nullable = false, precision = 22, scale = 0)
+  public int getId() {
+    return this.id;
+  }
 
-	public void setSrSurveyQuestion(SrSurveyQuestion srSurveyQuestion) {
-		this.srSurveyQuestion = srSurveyQuestion;
-	}
+  public void setId(int id) {
+    this.id = id;
+  }
 
-	@Column(name = "ANSWER_CONTENT", length = 100)
-	public String getAnswerContent() {
-		return this.answerContent;
-	}
+  @JsonBackReference
+  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JoinColumn(name = "SR_SQ_ID")
+  public SrSurveyQuestion getSrSurveyQuestion() {
+    return this.srSurveyQuestion;
+  }
 
-	public void setAnswerContent(String answerContent) {
-		this.answerContent = answerContent;
-	}
+  public void setSrSurveyQuestion(SrSurveyQuestion srSurveyQuestion) {
+    this.srSurveyQuestion = srSurveyQuestion;
+  }
 
-	@Column(name = "INDICATE", precision = 126, scale = 0)
-	public Double getIndicate() {
-		return this.indicate;
-	}
+  @Column(name = "ANSWER_CONTENT", length = 100)
+  public String getAnswerContent() {
+    return this.answerContent;
+  }
 
-	public void setIndicate(Double indicate) {
-		this.indicate = indicate;
-	}
+  public void setAnswerContent(String answerContent) {
+    this.answerContent = answerContent;
+  }
 
-	@Column(name = "ANSWER_TYPE", length = 40)
-	public String getAnswerType() {
-		return this.answerType;
-	}
+  @Column(name = "INDICATE", precision = 126, scale = 0)
+  public Double getIndicate() {
+    return this.indicate;
+  }
 
-	public void setAnswerType(String answerType) {
-		this.answerType = answerType;
-	}
-	
-	@OrderBy("id ASC")
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "srSurveyQuestionAnswer")
-	public Set<SrSurveyQuestion> getSrSurveyQuestions() {
-		return srSurveyQuestions;
-	}
+  public void setIndicate(Double indicate) {
+    this.indicate = indicate;
+  }
 
-	public void setSrSurveyQuestions(Set<SrSurveyQuestion> srSurveyQuestions) {
-		this.srSurveyQuestions = srSurveyQuestions;
-	}
+  @Column(name = "ANSWER_TYPE", length = 40)
+  public String getAnswerType() {
+    return this.answerType;
+  }
 
+  public void setAnswerType(String answerType) {
+    this.answerType = answerType;
+  }
 }

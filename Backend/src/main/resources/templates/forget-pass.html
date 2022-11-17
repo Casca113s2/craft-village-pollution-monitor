@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <!-- Required meta tags-->
@@ -13,25 +13,24 @@
     <title>Forget Password</title>
 
     <!-- Fontfaces CSS-->
-    <link href="./static/css/font-face.css" rel="stylesheet" media="all">
-    <link href="./static/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
-    <link href="./static/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
-    <link href="./static/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/fontawesome-free-6.2.0-web/css/all.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/mdi-font/css/material-design-iconic-font.min.css}" rel="stylesheet" media="all">
 
     <!-- Bootstrap CSS-->
-    <link href="./static/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/bootstrap-4.1/bootstrap.min.css}" rel="stylesheet" media="all">
 
     <!-- Vendor CSS-->
-    <link href="./static/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="./static/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
-    <link href="./static/vendor/wow/animate.css" rel="stylesheet" media="all">
-    <link href="./static/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
-    <link href="./static/vendor/slick/slick.css" rel="stylesheet" media="all">
-    <link href="./static/vendor/select2/select2.min.css" rel="stylesheet" media="all">
-    <link href="./static/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/animsition/animsition.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/wow/animate.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/slick/slick.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/select2/select2.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/perfect-scrollbar/perfect-scrollbar.css}" rel="stylesheet" media="all">
 
     <!-- Main CSS-->
-    <link href="./static/css/theme.css" rel="stylesheet" media="all">
+    <link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
 
 </head>
 
@@ -45,16 +44,20 @@
                             <div class="form-group">
                                 <div class="alert alert-primary" role="alert">
                                     <h4 class="alert-heading">Reset password</h4>
-                                    <p>Please enter your email which is linked with your account, the new password will be sent then.</p>
+                                    <p>Nhập thông tin tài khoản và email đã đăng ký vào bên dưới để tạo mới mật khẩu.</p>
                                     <hr>
-                                    <p class="mb-0">Do you want to reset your password?</p>
+                                    <p class="mb-0">Bạn có muốn thực hiện không?</p>
                                 </div>
-                                <div id="message" class="alert alert-info hidden" role="alert">
-                                    This is a info alert with
+                                <div id="success-message" class="alert alert-info hidden" role="alert">
+                                    Đã gửi thành công!
+                                </div>
+                                <div id="error-message" class="alert alert-danger hidden" role="alert">
+                                    Gửi thất bại. Vui lòng kiểm tra lại thông tin!
                                 </div>
                                 <div style="display: flex;">
-                                    <input class="au-input au-input--full" type="email" name="email" placeholder="Email">
-                                    <button id="btn-send" class="au-btn au-btn--green m-l-10">send</button>
+                                	<input class="au-input au-input--full" type="text" id="username" placeholder="Tài khoản">
+                                    <input class="au-input au-input--full" type="email" id="email" placeholder="Email">
+                                    <button id="btn-send" class="au-btn au-btn--green m-l-10">Gửi</button>
                                 </div>
                             </div>
                         </div>
@@ -66,32 +69,41 @@
     </div>
 
     <!-- Jquery JS-->
-    <script src="./static/vendor/jquery-3.2.1.min.js"></script>
+    <script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
     <!-- Bootstrap JS-->
-    <script src="./static/vendor/bootstrap-4.1/popper.min.js"></script>
-    <script src="./static/vendor/bootstrap-4.1/bootstrap.min.js"></script>
+    <script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
     <!-- Vendor JS       -->
-    <script src="./static/vendor/slick/slick.min.js">
+    <script th:src="@{/vendor/slick/slick.min.js}">
     </script>
-    <script src="./static/vendor/wow/wow.min.js"></script>
-    <script src="./static/vendor/animsition/animsition.min.js"></script>
-    <script src="./static/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+    <script th:src="@{/vendor/wow/wow.min.js}"></script>
+    <script th:src="@{/vendor/animsition/animsition.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
     </script>
-    <script src="./static/vendor/counter-up/jquery.waypoints.min.js"></script>
-    <script src="./static/vendor/counter-up/jquery.counterup.min.js">
+    <script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
+    <script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
     </script>
-    <script src="./static/vendor/circle-progress/circle-progress.min.js"></script>
-    <script src="./static/vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="./static/vendor/chartjs/Chart.bundle.min.js"></script>
-    <script src="./static/vendor/select2/select2.min.js">
+    <script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
+    <script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
+    <script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
+    <script th:src="@{/vendor/select2/select2.min.js}">
     </script>
 
     <!-- Main JS-->
-    <script src="./static/js/main.js"></script>
+    <script th:src="@{/js/main.js}"></script>
     <script>
-        $('#btn-send').on('click', function(){
-            $('#message').removeClass('hidden')
-        })
+       $('#btn-send').on('click', function(){
+    	   let username = $('#username').val();
+    	   let email = $('#email').val();
+    	   if(username.lenght * email.length == 0){
+    		   if(item.value == '0'){
+		    		$('#success-message').removeClass("display");
+		    		$('#error-message').text("Vui lòng điền đầy đủ thông tin!");
+		    		$('#error-message').addClass("display");
+					return;		    		
+		    	}
+    	   }
+       })
     </script>
 
 </body>
