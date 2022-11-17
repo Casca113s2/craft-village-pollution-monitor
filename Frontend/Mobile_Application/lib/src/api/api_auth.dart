@@ -61,14 +61,24 @@ class ApiAuth {
       body: json.encode({'image': base64Img}),
     )
         .catchError((err) {
+          print("Loi: " + err.toString());
       print("Có lỗi trong đường truyền, vui lòng thử lại sau.");
     });
 
+    // var response = await http
+    //     .get(
+    //   Uri.parse('http://10.0.2.2:8000/detect' + "?image=$base64Img"),
+    // )
+    //     .catchError((err) {
+    //   print("Có lỗi trong đường truyền, vui lòng thử lại sau.");
+    // });
+
+    print("TEST HERE: ");
     if (response.statusCode == 200) {
-      // print("Code: 200!");
       jsonResponse = json.decode(response.body);
-      print("Code: 200! " + jsonResponse['result_image']);
-      return jsonResponse['result_image'];
+      print("Code image detection: 200! " + response.body);
+      // print("Code image detection: 200! " + jsonResponse['air_pollution'].toString());
+      return jsonResponse;
     } else {
       print("Xử lý thất bại, vui lòng kiểm tra lại đường truyền");
       return null;
@@ -670,10 +680,15 @@ class ApiAuth {
         }).catchError((err) {
       onError("Có lỗi trong đường truyền, vui lòng thử lại sau.");
     });
+
+    print("Code (Questions): " + response.statusCode.toString());
     if (response.statusCode == 200) {
       SurveyStatus surveyStatus = new SurveyStatus();
       List<SurveyStatus> lsSurveyStatus = [];
       Iterable list = json.decode(utf8.decode(response.bodyBytes));
+
+      print("Decode here:\n");
+      print(json.decode(utf8.decode(response.bodyBytes)).toString());
 
       int len = list.length;
       if (len != 0) {

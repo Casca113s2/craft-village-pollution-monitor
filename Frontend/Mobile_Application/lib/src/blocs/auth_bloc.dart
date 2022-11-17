@@ -91,6 +91,18 @@ class AuthBloc {
     }
     _repassController.sink.add("");
 
+    if (lastName == null || lastName.length == 0) {
+      _lastNameController.sink.addError("Không để trống");
+      return false;
+    }
+    _lastNameController.sink.add("");
+
+    if (firstName == null || firstName.length == 0) {
+      _firstNameController.sink.addError("Không để trống");
+      return false;
+    }
+    _firstNameController.sink.add("");
+
     print(phonenumeric.hasMatch(phone));
     if (phone == null ||
         phone.length == 0 ||
@@ -110,21 +122,6 @@ class AuthBloc {
       return false;
     }
     _emailController.sink.add("");
-
-    if (role == 'Hộ gia đình') {
-      if (lastName == null || lastName.length == 0) {
-        _lastNameController.sink.addError("Không để trống");
-        return false;
-      }
-      _lastNameController.sink.add("");
-
-      if (firstName == null || firstName.length == 0) {
-        _firstNameController.sink.addError("Không để trống");
-        return false;
-      }
-      _firstNameController.sink.add("");
-    }
-    _userRoleController.sink.add("");
 
     return true;
   }

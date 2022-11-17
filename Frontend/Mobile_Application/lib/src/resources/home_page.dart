@@ -411,7 +411,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                       //   showAlertDialogNewSurvey(
                                       //       context, typeUser);
                                       // }
-
+                                      print("Start new survey!");
                                       Navigator.push(
                                               context,
                                               MaterialPageRoute(

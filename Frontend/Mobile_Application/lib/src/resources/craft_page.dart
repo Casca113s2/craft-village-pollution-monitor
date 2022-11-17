@@ -89,6 +89,9 @@ List<bool> listVisbileQuestion = [];
 List<List<bool>> lsCheckbox = new List<List<bool>>();
 List<TextEditingController> _listController = [];
 List<TextEditingController> _listOtherController = [];
+bool _checkedAirPollution = false;
+bool _checkedSoilPollution = false;
+bool _checkedWaterPollution = false;
 //List các câu trả lời của user
 List<AnswerUser> lsAnswerUser = [];
 //check xem đã load hết dữ liệu hay chưa
@@ -253,249 +256,249 @@ class _CraftPageState extends State<CraftPage> {
     _addInfoCraftVillage = new TextEditingController();
 
     //end craftvillage
+    print("Survey Active ID:" + surveyActiveID.toString());
+    // if (surveyActiveID == null) {
+    //   surveyBloc.fetchSurvey(() {}, (msg) {
+    //     LoadingDialog.hideLoadingDialog(context);
+    //     MsgDialog.showMsgDialog(context, LanguageConfig.getNotice(), msg);
+    //   }).then((value) {
+    //     if (value.srSurvey == null) {
+    //       print("Survey null!");
+    //     } else {
+    //       selectTabVillage = 0;
+    //       setState(() {
+    //         surveyStatus = value;
 
-    if (surveyActiveID == null) {
-      surveyBloc.fetchSurvey(() {}, (msg) {
-        LoadingDialog.hideLoadingDialog(context);
-        MsgDialog.showMsgDialog(context, LanguageConfig.getNotice(), msg);
-      }).then((value) {
-        if (value.srSurvey == null) {
-          print("survey null");
-        } else {
-          selectTabVillage = 0;
-          setState(() {
-            surveyStatus = value;
+    //         lsQuestionTemp = surveyStatus.srSurvey.srQuestions;
 
-            lsQuestionTemp = surveyStatus.srSurvey.srQuestions;
+    //         Question quest = new Question();
+    //         for (int i = 0; i < lsQuestionTemp.length; i++) {
+    //           listFirstQuest.add(countFatherQuest++);
+    //           quest = lsQuestionTemp[i];
+    //           lsQuestion.add(lsQuestionTemp[i]);
 
-            Question quest = new Question();
-            for (int i = 0; i < lsQuestionTemp.length; i++) {
-              listFirstQuest.add(countFatherQuest++);
-              quest = lsQuestionTemp[i];
-              lsQuestion.add(lsQuestionTemp[i]);
+    //           if (quest.answer.length != 0) {
+    //             countListQuest(quest.answer);
+    //           }
+    //         }
+    //         lgnQuestion = lsQuestion.length;
+    //         selectedAnswer = new List(lgnQuestion);
+    //         visibleAnother = new List(lgnQuestion);
+    //         visibleQuestion = new List(lgnQuestion);
+    //         listVisbileQuestion = new List(lgnQuestion);
+    //         for (int i = 0; i < lgnQuestion; i++) {
+    //           listVisbileQuestion[i] = false;
+    //         }
 
-              if (quest.answer.length != 0) {
-                countListQuest(quest.answer);
-              }
-            }
-            lgnQuestion = lsQuestion.length;
-            selectedAnswer = new List(lgnQuestion);
-            visibleAnother = new List(lgnQuestion);
-            visibleQuestion = new List(lgnQuestion);
-            listVisbileQuestion = new List(lgnQuestion);
-            for (int i = 0; i < lgnQuestion; i++) {
-              listVisbileQuestion[i] = false;
-            }
+    //         for (int i = 0; i < lgnQuestion; i++) {
+    //           visibleAnother[i] = false;
+    //           visibleQuestion[i] = false;
+    //         }
+    //         _listController =
+    //             List.generate(lgnQuestion, (i) => TextEditingController());
+    //         //add length list checkbox
+    //         lsCheckbox = new List(lgnQuestion);
+    //         //set default checkbox
+    //         for (int j = 0; j < lgnQuestion; j++) {
+    //           if (lsQuestion[j].questionType == KindOfQuestion.Checkbox) {
+    //             lsCheckbox[j] = new List(lsQuestion[j]
+    //                 .answer
+    //                 .length); // ví dụ như 1 câu hỏi có 3 câu trả lời, thì cấp hắn list có độ dài là 3
+    //             for (int i = 0; i < lsCheckbox[j].length; i++) {
+    //               // đoạn này set false hết những câu trả lời, để mới mặc định ban đầu nó chưa đc chọn
+    //               lsCheckbox[j][i] = false;
+    //             }
+    //           }
+    //         }
+    //       });
+    //       totalQuestion = 0;
+    //       toltalUserAnswerQuestion = 0;
+    //       setState(() {
+    //         totalQuestion = listFirstQuest.length;
+    //       });
+    //       print("totalQuestion : $totalQuestion");
+    //     }
+    //   });
+    // } else {
+    //   surveyBloc.fetchSurveyAnswerUserByID(surveyActiveID, userSurveyId, () {},
+    //       (msg) {
+    //     LoadingDialog.hideLoadingDialog(context);
+    //     MsgDialog.showMsgDialog(context, LanguageConfig.getNotice(), msg);
+    //   }).then((value) {
+    //     // if (value != null) {
 
-            for (int i = 0; i < lgnQuestion; i++) {
-              visibleAnother[i] = false;
-              visibleQuestion[i] = false;
-            }
-            _listController =
-                List.generate(lgnQuestion, (i) => TextEditingController());
-            //add length list checkbox
-            lsCheckbox = new List(lgnQuestion);
-            //set default checkbox
-            for (int j = 0; j < lgnQuestion; j++) {
-              if (lsQuestion[j].questionType == KindOfQuestion.Checkbox) {
-                lsCheckbox[j] = new List(lsQuestion[j]
-                    .answer
-                    .length); // ví dụ như 1 câu hỏi có 3 câu trả lời, thì cấp hắn list có độ dài là 3
-                for (int i = 0; i < lsCheckbox[j].length; i++) {
-                  // đoạn này set false hết những câu trả lời, để mới mặc định ban đầu nó chưa đc chọn
-                  lsCheckbox[j][i] = false;
-                }
-              }
-            }
-          });
-          totalQuestion = 0;
-          toltalUserAnswerQuestion = 0;
-          setState(() {
-            totalQuestion = listFirstQuest.length;
-          });
-          print("totalQuestion : $totalQuestion");
-        }
-      });
-    } else {
-      surveyBloc.fetchSurveyAnswerUserByID(surveyActiveID, userSurveyId, () {},
-          (msg) {
-        LoadingDialog.hideLoadingDialog(context);
-        MsgDialog.showMsgDialog(context, LanguageConfig.getNotice(), msg);
-      }).then((value) {
-        // if (value != null) {
+    //     if (value.surveys == null) {
+    //       print("value null");
+    //     } else {
+    //       setState(() {
+    //         surveyAnswerUserByID = value;
 
-        if (value.surveys == null) {
-          print("value null");
-        } else {
-          setState(() {
-            surveyAnswerUserByID = value;
+    //         lsQuestionTemp = surveyAnswerUserByID.surveys.srQuestions;
 
-            lsQuestionTemp = surveyAnswerUserByID.surveys.srQuestions;
+    //         Question quest = new Question();
+    //         for (int i = 0; i < lsQuestionTemp.length; i++) {
+    //           listFirstQuest.add(countFatherQuest++);
+    //           quest = lsQuestionTemp[i];
+    //           lsQuestion.add(lsQuestionTemp[i]);
 
-            Question quest = new Question();
-            for (int i = 0; i < lsQuestionTemp.length; i++) {
-              listFirstQuest.add(countFatherQuest++);
-              quest = lsQuestionTemp[i];
-              lsQuestion.add(lsQuestionTemp[i]);
+    //           if (quest.answer.length != 0) {
+    //             countListQuest(quest.answer);
+    //           }
+    //         }
+    //         lgnQuestion = lsQuestion.length;
+    //         selectedAnswer = new List(lgnQuestion);
+    //         visibleAnother = new List(lgnQuestion);
+    //         visibleQuestion = new List(lgnQuestion);
+    //         listVisbileQuestion = new List(lgnQuestion);
+    //         for (int i = 0; i < lgnQuestion; i++) {
+    //           listVisbileQuestion[i] = false;
+    //         }
 
-              if (quest.answer.length != 0) {
-                countListQuest(quest.answer);
-              }
-            }
-            lgnQuestion = lsQuestion.length;
-            selectedAnswer = new List(lgnQuestion);
-            visibleAnother = new List(lgnQuestion);
-            visibleQuestion = new List(lgnQuestion);
-            listVisbileQuestion = new List(lgnQuestion);
-            for (int i = 0; i < lgnQuestion; i++) {
-              listVisbileQuestion[i] = false;
-            }
+    //         for (int i = 0; i < lgnQuestion; i++) {
+    //           visibleAnother[i] = false;
+    //           visibleQuestion[i] = false;
+    //         }
+    //         _listController =
+    //             List.generate(lgnQuestion, (i) => TextEditingController());
+    //         //add length list checkbox
+    //         lsCheckbox = new List(lgnQuestion);
+    //         //set default checkbox
+    //         for (int j = 0; j < lgnQuestion; j++) {
+    //           if (lsQuestion[j].questionType == KindOfQuestion.Checkbox) {
+    //             lsCheckbox[j] = new List(lsQuestion[j]
+    //                 .answer
+    //                 .length); // ví dụ như 1 câu hỏi có 3 câu trả lời, thì cấp hắn list có độ dài là 3
+    //             for (int i = 0; i < lsCheckbox[j].length; i++) {
+    //               // đoạn này set false hết những câu trả lời, để mới mặc định ban đầu nó chưa đc chọn
+    //               lsCheckbox[j][i] = false;
+    //             }
+    //           }
+    //         }
 
-            for (int i = 0; i < lgnQuestion; i++) {
-              visibleAnother[i] = false;
-              visibleQuestion[i] = false;
-            }
-            _listController =
-                List.generate(lgnQuestion, (i) => TextEditingController());
-            //add length list checkbox
-            lsCheckbox = new List(lgnQuestion);
-            //set default checkbox
-            for (int j = 0; j < lgnQuestion; j++) {
-              if (lsQuestion[j].questionType == KindOfQuestion.Checkbox) {
-                lsCheckbox[j] = new List(lsQuestion[j]
-                    .answer
-                    .length); // ví dụ như 1 câu hỏi có 3 câu trả lời, thì cấp hắn list có độ dài là 3
-                for (int i = 0; i < lsCheckbox[j].length; i++) {
-                  // đoạn này set false hết những câu trả lời, để mới mặc định ban đầu nó chưa đc chọn
-                  lsCheckbox[j][i] = false;
-                }
-              }
-            }
+    //         List<AnswerUser> lsAnswerUserTemp = surveyAnswerUserByID.answers;
 
-            List<AnswerUser> lsAnswerUserTemp = surveyAnswerUserByID.answers;
+    //         for (int i = 0; i < lgnQuestion; i++) {
+    //           for (int j = 0; j < lsAnswerUserTemp.length; j++) {
+    //             if (lsQuestion[i].id == lsAnswerUserTemp[j].questionID) {
+    //               if (lsQuestion[i].questionType ==
+    //                   KindOfQuestion.RadioCheckbox) {
+    //                 for (int k = 0; k < lsQuestion[i].answer.length; k++) {
+    //                   if (lsQuestion[i].answer[k].id.toString() ==
+    //                       lsAnswerUserTemp[j].answerContent[0]) {
+    //                     if (lsQuestion[i].answer[k].answerType !=
+    //                         KindOfAnswer.Other) {
+    //                       selectedAnswer[i] = lsQuestion[i].answer[k];
+    //                       //visibleQuestion[i] = true;
+    //                     } else {
+    //                       //  visibleQuestion[i] = true;
+    //                       selectedAnswer[i] = lsQuestion[i].answer[k];
+    //                       // visibleAnother[i] = true;
+    //                       _listController[i].text =
+    //                           lsAnswerUserTemp[j].answerOtherContent;
+    //                     }
+    //                   }
+    //                 }
+    //               } else if (lsQuestion[i].questionType ==
+    //                   KindOfQuestion.TextField) {
+    //                 _listController[i].text =
+    //                     lsAnswerUserTemp[j].answerContent[0];
+    //               } else if (lsQuestion[i].questionType ==
+    //                   KindOfQuestion.TextFieldNumber) {
+    //                 _listController[i].text =
+    //                     lsAnswerUserTemp[j].answerContent[0];
+    //               } else if (lsQuestion[i].questionType ==
+    //                   KindOfQuestion.Checkbox) {
+    //                 for (int k = 0; k < lsQuestion[i].answer.length; k++) {
+    //                   for (int p = 0;
+    //                       p < lsAnswerUserTemp[j].answerContent.length;
+    //                       p++) {
+    //                     if (lsQuestion[i].answer[k].id.toString() ==
+    //                         lsAnswerUserTemp[j].answerContent[p]) {
+    //                       if (lsQuestion[i].answer[k].answerType !=
+    //                           KindOfAnswer.Other) {
+    //                         lsCheckbox[i][k] = true;
+    //                         //  visibleQuestion[i] = true;
+    //                       } else {
+    //                         //   visibleQuestion[i] = true;
+    //                         visibleAnother[i] = true;
+    //                         lsCheckbox[i][k] = true;
+    //                         _listController[i].text =
+    //                             lsAnswerUserTemp[j].answerOtherContent;
+    //                       }
+    //                     }
+    //                   }
+    //                 }
+    //               }
+    //             }
+    //           }
+    //         }
+    //         for (int i = 0; i < listFirstQuest.length; i++) {
+    //           //  print(listFirstQuest[i]);
+    //           if (lsQuestion[listFirstQuest[i]].questionType ==
+    //               KindOfQuestion.RadioCheckbox) {
+    //             if (selectedAnswer[listFirstQuest[i]] != null)
+    //               visibleQuestion[listFirstQuest[i]] = true;
+    //           } else if (lsQuestion[listFirstQuest[i]].questionType ==
+    //               KindOfQuestion.Checkbox) {
+    //             for (int k = 0;
+    //                 k < lsQuestion[listFirstQuest[i]].answer.length;
+    //                 k++) {
+    //               if (lsCheckbox[listFirstQuest[i]][k]) {
+    //                 visibleQuestion[listFirstQuest[i]] = true;
+    //               }
+    //             }
+    //           }
+    //         }
+    //         for (int i = 0; i < lsQuestion.length; i++) {
+    //           if (lsQuestion[i].questionType == KindOfQuestion.RadioCheckbox) {
+    //             for (int k = 0; k < lsQuestion[i].answer.length; k++) {
+    //               if (selectedAnswer[i] != null) {
+    //                 if (lsQuestion[i].answer.length > 0 &&
+    //                     selectedAnswer[i].id == lsQuestion[i].answer[k].id &&
+    //                     visibleQuestion[i] == true) {
+    //                   for (int m = 0;
+    //                       m < lsQuestion[i].answer[k].srSurveyQuestions.length;
+    //                       m++) {
+    //                     for (int t = 0; t < lsQuestion.length; t++) {
+    //                       if (lsQuestion[i].answer[k].srSurveyQuestions[m].id ==
+    //                           lsQuestion[t].id) {
+    //                         visibleQuestion[t] = true;
+    //                       }
+    //                     }
+    //                   }
+    //                 }
+    //               }
+    //             }
+    //           } else if (lsQuestion[i].questionType ==
+    //               KindOfQuestion.Checkbox) {
+    //             for (int k = 0; k < lsQuestion[i].answer.length; k++) {
+    //               if (lsCheckbox[i][k] == true && visibleQuestion[i] == true) {
+    //                 for (int t = 0; t < lsQuestion.length; t++) {
+    //                   for (int m = 0;
+    //                       m < lsQuestion[i].answer[k].srSurveyQuestions.length;
+    //                       m++) {
+    //                     if (lsQuestion[t].id ==
+    //                         lsQuestion[i].answer[k].srSurveyQuestions[m].id) {
+    //                       visibleQuestion[t] = true;
+    //                     }
+    //                   }
+    //                 }
+    //               }
+    //             }
+    //           }
+    //         }
+    //       });
+    //     }
+    //     enableAddCV = false;
 
-            for (int i = 0; i < lgnQuestion; i++) {
-              for (int j = 0; j < lsAnswerUserTemp.length; j++) {
-                if (lsQuestion[i].id == lsAnswerUserTemp[j].questionID) {
-                  if (lsQuestion[i].questionType ==
-                      KindOfQuestion.RadioCheckbox) {
-                    for (int k = 0; k < lsQuestion[i].answer.length; k++) {
-                      if (lsQuestion[i].answer[k].id.toString() ==
-                          lsAnswerUserTemp[j].answerContent[0]) {
-                        if (lsQuestion[i].answer[k].answerType !=
-                            KindOfAnswer.Other) {
-                          selectedAnswer[i] = lsQuestion[i].answer[k];
-                          //visibleQuestion[i] = true;
-                        } else {
-                          //  visibleQuestion[i] = true;
-                          selectedAnswer[i] = lsQuestion[i].answer[k];
-                          // visibleAnother[i] = true;
-                          _listController[i].text =
-                              lsAnswerUserTemp[j].answerOtherContent;
-                        }
-                      }
-                    }
-                  } else if (lsQuestion[i].questionType ==
-                      KindOfQuestion.TextField) {
-                    _listController[i].text =
-                        lsAnswerUserTemp[j].answerContent[0];
-                  } else if (lsQuestion[i].questionType ==
-                      KindOfQuestion.TextFieldNumber) {
-                    _listController[i].text =
-                        lsAnswerUserTemp[j].answerContent[0];
-                  } else if (lsQuestion[i].questionType ==
-                      KindOfQuestion.Checkbox) {
-                    for (int k = 0; k < lsQuestion[i].answer.length; k++) {
-                      for (int p = 0;
-                          p < lsAnswerUserTemp[j].answerContent.length;
-                          p++) {
-                        if (lsQuestion[i].answer[k].id.toString() ==
-                            lsAnswerUserTemp[j].answerContent[p]) {
-                          if (lsQuestion[i].answer[k].answerType !=
-                              KindOfAnswer.Other) {
-                            lsCheckbox[i][k] = true;
-                            //  visibleQuestion[i] = true;
-                          } else {
-                            //   visibleQuestion[i] = true;
-                            visibleAnother[i] = true;
-                            lsCheckbox[i][k] = true;
-                            _listController[i].text =
-                                lsAnswerUserTemp[j].answerOtherContent;
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-            for (int i = 0; i < listFirstQuest.length; i++) {
-              //  print(listFirstQuest[i]);
-              if (lsQuestion[listFirstQuest[i]].questionType ==
-                  KindOfQuestion.RadioCheckbox) {
-                if (selectedAnswer[listFirstQuest[i]] != null)
-                  visibleQuestion[listFirstQuest[i]] = true;
-              } else if (lsQuestion[listFirstQuest[i]].questionType ==
-                  KindOfQuestion.Checkbox) {
-                for (int k = 0;
-                    k < lsQuestion[listFirstQuest[i]].answer.length;
-                    k++) {
-                  if (lsCheckbox[listFirstQuest[i]][k]) {
-                    visibleQuestion[listFirstQuest[i]] = true;
-                  }
-                }
-              }
-            }
-            for (int i = 0; i < lsQuestion.length; i++) {
-              if (lsQuestion[i].questionType == KindOfQuestion.RadioCheckbox) {
-                for (int k = 0; k < lsQuestion[i].answer.length; k++) {
-                  if (selectedAnswer[i] != null) {
-                    if (lsQuestion[i].answer.length > 0 &&
-                        selectedAnswer[i].id == lsQuestion[i].answer[k].id &&
-                        visibleQuestion[i] == true) {
-                      for (int m = 0;
-                          m < lsQuestion[i].answer[k].srSurveyQuestions.length;
-                          m++) {
-                        for (int t = 0; t < lsQuestion.length; t++) {
-                          if (lsQuestion[i].answer[k].srSurveyQuestions[m].id ==
-                              lsQuestion[t].id) {
-                            visibleQuestion[t] = true;
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              } else if (lsQuestion[i].questionType ==
-                  KindOfQuestion.Checkbox) {
-                for (int k = 0; k < lsQuestion[i].answer.length; k++) {
-                  if (lsCheckbox[i][k] == true && visibleQuestion[i] == true) {
-                    for (int t = 0; t < lsQuestion.length; t++) {
-                      for (int m = 0;
-                          m < lsQuestion[i].answer[k].srSurveyQuestions.length;
-                          m++) {
-                        if (lsQuestion[t].id ==
-                            lsQuestion[i].answer[k].srSurveyQuestions[m].id) {
-                          visibleQuestion[t] = true;
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          });
-        }
-        enableAddCV = false;
+    //     _getVillageUser(userSurveyId);
+    //     _getListPicture(filename);
 
-        _getVillageUser(userSurveyId);
-        _getListPicture(filename);
+    //     //gmap
 
-        //gmap
-
-        //endgmap
-      });
-    }
+    //     //endgmap
+    //   });
+    // }
   }
 
   @override
@@ -522,29 +525,43 @@ class _CraftPageState extends State<CraftPage> {
                   Column(
                     children: <Widget>[
                       helper.drawerMenu(),
-                      lsQuestion.length != 0
-                          ? (Container(
-                              child: Column(
-                                children: <Widget>[
-                                  Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          20, 10, 20, 0),
-                                      child: Column(
-                                        children: displayImages(context),
-                                      ))
-                                ],
-                              ),
-                            ))
-                          : Container(),
-                      lsQuestion.length != 0 ? createInfoCV() : Container(),
-                      lsQuestion.length != 0 ? gMap() : Container(),
+                      // lsQuestion.length != 0
+                      //     ? (Container(
+                      //         child: Column(
+                      //           children: <Widget>[
+                      //             Padding(
+                      //                 padding: const EdgeInsets.fromLTRB(
+                      //                     20, 10, 20, 0),
+                      //                 child: Column(
+                      //                   children: displayImages(context),
+                      //                 ))
+                      //           ],
+                      //         ),
+                      //       ))
+                      //     : Container(),
+                      (Container(
+                        child: Column(
+                          children: <Widget>[
+                            Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                                child: Column(
+                                  children: displayImages(context),
+                                ))
+                          ],
+                        ),
+                      )), // Draw picture area
+                      createInfoCV(), // Draw infoCV
+                      gMap(), // Draw map
+                      // lsQuestion.length != 0 ? createInfoCV() : Container(),
+                      // lsQuestion.length != 0 ? gMap() : Container(),
                       Padding(
                           // padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                           padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              // Align(
+                              // Align( //Village info (Don't need)
                               //   alignment: lsQuestion.length != 0
                               //       ? Alignment.centerLeft
                               //       : Alignment.center,
@@ -577,31 +594,52 @@ class _CraftPageState extends State<CraftPage> {
                               )),
                             ],
                           )),
-                      lsQuestion.length != 0
-                          ? Padding(
-                              padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                              child: SizedBox(
-                                width: _width / 3.5,
-                                height: 52,
-                                child: RaisedButton(
-                                  color: Colors.blue,
-                                  onPressed: () {
-                                    showNoticeSubmitAndSaveDraft(
-                                        context, "completed");
-                                    _onSubmitClick("completed");
-                                  },
-                                  child: Text(LanguageConfig.getSubmit(),
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 18)),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(6))),
-                                ),
-                              ),
-                            )
-                          : (surveyActiveID != null
-                              ? Container()
-                              : Text(LanguageConfig.getWaiting2()))
+                      // lsQuestion.length != 0 // Draw dection box
+                      //     ? Padding(
+                      //         padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                      //         child: SizedBox(
+                      //           width: _width / 3.5,
+                      //           height: 52,
+                      //           child: RaisedButton(
+                      //             color: Colors.blue,
+                      //             onPressed: () {
+                      //               showNoticeSubmitAndSaveDraft(
+                      //                   context, "completed");
+                      //               _onSubmitClick("completed");
+                      //             },
+                      //             child: Text(LanguageConfig.getSubmit(),
+                      //                 style: TextStyle(
+                      //                     color: Colors.white, fontSize: 18)),
+                      //             shape: RoundedRectangleBorder(
+                      //                 borderRadius:
+                      //                     BorderRadius.all(Radius.circular(6))),
+                      //           ),
+                      //         ),
+                      //       )
+                      //     : (surveyActiveID != null
+                      //         ? Container()
+                      //         : Text(LanguageConfig.getWaiting2())),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                        child: SizedBox(
+                          width: _width / 3.5,
+                          height: 52,
+                          child: RaisedButton(
+                            color: Colors.blue,
+                            onPressed: () {
+                              showNoticeSubmitAndSaveDraft(
+                                  context, "completed");
+                              _onSubmitClick("completed");
+                            },
+                            child: Text(LanguageConfig.getSubmit(),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(6))),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ],
@@ -871,23 +909,102 @@ class _CraftPageState extends State<CraftPage> {
       }
     }
 
-    surveyVillageInfo = Container(
-      child: Visibility(
-          visible: isDisplay,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 5),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: villageInfo),
-          )),
-    );
+    //Village info (don't need)
+    // surveyVillageInfo = Container(
+    //   child: Visibility(
+    //       visible: isDisplay,
+    //       child: Padding(
+    //         padding: const EdgeInsets.only(top: 5),
+    //         child: Column(
+    //             mainAxisAlignment: MainAxisAlignment.start,
+    //             children: villageInfo),
+    //       )),
+    // );
 
     //Display village information
     // if ((typeUser == "HouseHold") && (typeUser == "Hộ gia đình")) {
-    widgets.add(Padding(
-        padding: EdgeInsets.only(top: 10),
-        child: Container(
-          decoration: BoxDecoration(
+    // widgets.add(Padding(
+    //     padding: EdgeInsets.only(top: 10),
+    //     child: Container(
+    //       decoration: BoxDecoration(
+    //         color: Colors.grey[100],
+    //         borderRadius: BorderRadius.only(
+    //             topLeft: Radius.circular(15),
+    //             topRight: Radius.circular(15),
+    //             bottomLeft: Radius.circular(15),
+    //             bottomRight: Radius.circular(15)),
+    //         boxShadow: [
+    //           BoxShadow(
+    //             color: Colors.grey.withOpacity(0.5),
+    //             spreadRadius: 1,
+    //             blurRadius: 2,
+    //             offset: Offset(0, 3), // changes position of shadow
+    //           )
+    //         ],
+    //       ),
+    //       child: SizedBox(
+    //         width: double.infinity,
+    //         child: TextButton(
+    //           style: TextButton.styleFrom(
+    //             textStyle: const TextStyle(fontSize: 20),
+    //           ),
+    //           onPressed: () {
+    //             setState(() {
+    //               if (isDisplay)
+    //                 isDisplay = false;
+    //               else
+    //                 isDisplay = true;
+    //             });
+    //           },
+    //           child: Row(
+    //             mainAxisAlignment: MainAxisAlignment.spaceAround,
+    //             children: <Widget>[
+    //               Align(
+    //                   alignment: lsQuestion.length != 0
+    //                       ? Alignment.centerLeft
+    //                       : Alignment.center,
+    //                   child: Container(
+    //                     child: Text(
+    //                       lsQuestion.length != 0
+    //                           ? LanguageConfig.getInputInfo()
+    //                           : (surveyActiveID != null
+    //                               ? LanguageConfig.getWaiting()
+    //                               : LanguageConfig.getNotice()),
+    //                       style: surveyActiveID != null
+    //                           ? TextStyle(fontSize: 20, color: Colors.black)
+    //                           : (TextStyle(
+    //                               fontSize: 20,
+    //                               color: Colors.red,
+    //                               fontWeight: FontWeight.bold)),
+    //                     ),
+    //                   )),
+    //               Icon(
+    //                 isDisplay ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+    //                 color: Colors.green,
+    //                 size: 30.0,
+    //               )
+    //             ],
+    //           ),
+    //         ),
+    //       ),
+    //     )));
+    // }
+
+    // widgets.add(surveyVillageInfo);
+    polutionInfo.add(createPollutionQuestion());
+    widgets..addAll(polutionInfo);
+
+    checkLoadingData = true;
+    checkIconLoading = false;
+
+    return widgets;
+  }
+
+  Padding createPollutionQuestion() {
+    return Padding(
+      padding: EdgeInsets.only(top: 10),
+      child: Container(
+        decoration: BoxDecoration(
             color: Colors.grey[100],
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(15),
@@ -900,64 +1017,62 @@ class _CraftPageState extends State<CraftPage> {
                 spreadRadius: 1,
                 blurRadius: 2,
                 offset: Offset(0, 3), // changes position of shadow
-              )
-            ],
-          ),
-          child: SizedBox(
-            width: double.infinity,
-            child: TextButton(
-              style: TextButton.styleFrom(
-                textStyle: const TextStyle(fontSize: 20),
               ),
-              onPressed: () {
-                setState(() {
-                  if (isDisplay)
-                    isDisplay = false;
-                  else
-                    isDisplay = true;
-                });
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Align(
-                      alignment: lsQuestion.length != 0
-                          ? Alignment.centerLeft
-                          : Alignment.center,
-                      child: Container(
-                        child: Text(
-                          lsQuestion.length != 0
-                              ? LanguageConfig.getInputInfo()
-                              : (surveyActiveID != null
-                                  ? LanguageConfig.getWaiting()
-                                  : LanguageConfig.getNotice()),
-                          style: surveyActiveID != null
-                              ? TextStyle(fontSize: 20, color: Colors.black)
-                              : (TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold)),
-                        ),
-                      )),
-                  Icon(
-                    isDisplay ? Icons.arrow_drop_up : Icons.arrow_drop_down,
-                    color: Colors.green,
-                    size: 30.0,
-                  )
-                ],
-              ),
-            ),
-          ),
-        )));
-    // }
-
-    widgets.add(surveyVillageInfo);
-    widgets..addAll(polutionInfo);
-
-    checkLoadingData = true;
-    checkIconLoading = false;
-
-    return widgets;
+            ]),
+        child: Visibility(
+            visible: true,
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, top: 10),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      child: Text(
+                        "Thông tin ô nhiễm:",
+                        style: TextStyle(fontSize: 20, color: Colors.black),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    child: GestureDetector(
+                        onLongPress: () {},
+                        child: Container(
+                            child: Column(children: [
+                          CheckboxListTileCustom(
+                            title: Text("Ô nhiễm không khí"),
+                            value: _checkedAirPollution,
+                            onChanged: (bool value) {
+                              setState(() {
+                                _checkedAirPollution = value;
+                              });
+                            },
+                          ),
+                          CheckboxListTileCustom(
+                            title: Text("Ô nhiễm chất thải rắn"),
+                            value: _checkedSoilPollution,
+                            onChanged: (bool value) {
+                              setState(() {
+                                _checkedSoilPollution = value;
+                              });
+                            },
+                          ),
+                          CheckboxListTileCustom(
+                            title: Text("Ô nhiễm nước thải"),
+                            value: _checkedWaterPollution,
+                            onChanged: (bool value) {
+                              setState(() {
+                                _checkedWaterPollution = value;
+                              });
+                            },
+                          ),
+                        ]))))
+              ],
+            )),
+      ),
+    );
   }
 
   Padding createQuestionExist(int i) {
@@ -1455,180 +1570,179 @@ class _CraftPageState extends State<CraftPage> {
   }
 
   _onSubmitClick(String typeSubmit) async {
-    // print("type tab selection: $selectTabVillage");
-    // lsAnswerUser = [];
-    // bool notComplete = false;
-    // toltalUserAnswerQuestion = 0;
-    // for (int i = 0; i < listFirstQuest.length; i++) {
-    //   if (lsQuestion[listFirstQuest[i]].questionType ==
-    //       KindOfQuestion.RadioCheckbox) {
-    //     if (selectedAnswer[listFirstQuest[i]] != null) {
-    //       toltalUserAnswerQuestion++;
-    //     }
-    //   } else if (lsQuestion[listFirstQuest[i]].questionType ==
-    //       KindOfQuestion.Checkbox) {
-    //     bool check = false;
-    //     for (int k = 0; k < lsQuestion[listFirstQuest[i]].answer.length; k++) {
-    //       if (lsCheckbox[listFirstQuest[i]][k]) {
-    //         check = true;
-    //         break;
-    //       }
-    //     }
-    //     if (check) {
-    //       toltalUserAnswerQuestion++;
-    //     }
-    //   } else {
-    //     if (_listController[listFirstQuest[i]].text != "" &&
-    //         _listController[listFirstQuest[i]].text != null) {
-    //       toltalUserAnswerQuestion++;
-    //     }
-    //   }
-    // }
-    // print(
-    //     "totalQuest: $totalQuestion , totalAnswer: $toltalUserAnswerQuestion");
-    // for (int i = 0; i < lsQuestion.length; i++) {
-    //   if (lsQuestion[i].questionType == KindOfQuestion.RadioCheckbox) {
-    //     if (selectedAnswer[i] == null)
-    //       notComplete = true;
-    //     else {
-    //       List<String> lsAnswerRadioCB = new List<String>();
+    print("type tab selection: $selectTabVillage");
+    lsAnswerUser = [];
+    bool notComplete = false;
+    toltalUserAnswerQuestion = 0;
+    for (int i = 0; i < listFirstQuest.length; i++) {
+      if (lsQuestion[listFirstQuest[i]].questionType ==
+          KindOfQuestion.RadioCheckbox) {
+        if (selectedAnswer[listFirstQuest[i]] != null) {
+          toltalUserAnswerQuestion++;
+        }
+      } else if (lsQuestion[listFirstQuest[i]].questionType ==
+          KindOfQuestion.Checkbox) {
+        bool check = false;
+        for (int k = 0; k < lsQuestion[listFirstQuest[i]].answer.length; k++) {
+          if (lsCheckbox[listFirstQuest[i]][k]) {
+            check = true;
+            break;
+          }
+        }
+        if (check) {
+          toltalUserAnswerQuestion++;
+        }
+      } else {
+        if (_listController[listFirstQuest[i]].text != "" &&
+            _listController[listFirstQuest[i]].text != null) {
+          toltalUserAnswerQuestion++;
+        }
+      }
+    }
+    print(
+        "totalQuest: $totalQuestion , totalAnswer: $toltalUserAnswerQuestion");
+    for (int i = 0; i < lsQuestion.length; i++) {
+      if (lsQuestion[i].questionType == KindOfQuestion.RadioCheckbox) {
+        if (selectedAnswer[i] == null)
+          notComplete = true;
+        else {
+          List<String> lsAnswerRadioCB = new List<String>();
 
-    //       lsAnswerRadioCB.add(selectedAnswer[i].id.toString());
-    //       lsAnswerUser.add(new AnswerUser(
-    //           activeID: surveyActiveID != null
-    //               ? surveyActiveID
-    //               : surveyStatus.activeID,
-    //           // userSurveyID: survey.id,
-    //           questionID: lsQuestion[i].id,
-    //           answerContent: lsAnswerRadioCB,
-    //           answerOtherContent: _listController[i].text));
-    //     }
-    //   } else if (lsQuestion[i].questionType == KindOfQuestion.Checkbox) {
-    //     List<String> lsAnswerRadioCB = [];
-    //     bool checkComplete = false;
-    //     for (int j = 0; j < lsQuestion[i].answer.length; j++) {
-    //       if (lsCheckbox[i][j]) {
-    //         checkComplete = true;
-    //         // notComplete = true;
-    //         lsAnswerRadioCB.add(lsQuestion[i].answer[j].id.toString());
-    //       }
-    //     }
-    //     if (!checkComplete) notComplete = true;
-    //     lsAnswerUser.add(new AnswerUser(
-    //         activeID:
-    //             surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
-    //         questionID: lsQuestion[i].id,
-    //         answerContent: lsAnswerRadioCB,
-    //         answerOtherContent: _listController[i].text));
-    //   } else if (lsQuestion[i].questionType == KindOfQuestion.TextField) {
-    //     List<String> lsAnswerTF = [];
-    //     lsAnswerTF.add(_listController[i].text);
-    //     lsAnswerUser.add(new AnswerUser(
-    //         activeID:
-    //             surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
-    //         questionID: lsQuestion[i].id,
-    //         answerContent: lsAnswerTF));
-    //   } else if (lsQuestion[i].questionType == KindOfQuestion.TextFieldNumber) {
-    //     List<String> lsAnswerTF = [];
-    //     lsAnswerTF.add(_listController[i].text);
-    //     lsAnswerUser.add(new AnswerUser(
-    //         activeID:
-    //             surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
-    //         questionID: lsQuestion[i].id,
-    //         answerContent: lsAnswerTF));
-    //   }
-    // }
+          lsAnswerRadioCB.add(selectedAnswer[i].id.toString());
+          lsAnswerUser.add(new AnswerUser(
+              activeID: surveyActiveID != null
+                  ? surveyActiveID
+                  : surveyStatus.activeID,
+              // userSurveyID: survey.id,
+              questionID: lsQuestion[i].id,
+              answerContent: lsAnswerRadioCB,
+              answerOtherContent: _listController[i].text));
+        }
+      } else if (lsQuestion[i].questionType == KindOfQuestion.Checkbox) {
+        List<String> lsAnswerRadioCB = [];
+        bool checkComplete = false;
+        for (int j = 0; j < lsQuestion[i].answer.length; j++) {
+          if (lsCheckbox[i][j]) {
+            checkComplete = true;
+            // notComplete = true;
+            lsAnswerRadioCB.add(lsQuestion[i].answer[j].id.toString());
+          }
+        }
+        if (!checkComplete) notComplete = true;
+        lsAnswerUser.add(new AnswerUser(
+            activeID:
+                surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
+            questionID: lsQuestion[i].id,
+            answerContent: lsAnswerRadioCB,
+            answerOtherContent: _listController[i].text));
+      } else if (lsQuestion[i].questionType == KindOfQuestion.TextField) {
+        List<String> lsAnswerTF = [];
+        lsAnswerTF.add(_listController[i].text);
+        lsAnswerUser.add(new AnswerUser(
+            activeID:
+                surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
+            questionID: lsQuestion[i].id,
+            answerContent: lsAnswerTF));
+      } else if (lsQuestion[i].questionType == KindOfQuestion.TextFieldNumber) {
+        List<String> lsAnswerTF = [];
+        lsAnswerTF.add(_listController[i].text);
+        lsAnswerUser.add(new AnswerUser(
+            activeID:
+                surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
+            questionID: lsQuestion[i].id,
+            answerContent: lsAnswerTF));
+      }
+    }
 
-    // int totalImage = 0;
-    // if (images[0] is ImageUploadModel) totalImage++;
-    // // if (images[1] is ImageUploadModel) totalImage++;
-    // // if (images[2] is ImageUploadModel) totalImage++;
-    // totalQuestion = listFirstQuest.length;
-    // print("lat: ${_latController.text}");
-    // print("long: ${_longController.text}");
+    int totalImage = 0;
+    if (images[0] is ImageUploadModel) totalImage++;
+    // if (images[1] is ImageUploadModel) totalImage++;
+    // if (images[2] is ImageUploadModel) totalImage++;
+    totalQuestion = listFirstQuest.length;
+    print("lat: ${_latController.text}");
+    print("long: ${_longController.text}");
 
-    // String coord = "${_latController.text},${_longController.text}";
-    // print(coord);
-    // Village newVillage = new Village(
-    //     villageName: _addCraftVillage.text,
-    //     note: _addInfoCraftVillage.text,
-    //     coordinate: coord);
-    // if (selectedVillage != null || newVillage != null) {
-    //   lsVil = [];
-    //   LoadingDialog.showLoadingDialog(context, LanguageConfig.getProcessing());
-    //   if (surveyActiveID != null) {
-    //     print("totalImage: $totalImage");
-    //     uploadAllImage().then((vl) {
-    //       villageBloc.submitVillage(
-    //           selectTabVillage == 0
-    //               ? selectedVillage
-    //               : addIDToVillage(selectedWard.wardId.toString(), newVillage),
-    //           surveyActiveID != null
-    //               ? surveyActiveID.toString()
-    //               : surveyStatus.activeID.toString(),
-    //           totalQuestion.toString(),
-    //           toltalUserAnswerQuestion.toString(),
-    //           totalImage.toString(),
-    //           selectTabVillage.toString(),
-    //           selectedWard.wardId.toString(), () {
-    //         answerBloc.submitAnswerUser(lsAnswerUser,
-    //             surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
-    //             () {
-    //           LoadingDialog.hideLoadingDialog(context);
-    //           MsgDialog.showMsgDialogAndPushToScreenPage(
-    //               context,
-    //               LanguageConfig.getNotice(),
-    //               typeSubmit == "completed"
-    //                   ? LanguageConfig.getCompletedInfo()
-    //                   : LanguageConfig.getSaveDraftInfo());
-    //         }, (msg) {
-    //           LoadingDialog.hideLoadingDialog(context);
-    //           MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
-    //         }, typeSubmit);
-    //       }, (msg) {
-    //         LoadingDialog.hideLoadingDialog(context);
-    //         MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
-    //       });
-    //     });
-    //   } else {
-    //     uploadAllImage().then((vl) {
-    //       villageBloc.submitVillage(
-    //           selectTabVillage == 0
-    //               ? selectedVillage
-    //               : addIDToVillage(selectedWard.wardId.toString(), newVillage),
-    //           surveyActiveID != null
-    //               ? surveyActiveID.toString()
-    //               : surveyStatus.activeID.toString(),
-    //           totalQuestion.toString(),
-    //           toltalUserAnswerQuestion.toString(),
-    //           totalImage.toString(),
-    //           selectTabVillage.toString(),
-    //           selectedWard.wardId.toString(), () {
-    //         answerBloc.submitAnswerUser(lsAnswerUser,
-    //             surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
-    //             () {
-    //           LoadingDialog.hideLoadingDialog(context);
-    //           MsgDialog.showMsgDialogAndPushToScreenPage(
-    //               context,
-    //               LanguageConfig.getNotice(),
-    //               typeSubmit == "completed"
-    //                   ? LanguageConfig.getCompletedInfo()
-    //                   : LanguageConfig.getSaveDraftInfo());
-    //         }, (msg) {
-    //           LoadingDialog.hideLoadingDialog(context);
-    //           MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
-    //         }, typeSubmit);
-    //       }, (msg) {
-    //         LoadingDialog.hideLoadingDialog(context);
-    //         MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
-    //       });
-    //     });
-    //   }
-    // } else {
-    //   MsgDialog.showMsgDialog(context, LanguageConfig.getNotice(),
-    //       LanguageConfig.getWarningSubmit());
-    // }
-    //}
+    String coord = "${_latController.text},${_longController.text}";
+    print(coord);
+    Village newVillage = new Village(
+        villageName: _addCraftVillage.text,
+        note: _addInfoCraftVillage.text,
+        coordinate: coord);
+    if (selectedVillage != null || newVillage != null) {
+      lsVil = [];
+      LoadingDialog.showLoadingDialog(context, LanguageConfig.getProcessing());
+      if (surveyActiveID != null) {
+        print("totalImage: $totalImage");
+        uploadAllImage().then((vl) {
+          villageBloc.submitVillage(
+              selectTabVillage == 0
+                  ? selectedVillage
+                  : addIDToVillage(selectedWard.wardId.toString(), newVillage),
+              surveyActiveID != null
+                  ? surveyActiveID.toString()
+                  : surveyStatus.activeID.toString(),
+              totalQuestion.toString(),
+              toltalUserAnswerQuestion.toString(),
+              totalImage.toString(),
+              selectTabVillage.toString(),
+              selectedWard.wardId.toString(), () {
+            answerBloc.submitAnswerUser(lsAnswerUser,
+                surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
+                () {
+              LoadingDialog.hideLoadingDialog(context);
+              MsgDialog.showMsgDialogAndPushToScreenPage(
+                  context,
+                  LanguageConfig.getNotice(),
+                  typeSubmit == "completed"
+                      ? LanguageConfig.getCompletedInfo()
+                      : LanguageConfig.getSaveDraftInfo());
+            }, (msg) {
+              LoadingDialog.hideLoadingDialog(context);
+              MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
+            }, typeSubmit);
+          }, (msg) {
+            LoadingDialog.hideLoadingDialog(context);
+            MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
+          });
+        });
+      } else {
+        uploadAllImage().then((vl) {
+          villageBloc.submitVillage(
+              selectTabVillage == 0
+                  ? selectedVillage
+                  : addIDToVillage(selectedWard.wardId.toString(), newVillage),
+              surveyActiveID != null
+                  ? surveyActiveID.toString()
+                  : surveyStatus.activeID.toString(),
+              totalQuestion.toString(),
+              toltalUserAnswerQuestion.toString(),
+              totalImage.toString(),
+              selectTabVillage.toString(),
+              selectedWard.wardId.toString(), () {
+            answerBloc.submitAnswerUser(lsAnswerUser,
+                surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
+                () {
+              LoadingDialog.hideLoadingDialog(context);
+              MsgDialog.showMsgDialogAndPushToScreenPage(
+                  context,
+                  LanguageConfig.getNotice(),
+                  typeSubmit == "completed"
+                      ? LanguageConfig.getCompletedInfo()
+                      : LanguageConfig.getSaveDraftInfo());
+            }, (msg) {
+              LoadingDialog.hideLoadingDialog(context);
+              MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
+            }, typeSubmit);
+          }, (msg) {
+            LoadingDialog.hideLoadingDialog(context);
+            MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
+          });
+        });
+      }
+    } else {
+      MsgDialog.showMsgDialog(context, LanguageConfig.getNotice(),
+          LanguageConfig.getWarningSubmit());
+    }
   }
 
   Future<bool> uploadAllImage() async {
@@ -1851,50 +1965,6 @@ class _CraftPageState extends State<CraftPage> {
                 ),
               ),
             ),
-
-            // Container(
-            //     child:
-
-            //     Column(
-            //   children: <Widget>[
-            //     Container(
-            //       child: InkWell(
-            //         onTap: () {
-            //           print("a");
-            //         },
-            //         child: new Padding(
-            //           padding: new EdgeInsets.all(10.0),
-            //           child: new Text(
-            //               "If can't find your village, you can add a new Craft Village"),
-            //         ),
-            //       ),
-            //     ),
-            //     Container(
-            //       child: Column(
-            //         children: <Widget>[
-            //           Padding(
-            //             padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-            //             child: TextField(
-            //               controller: _infoCraftVillage,
-            //               style: TextStyle(color: Colors.black, fontSize: 18),
-            //               maxLines: _infoCraftVillage.text.trim() == "" ? 1 : 5,
-            //               keyboardType: TextInputType.multiline,
-            //               decoration: InputDecoration(
-            //                   filled: true,
-            //                   fillColor: Colors.white,
-            //                   labelText: "Nhập tên làng nghề mới",
-            //                   border: OutlineInputBorder(
-            //                       borderSide: BorderSide(
-            //                           color: Color(0xffCED002), width: 1),
-            //                       borderRadius:
-            //                           BorderRadius.all(Radius.circular(6)))),
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //     )
-            //   ],
-            // ))
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Container(
@@ -2560,23 +2630,23 @@ class _CraftPageState extends State<CraftPage> {
           String base64Img = base64Encode(imageBytes);
           Future imageDetectionResult = auth.imageDetect(base64Img);
 
+          print("Tra ve: " + (imageDetectionResult != null).toString());
           if (imageDetectionResult != null) {
             imageDetectionResult.then((value) {
-              print("Loai nhiem: " + value);
-              switch (value) {
-                case 'O_Nhiem_Khong_Khi':
-                  listCheckboxWidget[lsQuestion[24].answer[0].answerContent]
-                      .onChanged(true);
-                  break;
-                case 'O_Nhiem_Nuoc':
-                  listCheckboxWidget[lsQuestion[24].answer[1].answerContent]
-                      .onChanged(true);
-                  break;
-                case 'O_Nhiem_Dat':
-                  listCheckboxWidget[lsQuestion[24].answer[2].answerContent]
-                      .onChanged(true);
-                  break;
-              }
+              if (value['air_pollution'] > 50)
+                _checkedAirPollution = true;
+              else
+                _checkedAirPollution = false;
+
+              if (value['soil_pollution'] > 50)
+                _checkedSoilPollution = true;
+              else
+                _checkedSoilPollution = false;
+
+              if (value['water_pollution'] > 50)
+                _checkedWaterPollution = true;
+              else
+                _checkedWaterPollution = false;
             });
           }
 
@@ -3309,7 +3379,6 @@ class _CraftPageState extends State<CraftPage> {
       onPressed: () {
         Navigator.pop(context);
         // _onSubmitClick(typeSubmit);
-
       },
     );
 
@@ -3789,101 +3858,6 @@ class _CraftPageState extends State<CraftPage> {
                                   _visibleGmap = !_visibleGmap;
                                 });
                               }))),
-
-                  // Positioned(
-                  //     right: 10,
-                  //     top: 80,
-                  //     child: Container(
-                  //       width: _width / 3,
-                  //       height: 30,
-                  //       decoration: BoxDecoration(
-                  //         borderRadius: BorderRadius.all(Radius.circular(20)),
-                  //       ),
-                  //       child: RaisedButton(
-                  //         color: Colors.brown[100],
-                  //         onPressed: () {
-                  //           showDialogFillPolygon(context);
-                  //         },
-                  //         child: Text("Fill polygon"),
-                  //       ),
-                  //     )),
-
-                  // Positioned(
-                  //   right: 10,
-                  //   top: _height / 10,
-                  //   child: Container(
-                  //     width: _width / 2.5 + 5,
-                  //     height: _height / 3.5,
-                  //     decoration: BoxDecoration(
-                  //         color: Colors.white,
-                  //         borderRadius: BorderRadius.all(Radius.circular(20))),
-                  //     child: ListView(
-                  //       children: lsVietNamMap.keys.map((String key) {
-                  //         return new CheckboxListTile(
-                  //           title: new Text(key),
-                  //           value: lsVietNamMap[key],
-                  //           onChanged: (bool value) {
-                  //             setState(() {
-                  //               lsVietNamMap[key] = value;
-                  //               if (value == true) {
-                  //                 if (key == "Regions") {
-                  //                   bool checkDistricts = false;
-                  //                   bool checkProvinces = false;
-                  //                   lsVietNamMap.forEach((key, value) {
-                  //                     if (key == "Districts" && value) {
-                  //                       checkDistricts = true;
-                  //                     } else if (key == "Provinces" && value) {
-                  //                       checkProvinces = true;
-                  //                     }
-                  //                   });
-                  //                   if (!checkDistricts && checkProvinces)
-                  //                     polygonSetDefault = polygonSetProvinces;
-                  //                   else if ((checkDistricts && !checkProvinces) ||
-                  //                       (checkDistricts && checkProvinces))
-                  //                     polygonSetDefault = polygonSetDistricts;
-                  //                   else
-                  //                     polygonSetDefault = polygonSetRegions;
-                  //                 }
-                  //                 if (key == "Provinces") {
-                  //                   bool checkDistricts = false;
-                  //                   lsVietNamMap.forEach((key, value) {
-                  //                     if (key == "Districts" && value) {
-                  //                       checkDistricts = true;
-                  //                     }
-                  //                   });
-                  //                   if (checkDistricts)
-                  //                     polygonSetDefault = polygonSetDistricts;
-                  //                   else
-                  //                     polygonSetDefault = polygonSetProvinces;
-                  //                 }
-                  //                 if (key == "Districts") {
-                  //                   polygonSetDefault = polygonSetDistricts;
-                  //                 }
-                  //               } else {
-                  //                 bool isCheckAll = false;
-                  //                 lsVietNamMap.forEach((key, value) {
-                  //                   if (value == true) {
-                  //                     if (key == "Regions") {
-                  //                       polygonSetDefault = polygonSetRegions;
-                  //                     }
-                  //                     if (key == "Provinces") {
-                  //                       polygonSetDefault = polygonSetProvinces;
-                  //                     }
-                  //                     if (key == "Districts") {
-                  //                       polygonSetDefault = polygonSetDistricts;
-                  //                     }
-                  //                     isCheckAll = true;
-                  //                   }
-                  //                 });
-                  //                 if (isCheckAll == false) polygonSetDefault = null;
-                  //               }
-                  //             });
-                  //           },
-                  //         );
-                  //       }).toList(),
-                  //     ),
-                  //   ),
-                  // )
                 ],
               ),
             ),

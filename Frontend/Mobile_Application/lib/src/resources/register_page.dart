@@ -315,7 +315,7 @@ class _RegisterPageState extends State<RegisterPage> {
     // _repassController.text = 'demo009';
     // _firstNameController.text = 'Anh';
     // _lastNameController.text = 'Nguyen Van';
-    // _phoneController.text = '0352707895';
+    // _phoneController.text = '0354123659';
     // _emailController.text = 'vancongleca1997@gmail.com';
     //
 
