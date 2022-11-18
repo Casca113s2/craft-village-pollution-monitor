@@ -11,8 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import craftvillage.corelayer.utilities.ConstantParameter;
 
 /**
@@ -93,14 +95,14 @@ public class SrSurveyQuestionAnswer implements java.io.Serializable {
     this.answerType = answerType;
   }
 
-  // @JsonIgnore
-  // @OneToMany(fetch = FetchType.LAZY, mappedBy = "questionAnswer")
-  // public Set<HouseholdSurvey> getHouseholdSurveys() {
-  // return householdSurveys;
-  // }
-  //
-  // public void setHouseholdSurveys(Set<HouseholdSurvey> householdSurveys) {
-  // this.householdSurveys = householdSurveys;
-  // }
+  @JsonIgnore
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "srSurveyQuestionAnswer")
+  public Set<HouseholdSurvey> getHouseholdSurveys() {
+    return householdSurveys;
+  }
+
+  public void setHouseholdSurveys(Set<HouseholdSurvey> householdSurveys) {
+    this.householdSurveys = householdSurveys;
+  }
 
 }

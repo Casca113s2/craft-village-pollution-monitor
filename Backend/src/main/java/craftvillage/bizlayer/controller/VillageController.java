@@ -90,7 +90,7 @@ public class VillageController {
     userSurvey.setCoordinate(coordinate);
     userSurvey.setImage(image);
     userSurvey.setPollution(pollution);
-    userSurvey.setImage(image);
+    userSurvey.setNote(note);;
     userSurvey.setUrUser(user);
     if (village.getHasAdded() == 0)
       userSurvey.setIsTemporary("Deactived");
