@@ -42,7 +42,6 @@ public class UrUser implements java.io.Serializable {
   private Date activeDate;
   private String type;
 
-
   private Set<UserSurvey> userSurveys;
   private Set<UrRole> urRoles;
   private Set<UrSession> urSessions;
@@ -187,7 +186,8 @@ public class UrUser implements java.io.Serializable {
     this.activeDate = activeDate;
   }
 
-  @OneToMany(fetch = FetchType.EAGER, mappedBy = "urUser")
+  @JsonIgnore
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "urUser")
   public Set<UserSurvey> getUserSurveys() {
     return this.userSurveys;
   }
@@ -227,7 +227,8 @@ public class UrUser implements java.io.Serializable {
     this.type = type;
   }
 
-  @OneToMany(fetch = FetchType.EAGER, mappedBy = "household")
+  @JsonIgnore
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "household")
   public Set<HouseholdSurvey> getHouseholdSurvey() {
     return this.householdSurvey;
   }

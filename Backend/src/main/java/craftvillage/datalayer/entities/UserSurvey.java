@@ -94,7 +94,7 @@ public class UserSurvey implements java.io.Serializable {
     this.dateSubmitSurvey = dateSubmitSurvey;
   }
 
-  @Column(name = "IMAGE")
+  @Column(name = "IMAGE", length = 1024 * 1024)
   public String getImage() {
     return this.image;
   }
