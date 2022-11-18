@@ -3,6 +3,7 @@ package craftvillage.bizlayer.controller;
 // import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -79,12 +80,16 @@ public class VillageController {
     String villageId = VillageInfoForm.get("villageId");
     String coordinate = VillageInfoForm.get("longitude") + ", " + VillageInfoForm.get("latitude");
     String image = VillageInfoForm.get("image");
+    String pollution = VillageInfoForm.get("result");
+    String note = VillageInfoForm.get("note");
     UrUser user = userDeailsService.getUrUser(username);
     UserSurvey userSurvey = new UserSurvey();
     Village village = addressService.getVillageInfo(Integer.parseInt(villageId));
     userSurvey.setDateSubmitSurvey(new Date());
     userSurvey.setVillage(village);
     userSurvey.setCoordinate(coordinate);
+    userSurvey.setImage(image);
+    userSurvey.setPollution(pollution);
     userSurvey.setImage(image);
     userSurvey.setUrUser(user);
     if (village.getHasAdded() == 0)
@@ -101,7 +106,7 @@ public class VillageController {
    */
   @RequestMapping(value = "/" + ConstantParameter.ServiceVillage._VILLAGE_DETECT,
       method = RequestMethod.GET, produces = "application/json")
-  public Map<String, Map<String, String>> detectVillage(@RequestParam String latitude,
+  public List<Map<String, String>> detectVillage(@RequestParam String latitude,
       @RequestParam String longitude) {
 
     Coordinate coordinate =
@@ -110,9 +115,7 @@ public class VillageController {
     List<Village> villages = villageService.findVillageByCoordinate(coordinate);
     System.out.println("coordinate: " + coordinate.x + " - " + coordinate.y);
 
-    Map<String, Map<String, String>> res = new HashMap<>();
-
-    int i = 0;
+    List<Map<String, String>> res = new ArrayList<Map<String, String>>();
 
     for (Village village : villages) {
       Map<String, String> villageInfo = new HashMap<>();
@@ -145,7 +148,7 @@ public class VillageController {
       villageInfo.put("villageLatitude", villagecoordinate[0]);
       villageInfo.put("villageLongitude", villagecoordinate[1]);
 
-      res.put("Village_" + i++, villageInfo);
+      res.add(villageInfo);
     }
 
     return res;

@@ -1,6 +1,7 @@
 package craftvillage.datalayer.entities;
 // Generated Mar 10, 2020 9:28:01 AM by Hibernate Tools 4.3.5.Final
 
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,6 +27,7 @@ public class SrSurveyQuestionAnswer implements java.io.Serializable {
   private String answerContent;
   private Double indicate;
   private String answerType;
+  private Set<HouseholdSurvey> householdSurveys;
 
   public SrSurveyQuestionAnswer() {}
 
@@ -90,4 +92,15 @@ public class SrSurveyQuestionAnswer implements java.io.Serializable {
   public void setAnswerType(String answerType) {
     this.answerType = answerType;
   }
+
+  // @JsonIgnore
+  // @OneToMany(fetch = FetchType.LAZY, mappedBy = "questionAnswer")
+  // public Set<HouseholdSurvey> getHouseholdSurveys() {
+  // return householdSurveys;
+  // }
+  //
+  // public void setHouseholdSurveys(Set<HouseholdSurvey> householdSurveys) {
+  // this.householdSurveys = householdSurveys;
+  // }
+
 }

@@ -27,7 +27,6 @@ public class SrSurveyQuestion implements java.io.Serializable {
   private String questionLabel;
   private int active;
   private Set<SrSurveyQuestionAnswer> srSurveyQuestionAnswers;
-  private Set<HouseholdSurvey> householdSurvey;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO, generator = "SR_SURVEY_QUESTION_SEQ")
@@ -85,14 +84,4 @@ public class SrSurveyQuestion implements java.io.Serializable {
   public void setSrSurveyQuestionAnswers(Set<SrSurveyQuestionAnswer> srSurveyQuestionAnswers) {
     this.srSurveyQuestionAnswers = srSurveyQuestionAnswers;
   }
-
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "question")
-  public Set<HouseholdSurvey> getHouseholdSurvey() {
-    return householdSurvey;
-  }
-
-  public void setHouseholdSurvey(Set<HouseholdSurvey> householdSurvey) {
-    this.householdSurvey = householdSurvey;
-  }
-
 }

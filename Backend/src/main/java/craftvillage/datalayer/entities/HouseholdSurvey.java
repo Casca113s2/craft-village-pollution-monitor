@@ -20,7 +20,7 @@ public class HouseholdSurvey {
   private Integer id;
   private String answerContent;
   private UrUser household;
-  private SrSurveyQuestion question;
+  private SrSurveyQuestionAnswer questionAnswer;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -53,14 +53,14 @@ public class HouseholdSurvey {
     this.household = household;
   }
 
-  @JsonBackReference
-  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JoinColumn(name = "SR_SQ_ID")
-  public SrSurveyQuestion getQuestion() {
-    return question;
-  }
-
-  public void setQuestion(SrSurveyQuestion question) {
-    this.question = question;
-  }
+  // @JsonBackReference
+  // @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  // @JoinColumn(name = "SR_SQA_ID")
+  // public SrSurveyQuestionAnswer getQuestion() {
+  // return questionAnswer;
+  // }
+  //
+  // public void setQuestionAnswer(SrSurveyQuestionAnswer questionAnswer) {
+  // this.questionAnswer = questionAnswer;
+  // }
 }
