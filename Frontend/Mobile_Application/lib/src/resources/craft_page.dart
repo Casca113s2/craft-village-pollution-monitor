@@ -85,6 +85,9 @@ bool isDisplay = false;
 //Test list visible
 List<bool> listVisbileQuestion = [];
 
+//Image base 64
+String base64Img;
+
 //Checkbox
 List<List<bool>> lsCheckbox = new List<List<bool>>();
 List<TextEditingController> _listController = [];
@@ -131,7 +134,7 @@ TextEditingController _infoCraftVillage = new TextEditingController();
 
 TextEditingController _addCraftVillage = new TextEditingController();
 TextEditingController _addInfoCraftVillage = new TextEditingController();
-
+TextEditingController _additionalInfo = new TextEditingController();
 Future<File> file;
 
 List<Object> images = List<Object>();
@@ -254,6 +257,7 @@ class _CraftPageState extends State<CraftPage> {
 
     _addCraftVillage = new TextEditingController();
     _addInfoCraftVillage = new TextEditingController();
+    _additionalInfo = new TextEditingController();
 
     //end craftvillage
     print("Survey Active ID:" + surveyActiveID.toString());
@@ -627,8 +631,8 @@ class _CraftPageState extends State<CraftPage> {
                           child: RaisedButton(
                             color: Colors.blue,
                             onPressed: () {
-                              showNoticeSubmitAndSaveDraft(
-                                  context, "completed");
+                              // showNoticeSubmitAndSaveDraft(
+                              //     context, "completed");
                               _onSubmitClick("completed");
                             },
                             child: Text(LanguageConfig.getSubmit(),
@@ -1003,74 +1007,137 @@ class _CraftPageState extends State<CraftPage> {
   Padding createPollutionQuestion() {
     return Padding(
       padding: EdgeInsets.only(top: 10),
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
-                bottomLeft: Radius.circular(15),
-                bottomRight: Radius.circular(15)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 1,
-                blurRadius: 2,
-                offset: Offset(0, 3), // changes position of shadow
-              ),
-            ]),
-        child: Visibility(
-            visible: true,
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 10),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      child: Text(
-                        "Thông tin ô nhiễm:",
-                        style: TextStyle(fontSize: 20, color: Colors.black),
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15),
+                    bottomLeft: Radius.circular(15),
+                    bottomRight: Radius.circular(15)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 1,
+                    blurRadius: 2,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ]),
+            child: Visibility(
+                visible: true,
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10, top: 10),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          child: Text(
+                            "Thông tin ô nhiễm:",
+                            style: TextStyle(fontSize: 20, color: Colors.black),
+                          ),
+                        ),
                       ),
                     ),
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        child: GestureDetector(
+                            onLongPress: () {},
+                            child: Container(
+                                child: Column(children: [
+                              CheckboxListTileCustom(
+                                title: Text("Ô nhiễm không khí"),
+                                value: _checkedAirPollution,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    _checkedAirPollution = value;
+                                  });
+                                },
+                              ),
+                              CheckboxListTileCustom(
+                                title: Text("Ô nhiễm chất thải rắn"),
+                                value: _checkedSoilPollution,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    _checkedSoilPollution = value;
+                                  });
+                                },
+                              ),
+                              CheckboxListTileCustom(
+                                title: Text("Ô nhiễm nước thải"),
+                                value: _checkedWaterPollution,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    _checkedWaterPollution = value;
+                                  });
+                                },
+                              ),
+                            ])))),
+                  ],
+                )),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 10),
+          ),
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15),
+                    bottomLeft: Radius.circular(15),
+                    bottomRight: Radius.circular(15)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 1,
+                    blurRadius: 2,
+                    offset: Offset(0, 3), // changes position of shadow
                   ),
-                ),
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                    child: GestureDetector(
-                        onLongPress: () {},
+                ]),
+            child: Visibility(
+                visible: true,
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10, top: 10),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
                         child: Container(
-                            child: Column(children: [
-                          CheckboxListTileCustom(
-                            title: Text("Ô nhiễm không khí"),
-                            value: _checkedAirPollution,
-                            onChanged: (bool value) {
-                              setState(() {
-                                _checkedAirPollution = value;
-                              });
-                            },
+                          child: Text(
+                            "Thông tin liên quan:",
+                            style: TextStyle(fontSize: 20, color: Colors.black),
                           ),
-                          CheckboxListTileCustom(
-                            title: Text("Ô nhiễm chất thải rắn"),
-                            value: _checkedSoilPollution,
-                            onChanged: (bool value) {
-                              setState(() {
-                                _checkedSoilPollution = value;
-                              });
-                            },
-                          ),
-                          CheckboxListTileCustom(
-                            title: Text("Ô nhiễm nước thải"),
-                            value: _checkedWaterPollution,
-                            onChanged: (bool value) {
-                              setState(() {
-                                _checkedWaterPollution = value;
-                              });
-                            },
-                          ),
-                        ]))))
-              ],
-            )),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      child: Container(
+                        width: double.infinity,
+                        child: TextField(
+                          controller: _additionalInfo,
+                          style: TextStyle(color: Colors.black, fontSize: 18),
+                          maxLines: 3,
+                          keyboardType: TextInputType.multiline,
+                          decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              labelText: "Thông tin liên qua về ô nhiễm",
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Color(0xffCED002), width: 1),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(6)))),
+                        ),
+                      ),
+                    ),
+                  ],
+                )),
+          ),
+        ],
       ),
     );
   }
@@ -1671,74 +1738,110 @@ class _CraftPageState extends State<CraftPage> {
     if (selectedVillage != null || newVillage != null) {
       lsVil = [];
       LoadingDialog.showLoadingDialog(context, LanguageConfig.getProcessing());
-      if (surveyActiveID != null) {
-        print("totalImage: $totalImage");
-        uploadAllImage().then((vl) {
-          villageBloc.submitVillage(
-              selectTabVillage == 0
-                  ? selectedVillage
-                  : addIDToVillage(selectedWard.wardId.toString(), newVillage),
-              surveyActiveID != null
-                  ? surveyActiveID.toString()
-                  : surveyStatus.activeID.toString(),
-              totalQuestion.toString(),
-              toltalUserAnswerQuestion.toString(),
-              totalImage.toString(),
-              selectTabVillage.toString(),
-              selectedWard.wardId.toString(), () {
-            answerBloc.submitAnswerUser(lsAnswerUser,
-                surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
-                () {
-              LoadingDialog.hideLoadingDialog(context);
-              MsgDialog.showMsgDialogAndPushToScreenPage(
-                  context,
-                  LanguageConfig.getNotice(),
-                  typeSubmit == "completed"
-                      ? LanguageConfig.getCompletedInfo()
-                      : LanguageConfig.getSaveDraftInfo());
-            }, (msg) {
-              LoadingDialog.hideLoadingDialog(context);
-              MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
-            }, typeSubmit);
-          }, (msg) {
-            LoadingDialog.hideLoadingDialog(context);
-            MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
-          });
-        });
-      } else {
-        uploadAllImage().then((vl) {
-          villageBloc.submitVillage(
-              selectTabVillage == 0
-                  ? selectedVillage
-                  : addIDToVillage(selectedWard.wardId.toString(), newVillage),
-              surveyActiveID != null
-                  ? surveyActiveID.toString()
-                  : surveyStatus.activeID.toString(),
-              totalQuestion.toString(),
-              toltalUserAnswerQuestion.toString(),
-              totalImage.toString(),
-              selectTabVillage.toString(),
-              selectedWard.wardId.toString(), () {
-            answerBloc.submitAnswerUser(lsAnswerUser,
-                surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
-                () {
-              LoadingDialog.hideLoadingDialog(context);
-              MsgDialog.showMsgDialogAndPushToScreenPage(
-                  context,
-                  LanguageConfig.getNotice(),
-                  typeSubmit == "completed"
-                      ? LanguageConfig.getCompletedInfo()
-                      : LanguageConfig.getSaveDraftInfo());
-            }, (msg) {
-              LoadingDialog.hideLoadingDialog(context);
-              MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
-            }, typeSubmit);
-          }, (msg) {
-            LoadingDialog.hideLoadingDialog(context);
-            MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
-          });
-        });
-      }
+
+      String result = "";
+
+      if (_checkedSoilPollution)
+        result = result + "1";
+      else
+        result = result + "0";
+
+      if (_checkedAirPollution)
+        result = result + "1";
+      else
+        result = result + "0";
+
+      if (_checkedWaterPollution)
+        result = result + "1";
+      else
+        result = result + "0";
+
+      print("Loai O nhiem: " + result);
+
+      villageBloc.submitVillage(
+          selectedVillage.villageId.toString(),
+          _longController.text,
+          _latController.text,
+          base64Img,
+          result,
+          _additionalInfo.text, (msg) {
+        LoadingDialog.hideLoadingDialog(context);
+        // MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
+        MsgDialog.showMsgDialogAndPushToScreenPage(
+            context, LanguageConfig.getSubmit(), msg);
+      }, (msg) {
+        LoadingDialog.hideLoadingDialog(context);
+        MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
+      });
+
+      // if (surveyActiveID != null) {
+      //   print("totalImage: $totalImage");
+      //   uploadAllImage().then((vl) {
+      //     villageBloc.submitVillage(
+      //         selectTabVillage == 0
+      //             ? selectedVillage
+      //             : addIDToVillage(selectedWard.wardId.toString(), newVillage),
+      //         surveyActiveID != null
+      //             ? surveyActiveID.toString()
+      //             : surveyStatus.activeID.toString(),
+      //         totalQuestion.toString(),
+      //         toltalUserAnswerQuestion.toString(),
+      //         totalImage.toString(),
+      //         selectTabVillage.toString(),
+      //         selectedWard.wardId.toString(), () {
+      //       answerBloc.submitAnswerUser(lsAnswerUser,
+      //           surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
+      //           () {
+      //         LoadingDialog.hideLoadingDialog(context);
+      //         MsgDialog.showMsgDialogAndPushToScreenPage(
+      //             context,
+      //             LanguageConfig.getNotice(),
+      //             typeSubmit == "completed"
+      //                 ? LanguageConfig.getCompletedInfo()
+      //                 : LanguageConfig.getSaveDraftInfo());
+      //       }, (msg) {
+      //         LoadingDialog.hideLoadingDialog(context);
+      //         MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
+      //       }, typeSubmit);
+      //     }, (msg) {
+      //       LoadingDialog.hideLoadingDialog(context);
+      //       MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
+      //     });
+      //   });
+      // } else {
+      // uploadAllImage().then((vl) {
+      //   villageBloc.submitVillage(
+      //       selectTabVillage == 0
+      //           ? selectedVillage
+      //           : addIDToVillage(selectedWard.wardId.toString(), newVillage),
+      //       surveyActiveID != null
+      //           ? surveyActiveID.toString()
+      //           : surveyStatus.activeID.toString(),
+      //       totalQuestion.toString(),
+      //       toltalUserAnswerQuestion.toString(),
+      //       totalImage.toString(),
+      //       selectTabVillage.toString(),
+      //       selectedWard.wardId.toString(), () {
+      //     answerBloc.submitAnswerUser(lsAnswerUser,
+      //         surveyActiveID != null ? surveyActiveID : surveyStatus.activeID,
+      //         () {
+      //       LoadingDialog.hideLoadingDialog(context);
+      //       MsgDialog.showMsgDialogAndPushToScreenPage(
+      //           context,
+      //           LanguageConfig.getNotice(),
+      //           typeSubmit == "completed"
+      //               ? LanguageConfig.getCompletedInfo()
+      //               : LanguageConfig.getSaveDraftInfo());
+      //     }, (msg) {
+      //       LoadingDialog.hideLoadingDialog(context);
+      //       MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
+      //     }, typeSubmit);
+      //   }, (msg) {
+      //     LoadingDialog.hideLoadingDialog(context);
+      //     MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
+      //   });
+      // });
+      // }
     } else {
       MsgDialog.showMsgDialog(context, LanguageConfig.getNotice(),
           LanguageConfig.getWarningSubmit());
@@ -2627,7 +2730,7 @@ class _CraftPageState extends State<CraftPage> {
 
           //Detect image
           List<int> imageBytes = File(image.path).readAsBytesSync();
-          String base64Img = base64Encode(imageBytes);
+          base64Img = base64Encode(imageBytes);
           Future imageDetectionResult = auth.imageDetect(base64Img);
 
           print("Tra ve: " + (imageDetectionResult != null).toString());
@@ -2665,8 +2768,7 @@ class _CraftPageState extends State<CraftPage> {
                 setState(() {
                   lsProvince = pro;
                   lsProvince.forEach((f) {
-                    if (f.provinceId ==
-                        int.parse(value["Village_0"]["provinceId"]))
+                    if (f.provinceId == int.parse(value[0]["provinceId"]))
                       setState(() {
                         selectedProvince = f;
                       });
@@ -2676,14 +2778,13 @@ class _CraftPageState extends State<CraftPage> {
 
               //Set District
               addressBloc
-                  .fetchDistrict(int.parse(value["Village_0"]["provinceId"]),
-                      () {}, (msg) {})
+                  .fetchDistrict(
+                      int.parse(value[0]["provinceId"]), () {}, (msg) {})
                   .then((dis) {
                 setState(() {
                   lsDistrict = dis;
                   lsDistrict.forEach((f) {
-                    if (f.districtId ==
-                        int.parse(value["Village_0"]["districtId"]))
+                    if (f.districtId == int.parse(value[0]["districtId"]))
                       setState(() {
                         selectedDistrict = f;
                       });
@@ -2693,13 +2794,12 @@ class _CraftPageState extends State<CraftPage> {
 
               //Set Ward
               addressBloc
-                  .fetchWard(int.parse(value["Village_0"]["districtId"]), () {},
-                      (msg) {})
+                  .fetchWard(int.parse(value[0]["districtId"]), () {}, (msg) {})
                   .then((ward) {
                 setState(() {
                   lsWard = ward;
                   lsWard.forEach((f) {
-                    if (f.wardId == int.parse(value["Village_0"]["wardId"]))
+                    if (f.wardId == int.parse(value[0]["wardId"]))
                       setState(() {
                         selectedWard = f;
                       });
@@ -2708,44 +2808,83 @@ class _CraftPageState extends State<CraftPage> {
               });
 
               //Set Village
-              print("ward id: " + value["Village_0"]["wardId"].toString());
-              addressBloc
-                  .fetchVillage(
-                      int.parse(value["Village_0"]["wardId"]), () {}, (msg) {})
-                  .then((village) {
-                lsVillage = village;
-                lsVillage.forEach((f) {
-                  if (f.villageId == int.parse(value["Village_0"]["villageId"]))
-                    setState(() {
-                      selectedVillage = f;
-                      _infoCraftVillage.text = selectedVillage.note;
+              for (var item in value) {
+                String coordinate =
+                    item["villageLatitude"] + ", " + item["villageLongitude"];
+                lsVillage.add(new Village(
+                  villageId: int.parse(item["villageId"]),
+                  villageName: item["villageName"],
+                  coordinate: coordinate,
+                  note: item["villageNote"],
+                  provinceId: item["provinceId"],
+                  districtId: item["districtId"],
+                  wardId: item["wardId"],
+                ));
+              }
 
-                      //Save nearby villages
-                      for (int i = 0; i < value.length; i++) {
-                        _nearbyVillages.addAll({
-                          "Village_" + i.toString(): {
-                            "villageId": (value["Village_" + i.toString()]
-                                    ["villageId"])
-                                .toString(),
-                            "villageName": (value["Village_" + i.toString()]
-                                    ["villageName"])
-                                .toString(),
-                            "villageLatitude": (value["Village_" + i.toString()]
-                                    ["villageLatitude"])
-                                .toString(),
-                            "villageLongitude":
-                                (value["Village_" + i.toString()]
-                                        ["villageLongitude"])
-                                    .toString()
-                          }
-                        });
-                      }
+              lsVillage.forEach((f) {
+                if (f.villageId == int.parse(value[0]["villageId"]))
+                  setState(() {
+                    selectedVillage = f;
+                    _infoCraftVillage.text = selectedVillage.note;
+                    print("IAM IN HERE RN");
+                    //Save nearby villages
+                    int count = 0;
+                    for (var item in value) {
+                      _nearbyVillages.addAll({
+                        "Village_" + count.toString(): {
+                          "villageId": item["villageId"],
+                          "villageName": item["villageName"],
+                          "villageLatitude": item["villageLatitude"],
+                          "villageLongitude": item["villageLongitude"]
+                        }
+                      });
+                      count++;
+                    }
 
-                      //Set nearby villages position to map
-                      setNearbyVillagesMaker();
-                    });
-                });
+                    //Set nearby villages position to map
+                    setNearbyVillagesMaker();
+                  });
               });
+
+              // print("ward id: " + value[0]["wardId"].toString());
+              // addressBloc
+              //     .fetchVillage(
+              //         int.parse(value[0]["wardId"]), () {}, (msg) {})
+              //     .then((village) {
+              //   lsVillage = village;
+              //   lsVillage.forEach((f) {
+              //     if (f.villageId == int.parse(value[0]["villageId"]))
+              //       setState(() {
+              //         selectedVillage = f;
+              //         _infoCraftVillage.text = selectedVillage.note;
+
+              //         //Save nearby villages
+              //         for (int i = 0; i < value.length; i++) {
+              //           _nearbyVillages.addAll({
+              //             "Village_" + i.toString(): {
+              //               "villageId": (value["Village_" + i.toString()]
+              //                       ["villageId"])
+              //                   .toString(),
+              //               "villageName": (value["Village_" + i.toString()]
+              //                       ["villageName"])
+              //                   .toString(),
+              //               "villageLatitude": (value["Village_" + i.toString()]
+              //                       ["villageLatitude"])
+              //                   .toString(),
+              //               "villageLongitude":
+              //                   (value["Village_" + i.toString()]
+              //                           ["villageLongitude"])
+              //                       .toString()
+              //             }
+              //           });
+              //         }
+
+              //         //Set nearby villages position to map
+              //         setNearbyVillagesMaker();
+              //       });
+              //   });
+              // });
             });
           }
         });

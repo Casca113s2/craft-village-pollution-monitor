@@ -151,6 +151,7 @@ class ApiAddress {
     // print(ConstantParameter.getAddressUrl() +
     //     ServiceAddress.getVillage() +
     //     "?wardid=$wardId");
+    print("RESPONE BODY VILLAGE: " + response.statusCode.toString());
     if (response.statusCode == 200) {
       // print("OK 200 fetchVillage");
       List<Village> lsVillage;

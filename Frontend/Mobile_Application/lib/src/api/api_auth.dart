@@ -111,11 +111,11 @@ class ApiAuth {
     });
 
     // print("IM HERE RIGHT NOW!");
-    print("Location Detect Response Status Code: " +
-        response.statusCode.toString());
+    print("LOCATION RESPONE BODY: " +
+        response.body);
     if (response.statusCode == 200) {
       // print("Code: 200!-LOCATION");
-      jsonResponse = json.decode(response.body);
+      jsonResponse = json.decode(utf8.decode(response.bodyBytes));
       return jsonResponse;
     } else {
       print("Xử lý thất bại, vui lòng kiểm tra lại đường truyền");
@@ -447,13 +447,16 @@ class ApiAuth {
         onError("Có lỗi trong đường truyền, vui lòng thử lại sau.");
       });
       var jsonResponse = null;
+      
       if (response.statusCode == 200) {
         User us;
+        print("TEST NOW 1: " + response.body);
         jsonResponse = json.decode(response.body);
         us = User.fromJson(json.decode(utf8.decode(response.bodyBytes)));
         sharedPreferences.setString(
             "fullname", us.lastname + " " + us.firstname);
         sharedPreferences.setString("email", us.email);
+        print("TEST NOW 2: " + " " + json.decode(response.body)['lastname'] + json.decode(response.body)['firstname']);
         return us;
       } else {
         sharedPreferences.setString("fullname", "Nguyen Duc Nghia");
@@ -577,34 +580,78 @@ class ApiAuth {
     }
   }
 
+  // submitVillage(
+  //     Village vil,
+  //     String activeId,
+  //     String totalQuestion,
+  //     String totalAnswer,
+  //     String totalImage,
+  //     String hasAdded,
+  //     String adWardId,
+  //     Function onSuccess,
+  //     Function(String) onError) async {
+  //   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  //   //goi o day
+  //   String token = sharedPreferences.getString("token");
+  //   var jsonResponse = null;
+  //   var response = await http.post(
+  //       Uri.parse(
+  //           ConstantParameter.getAddressUrl() + ServiceVillage.submitVillage()),
+  //       body: json.encode(<String, String>{
+  //         'villageName': vil.villageName,
+  //         'coordinate': vil.coordinate,
+  //         'villageId': vil.villageId.toString(),
+  //         'activeId': activeId,
+  //         'totalQuestion': totalQuestion,
+  //         'totalAnswer': totalAnswer,
+  //         'totalImage': totalImage,
+  //         'hasAdded': hasAdded,
+  //         'note': vil.note,
+  //         'adWardId': adWardId
+  //       }),
+  //       headers: {
+  //         HttpHeaders.authorizationHeader: "Bearer $token",
+  //         'Content-Type': 'application/json; charset=UTF-8'
+  //       }).catchError((err) {
+  //     onError("Có lỗi trong đường truyền, vui lòng thử lại sau.");
+  //   });
+
+  //   if (response.statusCode == 200) {
+  //     jsonResponse = response.body;
+  //     if (jsonResponse == "true") {
+  //       onSuccess();
+  //     } else {
+  //       onError("Submit thất bại, xin thử lại sau");
+  //     }
+  //   } else {
+  //     onError("Submit thất bại, xin thử lại sau");
+  //   }
+  // }
+
   submitVillage(
-      Village vil,
-      String activeId,
-      String totalQuestion,
-      String totalAnswer,
-      String totalImage,
-      String hasAdded,
-      String adWardId,
+      String villageId,
+      String longitude,
+      String latitude,
+      String image,
+      String result,
+      String note,
       Function onSuccess,
       Function(String) onError) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     //goi o day
+    print("NOTE HERE: " + note);
     String token = sharedPreferences.getString("token");
     var jsonResponse = null;
     var response = await http.post(
         Uri.parse(
             ConstantParameter.getAddressUrl() + ServiceVillage.submitVillage()),
         body: json.encode(<String, String>{
-          'villageName': vil.villageName,
-          'coordinate': vil.coordinate,
-          'villageId': vil.villageId.toString(),
-          'activeId': activeId,
-          'totalQuestion': totalQuestion,
-          'totalAnswer': totalAnswer,
-          'totalImage': totalImage,
-          'hasAdded': hasAdded,
-          'note': vil.note,
-          'adWardId': adWardId
+          'villageId': villageId,
+          'longitude': longitude,
+          'latitude': latitude,
+          'image': image,
+          'result': result,
+          'note': note,
         }),
         headers: {
           HttpHeaders.authorizationHeader: "Bearer $token",
@@ -616,7 +663,8 @@ class ApiAuth {
     if (response.statusCode == 200) {
       jsonResponse = response.body;
       if (jsonResponse == "true") {
-        onSuccess();
+        print("HERE MAN: "+response.body);
+        onSuccess("Submit thành công!");
       } else {
         onError("Submit thất bại, xin thử lại sau");
       }

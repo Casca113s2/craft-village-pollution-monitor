@@ -24,17 +24,29 @@ class VillageBloc {
     return _apiAuth.createNewVillage(adWardId, village);
   }
 
+  // submitVillage(
+  //     Village vil,
+  //     String activeId,
+  //     String totalQuestion,
+  //     String totalAnswer,
+  //     String totalImage,
+  //     String hasAdded,
+  //     String adWardId,
+  //     Function onSuccess,
+  //     Function(String) onError) async {
+  //   _apiAuth.submitVillage(vil, activeId, totalQuestion, totalAnswer,
+  //       totalImage, hasAdded, adWardId, onSuccess, onError);
+  // }
+
   submitVillage(
-      Village vil,
-      String activeId,
-      String totalQuestion,
-      String totalAnswer,
-      String totalImage,
-      String hasAdded,
-      String adWardId,
+      String villageId,
+      String longitude,
+      String latitude,
+      String image,
+      String result,
+      String note,
       Function onSuccess,
       Function(String) onError) async {
-    _apiAuth.submitVillage(vil, activeId, totalQuestion, totalAnswer,
-        totalImage, hasAdded, adWardId, onSuccess, onError);
+    _apiAuth.submitVillage(villageId, longitude, latitude, image, result, note, onSuccess, onError);
   }
 }

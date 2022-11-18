@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     surveysLocalAuthority = null;
     surveysHouseHold = null;
     _getInfoUser();
-    _getListInProgress();
+    //_getListInProgress();
     _streamCheckInternet = _checkInternetConnectivity();
     scaffoldKey = GlobalKey<ScaffoldState>();
     typeUser = "";
@@ -180,33 +180,33 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   }
 
   //Get list of survey in progress
-  _getListInProgress() async {
-    await surveyBloc.fetchSurveysInProgress(() {}, (msg) {
-      LoadingDialog.hideLoadingDialog(context);
-      MsgDialog.showMsgDialog(context, LanguageConfig.getNotice(), msg);
-    }).then((value) {
-      lsSurveysInProgress = value;
-      lsSurveysInProgress.forEach((element) {
-        print(element.typeSurvey);
-        if (element.typeSurvey == "PrivatePerson") {
-          setState(() {
-            surveysPrivatePerson = element;
-          });
-          return;
-        } else if (element.typeSurvey == "HouseHold") {
-          setState(() {
-            surveysHouseHold = element;
-          });
-          return;
-        } else if (element.typeSurvey == "Local Authority") {
-          setState(() {
-            surveysLocalAuthority = element;
-          });
-          return;
-        }
-      });
-    });
-  }
+  // _getListInProgress() async {
+  //   await surveyBloc.fetchSurveysInProgress(() {}, (msg) {
+  //     LoadingDialog.hideLoadingDialog(context);
+  //     MsgDialog.showMsgDialog(context, LanguageConfig.getNotice(), msg);
+  //   }).then((value) {
+  //     lsSurveysInProgress = value;
+  //     lsSurveysInProgress.forEach((element) {
+  //       print(element.typeSurvey);
+  //       if (element.typeSurvey == "PrivatePerson") {
+  //         setState(() {
+  //           surveysPrivatePerson = element;
+  //         });
+  //         return;
+  //       } else if (element.typeSurvey == "HouseHold") {
+  //         setState(() {
+  //           surveysHouseHold = element;
+  //         });
+  //         return;
+  //       } else if (element.typeSurvey == "Local Authority") {
+  //         setState(() {
+  //           surveysLocalAuthority = element;
+  //         });
+  //         return;
+  //       }
+  //     });
+  //   });
+  // }
 
   //Get the current language (EN/VN)
   _getLanguage() {
