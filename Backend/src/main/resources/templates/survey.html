@@ -10,15 +10,14 @@
 
     <!-- Fontfaces CSS-->
     <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
-    <link th:href="@{/vendor/fontawesome-free-6.2.0-web/css/all.min.css}" rel="stylesheet" media="all">
     <link th:href="@{/vendor/mdi-font/css/material-design-iconic-font.min.css}" rel="stylesheet" media="all">
 
     <!-- Bootstrap CSS-->
     <!-- <link th:href="@{/vendor/bootstrap-4.1/bootstrap.min.css}" rel="stylesheet" media="all"> -->
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet" media="all"/>
+    <link th:href="@{/vendor/fontawesome-free-6.2.0-web/css/all.min.css}" rel="stylesheet" media="all">
     <!-- Vendor CSS-->
     <link th:href="@{/vendor/animsition/animsition.min.css}" rel="stylesheet" media="all">
-    <link th:href="@{/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}" rel="stylesheet" media="all">
     <link th:href="@{/vendor/wow/animate.css}" rel="stylesheet" media="all">
     <link th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" rel="stylesheet" media="all">
     <link th:href="@{/vendor/slick/slick.css}" rel="stylesheet" media="all">
@@ -130,20 +129,26 @@
 							        <thead>
 							            <tr style="background-color: white">
 							                <th>ID</th>
-							                <th>Household</th>
 							                <th>Ward</th>
 							                <th>Village</th>
+							                <th>Pollution</th>
 							                <th>Date</th>
+							                <th>Image</th>
 							            </tr>
 							        </thead>
 							        <tbody>
-							          	<th:block th:each="villageInfo : ${info}">
+							          	<th:block th:each="survey : ${surveys}">
 							          		<tr>
-							          			<td th:utext="${villageInfo.id}"></td>
-							          			<td th:utext="${villageInfo.household}"></td>
-							          			<td th:utext="${villageInfo.ward}"></td>
-							          			<td th:utext="${villageInfo.village}"></td>
-							          			<td th:utext="${villageInfo.date}"></td>
+							          			<td th:utext="${survey.id}"></td>
+							          			<td th:utext="${survey.ward}"></td>
+							          			<td th:utext="${survey.village}"></td>
+							          			<td th:utext="${survey.pollution}"></td>
+							          			<td th:utext="${survey.date}"></td>
+							          			<td>
+							          				<a onclick="getImage(this.parentElement.parentElement.children[0].innerText)">
+							          					<i class="fa-solid fa-arrow-up-right-from-square fa-xl"></i>
+							          				</a>
+							          			</td>
 							          		</tr>
 							          	</th:block>
 							        </tbody>
@@ -152,8 +157,10 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-header">Information</div>
-                            <div class="card-body"></div>
+                            <div class="card-header">Image</div>
+                            <div id="image-container" class="card-body">
+                            	
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -227,6 +234,12 @@
 	$(document).ready(function () {
 	    $('#dataTable').DataTable();
 	});
+	function getImage(id){
+		$.get("/craftvillage/api/survey/getimage?surveyId=" + id, function(data){
+	  		$('#image-container').empty();
+	  		$('#image-container').append("<img src='data:image/jpeg;base64,"+ data +"' alt= Picture />");
+	  	});
+	}
 	</script>
 </body>
 

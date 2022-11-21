@@ -25,6 +25,7 @@ import craftvillage.bizlayer.services.VillageServices;
 import craftvillage.datalayer.entities.AdDistrict;
 import craftvillage.datalayer.entities.AdWard;
 import craftvillage.datalayer.entities.UrUser;
+import craftvillage.datalayer.entities.UserSurvey;
 import craftvillage.datalayer.entities.Village;
 
 
@@ -147,4 +148,30 @@ public class AuthorityController {
     return villageService.denyNewVillage(villageId);
   }
 
+  @GetMapping("/surveys")
+  public String getSurveys(Model model, Principal principal) {
+    UrUser user = userService.findByUsername(principal.getName());
+    AdDistrict district = user.getDistrict();
+    Set<AdWard> wards = district.getAdWards();
+    List<Map<String, String>> surveys = new ArrayList<Map<String, String>>();
+    for (AdWard ward : wards) {
+      for (Village village : ward.getVillages()) {
+        if (village.getHasAdded() == 1)
+          for (UserSurvey survey : village.getUserSurveys()) {
+            Map<String, String> info = new HashMap<String, String>();
+            info.put("id", Integer.toString(survey.getId()));
+            info.put("ward", ward.getWardName());
+            info.put("village", village.getVillageName());
+            info.put("pollution", surveyService.getPollution(survey.getPollution()));
+            info.put("date", survey.getDateSubmitSurvey().toString());
+            info.put("image", survey.getImage());
+            surveys.add(info);
+          }
+      }
+    }
+    model.addAttribute("surveys", surveys);
+    model.addAttribute("name", user.getFirstname() + " " + user.getLastname());
+    model.addAttribute("email", user.getEmail());
+    return "survey";
+  }
 }

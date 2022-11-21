@@ -40,6 +40,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     // http.csrf().disable();
     http.csrf().ignoringAntMatchers("/craftvillage/api/village/newvillage", "/admin-site/**",
+        "/craftvillage/api/village/newvillage",
         url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_GET_COMPLETED,
         url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_GET_INPROGRESS,
         url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_UPLOAD_FILE,
@@ -58,7 +59,8 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
     http.authorizeRequests()
         .antMatchers("/", "/web/login", "/vendor/**", "/css/*", "/fonts/**", "/images/**", "/js/**",
-            "/media/**", "/craftvillage/api/village/newvillage",
+            "/media/**", "/craftvillage/api/village/newvillage", "/web/forgetpassword",
+            "/craftvillage/api/survey/getimage",
             url_user + "/" + ConstantParameter.ServiceUser._USER_LOGIN,
             url_user + "/" + ConstantParameter.ServiceUser._USER_REGISTER,
             url_user + "/" + ConstantParameter.ServiceUser._USER_LOGOUT,

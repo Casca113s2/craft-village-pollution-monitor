@@ -56,12 +56,8 @@
                             </ul>
                         </li>
                         <li>
-                            <a th:href="table.html">
-                                <i class="fa-solid fa-file-lines"></i>Survey</a>
-                        </li>
-                        <li>
-                            <a th:href="map.html">
-                                <i class="fas fa-map-marker-alt"></i>Maps</a>
+                            <a th:href="@{/web/authority/surveys}">
+                                <i class="fa-solid fa-file-lines"></i>Surveys</a>
                         </li>
                     </ul>
                 </nav>
@@ -101,7 +97,7 @@
                                             </div>
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
-                                                    <a  >
+                                                    <a href="#" id="modal-change-password">
                                                         <i class="zmdi zmdi-settings"></i>Change password</a>
                                                 </div>
                                             </div>
@@ -223,6 +219,41 @@
                     </div>
                 </div>
             </div>
+            <!-- modal static -->
+			<div class="modal fade" id="staticModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
+			 data-backdrop="static">
+				<div class="modal-dialog modal-sm" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="staticModalLabel">Change Password</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label>Current Password</label>
+								<input class="au-input au-input--full" id="current-password" type="password">
+							</div>
+							<div class="form-group">
+								<label>New Password</label>
+								<input class="au-input au-input--full" id="new-password" type="password">
+							</div>
+							<div class="form-group">
+								<label>Confirmed Password</label>
+								<input class="au-input au-input--full" id="confirmed-password" type="password">
+							</div>
+							<div id="error-message-modal" class="alert alert-danger message" role="alert" style="margin: 0;"></div>
+							<div id="success-message-modal" class="alert alert-success message" role="alert" style="margin: 0;"></div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							<button id="btn-change-password" type="button" class="btn btn-primary">Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end modal static -->
         </div>
 
     </div>
@@ -250,6 +281,7 @@
 
     <!-- Main JS-->
     <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/myfunction.js}"></script>
     <script>
 
         $.each($('.item.btn.btn-success'), function(index, element){

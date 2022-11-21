@@ -1,6 +1,7 @@
 package craftvillage.bizlayer.services;
 
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.UserSurvey;
 import craftvillage.datalayer.entities.Village;
+import craftvillage.datalayer.repositories.UserSurveyRepository;
 import craftvillage.datalayer.services.SurveyServ;
 import craftvillage.datalayer.services.UserServ;
 
@@ -20,6 +22,8 @@ public class SurveyServices {
   SurveyServ surveyServ = new SurveyServ();
   @Autowired
   UserServ userServ = new UserServ();
+  @Autowired
+  UserSurveyRepository userSurveyRepository;
 
   public int countMonthlySurvey(Village village) {
     int count = 0;
@@ -32,6 +36,11 @@ public class SurveyServices {
         count++;
     }
     return count;
+  }
+
+  public String getImageBySurveyId(int id) {
+    UserSurvey userSurvey = userSurveyRepository.getOne(id);
+    return userSurvey.getImage();
   }
 
   public UserSurvey getSubmitSurvey(String account, int activeId) {
@@ -66,4 +75,13 @@ public class SurveyServices {
     return userServ.setDateSubmitSurvey(userSurveyId, dateSubmitSurvey);
   }
 
+  public String getPollution(String pollution) {
+    List<String> result = new ArrayList<String>();
+    String[] list = {"Đất", "Nước", "Không khí"};
+    for (int i = 0; i < pollution.length(); i++) {
+      if (pollution.charAt(i) == '1')
+        result.add(list[i]);
+    }
+    return String.join(" - ", list);
+  }
 }

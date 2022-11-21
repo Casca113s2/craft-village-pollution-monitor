@@ -44,6 +44,7 @@ public class HouseholdController {
     model.addAttribute("provinceList", addressService.getProvinceList(234));
     model.addAttribute("name", user.getFirstname() + " " + user.getLastname());
     model.addAttribute("email", user.getEmail());
+    model.addAttribute("questions", srSurveyQuestionService.findByActive(1));
     return "household";
   }
 
@@ -71,7 +72,7 @@ public class HouseholdController {
 
   @GetMapping("/question")
   @ResponseBody
-  public List<SrSurveyQuestion> getQuestions() {
+  public List<SrSurveyQuestion> getQuestion() {
     return srSurveyQuestionService.findByActive(1);
   }
 }

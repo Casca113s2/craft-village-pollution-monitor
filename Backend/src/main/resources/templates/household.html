@@ -84,7 +84,7 @@
                                             </div>
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
-                                                    <a  >
+                                                    <a href="#" id="modal-change-password">
                                                         <i class="zmdi zmdi-settings"></i>Change password</a>
                                                 </div>
                                             </div>
@@ -244,40 +244,6 @@
                                                     <label>Sản lượng</label>
                                                     <input class="au-input au-input--full" type="text" name="quantity">
                                                 </div>
-                    
-                                                <div class="form-group">
-                                                    <label>Tốc độ tăng trưởng so với năm ngoái</label>
-                                                    <input class="au-input au-input--full" type="text" name="growth">
-                                                </div>
-                    
-                                                <div class="form-group">
-                                                    <label>Số người</label>
-                                                    <input class="au-input au-input--full" type="text" name="num-people">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Phân phối sử dụng nhiên liệu</label>
-                                                    <input class="au-input au-input--full" type="text" name="fuel">
-                                                </div>
-                    
-                                                <div class="form-group">
-                                                    <label>Đốt cháy</label>
-                                                    <input class="au-input au-input--full" type="text" name="burn">
-                                                </div>
-                    
-                                                <div class="form-group">
-                                                    <label>Quá trình sản xuất</label>
-                                                    <input class="au-input au-input--full" type="text" name="production-process">
-                                                </div>
-                    
-                                                <div class="form-group">
-                                                    <label>Vật liệu đầu vào</label>
-                                                    <input class="au-input au-input--full" type="text" name="input-materials">
-                                                </div>
-                    
-                                                <div class="form-group">
-                                                    <label>Nước đầu vào</label>
-                                                    <input class="au-input au-input--full" type="text" name="input-water">
-                                                </div>
                                             </div>
 
                                             <div class="w-50 p-l-20">
@@ -304,110 +270,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label>Sử dụng than</label>
-                                                    <div class="form-check">
-                                                        <div class="radio">
-                                                            <label for="radio1" class="form-check-label ">
-                                                                <input type="radio" id="radio1" name="charcoal" value="option1" checked
-                                                                    class="form-check-input">Có
-                                                            </label>
-                                                        </div>
-                                                        <div class="radio">
-                                                            <label for="radio2" class="form-check-label ">
-                                                                <input type="radio" id="radio2" name="charcoal" value="option2"
-                                                                    class="form-check-input">Không
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Sử dụng sinh khối</label>
-                                                    <div class="form-check">
-                                                        <div class="radio">
-                                                            <label for="radio1" class="form-check-label ">
-                                                                <input type="radio" id="radio1" name="biomass" value="option1" checked
-                                                                    class="form-check-input">Có
-                                                            </label>
-                                                        </div>
-                                                        <div class="radio">
-                                                            <label for="radio2" class="form-check-label ">
-                                                                <input type="radio" id="radio2" name="biomass" value="option2" 
-                                                                    class="form-check-input">Không
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                    
-                                                <div class="form-group">
-                                                    <label>Sử dụng chất thải rắn làm nhiên liệu</label>
-                                                    <div class="form-check">
-                                                        <div class="radio">
-                                                            <label for="radio1" class="form-check-label ">
-                                                                <input type="radio" id="radio1" name="solid-waste" value="option1" checked
-                                                                    class="form-check-input">Có
-                                                            </label>
-                                                        </div>
-                                                        <div class="radio">
-                                                            <label for="radio2" class="form-check-label ">
-                                                                <input type="radio" id="radio2" name="solid-waste" value="option2"
-                                                                    class="form-check-input">Không
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Sử dụng khí ga</label>
-                                                    <div class="form-check">
-                                                        <div class="radio">
-                                                            <label for="radio1" class="form-check-label ">
-                                                                <input type="radio" id="radio1" name="gas" value="option1" checked
-                                                                    class="form-check-input">Có
-                                                            </label>
-                                                        </div>
-                                                        <div class="radio">
-                                                            <label for="radio2" class="form-check-label ">
-                                                                <input type="radio" id="radio2" name="gas" value="option2" checked
-                                                                    class="form-check-input">Không
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                    
-                                                <div class="form-group">
-                                                    <label>Sử dụng dầu</label>
-                                                    <div class="form-check">
-                                                        <div class="radio">
-                                                            <label for="radio1" class="form-check-label ">
-                                                                <input type="radio" id="radio1" name="oil" value="option1" checked
-                                                                    class="form-check-input">Có
-                                                            </label>
-                                                        </div>
-                                                        <div class="radio">
-                                                            <label for="radio2" class="form-check-label ">
-                                                                <input type="radio" id="radio2" name="oil" value="option2"
-                                                                    class="form-check-input">Không
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Sử dụng điện</label>
-                                                    <div class="form-check">
-                                                        <div class="radio">
-                                                            <label for="radio1" class="form-check-label ">
-                                                                <input type="radio" id="radio1" name="electricity" value="option1" checked
-                                                                    class="form-check-input">Có
-                                                            </label>
-                                                        </div>
-                                                        <div class="radio">
-                                                            <label for="radio2" class="form-check-label ">
-                                                                <input type="radio" id="radio2" name="electricity" value="option2"
-                                                                    class="form-check-input">Không
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                
+                                               
                                             </div>
                                         </div>
                                     </form>
@@ -422,6 +286,41 @@
                 </div>
             </div>
             <!-- END MAIN CONTENT-->
+            <!-- modal static -->
+			<div class="modal fade" id="staticModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
+			 data-backdrop="static">
+				<div class="modal-dialog modal-sm" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="staticModalLabel">Change Password</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label>Current Password</label>
+								<input class="au-input au-input--full" id="current-password" type="password">
+							</div>
+							<div class="form-group">
+								<label>New Password</label>
+								<input class="au-input au-input--full" id="new-password" type="password">
+							</div>
+							<div class="form-group">
+								<label>Confirmed Password</label>
+								<input class="au-input au-input--full" id="confirmed-password" type="password">
+							</div>
+							<div id="error-message-modal" class="alert alert-danger message" role="alert" style="margin: 0;"></div>
+							<div id="success-message-modal" class="alert alert-success message" role="alert" style="margin: 0;"></div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							<button id="btn-change-password" type="button" class="btn btn-primary">Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end modal static -->
             <!-- END PAGE CONTAINER-->
         </div>
 
@@ -450,6 +349,7 @@
 
     <!-- Main JS-->
     <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/myfunction.js}"></script>
 	<script type="text/javascript">
 		$('#select-province2').on('change', function() {
 		  	$.get("/craftvillage/api/address/getdistrictlist?provinceid=" + this.value, function(data){

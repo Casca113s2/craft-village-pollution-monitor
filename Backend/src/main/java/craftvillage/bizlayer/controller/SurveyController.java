@@ -2,9 +2,11 @@ package craftvillage.bizlayer.controller;
 
 import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import craftvillage.bizlayer.services.AddressServices;
 import craftvillage.bizlayer.services.MyUserDetailsService;
@@ -34,6 +36,12 @@ public class SurveyController {
   public String getStatus(@RequestParam("id") int activeId, Principal principal) {
     String account = principal.getName();
     return surveyServices.getStatus(account, activeId);
+  }
+
+  @GetMapping("/getimage")
+  @ResponseBody
+  public String getImage(@RequestParam("surveyId") int id) {
+    return surveyServices.getImageBySurveyId(id);
   }
 
   public SurveyServices getSurveyServices() {
