@@ -296,7 +296,7 @@ public class UserController {
       String password = stringGenerator(6);
       userDetailsService.changePass(password, username);
       mailMessage.setTo(email);
-      mailMessage.setSubject("Resset password");
+      mailMessage.setSubject("Reset password");
       mailMessage.setText("Mật khẩu: " + password);
       mailService.sendEmail(mailMessage);
       return true;

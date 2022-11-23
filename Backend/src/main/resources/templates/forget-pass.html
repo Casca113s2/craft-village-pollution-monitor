@@ -48,16 +48,19 @@
                                     <hr>
                                     <p class="mb-0">Bạn có muốn thực hiện không?</p>
                                 </div>
-                                <div id="success-message" class="alert alert-info hidden" role="alert">
-                                    Đã gửi thành công!
-                                </div>
-                                <div id="error-message" class="alert alert-danger hidden" role="alert">
-                                    Gửi thất bại. Vui lòng kiểm tra lại thông tin!
-                                </div>
+                                <div id="success-message" class="alert alert-info hidden" role="alert"></div>
+                                <div id="error-message" class="alert alert-danger hidden" role="alert"></div>
                                 <div style="display: flex;">
-                                	<input class="au-input au-input--full" type="text" id="username" placeholder="Tài khoản">
-                                    <input class="au-input au-input--full" type="email" id="email" placeholder="Email">
+                                	<div>
+	                                	<input class="au-input au-input--full" type="text" id="username" placeholder="Tài khoản">
+	                                    <input class="au-input au-input--full" type="email" id="email" placeholder="Email">
+                                	</div>
                                     <button id="btn-send" class="au-btn au-btn--green m-l-10">Gửi</button>
+                                </div>
+                                 <div class="register-link">
+                                    <p>
+                                        <a th:href="@{/web/login}">Trở lại trang đăng nhập</a>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -96,13 +99,36 @@
     	   let username = $('#username').val();
     	   let email = $('#email').val();
     	   if(username.lenght * email.length == 0){
-    		   if(item.value == '0'){
-		    		$('#success-message').removeClass("display");
-		    		$('#error-message').text("Vui lòng điền đầy đủ thông tin!");
-		    		$('#error-message').addClass("display");
-					return;		    		
-		    	}
+	    		$('#success-message').removeClass("display");
+	    		$('#error-message').text("Vui lòng điền đầy đủ thông tin!");
+	    		$('#error-message').addClass("display");
+				return;		    		
     	   }
+    	   $(this).text("Đang gửi");
+    	   $(this).prop("disabled", true);
+    	   $.ajax({
+		        url: "/craftvillage/api/user/forgetpass",
+		        type: 'POST',
+		        contentType: "application/json; charset=utf-8",
+		        data: {
+		        		username : username,
+		        		email : email
+		        	},
+		        success: function(res) {
+		        	if(res){
+		        		$("#error-message").removeClass("display")
+		        		$("#success-message").text("Đã gửi!");
+		        		$("#success-message").addClass("display");
+		        		$(this).text("Gửi lại");
+		        	}
+		        	else {
+		        		$("#success-message").removeClass("display");
+		        		$("#error-message").text("Tài khoản không tồn tại hoặc email chưa được đăng ký!");
+						$("#error-message").addClass("display");
+		        	}
+		        	$(this).prop("disabled", false);
+		        }
+		    });
        })
     </script>
 

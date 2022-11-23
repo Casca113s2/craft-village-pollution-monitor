@@ -32,7 +32,6 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     String url = "/" + ConstantParameter._URL_ROOT + "/" + ConstantParameter._URL_API + "/";
     String url_address = url + ConstantParameter.ServiceAddress._ADDRESS_SERVICE;
-    String url_image = url + ConstantParameter.ServiceImage._IMAGE_SERVICE;
     String url_survey = url + ConstantParameter.ServiceSurvey._SURVEY_SERVICE;
     String url_answer = url + ConstantParameter.ServiceAnswer._ANSWER_SERVICE;
     String url_user = url + ConstantParameter.ServiceUser._USER_SERVICE;
@@ -52,15 +51,13 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         url_user + "/" + ConstantParameter.ServiceUser._USER_CHANGE_PASS,
         url_user + "/" + ConstantParameter.ServiceUser._USER_UPDATE_INFOR,
         url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_SUBMIT,
-        url_image + "/" + ConstantParameter.ServiceImage._IMAGE_GET_PICTURE,
-        url_image + "/" + ConstantParameter.ServiceImage._IMAGE_DEL_PICTURE,
         url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_CHECK_VILLAGE);
 
     http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
     http.authorizeRequests()
         .antMatchers("/", "/web/login", "/vendor/**", "/css/*", "/fonts/**", "/images/**", "/js/**",
             "/media/**", "/craftvillage/api/village/newvillage", "/web/forgetpassword",
-            "/craftvillage/api/survey/getimage",
+            "/craftvillage/api/survey/getimage", "/web/signup",
             url_user + "/" + ConstantParameter.ServiceUser._USER_LOGIN,
             url_user + "/" + ConstantParameter.ServiceUser._USER_REGISTER,
             url_user + "/" + ConstantParameter.ServiceUser._USER_LOGOUT,
