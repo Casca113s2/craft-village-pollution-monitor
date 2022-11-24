@@ -74,6 +74,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         .permitAll().antMatchers(
             // url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_VILLAGE,
             "/craftvillage/api/village/newvillage",
+            url_user + "/" + ConstantParameter.ServiceUser._USER_CHANGE_PASS,
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_ADDRESS,
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_CHECK_VILLAGE,
             url_user + "/" + ConstantParameter.ServiceUser._USER_GET_DATA,
