@@ -61,7 +61,7 @@ class ApiAuth {
       body: json.encode({'image': base64Img}),
     )
         .catchError((err) {
-          print("Loi: " + err.toString());
+      print("Loi: " + err.toString());
       print("Có lỗi trong đường truyền, vui lòng thử lại sau.");
     });
 
@@ -111,8 +111,7 @@ class ApiAuth {
     });
 
     // print("IM HERE RIGHT NOW!");
-    print("LOCATION RESPONE BODY: " +
-        response.body);
+    print("LOCATION RESPONE BODY: " + response.body);
     if (response.statusCode == 200) {
       // print("Code: 200!-LOCATION");
       jsonResponse = json.decode(utf8.decode(response.bodyBytes));
@@ -279,6 +278,8 @@ class ApiAuth {
         .catchError((err) {
       onChangePassError("Có lỗi trong đường truyền, vui lòng thử lại sau.");
     });
+
+    print("Change pass respone: " + response.statusCode.toString());
     if (response.statusCode == 200) {
       // jsonResponse = json.decode(response.body);
 
@@ -328,6 +329,37 @@ class ApiAuth {
       onError("Xử lý thất bại, vui lòng kiểm tra lại đường truyền");
     }
     return " ";
+  }
+
+  void changeForgetPass(String username, String email, Function onSuccess,
+      Function(String) onError) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var jsonResponse = null;
+    var response = await http
+        .post(
+      Uri.parse(ConstantParameter.getAddressUrl() + ServiceUser.forgetPass()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{'username': username, 'email': email}),
+    )
+        .catchError((err) {
+      onError("Có lỗi trong đường truyền, vui lòng thử lại sau.");
+    });
+
+    print("Status: " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      jsonResponse = response.body;
+      print("jsonResponse:" + jsonResponse.toString());
+
+      if (jsonResponse == 'false') {
+        onError("Xử lý thất bại, vui lòng kiểm tra lại email");
+      } else {
+        onSuccess();
+      }
+    } else {
+      onError("Xử lý thất bại, vui lòng kiểm tra lại tên đăng nhập");
+    }
   }
 
 //lấy lại mật khẩu
@@ -447,7 +479,7 @@ class ApiAuth {
         onError("Có lỗi trong đường truyền, vui lòng thử lại sau.");
       });
       var jsonResponse = null;
-      
+
       if (response.statusCode == 200) {
         User us;
         print("TEST NOW 1: " + response.body);
@@ -456,7 +488,10 @@ class ApiAuth {
         sharedPreferences.setString(
             "fullname", us.lastname + " " + us.firstname);
         sharedPreferences.setString("email", us.email);
-        print("TEST NOW 2: " + " " + json.decode(response.body)['lastname'] + json.decode(response.body)['firstname']);
+        print("TEST NOW 2: " +
+            " " +
+            json.decode(response.body)['lastname'] +
+            json.decode(response.body)['firstname']);
         return us;
       } else {
         sharedPreferences.setString("fullname", "Nguyen Duc Nghia");
@@ -663,7 +698,7 @@ class ApiAuth {
     if (response.statusCode == 200) {
       jsonResponse = response.body;
       if (jsonResponse == "true") {
-        print("HERE MAN: "+response.body);
+        print("HERE MAN: " + response.body);
         onSuccess("Submit thành công!");
       } else {
         onError("Submit thất bại, xin thử lại sau");

@@ -251,6 +251,11 @@ class AuthBloc {
     return _apiAuth.checkUsernameGetEmail(username, onSuccess, onError);
   }
 
+  void changeForgetPass(
+      String username, String email, Function onSuccess, Function(String) onError) {
+    return _apiAuth.changeForgetPass(username, email, onSuccess, onError);
+  }
+
   Future<String> isEmailCorrect(String username, String email,
       Function onSuccess, Function(String) onError) async {
     return _apiAuth.isEmailCorrect(username, email, onSuccess, onError);

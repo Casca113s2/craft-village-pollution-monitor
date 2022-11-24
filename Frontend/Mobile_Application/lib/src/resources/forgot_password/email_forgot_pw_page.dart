@@ -10,7 +10,8 @@ class EmailForgotPwPage extends StatefulWidget {
   String username;
   EmailForgotPwPage(this.username, this.email);
   @override
-  _EmailForgotPwPageState createState() => _EmailForgotPwPageState(this.username, this.email);
+  _EmailForgotPwPageState createState() =>
+      _EmailForgotPwPageState(this.username, this.email);
 }
 
 double _height;
@@ -19,8 +20,8 @@ double _width;
 class _EmailForgotPwPageState extends State<EmailForgotPwPage> {
 //   }
   String email;
-String username;
-  _EmailForgotPwPageState(this.username , this.email);
+  String username;
+  _EmailForgotPwPageState(this.username, this.email);
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _reEmailController = new TextEditingController();
 
@@ -29,6 +30,7 @@ String username;
   @override
   void initState() {
     super.initState();
+    print("Name: " + username.toString() + " Email: " + email.toString());
     for (int i = 0; i < email.length - 2; i++) {
       starFormat += '*';
     }
@@ -43,20 +45,20 @@ String username;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: LightColors.kLightYellow3,
-          leading: IconButton(
-            icon: Icon(
-              Icons.chevron_left,
-              size: 40,
-            ),
-            onPressed: () {
-              Navigator.maybePop(context);
-            },
-            color: Colors.green,
+        leading: IconButton(
+          icon: Icon(
+            Icons.chevron_left,
+            size: 40,
           ),
-          //iconTheme: IconThemeData(color: Colors.blue),
-          elevation: 0,
+          onPressed: () {
+            Navigator.maybePop(context);
+          },
+          color: Colors.green,
         ),
-      backgroundColor: LightColors.kLightYellow3,  
+        //iconTheme: IconThemeData(color: Colors.blue),
+        elevation: 0,
+      ),
+      backgroundColor: LightColors.kLightYellow3,
       body: Container(
         padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
         constraints: BoxConstraints.expand(),
@@ -65,7 +67,7 @@ String username;
           child: Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.fromLTRB(0, _height/4.5, 0, 0),
+                padding: EdgeInsets.fromLTRB(0, _height / 4.5, 0, 0),
                 child: Text(
                   "Xác minh email",
                   style: TextStyle(color: Colors.black, fontSize: 28),
@@ -140,20 +142,18 @@ String username;
       MsgDialog.showMsgDialog(context, "Thông báo", "Sai tài khoản email");
     } else {
       var auth = MyApp.of(context).auth;
-      await auth.isEmailCorrect(username, email, () {
-        
-      }, (msg) {
+      await auth.isEmailCorrect(username, email, () {}, (msg) {
         LoadingDialog.hideLoadingDialog(context);
         MsgDialog.showMsgDialog(context, "Đăng nhập", msg);
-      }).then((value){
+      }).then((value) {
         print("value : " + value);
-        if(value == "true"){
-          
+        if (value == "true") {
           LoadingDialog.hideLoadingDialog(context);
-        MsgDialog.showMsgDialogAndBackToLogin(context, "Thành công", "Vui lòng kiểm tra email");
-        }else{
-           LoadingDialog.hideLoadingDialog(context);
-        MsgDialog.showMsgDialog(context, "Thất bại", "Có lỗi khi kiểm tra");
+          MsgDialog.showMsgDialogAndBackToLogin(
+              context, "Thành công", "Vui lòng kiểm tra email");
+        } else {
+          LoadingDialog.hideLoadingDialog(context);
+          MsgDialog.showMsgDialog(context, "Thất bại", "Có lỗi khi kiểm tra");
         }
       });
     }

@@ -152,13 +152,13 @@ class _ChangePasswordState extends State<ChangePassword> {
   _onChangePassClicked() {
     var isValid = auth.isValidChangePass(
         _oldpassController.text, _passController.text, _repassController.text);
+        
     if (isValid) {
       LoadingDialog.showLoadingDialog(context, LanguageConfig.getProcessing());
       auth.changePass(_oldpassController.text, _passController.text, () {
         LoadingDialog.hideLoadingDialog(context);
         MsgDialog.showMsgDialogAndPushToScreenPage(
             context, LanguageConfig.getNotice(), LanguageConfig.getChangePasswordInfo());
-            
       }, (msg) {
         LoadingDialog.hideLoadingDialog(context);
         MsgDialog.showMsgDialog(context, LanguageConfig.getNotice(), msg);

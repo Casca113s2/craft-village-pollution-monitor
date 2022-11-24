@@ -226,7 +226,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         if (element.languageName == checkLanguage) selectedLanguage = element;
       });
     } else
-      selectedLanguage = lsLanguage[1];
+      selectedLanguage = lsLanguage[0];
   }
 
   //Checks the connection status of the device
