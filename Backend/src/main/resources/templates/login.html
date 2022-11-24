@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+
+    <!-- Title Page-->
+    <title>CV Welcome</title>
+
+    <!-- Fontfaces CSS-->
+    <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/fontawesome-free-6.2.0-web/css/fontawesome.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/fontawesome-free-6.2.0-web/css/all.min.css}" rel="stylesheet}" media="all">
+    <link th:href="@{/vendor/mdi-font/css/material-design-iconic-font.min.css}" rel="stylesheet" media="all">
+
+    <!-- Bootstrap CSS-->
+    <link th:href="@{/vendor/bootstrap-4.1/bootstrap.min.css}" rel="stylesheet" media="all">
+
+    <!-- Vendor CSS-->
+    <link th:href="@{/vendor/animsition/animsition.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/wow/animate.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/slick/slick.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/select2/select2.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/perfect-scrollbar/perfect-scrollbar.css}" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
+
+</head>
+
+<body class="animsition">
+	<div class="loader-container">
+		<div class="loader"></div>
+	</div>
+    <div class="page-wrapper">
+        <div class="page-content--bge5">
+            <div class="container">
+                <div class="login-wrap">
+                    <div class="login-content">
+                        <div class="login-form">
+                            <form th:action="@{/craftvillage/api/user/loginapp}" method="post">
+                                <div class="form-group">
+                                    <label>Tài khoản</label>
+                                    <input id="name" class="au-input au-input--full" placeholder="Tài khoản">
+                                </div>
+                                <div class="form-group">
+                                    <label>Mật khẩu</label>
+                                    <input class="au-input au-input--full" type="password" id="password" placeholder="Mật khẩu">
+                                </div>
+                                <div class="login-checkbox">
+                                    <label>
+                                        <a th:href="@{/web/forgetpassword}">Quên mật khẩu?</a>
+                                    </label>
+                                </div>
+                                <button id="btn-login" class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Đăng nhập</button>
+                                <div id="error-message" class="alert alert-danger message" role="alert" style="margin-top:5px"></div>
+                            </form>
+                            <div class="register-link">
+                                <p>
+                                    Bạn là hộ sản xuất mới?
+                                    <a th:href="@{/web/signup}">Đăng ký tại đây!</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Jquery JS-->
+    <script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
+    <!-- Bootstrap JS-->
+    <script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
+    <!-- Vendor JS       -->
+    <script th:src="@{/vendor/slick/slick.min.js}">
+    </script>
+    <script th:src="@{/vendor/wow/wow.min.js}"></script>
+    <script th:src="@{/vendor/animsition/animsition.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
+    </script>
+    <script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
+    <script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
+    </script>
+    <script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
+    <script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
+    <script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
+    <script th:src="@{/vendor/select2/select2.min.js}">
+    </script>
+
+    <!-- Main JS-->
+    <script th:src="@{/js/main.js}"></script>
+	<script type="text/javascript">
+		$("form").submit(function(e){
+			e.preventDefault();
+			var form = $(this);
+			var actionUrl = form.attr('action');
+			$("input").each(function(){
+				if(this.value.length == 0){
+					$("#error-message").text("Vui lòng nhập đầy đủ thông tin!");
+					$("#error-message").addClass("display");
+					return;
+				}
+			})
+			$( ".loader-container" ).addClass("display");
+			$.ajax({
+		        type: "POST",
+		        url: actionUrl,
+		        contentType: "application/json; charset=utf-8",
+		        data: JSON.stringify({
+		        		name : $('#name').val(),
+		        		password : $('#password').val(),
+		        	}),
+		        success: function(data){
+		          	if(data.error != null){
+		          		$('#error-message').text(data.error);
+		          		$('#error-message').addClass("display");
+		          	}
+		          	else{
+		          		document.cookie = "token=Bearer-"+data.token + "; max-age=86400000; path=/;";
+		          		window.location.replace(window.location.origin + "/web/home")
+		          	}
+		          	$( ".loader-container" ).removeClass("display");
+		        }
+		    });
+		})
+		
+		window.onload = function(){
+			var value = getCookie("token");
+			if( value.length != 0 )
+				window.location.replace(window.location.origin + "/web/home")
+		};
+		function getCookie(cname) {
+			  let name = cname + "=";
+			  let decodedCookie = decodeURIComponent(document.cookie);
+			  let ca = decodedCookie.split(';');
+			  for(let i = 0; i <ca.length; i++) {
+			    let c = ca[i];
+			    while (c.charAt(0) == ' ') {
+			      c = c.substring(1);
+			    }
+			    if (c.indexOf(name) == 0) {
+			      return c.substring(name.length, c.length);
+			    }
+			  }
+			  return "";
+			}
+	</script>
+</body>
+
+</html>
+<!-- end document-->

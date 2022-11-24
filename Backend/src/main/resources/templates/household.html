@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+
+    <!-- Title Page-->
+    <title>Khai báo</title>
+
+    <!-- Fontfaces CSS-->
+    <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/fontawesome-free-6.2.0-web/css/all.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/mdi-font/css/material-design-iconic-font.min.css}" rel="stylesheet" media="all">
+
+    <!-- Bootstrap CSS-->
+    <link th:href="@{/vendor/bootstrap-4.1/bootstrap.min.css}" rel="stylesheet" media="all">
+
+    <!-- Vendor CSS-->
+    <link th:href="@{/vendor/animsition/animsition.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/wow/animate.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/slick/slick.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/select2/select2.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/perfect-scrollbar/perfect-scrollbar.css}" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
+    
+
+</head>
+
+<body class="animsition">
+    <div class="page-wrapper">
+        <!-- MENU SIDEBAR-->
+        <aside class="menu-sidebar d-none d-lg-block">
+            <div class="menu-sidebar__content js-scrollbar1">
+                <nav class="navbar-sidebar">
+                    <ul class="list-unstyled navbar__list">
+                        <li class="active">
+                            <a href="#">
+                                <i class="fa-solid fa-circle-info"></i>Khai báo</a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa-solid fa-feather"></i>Chính sách</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <!-- END MENU SIDEBAR-->
+
+        <!-- PAGE CONTAINER-->
+        <div class="page-container">
+            <!-- HEADER DESKTOP-->
+            <header class="header-desktop">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="header-wrap">
+                            <div class="header-button">
+                                <div class="account-wrap">
+                                    <div class="account-item clearfix js-item-menu">
+                                        <div class="image">
+                                            <img th:src="@{/images/icon/avatar.png}" alt="avatar" />
+                                        </div>
+                                        <div class="content">
+                                            <a class="js-acc-btn" th:utext="${name}" ></a>
+                                        </div>
+                                        <div class="account-dropdown js-dropdown">
+                                            <div class="info clearfix">
+                                                <div class="image">
+                                                    <a href="#">
+                                                        <img th:src="@{/images/icon/avatar.png}" alt="avatar" />
+                                                    </a>
+                                                </div>
+                                                <div class="content">
+                                                    <h5 class="name">
+                                                        <a th:utext="${name}" ></a>
+                                                    </h5>
+                                                    <span class="email" th:utext="${email}"></span>
+                                                </div>
+                                            </div>
+                                            <div class="account-dropdown__body">
+                                                <div class="account-dropdown__item">
+                                                    <a href="#" id="modal-change-password">
+                                                        <i class="zmdi zmdi-settings"></i>Change password</a>
+                                                </div>
+                                            </div>
+                                            <div class="account-dropdown__footer">
+                                                <a id="btn-logout">
+                                                    <i class="zmdi zmdi-power"></i>Logout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- HEADER DESKTOP-->
+
+            <!-- MAIN CONTENT-->
+            <div class="main-content">
+                <a href="#" class="gototop">
+                    <i class="fa fa-arrow-up fa-lg"></i>
+                </a>
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="card">
+                                    <div class="card-header">Hộ sản xuất<span class="active" th:utext="${villageName}"></span></div>
+                                    <div class="card-body">
+                                    <form id="form1" th:action="@{/web/household/village}" method="post">
+                                        <div class="form-group">
+                                            <label>Chọn Tỉnh/Thành phố</label>
+                                            <div class="form-group">
+                                                <select id="select-province1" class="au-input au-input--full" name="province" style="padding: 10px;">
+                                                    <option value="0" selected="selected">---</option>
+                                                    <th:block th:each="province : ${provinceList}">
+                                                    	<option th:value="${province.provinceId}" th:utext="${province.provinceName}"></option>
+                                                    </th:block>
+                                                </select>
+                                                <div class="dropDownSelect2"></div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="form-group">
+                                            <label>Chọn Quận/Huyện</label>
+                                            <div class="form-group">
+                                                <select id="select-district1" class="au-input au-input--full" name="district" style="padding: 10px;">
+                                                    <option value="0" selected="selected">---</option>
+                                                </select>
+                                                <div class="dropDownSelect2"></div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="form-group">
+                                            <label>Chọn Xã/Phường</label>
+                                            <div class="form-group">
+                                                <select id="select-ward1" class="au-input au-input--full" name="ward" style="padding: 10px;">
+                                                    <option value="0" selected="selected">---</option>
+                                                </select>
+                                                <div class="dropDownSelect2"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Làng nghề</label>
+                                            <div class="form-group">
+                                                <select id="select-village" class="au-input au-input--full" name="village" style="padding: 10px;">
+                                                    <option value="0" selected="selected">---</option>
+                                                </select>
+                                                <div class="dropDownSelect2"></div>
+                                            </div>
+                                        </div>
+                                        <div id="error-message1" class="alert alert-danger message" role="alert" style="margin-top:5px"></div>
+										<div id="success-message1" class="alert alert-success message" role="alert" style="margin-top:5px"></div>
+                                        <button class="btn btn-primary" style="margin-left: auto; margin-right: 0; display: block;">Khai báo</button>
+                                	</form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="card">
+                                    <div class="card-header">Làng nghề mới</div>
+                                    <div class="card-body">
+                                    <form id="form2" th:action="@{/web/household/newvillage}" method="post">
+                                        <div class="form-group">
+                                            <label>Chọn Tỉnh/Thành phố</label>
+                                            <div class="form-group">
+                                                <select id="select-province2" class="au-input au-input--full" name="province" style="padding: 10px;">
+                                                    <option value="0" selected="selected">---</option>
+                                                    <th:block th:each="province : ${provinceList}">
+                                                    	<option th:value="${province.provinceId}" th:utext="${province.provinceName}"></option>
+                                                    </th:block>
+                                                </select>
+                                                <div class="dropDownSelect2"></div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="form-group">
+                                            <label>Chọn Quận/Huyện</label>
+                                            <div class="form-group">
+                                                <select id="select-district2" class="au-input au-input--full" name="district" style="padding: 10px;">
+                                                    <option value="0" selected="selected">---</option>
+                                                </select>
+                                                <div class="dropDownSelect2"></div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="form-group">
+                                            <label>Chọn Xã/Phường</label>
+                                            <div class="form-group">
+                                                <select id="select-ward2" class="au-input au-input--full" name="ward" style="padding: 10px;">
+                                                    <option selected="selected" value="0">---</option>
+                                               
+                                                </select>
+                                                <div class="dropDownSelect2"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                                <div class="col-6">
+                                                    <label for="x_card_code" class="control-label mb-1">Kinh độ</label>
+                                                    <div class="input-group">
+                                                        <input id="longitude" name="longitude" type="text" class="form-control cc-cvc">
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label for="x_card_code" class="control-label mb-1">Vĩ độ</label>
+                                                    <div class="input-group">
+                                                        <input id="latitude" name="latitude" type="text" class="form-control cc-cvc">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <div class="form-group">
+                                            <label>Tên làng nghề</label>
+                                            <input class="au-input au-input--full" type="text" name="villageName"
+                                                placeholder="Nhập tên làng nghề">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Mô tả</label>
+                                            <textarea class="au-input au-input--full" name="note"></textarea>
+                                        </div>
+                                        <div id="error-message2" class="alert alert-danger message" role="alert" style="margin-top:5px"></div>
+										<div id="success-message2" class="alert alert-success message" role="alert" style="margin-top:5px"></div>
+                                        <button type="submit" class="btn btn-primary" style="margin-left: auto; margin-right: 0; display: block;">Khai báo</button>
+                                    </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-header">Thông tin sản xuất</div>
+                                    <form id="form-new-village">
+                                        <div class="card-body" style="display: flex;">
+                                            <div class="w-50 p-r-20 p-l-20">
+                                                <div class="form-group">
+                                                    <label>Sản lượng</label>
+                                                    <input class="au-input au-input--full" type="text" name="quantity">
+                                                </div>
+                                            </div>
+
+                                            <div class="w-50 p-l-20">
+                                                <div class="form-group">
+                                                    <label>Đơn vị sản xuất</label>
+                                                    <div class="form-check">
+                                                        <div class="radio">
+                                                            <label for="radio1" class="form-check-label ">
+                                                                <input type="radio" id="radio1" name="production-unit" value="option1"
+                                                                    class="form-check-input" checked>tấn/năm
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label for="radio2" class="form-check-label ">
+                                                                <input type="radio" id="radio2" name="production-unit" value="option2"
+                                                                    class="form-check-input">m3/năm
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label for="radio3" class="form-check-label ">
+                                                                <input type="radio" id="radio3" name="production-unit" value="option3"
+                                                                    class="form-check-input">1000 đơn vị/năm
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                               
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div style="text-align: right;" class="p-b-20 p-r-20">
+                                        <button class="btn btn-light">Làm mới</button>
+                                        <button class="btn btn-primary">Khai báo</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <!-- END MAIN CONTENT-->
+            <!-- modal static -->
+			<div class="modal fade" id="staticModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
+			 data-backdrop="static">
+				<div class="modal-dialog modal-sm" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="staticModalLabel">Change Password</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label>Current Password</label>
+								<input class="au-input au-input--full" id="current-password" type="password">
+							</div>
+							<div class="form-group">
+								<label>New Password</label>
+								<input class="au-input au-input--full" id="new-password" type="password">
+							</div>
+							<div class="form-group">
+								<label>Confirmed Password</label>
+								<input class="au-input au-input--full" id="confirmed-password" type="password">
+							</div>
+							<div id="error-message-modal" class="alert alert-danger message" role="alert" style="margin: 0;"></div>
+							<div id="success-message-modal" class="alert alert-success message" role="alert" style="margin: 0;"></div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							<button id="btn-change-password" type="button" class="btn btn-primary">Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end modal static -->
+            <!-- END PAGE CONTAINER-->
+        </div>
+
+    </div>
+
+    <!-- Jquery JS-->
+    <script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
+    <!-- Bootstrap JS-->
+    <script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
+    <!-- Vendor JS       -->
+    <script th:src="@{/vendor/slick/slick.min.js}">
+    </script>
+    <script th:src="@{/vendor/wow/wow.min.js}"></script>
+    <script th:src="@{/vendor/animsition/animsition.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
+    </script>
+    <script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
+    <script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
+    </script>
+    <script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
+    <script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
+    <script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
+    <script th:src="@{/vendor/select2/select2.min.js}">
+    </script>
+
+    <!-- Main JS-->
+    <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/myfunction.js}"></script>
+	<script type="text/javascript">
+		$('#select-province2').on('change', function() {
+		  	$.get("/craftvillage/api/address/getdistrictlist?provinceid=" + this.value, function(data){
+		  		$('#select-district2').empty()
+		  		$('#select-district2').append($('<option>',
+		  					{
+			  				    value: '0',
+			  				    text : '---'
+		  					}));
+		  		for(let i=0;i < data.length; i++){
+		  			$('#select-district2').append($('<option>',
+		  					{
+			  				    value: data[i].districtId,
+			  				    text : data[i].districtName
+		  					}));
+		  		}
+		  	});
+		});
+		
+		$('#select-district2').on('change', function() {
+		  	$.get("/craftvillage/api/address/getwardlist?districtid=" + this.value, function(data){
+		  		$('#select-ward2').empty();
+		  		$('#select-ward2').append($('<option>',
+	  					{
+		  				    value: '0',
+		  				    text : '---'
+	  					}));
+		  		for(let i=0;i < data.length; i++){
+		  			$('#select-ward2').append($('<option>',
+		  					{
+			  				    value: data[i].wardId,
+			  				    text : data[i].wardName
+		  					}));
+		  		}
+		  	});
+		});
+		
+		$('#select-province1').on('change', function() {
+		  	$.get("/craftvillage/api/address/getdistrictlist?provinceid=" + this.value, function(data){
+		  		$('#select-district1').empty()
+		  		$('#select-district1').append($('<option>',
+		  					{
+			  				    value: '0',
+			  				    text : '---'
+		  					}));
+		  		for(let i=0;i < data.length; i++){
+		  			$('#select-district1').append($('<option>',
+		  					{
+			  				    value: data[i].districtId,
+			  				    text : data[i].districtName
+		  					}));
+		  		}
+		  	});
+		});
+		
+		$('#select-district1').on('change', function() {
+		  	$.get("/craftvillage/api/address/getwardlist?districtid=" + this.value, function(data){
+		  		$('#select-ward1').empty()
+		  		$('#select-ward1').append($('<option>',
+		  					{
+			  				    value: '0',
+			  				    text : '---'
+		  					}));
+		  		for(let i=0;i < data.length; i++){
+		  			$('#select-ward1').append($('<option>',
+		  					{
+			  				    value: data[i].wardId,
+			  				    text : data[i].wardName
+		  					}));
+		  		}
+		  	});
+		});
+		
+		$('#select-ward1').on('change', function() {
+		  	$.get("/craftvillage/api/address/getvillage?wardid=" + this.value, function(data){
+		  		$('#select-village').empty();
+		  		$('#select-village').append($('<option>',
+	  					{
+		  				    value: '0',
+		  				    text : '---'
+	  					}));
+		  		for(let i=0;i < data.length; i++){
+		  			$('#select-village').append($('<option>',
+		  					{
+			  				    value: data[i].villageId,
+			  				    text : data[i].villageName
+		  					}));
+		  		}
+		  	});
+		});
+		
+		$('#form1').submit(function(e){
+			e.preventDefault();
+		    var form = $(this);
+		    for (const item of form.serializeArray()){
+		    	if(item.value == '0'){
+		    		$('#success-message1').removeClass("display");
+		    		$('#error-message1').text("Vui lòng điền đầy đủ thông tin!");
+		    		$('#error-message1').addClass("display");
+					return;		    		
+		    	}
+		    }
+		    
+		    var actionUrl = form.attr('action');
+		    
+		    $.ajax({
+		        type: "POST",
+		        url: actionUrl,
+		        data: form.serialize(),
+		        success: function(data){
+		        	if(!data){
+			        	$('#success-message1').removeClass("display");
+			    		$('#error-message1').text("Phát hiện lỗi!");
+			    		$('#error-message1').addClass("display");
+		        	}
+		        	else{
+		        		$('#success-message1').text("Yêu cầu đã được gửi");
+		        		$('#success-message1').addClass("display");
+			    		$('#error-message1').removeClass("display");
+		        	}
+		        }
+		    });
+		})
+		
+		$('#form2').submit(function(e){
+			e.preventDefault();
+		    var form = $(this);
+		    for (const item of form.serializeArray()){
+		    	if(item.value == '0' || item.value.length == 0){
+		    		$('#success-message2').removeClass("display");
+		    		$('#error-message2').text("Vui lòng điền đầy đủ thông tin!");
+		    		$('#error-message2').addClass("display");
+					return;		    		
+		    	}
+		    }
+		    
+		    var actionUrl = form.attr('action');
+		    
+		    $.ajax({
+		        type: "POST",
+		        url: actionUrl,
+		        data: form.serialize(),
+		        success: function(data){
+		        	if(data == 0){
+			        	$('#success-message2').removeClass("display");
+			    		$('#error-message2').text("Phát hiện lỗi!");
+			    		$('#error-message2').addClass("display");
+		        	}
+		        	else if(data == 1){
+		        		$('#success-message2').removeClass("display");
+			    		$('#error-message2').text("Làng nghề đã tồn tại!");
+			    		$('#error-message2').addClass("display")
+		        	}
+		        	else if(data == 2){
+		        		$('#success-message2').text("Yêu cầu đã được gửi");
+		        		$('#success-message2').addClass("display");
+			    		$('#error-message2').removeClass("display");
+		        	}
+		        }
+		    });
+		})
+	</script>
+</body>
+
+</html>
+<!-- end document-->

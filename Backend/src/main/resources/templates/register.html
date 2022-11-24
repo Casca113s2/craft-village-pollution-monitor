@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+
+    <!-- Title Page-->
+    <title>Sign up</title>
+
+    <!-- Fontfaces CSS-->
+    <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/mdi-font/css/material-design-iconic-font.min.css}" rel="stylesheet" media="all">
+
+    <!-- Bootstrap CSS-->
+    <link th:href="@{/vendor/bootstrap-4.1/bootstrap.min.css}" rel="stylesheet" media="all">
+
+    <!-- Vendor CSS-->
+    <link th:href="@{/vendor/animsition/animsition.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/wow/animate.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/slick/slick.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/select2/select2.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/perfect-scrollbar/perfect-scrollbar.css}" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
+
+</head>
+
+<body class="animsition">
+    <div class="page-wrapper">
+        <div class="page-content">
+            <div class="container" style="height:100vh;padding:70px;">
+                <div class="login-wrap pt-2">
+                    <div class="login-content">
+                        <div class="login-form">
+                            <div class="card-title">
+                                <h3 class="text-center title-2">Đăng ký tài khoản</h3>
+                            </div>
+                            <hr>
+                            <form>
+                                <!--Thông tin cá nhân-->
+                                <div class="form-group">
+                                    <label>Tên đăng nhập</label>
+                                    <input id="username" class="au-input au-input--full" type="text" name="username"
+                                        placeholder="Nhập tên đăng nhập">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Mật khẩu</label>
+                                    <input id="password" class="au-input au-input--full" type="password" name="password"
+                                        placeholder="Nhập mật khẩu">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Nhập lại mật khẩu</label>
+                                    <input id="repassword" class="au-input au-input--full" type="password" name="repassword"
+                                        placeholder="Nhập lại mật khẩu">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Số điện thoại</label>
+                                    <input id="phonenumber" class="au-input au-input--full" type="tel" name="phone-number"
+                                        placeholder="Nhập số điện thoại">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Địa chỉ mail</label>
+                                    <input id="email" class="au-input au-input--full" type="email" name="email"
+                                        placeholder="Nhập địa chỉ mail">
+                                    <div class="m-t-5" style="width: 100%;">
+                                        <input id="code" class="au-input" style="width: 70%;" type="text" name="code"
+                                        placeholder="Mã xác nhận">
+                                        <button id="btn-send-code" class="btn btn-primary" type="button" style="width: 29%;">Gửi mã</button>
+                                    </div>
+                                    <div id="success-message" class="alert alert-success message" role="alert" style="margin-top:5px">
+											
+									</div>
+                                    <div id="error-message" class="alert alert-danger message" role="alert" style="margin-top:5px">
+											
+									</div>
+                                </div>
+                                <button id="btn-submit" class="btn btn-success au-btn--block m-b-20" style="font-size:20px;" type="button">Đăng ký</button>
+                                
+                
+                                <div class="register-link">
+                                    <p>
+                                        <a th:href="@{/web/login}">Trở lại trang đăng nhập</a>
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Jquery JS-->
+    <script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
+    <!-- Bootstrap JS-->
+    <script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
+    <!-- Vendor JS       -->
+    <script th:src="@{/vendor/slick/slick.min.js}">
+    </script>
+    <script th:src="@{/vendor/wow/wow.min.js}"></script>
+    <script th:src="@{/vendor/animsition/animsition.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
+    </script>
+    <script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
+    <script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
+    </script>
+    <script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
+    <script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
+    <script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
+    <script th:src="@{/vendor/select2/select2.min.js}">
+    </script>
+
+    <!-- Main JS-->
+    <script th:src="@{/js/main.js}"></script>
+	<script type="text/javascript">
+		var activeDate, activeCode;
+		$("#btn-send-code").on("click", function(){
+			let email = $("#email").val();
+			if(email==0){
+				$("#success-message").removeClass("display");
+				$("#error-message").text("Vui lòng nhập email của bạn!")
+				$("#error-message").addClass("display")
+			}
+			else {
+				$("#error-message").removeClass("display");		
+				$(this).prop('disabled', true);
+				$(this).text("Đang gửi");
+				$.ajax({
+			        url: "/craftvillage/api/user/sendmail",
+			        type: 'GET',
+			        data: {email : email},
+			        success: function(res) {
+			        	$("#success-message").text("Mã đã được gửi!");
+			        	$("#btn-send-code").prop('disabled', false);
+			        	$("#btn-send-code").text("Gửi lại");
+			        	activeDate = res.activeDate;
+			        	activeCode = res.activeCode;
+			        	$("#success-message").addClass("display");
+			        }
+			    });
+			}
+		})
+		
+		$("#btn-submit").on("click", function(){
+			$("#error-message").removeClass("display");
+			$("input").each(function(){
+				if(this.value.length == 0){
+					$("#error-message").text("Vui lòng nhập đầy đủ thông tin!");
+					$("#error-message").addClass("display");
+					return;
+				}
+			})
+			if($("#password").value != $("#repassword").value){
+				$("#error-message").text("Mật khẩu không khớp!");
+				$("#error-message").addClass("display");
+				return;
+			}
+			$(this).text("Đang gửi...");
+			$(this).prop('disabled', true);
+			$.ajax({
+		        url: "/craftvillage/api/user/register",
+		        type: 'POST',
+		        contentType: "application/json; charset=utf-8",
+		        data: JSON.stringify({
+		        		username : $('#username').val(),
+		        		password : $('#password').val(),
+		        		role : 'HOUSEHOLD',
+		        		firstname : '',
+		        		lastname : '',
+		        		email : $('#email').val(),
+		        		phone : $('#phonenumber').val(),
+		        		activeDate : activeDate,
+		        		activeCode : activeCode,
+		        		activeCodeSubmit : $('#code').val()
+		        	}),
+		        success: function(res) {
+		        	if(res.key == "11"){
+		        		$("#success-message").text(res.message);
+		        	}
+		        	else {
+		        		$("#success-message").removeClass("display");
+		        		$("#error-message").text(res.message);
+						$("#error-message").addClass("display");
+		        	}
+		        	$("#btn-submit").prop('disabled', false);
+		        }
+		    });
+		})
+		
+	</script>
+</body>
+
+</html>
+<!-- end document-->

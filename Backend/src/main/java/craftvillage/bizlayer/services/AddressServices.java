@@ -13,6 +13,7 @@ import craftvillage.datalayer.entities.AdWard;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.UserSurvey;
 import craftvillage.datalayer.entities.Village;
+import craftvillage.datalayer.repositories.DistrictRepository;
 import craftvillage.datalayer.services.AddressServ;
 import craftvillage.datalayer.services.UserServ;
 @Service
@@ -20,6 +21,8 @@ public class AddressServices {
 	@Autowired
 	AddressServ addressServ = new AddressServ();
 	UserServ userServ = new UserServ();
+	@Autowired
+	DistrictRepository districtRepo;
 	public List<AdCountry> getCountryList() {
 		
 		return addressServ.getCountryList();
@@ -45,6 +48,9 @@ public class AddressServices {
 	public String getInfoDictrict(int dictrictId) {
 		return addressServ.getInfoDictrict(dictrictId);
 	}
+	public AdDistrict getAdDistrict(int districtId) {
+		return districtRepo.getOne(districtId);
+	}
 	public String getInfoWard(int wardId) {
 		return addressServ.getInfoWard(wardId);
 	}
@@ -55,10 +61,6 @@ public class AddressServices {
 	public Set<Village> getPickVillage(int wardId) {
 		return addressServ.getPickVillage(wardId);
 	}
-	public boolean SubmitVillageInfo(String villageName , String coordinate , UserSurvey userSurvey , Village village)
-	{
-		return addressServ.SubmitVillageInfo(villageName, coordinate, userSurvey, village);
-	}
 	public Village getVillageInfo(int villageId)
 	{
 		return addressServ.getVillageInfo(villageId);
@@ -66,10 +68,6 @@ public class AddressServices {
 	public List<Village> getAllVillage()
 	{
 		return addressServ.getAllVillage();
-	}
-	public boolean DeleteTempVillage(UrUser user , String status)
-	{
-		return addressServ.DeleteTempVillage(user, status);
 	}
 	public boolean checkVillage(int villageId , UrUser user , String status)
 	{

@@ -38,24 +38,34 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException{
 		
-		// TODO Auto-generated method stub
-		//final String authorizationHeader = request.getParameter("a");
-		//System.out.println("Minhhhhhhhhhhhhhh1 " + cookie[0].getValue() );
-		
 		String username = null;
 		String jwt = null;
-		String requestBearer = request.getHeader("Authorization");
-		
-		
-		
-			if (requestBearer!=null  && requestBearer.startsWith("Bearer "))
+		String requestBearer = "";
+		try{
+			requestBearer = request.getHeader("Authorization");
+		}
+		catch(Exception e){
+			System.out.println("Token is null");
+		};
+		if(requestBearer == null) {
+			Cookie[] cookies = request.getCookies();
+	        if (cookies != null) {
+	            for (Cookie cookie : cookies) {
+	                if (cookie.getName().equals("token")) {
+	                	requestBearer = cookie.getValue();
+	                	
+	                    break;
+	                }
+	            }
+	        }
+		}
+			if (requestBearer!=null  && requestBearer.startsWith("Bearer"))
 			{
 				jwt = requestBearer.substring(7);
 				username =jwtUtil.extractUsername(jwt);
 				if (username !=null && JwtService.checkToken(jwt)== true && SecurityContextHolder.getContext().getAuthentication() == null)
 				{
 					UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-					
 					if (jwtUtil.validateToken(jwt, userDetails))
 					{
 						// kiểm tra xem token có hợp lệ ko , nếu có thì đưa thông tin vào security context
@@ -67,9 +77,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 						usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 						//set tất cả thông tin cho Seturity Context
 						SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-						
-						
-						
 		 			}
 				}
 			}

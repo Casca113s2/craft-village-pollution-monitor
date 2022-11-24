@@ -2,10 +2,6 @@ package craftvillage.datalayer.entities;
 // Generated Mar 10, 2020 9:28:01 AM by Hibernate Tools 4.3.5.Final
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,15 +11,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import craftvillage.corelayer.utilities.ConstantParameter;
 
 /**
@@ -33,197 +26,108 @@ import craftvillage.corelayer.utilities.ConstantParameter;
 @Table(name = "USER_SURVEY", schema = ConstantParameter._SCHEMA_NAME)
 public class UserSurvey implements java.io.Serializable {
 
-	private int id;
-	private UrUser urUser;
-	private Double XCoordinate;
-	private Double YCoordinate;
-	private String isTemporary;
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dateSubmitSurvey;
-	private int craftId;
-	private Integer totalQuestion;
-	private Integer totalAnswer;
-	private Integer totalImage;
-	private SrActive srActive;
-	private Set<UserSurveyAnswer> userSurveyAnswers = new LinkedHashSet<UserSurveyAnswer>(0);
-	private Set<SrImg> srImgs = new LinkedHashSet<SrImg>(0);
-	private Set<TempVillage> tempVillages = new HashSet<TempVillage>();
-	public UserSurvey() {
-	}
+  private int id;
+  private UrUser urUser;
+  private String isTemporary;
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date dateSubmitSurvey;
+  private String image;
+  private String coordinate;
+  private String pollution;
+  private String note;
+  private Village village;
 
-	public UserSurvey(int id, UrUser urUser, SrActive srActive) {
-		this.id = id;
-		this.urUser = urUser;
-		this.srActive = srActive;
-	}
-	
-	public UserSurvey(int id, UrUser urUser, Double xCoordinate, Double yCoordinate, String isTemporary, int craftId,
-			int totalQuestion, int totalAnswer, int totalImage, SrActive srActive,
-			Set<UserSurveyAnswer> userSurveyAnswers, Set<SrImg> srImgs , Date dateSubmitSurvey) {
-		super();
-		this.id = id;
-		this.urUser = urUser;
-		this.XCoordinate = xCoordinate;
-		this.YCoordinate = yCoordinate;
-		this.isTemporary = isTemporary;
-		this.craftId = craftId;
-		this.totalQuestion = totalQuestion;
-		this.totalAnswer = totalAnswer;
-		this.totalImage = totalImage;
-		this.srActive = srActive;
-		this.userSurveyAnswers = userSurveyAnswers;
-		this.srImgs = srImgs;
-		this.dateSubmitSurvey = dateSubmitSurvey;
-		//this.tempVillages = tempVillages;
-	}
+  @Id
+  @OrderBy("id ASC")
+  @GeneratedValue(strategy = GenerationType.AUTO, generator = "UR_SERVEY_SEQ")
+  @Column(name = "ID", unique = true, nullable = false, precision = 22, scale = 0)
+  public int getId() {
+    return this.id;
+  }
 
-//	public UserSurvey(int id, UrUser urUser, SrActive srActive, Double XCoordinate, Double YCoordinate,
-//			String isTemporary, int craftId, Set<UserSurveyAnswer> userSurveyAnswers, Set<SrImg> srImgs) {
-//		this.id = id;
-//		this.urUser = urUser;
-//		this.srActive = srActive;
-//		this.XCoordinate = XCoordinate;
-//		this.YCoordinate = YCoordinate;
-//		this.isTemporary = isTemporary;
-//		this.craftId = craftId;
-//		this.userSurveyAnswers = userSurveyAnswers;
-//		this.srImgs = srImgs;
-//	}
+  public void setId(int id) {
+    this.id = id;
+  }
 
-	@Id
-	@OrderBy("id ASC")
-	@GeneratedValue(strategy = GenerationType.AUTO, generator="UR_SERVEY_SEQ")
-	@Column(name = "ID", unique = true, nullable = false, precision = 22, scale = 0)
-	public int getId() {
-		return this.id;
-	}
+  @JsonBackReference
+  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JoinColumn(name = "UR_ID", nullable = false)
+  public UrUser getUrUser() {
+    return this.urUser;
+  }
 
-	public void setId(int id) {
-		this.id = id;
-	}
-	@JsonBackReference
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "UR_ID", nullable = false)
-	public UrUser getUrUser() {
-		return this.urUser;
-	}
+  public void setUrUser(UrUser urUser) {
+    this.urUser = urUser;
+  }
 
-	public void setUrUser(UrUser urUser) {
-		this.urUser = urUser;
-	}
+  @Column(name = "IS_TEMPORARY", length = 40)
+  public String getIsTemporary() {
+    return this.isTemporary;
+  }
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "SAC_ID", nullable = false)
-	public SrActive getSrActive() {
-		return this.srActive;
-	}
-
-	public void setSrActive(SrActive srActive) {
-		this.srActive = srActive;
-	}
-
-	@Column(name = "X_COORDINATE", precision = 126, scale = 0)
-	public Double getXCoordinate() {
-		return this.XCoordinate;
-	}
-
-	public void setXCoordinate(Double XCoordinate) {
-		this.XCoordinate = XCoordinate;
-	}
-
-	@Column(name = "Y_COORDINATE", precision = 126, scale = 0)
-	public Double getYCoordinate() {
-		return this.YCoordinate;
-	}
-
-	public void setYCoordinate(Double YCoordinate) {
-		this.YCoordinate = YCoordinate;
-	}
-
-	@Column(name = "IS_TEMPORARY", length = 40)
-	public String getIsTemporary() {
-		return this.isTemporary;
-	}
-
-	public void setIsTemporary(String isTemporary) {
-		this.isTemporary = isTemporary;
-	}
-
-	@Column(name = "CRAFT_ID", precision = 22, scale = 0)
-	public int getCraftId() {
-		return this.craftId;
-	}
-
-	public void setCraftId(int craftId) {
-		this.craftId = craftId;
-	}
-//mở ra	
-	@Column(name = "TOTAL_ANSWER", precision = 22, scale = 0)
-	public Integer getTotalAnswer() {
-		return this.totalAnswer;
-	}
-
-	public void setTotalAnswer(Integer totalAnswer) {
-		this.totalAnswer = totalAnswer;
-	}
-	
-	@Column(name = "TOTAL_QUESTION", precision = 22, scale = 0)
-	public Integer getTotalQuestion() {
-		return totalQuestion;
-	}
-	public void setTotalQuestion(Integer totalQuestion) {
-		this.totalQuestion = totalQuestion;
-	}
-
-	
-	@Column(name = "TOTAL_IMAGE", precision = 22, scale = 0)
-	public Integer getTotalImage() {
-		return this.totalImage;
-	}
-	public void setTotalImage(Integer totalImage) {
-		this.totalImage = totalImage;
-	}
-	
-
-//end	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "userSurvey")
-	public Set<UserSurveyAnswer> getUserSurveyAnswers() {
-		return this.userSurveyAnswers;
-	}
+  public void setIsTemporary(String isTemporary) {
+    this.isTemporary = isTemporary;
+  }
 
 
-	public void setUserSurveyAnswers(Set<UserSurveyAnswer> userSurveyAnswers) {
-		this.userSurveyAnswers = userSurveyAnswers;
-	}
+  // end
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "userSurvey")
-	public Set<SrImg> getSrImgs() {
-		return this.srImgs;
-	}
+  @ManyToOne(fetch = FetchType.LAZY, targetEntity = Village.class)
+  @JoinColumn(name = "VILLAGE_ID")
+  public Village getVillage() {
+    return village;
+  }
 
-	public void setSrImgs(Set<SrImg> srImgs) {
-		this.srImgs = srImgs;
-	}
-	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "userSurvey")
-	public Set<TempVillage> getTempVillages() {
-		return tempVillages;
-	}
+  public void setVillage(Village village) {
+    this.village = village;
+  }
 
-	public void setTempVillages(Set<TempVillage> tempVillages) {
-		this.tempVillages = tempVillages;
-	}
-	
-	@JsonFormat(pattern="dd-MM-yyyy hh:mm:ss")
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "DateSubmitSurvey", precision = 126, scale = 0)
-	@OrderBy("DESC")
-	public Date getDateSubmitSurvey() {
-		return dateSubmitSurvey;
-	}
+  @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss")
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "DATE_SUBMIT_SURVEY", precision = 126, scale = 0)
+  @OrderBy("DESC")
+  public Date getDateSubmitSurvey() {
+    return dateSubmitSurvey;
+  }
 
-	public void setDateSubmitSurvey(Date dateSubmitSurvey) {
-		this.dateSubmitSurvey = dateSubmitSurvey;
-	}
+  public void setDateSubmitSurvey(Date dateSubmitSurvey) {
+    this.dateSubmitSurvey = dateSubmitSurvey;
+  }
+
+  @Column(name = "IMAGE", length = 1024 * 1024)
+  public String getImage() {
+    return this.image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
+  }
+
+  @Column(name = "COORDINATE")
+  public String getCoordinate() {
+    return this.coordinate;
+  }
+
+  public void setCoordinate(String coordinate) {
+    this.coordinate = coordinate;
+  }
+
+  @Column(name = "POLLUTION")
+  public String getPollution() {
+    return this.pollution;
+  }
+
+  public void setPollution(String pollution) {
+    this.pollution = pollution;
+  }
+
+  @Column(name = "NOTE")
+  public String getNote() {
+    return note;
+  }
+
+  public void setNote(String note) {
+    this.note = note;
+  }
 
 }

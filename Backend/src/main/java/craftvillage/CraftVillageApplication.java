@@ -13,7 +13,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
     FileStorageProperties.class
 })
 @EnableSwagger2
-public class CraftVillageApplication extends SpringBootServletInitializer {
+public class CraftVillageApplication {
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CraftVillageApplication.class, args);

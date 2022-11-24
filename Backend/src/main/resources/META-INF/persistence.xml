@@ -11,13 +11,7 @@
 			<property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@localhost:1521:orcl" />			
 			<property name="javax.persistence.jdbc.user" value="cv_user" />
 			<property name="javax.persistence.jdbc.password" value="cv_user" /> 
-			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
-			
-			<!-- <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/cv_user" />			
-			<property name="javax.persistence.jdbc.user" value="root" />
-			<property name="javax.persistence.jdbc.password" value="Casca113s2@" />
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" /> -->
+			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle12cDialect" />
 			
 			<property name="hibernate.hbm2ddl.auto" value="none" />
 			<property name="hibernate.enable_lazy_load_no_trans" value="true" />

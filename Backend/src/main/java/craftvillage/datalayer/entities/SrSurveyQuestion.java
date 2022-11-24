@@ -1,10 +1,7 @@
 package craftvillage.datalayer.entities;
 // Generated Mar 10, 2020 9:28:01 AM by Hibernate Tools 4.3.5.Final
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,16 +9,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Where;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import craftvillage.corelayer.utilities.ConstantParameter;
 
 /**
@@ -31,108 +21,67 @@ import craftvillage.corelayer.utilities.ConstantParameter;
 @Table(name = "SR_SURVEY_QUESTION", schema = ConstantParameter._SCHEMA_NAME)
 public class SrSurveyQuestion implements java.io.Serializable {
 
-	private int id;
-//	private SrQuestion srQuestion;
-	private SrSurvey srSurvey;
-	private String questionContent;
-	private String questionType;
-	private String questionLabel;
-	private Set<SrSurveyQuestionAnswer> srSurveyQuestionAnswers = new LinkedHashSet<SrSurveyQuestionAnswer>(0);
-	private SrSurveyQuestionAnswer srSurveyQuestionAnswer;
-	public SrSurveyQuestion() {
-	}
+  private int id;
+  private String questionContent;
+  private String questionType;
+  private String questionLabel;
+  private int active;
+  private Set<SrSurveyQuestionAnswer> srSurveyQuestionAnswers;
 
-	public SrSurveyQuestion(int id, SrSurvey srSurvey) {
-		this.id = id;
-		this.srSurvey = srSurvey;
-	}
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO, generator = "SR_SURVEY_QUESTION_SEQ")
+  @Column(name = "ID", unique = true, nullable = false, precision = 22, scale = 0)
+  public int getId() {
+    return this.id;
+  }
 
-	public SrSurveyQuestion(int id, /* SrQuestion srQuestion, */ SrSurvey srSurvey, String questionContent,
-			String questionType,String questionLabel, Set<SrSurveyQuestionAnswer> srSurveyQuestionAnswers) {
-		this.id = id;
-//		this.srQuestion = srQuestion;
-		this.srSurvey = srSurvey;
-		this.questionContent = questionContent;
-		this.questionType = questionType;
-		this.questionLabel = questionLabel;
-		this.srSurveyQuestionAnswers = srSurveyQuestionAnswers;
-	}
+  public void setId(int id) {
+    this.id = id;
+  }
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "SR_SURVEY_QUESTION_SEQ")
-	@Column(name = "ID", unique = true, nullable = false, precision = 22, scale = 0)
-	public int getId() {
-		return this.id;
-	}
+  @Column(name = "QUESTION_CONTENT", length = 200)
+  public String getQuestionContent() {
+    return this.questionContent;
+  }
 
-	public void setId(int id) {
-		this.id = id;
-	}
-//	@JsonBackReference
-//	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//	@JoinColumn(name = "SR_QUESTION_ID")
-//	public SrQuestion getSrQuestion() {
-//		return this.srQuestion;
-//	}
-//
-//	public void setSrQuestion(SrQuestion srQuestion) {
-//		this.srQuestion = srQuestion;
-//	}
-	@JsonBackReference
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "SURVEY_ID", nullable = false)
-	public SrSurvey getSrSurvey() {
-		return this.srSurvey;
-	}
+  public void setQuestionContent(String questionContent) {
+    this.questionContent = questionContent;
+  }
 
-	public void setSrSurvey(SrSurvey srSurvey) {
-		this.srSurvey = srSurvey;
-	}
+  @Column(name = "QUESTION_TYPE", length = 200)
+  public String getQuestionType() {
+    return this.questionType;
+  }
 
-	@Column(name = "QUESTION_CONTENT", length = 200)
-	public String getQuestionContent() {
-		return this.questionContent;
-	}
+  public void setQuestionType(String questionType) {
+    this.questionType = questionType;
+  }
 
-	public void setQuestionContent(String questionContent) {
-		this.questionContent = questionContent;
-	}
+  @Column(name = "QUESTION_LABEL", length = 40)
+  public String getquestionLabel() {
+    return questionLabel;
+  }
 
-	@Column(name = "QUESTION_TYPE", length = 200)
-	public String getQuestionType() {
-		return this.questionType;
-	}
+  public void setquestionLabel(String questionLabel) {
+    this.questionLabel = questionLabel;
+  }
 
-	public void setQuestionType(String questionType) {
-		this.questionType = questionType;
-	}
-	@Column(name = "QUESTION_LABEL", length = 40)
-	public String getquestionLabel() {
-		return questionLabel;
-	}
+  @Column(name = "ACTIVE", columnDefinition = "integer default 1")
+  public int isActive() {
+    return active;
+  }
 
-	public void setquestionLabel(String questionLabel) {
-		this.questionLabel = questionLabel;
-	}
-	@JsonBackReference
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "ANSWER_ID")
-	public SrSurveyQuestionAnswer getSrSurveyQuestionAnswer() {
-		return srSurveyQuestionAnswer;
-	}
+  public void setActive(int active) {
+    this.active = active;
+  }
 
-	public void setSrSurveyQuestionAnswer(SrSurveyQuestionAnswer srSurveyQuestionAnswer) {
-		this.srSurveyQuestionAnswer = srSurveyQuestionAnswer;
-	}
+  @OrderBy("id ASC")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "srSurveyQuestion")
+  public Set<SrSurveyQuestionAnswer> getSrSurveyQuestionAnswers() {
+    return this.srSurveyQuestionAnswers;
+  }
 
-	@OrderBy("id ASC")
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER, mappedBy = "srSurveyQuestion")
-	public Set<SrSurveyQuestionAnswer> getSrSurveyQuestionAnswers() {
-		return this.srSurveyQuestionAnswers;
-	}
-
-	public void setSrSurveyQuestionAnswers(Set<SrSurveyQuestionAnswer> srSurveyQuestionAnswers) {
-		this.srSurveyQuestionAnswers = srSurveyQuestionAnswers;
-	}
-
+  public void setSrSurveyQuestionAnswers(Set<SrSurveyQuestionAnswer> srSurveyQuestionAnswers) {
+    this.srSurveyQuestionAnswers = srSurveyQuestionAnswers;
+  }
 }

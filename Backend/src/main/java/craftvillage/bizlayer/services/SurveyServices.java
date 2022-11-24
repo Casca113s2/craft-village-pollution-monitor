@@ -1,155 +1,87 @@
 package craftvillage.bizlayer.services;
 
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import org.json.JSONException;
+import java.util.TimeZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import craftvillage.datalayer.entities.AdProvince;
-import craftvillage.datalayer.entities.SrActive;
-//import craftvillage.datalayer.entities.SrQuestion;
-import craftvillage.datalayer.entities.SrSurvey;
-import craftvillage.datalayer.entities.SrSurveyQuestion;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.UserSurvey;
-import craftvillage.datalayer.entities.UserSurveyAnswer;
-import craftvillage.datalayer.services.AddressServ;
-import craftvillage.datalayer.services.AnswerServ;
-import craftvillage.datalayer.services.QuestionServ;
+import craftvillage.datalayer.entities.Village;
+import craftvillage.datalayer.repositories.UserSurveyRepository;
 import craftvillage.datalayer.services.SurveyServ;
 import craftvillage.datalayer.services.UserServ;
 
 @Service
 public class SurveyServices {
 
-	@Autowired
-	SurveyServ surveyServ = new SurveyServ();
-	@Autowired
-	UserServ userServ = new UserServ();
-	@Autowired
-	AnswerServ answerServ = new AnswerServ();
-	@Autowired
-	QuestionServ questionServ = new QuestionServ();
-	
-	public boolean AddSurvey(String campainName, String campainGoal, int urUserID) {
+  @Autowired
+  SurveyServ surveyServ = new SurveyServ();
+  @Autowired
+  UserServ userServ = new UserServ();
+  @Autowired
+  UserSurveyRepository userSurveyRepository;
 
-		if (surveyServ.addTemplateSurvey(campainName, campainGoal, urUserID))
-			return true;
-		return false;
-	}
+  public int countMonthlySurvey(Village village) {
+    int count = 0;
+    Calendar localCalendar = Calendar.getInstance(TimeZone.getDefault());
+    int currentMonth = localCalendar.get(Calendar.MONTH);
+    for (UserSurvey survey : village.getUserSurveys()) {
+      int surveyMonth = survey.getDateSubmitSurvey().toInstant().atZone(ZoneId.systemDefault())
+          .toLocalDate().getMonthValue();
+      if (surveyMonth == currentMonth)
+        count++;
+    }
+    return count;
+  }
 
-	public Set<SrSurvey> getUserSurvey(String account) {
-		return userServ.getUserSurvey(account);
-	}
+  public String getImageBySurveyId(int id) {
+    UserSurvey userSurvey = userSurveyRepository.getOne(id);
+    return userSurvey.getImage();
+  }
 
-	public SrSurvey getSurveyByActiveId(int activeId) {
-		return surveyServ.getSurveyByActiveId(activeId);
-	}
+  public UserSurvey getSubmitSurvey(String account, int activeId) {
+    return surveyServ.getSubmitSurvey(account, activeId);
+  }
 
-	public boolean addUrAnswer(UserSurvey userSurvey, int questionId, String answerContent, String otherContent,String account) {
-		return answerServ.addOrUpdateUserAnswer(userSurvey, questionId, answerContent, otherContent,account);
-	}
-	
-	public boolean DeletedAnswer(UrUser user , String status)
-	{
-		return answerServ.DeletedAnswer(user , status);
-	}
-	
-	public boolean DeleteImage(UrUser user , String status, String rootPath)
-	{
-		return answerServ.DeletedImage(user, status, rootPath);
-	}
-	
-	public UserSurvey getSubmitSurvey(String account , int activeId) {
-		return surveyServ.getSubmitSurvey(account, activeId);
-	}
-	
-	public UserSurvey getUserSurvey(UrUser user , String status)
-	{
-		return surveyServ.getUserSurvey(user, status);
-	}
-	
-	public UserSurvey getUserSurveyById(int userSurveyId)
-	{
-		return surveyServ.getUserSurveyById(userSurveyId);
-	}
-	
-	public boolean addUserSurvey(UserSurvey userSurvey)
-	{
-		return surveyServ.addUserSurvey(userSurvey);
-	}
-	
-	public Set<SrActive> getSrActiveInfo(String account, String status , String for_Role) {
-		return userServ.getSrActiveInfo(account, status , for_Role);
-	}
-	
-	public List<UserSurvey> getSrActiveInfoByStatus(UrUser user , String status)
-	{
-		return userServ.getSrActiveInfoByStatus(user, status);
-	}
-	
-	public Set<UserSurveyAnswer> getUserAnswer(int userSurveyId) {
-		return answerServ.getUserAnswer(userSurveyId);
-	}
+  public UserSurvey getUserSurvey(UrUser user, String status) {
+    return surveyServ.getUserSurvey(user, status);
+  }
 
-	public SrSurveyQuestion getQuestions(int questionID) {
-		return questionServ.getQuestion(questionID);
-	}
+  public UserSurvey getUserSurveyById(int userSurveyId) {
+    return surveyServ.getUserSurveyById(userSurveyId);
+  }
 
-	public boolean changeStatus(int idUserSurvey ,String newStatus) {
-		return surveyServ.changeStatus(idUserSurvey ,newStatus);
-	}
-	
-	public int getNumAnswer(String account, int activeId)
-	{
-		return answerServ.getNumAnswer(account, activeId);
-	}
-	
-	public String  getStatus(String account, int activeId)
-	{
-		return userServ.getStatus(account, activeId);
-	}
+  public boolean addUserSurvey(UserSurvey userSurvey) {
+    return surveyServ.addUserSurvey(userSurvey);
+  }
 
-	public SrSurvey getSurveyByCode(String code) {
-		// TODO Auto-generated method stub
-		return surveyServ.getSurveyByCode(code);
-	}
-	public Set<SrActive> getSurveyByStatus(String isTemporary){
-		return userServ.getSrActiveByStatus(isTemporary);
-	}
-	
-	public SrActive getSurveyActive(int activeId)
-	{
-		return surveyServ.getSurveyActive(activeId);
-	}
-	
-	public boolean addUserSurvey(String username)
-	{
-		return userServ.addUserSurvey(username);
-	}
-	
-	public boolean addUserSurveyById(String username , int srActiveId)
-	{
-		return userServ.addUserSurveyById(username, srActiveId);
-	}
-	
-	public boolean setDateSubmitSurvey (int userSurveyId , Date dateSubmitSurvey)
-	{
-		return userServ.setDateSubmitSurvey(userSurveyId, dateSubmitSurvey);
-	}
-	
-	public boolean addFilePath(String filePath , Date dateNow , UserSurvey userSurvey , double X_COORDINATE , double Y_COORDINATE , String filename)
-	{
-		return userServ.addFilePath(filePath, dateNow, userSurvey, X_COORDINATE, Y_COORDINATE, filename);
-	}
-	
-	public String[] findfileNamebyId(int userSurveyId)
-	{
-		return answerServ.findFileNameById(userSurveyId);
-	}
+  public List<UserSurvey> getSrActiveInfoByStatus(UrUser user, String status) {
+    return userServ.getSrActiveInfoByStatus(user, status);
+  }
+
+  public boolean changeStatus(int idUserSurvey, String newStatus) {
+    return surveyServ.changeStatus(idUserSurvey, newStatus);
+  }
+
+  public String getStatus(String account, int activeId) {
+    return userServ.getStatus(account, activeId);
+  }
+
+  public boolean setDateSubmitSurvey(int userSurveyId, Date dateSubmitSurvey) {
+    return userServ.setDateSubmitSurvey(userSurveyId, dateSubmitSurvey);
+  }
+
+  public String getPollution(String pollution) {
+    List<String> result = new ArrayList<String>();
+    String[] list = {"Đất", "Nước", "Không khí"};
+    for (int i = 0; i < pollution.length(); i++) {
+      if (pollution.charAt(i) == '1')
+        result.add(list[i]);
+    }
+    return String.join(" - ", list);
+  }
 }
