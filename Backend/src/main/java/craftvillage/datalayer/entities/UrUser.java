@@ -2,6 +2,7 @@ package craftvillage.datalayer.entities;
 // Generated Mar 10, 2020 9:28:01 AM by Hibernate Tools 4.3.5.Final
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -43,7 +44,7 @@ public class UrUser implements java.io.Serializable {
   private String type;
 
   private Set<UserSurvey> userSurveys;
-  private Set<UrRole> urRoles;
+  private Set<UrRole> urRoles = new HashSet<UrRole>();
   private Set<UrSession> urSessions;
   private Village village;
   private AdDistrict district;

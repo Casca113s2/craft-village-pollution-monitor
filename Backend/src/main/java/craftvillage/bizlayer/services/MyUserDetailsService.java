@@ -75,6 +75,7 @@ public class MyUserDetailsService implements UserDetailsService {
       String lastname, String phone, String email, Date activeDate)
       throws ClassNotFoundException, SQLException, ParseException {
     String pass = passwordEncoder.encode(password);
+    System.out.println(role);
     int roleID;
     if (role.equals("USER"))
       roleID = 1;

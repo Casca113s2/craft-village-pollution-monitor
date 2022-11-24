@@ -82,7 +82,7 @@
 											
 									</div>
                                 </div>
-                                <button id="btn-submit" class="au-btn au-btn--block au-btn--green m-b-20" type="button">Đăng ký</button>
+                                <button id="btn-submit" class="btn btn-success au-btn--block m-b-20" style="font-size:20px;" type="button">Đăng ký</button>
                                 
                 
                                 <div class="register-link">
@@ -165,6 +165,8 @@
 				$("#error-message").addClass("display");
 				return;
 			}
+			$(this).text("Đang gửi...");
+			$(this).prop('disabled', true);
 			$.ajax({
 		        url: "/craftvillage/api/user/register",
 		        type: 'POST',
@@ -190,6 +192,7 @@
 		        		$("#error-message").text(res.message);
 						$("#error-message").addClass("display");
 		        	}
+		        	$("#btn-submit").prop('disabled', false);
 		        }
 		    });
 		})

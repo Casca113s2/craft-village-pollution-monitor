@@ -50,12 +50,10 @@
                                 </div>
                                 <div id="success-message" class="alert alert-info hidden" role="alert"></div>
                                 <div id="error-message" class="alert alert-danger hidden" role="alert"></div>
-                                <div style="display: flex;">
-                                	<div>
-	                                	<input class="au-input au-input--full" type="text" id="username" placeholder="Tài khoản">
-	                                    <input class="au-input au-input--full" type="email" id="email" placeholder="Email">
-                                	</div>
-                                    <button id="btn-send" class="au-btn au-btn--green m-l-10">Gửi</button>
+                                <div>
+                                    <input id="username" class="au-input au-input--full m-b-10" type="text" name="username" placeholder="Tài khoản">
+                                    <input id="email" class="au-input au-input--full m-b-10" type="email" name="email" placeholder="Email">
+                                    <button id="btn-send" class="au-btn--block btn btn-success">Reset</button>
                                 </div>
                                  <div class="register-link">
                                     <p>
@@ -110,10 +108,10 @@
 		        url: "/craftvillage/api/user/forgetpass",
 		        type: 'POST',
 		        contentType: "application/json; charset=utf-8",
-		        data: {
+		        data: JSON.stringify({
 		        		username : username,
 		        		email : email
-		        	},
+		        	}),
 		        success: function(res) {
 		        	if(res){
 		        		$("#error-message").removeClass("display")
@@ -126,7 +124,8 @@
 		        		$("#error-message").text("Tài khoản không tồn tại hoặc email chưa được đăng ký!");
 						$("#error-message").addClass("display");
 		        	}
-		        	$(this).prop("disabled", false);
+		        	$('#btn-send').text("Reset");
+		        	$('#btn-send').prop("disabled", false);
 		        }
 		    });
        })
