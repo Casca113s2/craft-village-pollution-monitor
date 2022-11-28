@@ -33,7 +33,7 @@ public class PageController {
   @GetMapping("/home")
   public String home(Principal principal) {
     UrUser user = userService.findByUsername(principal.getName());
-    if (user.getType().equals("HouseHold"))
+    if (user.getType().equals("Household"))
       return "redirect:/web/household/declare";
     else if (user.getType().equals("LocalAuthority"))
       return "redirect:/web/authority/index";

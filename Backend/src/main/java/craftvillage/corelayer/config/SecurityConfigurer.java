@@ -85,9 +85,10 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
             url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_DETECT)
         .access("hasRole('ROLE_USER')")
         .antMatchers("/web/home", url_user + "/" + ConstantParameter.ServiceUser._USER_CHANGE_PASS)
-        .hasAnyAuthority("HOUSEHOLD", "LOCALAUTHORITY", "ADMIN").antMatchers("/web/household/**")
-        .hasAuthority("HOUSEHOLD").antMatchers("/web/authority/**").hasAuthority("LOCALAUTHORITY")
-        .antMatchers("/admin-site/**").hasAuthority("ADMIN").anyRequest().authenticated();
+        .hasAnyAuthority("HOUSEHOLD", "LOCALAUTHORITY", "ADMIN", "ROLE_USER")
+        .antMatchers("/web/household/**").hasAuthority("HOUSEHOLD").antMatchers("/web/authority/**")
+        .hasAuthority("LOCALAUTHORITY").antMatchers("/admin-site/**").hasAuthority("ADMIN")
+        .anyRequest().authenticated();
     http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
   }
