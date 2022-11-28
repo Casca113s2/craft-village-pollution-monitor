@@ -63,7 +63,7 @@ class AuthBloc {
   ) {
     final alphanumeric = RegExp(r'^[a-zA-Z0-9]+$');
 
-    final phonenumeric = RegExp(r'^[0-9]+$');
+    final phonenumeric = RegExp(r'^[0-9]+\.[0-9]+\.[0-9]+$');
 
     final nameRequired = RegExp(r"^[a-z ,.\'-]+$");
 
@@ -103,7 +103,7 @@ class AuthBloc {
     }
     _firstNameController.sink.add("");
 
-    print(phonenumeric.hasMatch(phone));
+    print(phone.toString() + " - " + phonenumeric.hasMatch(phone).toString());
     if (phone == null ||
         phone.length == 0 ||
         phone.length < 10 ||
