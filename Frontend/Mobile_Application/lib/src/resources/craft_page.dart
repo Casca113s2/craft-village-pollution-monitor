@@ -2137,37 +2137,54 @@ class _CraftPageState extends State<CraftPage> {
                           isExpanded: true,
                           value: selectedVillage,
                           onChanged: (Village value) {
-                            villageBloc.checkExistVillage(
-                                value.villageId, () {}, (msg) {
-                              LoadingDialog.hideLoadingDialog(context);
-                              MsgDialog.showMsgDialog(
-                                  context, LanguageConfig.getNotice(), msg);
-                            }).then((result) {
-                              if (result) {
-                                setState(() {
-                                  selectedVillage = value;
-                                  List<String> splitLatLong =
-                                      selectedVillage.coordinate.split(",");
-                                  lat = double.parse(splitLatLong[0]);
-                                  long = double.parse(splitLatLong[1]);
-                                  _infoCraftVillage.text = selectedVillage.note;
+                            // villageBloc.checkExistVillage(
+                            //     value.villageId, () {}, (msg) {
+                            //   LoadingDialog.hideLoadingDialog(context);
+                            //   MsgDialog.showMsgDialog(
+                            //       context, LanguageConfig.getNotice(), msg);
+                            // }).then((result) {
+                            //   if (result) {
+                            //     setState(() {
+                            //       selectedVillage = value;
+                            //       List<String> splitLatLong =
+                            //           selectedVillage.coordinate.split(",");
+                            //       lat = double.parse(splitLatLong[0]);
+                            //       long = double.parse(splitLatLong[1]);
+                            //       _infoCraftVillage.text = selectedVillage.note;
 
-                                  //marker
-                                  var markerIdVal =
-                                      selectedVillage.villageId.toString();
-                                  final MarkerId markerId =
-                                      MarkerId(markerIdVal);
-                                  _onMarkerTapped(markerId);
+                            //       //marker
+                            //       var markerIdVal =
+                            //           selectedVillage.villageId.toString();
+                            //       final MarkerId markerId =
+                            //           MarkerId(markerIdVal);
+                            //       _onMarkerTapped(markerId);
 
-                                  //Set nearby villages makers
-                                  setNearbyVillagesMaker();
-                                });
-                              } else {
-                                MsgDialog.showMsgDialog(
-                                    context,
-                                    LanguageConfig.getNotice(),
-                                    LanguageConfig.getInvestigated());
-                              }
+                            //       //Set nearby villages makers
+                            //       setNearbyVillagesMaker();
+                            //     });
+                            //   } else {
+                            //     MsgDialog.showMsgDialog(
+                            //         context,
+                            //         LanguageConfig.getNotice(),
+                            //         LanguageConfig.getInvestigated());
+                            //   }
+                            // });
+                            setState(() {
+                              selectedVillage = value;
+                              List<String> splitLatLong =
+                                  selectedVillage.coordinate.split(",");
+                              lat = double.parse(splitLatLong[0]);
+                              long = double.parse(splitLatLong[1]);
+                              _infoCraftVillage.text = selectedVillage.note;
+
+                              //marker
+                              var markerIdVal =
+                                  selectedVillage.villageId.toString();
+                              final MarkerId markerId = MarkerId(markerIdVal);
+                              _onMarkerTapped(markerId);
+
+                              //Set nearby villages makers
+                              setNearbyVillagesMaker();
                             });
                           },
                           items: lsVillage.map((Village village) {
