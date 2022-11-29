@@ -38,7 +38,7 @@ public class HouseholdController {
   @GetMapping("/declare")
   public String getForm(Model model, Principal principal) {
     UrUser user = userService.findByUsername(principal.getName());
-    String villageName = user.getVillage().getVillageName();
+    String villageName = user.getVillage() != null ? user.getVillage().getVillageName() : "";
     model.addAttribute("villageName",
         villageName.length() > 0 ? " : " + villageName : " : (Chưa khai báo)");
     model.addAttribute("provinceList", addressService.getProvinceList(234));

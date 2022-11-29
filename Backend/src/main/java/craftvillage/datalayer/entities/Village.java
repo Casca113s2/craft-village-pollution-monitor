@@ -57,7 +57,7 @@ public class Village implements java.io.Serializable {
   }
 
   // end
-  @Column(name = "NOTE", length = 100)
+  @Column(name = "NOTE", length = 250)
   public String getNote() {
     return note;
   }

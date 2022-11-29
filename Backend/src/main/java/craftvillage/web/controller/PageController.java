@@ -15,7 +15,7 @@ public class PageController {
   @Autowired
   private UserService userService;
 
-  @GetMapping({"/login", "/"})
+  @GetMapping("/login")
   public String loginPage() {
     return "login";
   }
