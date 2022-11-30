@@ -2,6 +2,7 @@ package craftvillage.datalayer.entities;
 
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -91,7 +92,8 @@ public class Village implements java.io.Serializable {
     return adWard;
   }
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "village", targetEntity = UrUser.class)
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "village", targetEntity = UrUser.class,
+      cascade = CascadeType.ALL)
   public Set<UrUser> getHouseholds() {
     return households;
   }
@@ -105,7 +107,8 @@ public class Village implements java.io.Serializable {
   }
 
   @OrderBy("Id ASC")
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "village", targetEntity = UserSurvey.class)
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "village", targetEntity = UserSurvey.class,
+      cascade = CascadeType.ALL)
   public Set<UserSurvey> getUserSurveys() {
     return userSurveys;
   }

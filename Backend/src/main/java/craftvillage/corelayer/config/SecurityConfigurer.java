@@ -64,6 +64,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
             url_user + "/" + ConstantParameter.ServiceUser._USER_FORGOTTEN_PASS,
             url_user + "/" + ConstantParameter.ServiceUser._USER_GET_PASSWORD,
             url_survey + "/" + ConstantParameter.ServiceSurvey._SURVEY_GET_SURVEY_BYID,
+            url_survey + "/" + ConstantParameter.ServiceSurvey._SURVEY_GET_ALL_SURVEY,
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_COUNTRY,
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_PROVINCE,
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_DISTRICT,
