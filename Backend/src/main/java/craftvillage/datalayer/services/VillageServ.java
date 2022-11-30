@@ -52,7 +52,7 @@ public class VillageServ {
       strX += coordinate.charAt(i);
       i++;
     }
-    i += 1;
+    i += 2;
     while (i < coordinate.length()) {
       strY += coordinate.charAt(i);
       i++;
