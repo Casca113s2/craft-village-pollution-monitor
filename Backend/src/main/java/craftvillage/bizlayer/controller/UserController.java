@@ -319,17 +319,14 @@ public class UserController {
    */
   @RequestMapping(value = "/" + ConstantParameter.ServiceUser._USER_UPDATE_INFOR,
       method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-  public boolean updateUser(@RequestBody Map<String, String> updateUserForm)
+  public boolean updateUser(@RequestBody Map<String, String> updateUserForm, Principal principal)
       throws ParseException, UnsupportedEncodingException {
 
-    String username = updateUserForm.get("username");
     String firstname = updateUserForm.get("firstname");
     String lastname = updateUserForm.get("lastname");
     String phone = updateUserForm.get("phone");
-    String email = updateUserForm.get("email");
-    String type = updateUserForm.get("type");
 
-    return userDetailsService.updateUserInfo(username, firstname, lastname, phone, email, type);
+    return userDetailsService.updateUserInfo(principal.getName(), firstname, lastname, phone);
   }
 
   public JwtUtil getJwtTokenUtil() {

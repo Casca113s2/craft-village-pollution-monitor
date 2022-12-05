@@ -42,8 +42,11 @@ public class HouseholdController {
     model.addAttribute("villageName",
         villageName.length() > 0 ? " : " + villageName : " : (Chưa khai báo)");
     model.addAttribute("provinceList", addressService.getProvinceList(234));
-    model.addAttribute("name", user.getFirstname() + " " + user.getLastname());
+    model.addAttribute("name", principal.getName());
     model.addAttribute("email", user.getEmail());
+    model.addAttribute("firstname", user.getFirstname());
+    model.addAttribute("lastname", user.getLastname());
+    model.addAttribute("phone", user.getPhone());
     model.addAttribute("questions", srSurveyQuestionService.findByActive(1));
     return "household";
   }

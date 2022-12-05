@@ -96,8 +96,12 @@
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__body">
+                                            	<div class="account-dropdown__item">
+													<a href="#" id="modal-profile">
+														<i class="zmdi zmdi-account"></i>Profile</a>
+												</div>
                                                 <div class="account-dropdown__item">
-                                                    <a data-toggle="modal" data-target="#staticModal" >
+                                                    <a href="#" id="modal-change-password">
                                                         <i class="zmdi zmdi-settings"></i>Change password</a>
                                                 </div>
                                             </div>
@@ -166,7 +170,7 @@
                 </div>
             </div>
             <!-- modal static -->
-			<div class="modal fade" id="staticModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
+			<div class="modal fade" id="staticModal1" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
 			 data-backdrop="static">
 				<div class="modal-dialog modal-sm" role="document">
 					<div class="modal-content">
@@ -195,6 +199,39 @@
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 							<button id="btn-change-password" type="button" class="btn btn-primary">Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" id="staticModal2" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
+			 data-backdrop="static">
+				<div class="modal-dialog modal-sm" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="staticModalLabel">Profile</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label>First name</label>
+								<input class="au-input au-input--full" id="firstname" type="text" th:utext="${firstname}">
+							</div>
+							<div class="form-group">
+								<label>Last name</label>
+								<input class="au-input au-input--full" id="lastname" type="text" th:utext="${lastname}">
+							</div>
+							<div class="form-group">
+								<label>Phone number</label>
+								<input class="au-input au-input--full" id="phone" type="tel" th:utext="${phone}">
+							</div>
+							<div id="error-profile-modal" class="alert alert-danger message" role="alert" style="margin: 0;"></div>
+							<div id="success-profile-modal" class="alert alert-success message" role="alert" style="margin: 0;"></div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							<button id="btn-update-profile" type="button" class="btn btn-primary">Save</button>
 						</div>
 					</div>
 				</div>

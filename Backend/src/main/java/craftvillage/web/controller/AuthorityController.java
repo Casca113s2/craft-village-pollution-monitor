@@ -71,8 +71,11 @@ public class AuthorityController {
     model.addAttribute("numberOfNewSurvey", numberOfNewSurvey);
     model.addAttribute("numberOfVillage", numberOfVillage);
     model.addAttribute("numberOfNewVillage", numberOfNewVillage);
-    model.addAttribute("name", user.getFirstname() + " " + user.getLastname());
+    model.addAttribute("name", principal.getName());
     model.addAttribute("email", user.getEmail());
+    model.addAttribute("firstname", user.getFirstname());
+    model.addAttribute("lastname", user.getLastname());
+    model.addAttribute("phone", user.getPhone());
     return "index";
   }
 
@@ -90,8 +93,11 @@ public class AuthorityController {
     }
     model.addAttribute("pendingVillages", villages);
     model.addAttribute("wards", wards);
-    model.addAttribute("name", user.getFirstname() + " " + user.getLastname());
+    model.addAttribute("name", principal.getName());
     model.addAttribute("email", user.getEmail());
+    model.addAttribute("firstname", user.getFirstname());
+    model.addAttribute("lastname", user.getLastname());
+    model.addAttribute("phone", user.getPhone());
     return "newvillage";
   }
 
@@ -130,9 +136,12 @@ public class AuthorityController {
       data.put("date", household.getActiveDate());
       villageData.add(data);
     }
-    model.addAttribute("name", user.getFirstname() + " " + user.getLastname());
+    model.addAttribute("name", principal.getName());
     model.addAttribute("email", user.getEmail());
     model.addAttribute("info", villageData);
+    model.addAttribute("firstname", user.getFirstname());
+    model.addAttribute("lastname", user.getLastname());
+    model.addAttribute("phone", user.getPhone());
     return "villagedata";
   }
 
@@ -170,8 +179,11 @@ public class AuthorityController {
       }
     }
     model.addAttribute("surveys", surveys);
-    model.addAttribute("name", user.getFirstname() + " " + user.getLastname());
+    model.addAttribute("name", principal.getName());
     model.addAttribute("email", user.getEmail());
+    model.addAttribute("firstname", user.getFirstname());
+    model.addAttribute("lastname", user.getLastname());
+    model.addAttribute("phone", user.getPhone());
     return "survey";
   }
 }

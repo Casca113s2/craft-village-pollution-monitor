@@ -37,9 +37,8 @@ public class PageController {
       return "redirect:/web/household/declare";
     else if (user.getType().equals("LocalAuthority"))
       return "redirect:/web/authority/index";
-    if (user.getType().equals("Admin"))
+    else
       return "redirect:/admin-site/localauthority";
-    return "login";
   }
 
 }
