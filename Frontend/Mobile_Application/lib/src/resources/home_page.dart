@@ -1,3 +1,4 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:excel/excel.dart';
 import 'package:fl_nynberapp/src/blocs/answer_bloc.dart';
@@ -171,7 +172,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     ? LanguageConfig.getLocalAuthority()
                     : LanguageConfig.getPrivatePerson());
 
-            print("Type User: "+typeUser);
+            print("Type User: " + typeUser);
             sharedPreferences.setString("typeUser", typeUser);
           });
         }
@@ -397,41 +398,131 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                       subheading(LanguageConfig.getMyTasks()),
                                     ],
                                   ),
+                                  //Working Here
                                   SizedBox(height: 15.0),
-                                  GestureDetector(
-                                    onTap: () {
-                                      // Navigator.of(context).pushNamed(PETS_ITEM_LIST);
-                                      // _showDialogTypes(context);
-
-                                      // LoadingDialog.showLoadingDialog(
-                                      //     context, LanguageConfig.getLoading());
-                                      // if (typeUser != "noneType") {
-                                      //   LoadingDialog.hideLoadingDialog(
-                                      //       context);
-                                      //   showAlertDialogNewSurvey(
-                                      //       context, typeUser);
-                                      // }
-                                      print("Start new survey!");
-                                      Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      CraftPage(
-                                                          null, 0, 0, null)))
-                                          .then((value) => isHomePage = true);
-                                      isHomePage = false;
-                                    },
-                                    child: TaskColumn(
-                                      icon: Icons.alarm,
-                                      iconBackgroundColor: LightColors.kRed,
-                                      title: LanguageConfig.getNewSurvey(),
-                                      subtitle:
-                                          LanguageConfig.getNewSurveyTitle(),
+                                  Container(
+                                    child: Center(
+                                      child: AvatarGlow(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            print("Start new survey!");
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        CraftPage(null, 0, 0,
+                                                            null))).then(
+                                                (value) => isHomePage = true);
+                                            isHomePage = false;
+                                          },
+                                          child: CircleAvatar(
+                                            radius: 50.0,
+                                            backgroundColor:
+                                                LightColors.kGreen,
+                                            child: Icon(
+                                              Icons.add_business_rounded,
+                                              size: 40.0,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                        endRadius: 100,
+                                        glowColor: Colors.blue,
+                                        duration: Duration(milliseconds: 2000),
+                                      ),
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: 15.0,
-                                  ),
+                                  //End Here
+                                  // SizedBox(height: 15.0),
+                                  // GestureDetector(
+                                  //   onTap: () {
+                                  //     // Navigator.of(context).pushNamed(PETS_ITEM_LIST);
+                                  //     // _showDialogTypes(context);
+
+                                  //     // LoadingDialog.showLoadingDialog(
+                                  //     //     context, LanguageConfig.getLoading());
+                                  //     // if (typeUser != "noneType") {
+                                  //     //   LoadingDialog.hideLoadingDialog(
+                                  //     //       context);
+                                  //     //   showAlertDialogNewSurvey(
+                                  //     //       context, typeUser);
+                                  //     // }
+                                  //     print("Start new survey!");
+                                  //     Navigator.push(
+                                  //             context,
+                                  //             MaterialPageRoute(
+                                  //                 builder: (context) =>
+                                  //                     CraftPage(
+                                  //                         null, 0, 0, null)))
+                                  //         .then((value) => isHomePage = true);
+                                  //     isHomePage = false;
+                                  //   },
+                                  //   child: TaskColumn(
+                                  //     icon: Icons.alarm,
+                                  //     iconBackgroundColor: LightColors.kRed,
+                                  //     title: LanguageConfig.getNewSurvey(),
+                                  //     subtitle:
+                                  //         LanguageConfig.getNewSurveyTitle(),
+                                  //   ),
+                                  // ),
+                                  // SizedBox(
+                                  //   height: 15.0,
+                                  // ),
+                                  // GestureDetector(
+                                  //   onTap: () {
+                                  //     // Navigator.of(context).pushNamed(PETS_ITEM_LIST);
+                                  //     // _showDialogTypes(context);
+                                  //     Navigator.push(
+                                  //             context,
+                                  //             MaterialPageRoute(
+                                  //                 builder: (context) =>
+                                  //                     SurveysInProgress()))
+                                  //         .then((value) => isHomePage = true);
+                                  //     isHomePage = false;
+                                  //   },
+                                  //   child: TaskColumn(
+                                  //     icon: Icons.blur_circular,
+                                  //     iconBackgroundColor:
+                                  //         LightColors.kDarkYellow,
+                                  //     title: LanguageConfig.getInProgress(),
+                                  //     subtitle:
+                                  //         LanguageConfig.getInProgressTile(),
+                                  //   ),
+                                  // ),
+                                  // SizedBox(height: 15.0),
+                                  // GestureDetector(
+                                  //   onTap: () {
+                                  //     // Navigator.of(context).pushNamed(PETS_ITEM_LIST);
+                                  //     // _showDialogTypes(context);
+                                  //     Navigator.push(
+                                  //             context,
+                                  //             MaterialPageRoute(
+                                  //                 builder: (context) =>
+                                  //                     SurveysCompleted()))
+                                  //         .then((value) => isHomePage = true);
+                                  //     isHomePage = false;
+                                  //   },
+                                  //   child: TaskColumn(
+                                  //     icon: Icons.check_circle_outline,
+                                  //     iconBackgroundColor: LightColors.kBlue,
+                                  //     title: LanguageConfig.getCompleted(),
+                                  //     subtitle:
+                                  //         LanguageConfig.getCompletedTitle(),
+                                  //   ),
+                                  // ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              color: Colors.transparent,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 5.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  subheading(
+                                      LanguageConfig.getInProgressSurveys()),
+                                  SizedBox(height: 15.0),
                                   GestureDetector(
                                     onTap: () {
                                       // Navigator.of(context).pushNamed(PETS_ITEM_LIST);
@@ -474,73 +565,60 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                           LanguageConfig.getCompletedTitle(),
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              color: Colors.transparent,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20.0, vertical: 10.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  subheading(
-                                      LanguageConfig.getInProgressSurveys()),
-                                  SizedBox(height: 5.0),
-                                  Row(
-                                    children: <Widget>[
-                                      ActiveProjectsCard(
-                                        cardColor: LightColors.kGreen,
-                                        loadingPercent: surveysPrivatePerson !=
-                                                null
-                                            ? surveysPrivatePerson.totalAnswer /
-                                                surveysPrivatePerson
-                                                    .totalQuestion
-                                            : 0,
-                                        title:
-                                            LanguageConfig.getPrivatePerson(),
-                                        subtitle:
-                                            LanguageConfig.getNewSurveyTitle(),
-                                      ),
-                                      SizedBox(width: 20.0),
-                                      ActiveProjectsCard(
-                                        cardColor: LightColors.kRed,
-                                        loadingPercent:
-                                            surveysLocalAuthority != null
-                                                ? surveysLocalAuthority
-                                                        .totalAnswer /
-                                                    surveysLocalAuthority
-                                                        .totalQuestion
-                                                : 0,
-                                        title:
-                                            LanguageConfig.getLocalAuthority(),
-                                        subtitle: LanguageConfig
-                                            .getNewSurveySubtitle(),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: <Widget>[
-                                      ActiveProjectsCard(
-                                        cardColor: LightColors.kDarkGreen,
-                                        loadingPercent: surveysHouseHold != null
-                                            ? surveysHouseHold.totalAnswer /
-                                                surveysHouseHold.totalQuestion
-                                            : 0,
-                                        title: LanguageConfig.getHouseHold(),
-                                        subtitle: LanguageConfig
-                                            .getNewSurveySubtitle(),
-                                      ),
-                                      SizedBox(width: 20.0),
-                                      ActiveProjectsCard(
-                                        cardColor: LightColors.kBlue,
-                                        loadingPercent: 0,
-                                        title: LanguageConfig.getAchievement(),
-                                        subtitle: LanguageConfig
-                                            .getAchievementSubtitle(),
-                                      ),
-                                    ],
-                                  ),
+                                  // Row(
+                                  //   children: <Widget>[
+                                  //     ActiveProjectsCard(
+                                  //       cardColor: LightColors.kGreen,
+                                  //       loadingPercent: surveysPrivatePerson !=
+                                  //               null
+                                  //           ? surveysPrivatePerson.totalAnswer /
+                                  //               surveysPrivatePerson
+                                  //                   .totalQuestion
+                                  //           : 0,
+                                  //       title:
+                                  //           LanguageConfig.getPrivatePerson(),
+                                  //       subtitle:
+                                  //           LanguageConfig.getNewSurveyTitle(),
+                                  //     ),
+                                  //     SizedBox(width: 20.0),
+                                  //     ActiveProjectsCard(
+                                  //       cardColor: LightColors.kRed,
+                                  //       loadingPercent:
+                                  //           surveysLocalAuthority != null
+                                  //               ? surveysLocalAuthority
+                                  //                       .totalAnswer /
+                                  //                   surveysLocalAuthority
+                                  //                       .totalQuestion
+                                  //               : 0,
+                                  //       title:
+                                  //           LanguageConfig.getLocalAuthority(),
+                                  //       subtitle: LanguageConfig
+                                  //           .getNewSurveySubtitle(),
+                                  //     ),
+                                  //   ],
+                                  // ),
+                                  // Row(
+                                  //   children: <Widget>[
+                                  //     ActiveProjectsCard(
+                                  //       cardColor: LightColors.kDarkGreen,
+                                  //       loadingPercent: surveysHouseHold != null
+                                  //           ? surveysHouseHold.totalAnswer /
+                                  //               surveysHouseHold.totalQuestion
+                                  //           : 0,
+                                  //       title: LanguageConfig.getHouseHold(),
+                                  //       subtitle: LanguageConfig
+                                  //           .getNewSurveySubtitle(),
+                                  //     ),
+                                  //     SizedBox(width: 20.0),
+                                  //     ActiveProjectsCard(
+                                  //       cardColor: LightColors.kBlue,
+                                  //       loadingPercent: 0,
+                                  //       title: LanguageConfig.getAchievement(),
+                                  //       subtitle: LanguageConfig
+                                  //           .getAchievementSubtitle(),
+                                  //     ),
+                                  //   ],
+                                  // ),
                                 ],
                               ),
                             ),

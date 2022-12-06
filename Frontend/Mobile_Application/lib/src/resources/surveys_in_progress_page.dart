@@ -10,9 +10,12 @@ import 'package:fl_nynberapp/src/resources/custom_widget/language_app.dart';
 import 'package:fl_nynberapp/src/resources/dialog/loading_dialog.dart';
 import 'package:fl_nynberapp/src/resources/dialog/msg_dialog.dart';
 import 'package:fl_nynberapp/src/resources/theme/colors/light_colors.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:nice_button/NiceButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'custom_widget/task_column.dart';
 
 class SurveysInProgress extends StatefulWidget {
   @override
@@ -35,6 +38,7 @@ class _SurveysInProgressState extends State<SurveysInProgress> {
   ImageBloc imageBloc = new ImageBloc();
   SurveyBloc surveyBloc = new SurveyBloc();
   VillageBloc villageBloc = new VillageBloc();
+
   void initState() {
     checkLoadingData = false;
     super.initState();
@@ -44,7 +48,6 @@ class _SurveysInProgressState extends State<SurveysInProgress> {
   @override
   void dispose() {
     auth.dispose();
-
     super.dispose();
   }
 
@@ -55,16 +58,15 @@ class _SurveysInProgressState extends State<SurveysInProgress> {
     setState(() {
       fullname = sharedPreferences.getString("fullname") != null
           ? sharedPreferences.getString("fullname")
-          : "Nguyen Duc Nghia";
+          : "Van Cong Le Ca";
       email = sharedPreferences.getString("email") != null
           ? sharedPreferences.getString("email")
-          : "ndnghia69@gmail.com";
+          : "cascabusiness@gmail.com";
       typeUser = sharedPreferences.getString("typeUser") != null
           ? sharedPreferences.getString("typeUser")
           : "none";
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +94,7 @@ class _SurveysInProgressState extends State<SurveysInProgress> {
                 child: Container(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                   LanguageConfig.getListSurveysInprogress(),
+                    LanguageConfig.getListSurveysInprogress(),
                     style: TextStyle(
                       fontSize: 20,
                       color: Colors.red,
@@ -113,7 +115,7 @@ class _SurveysInProgressState extends State<SurveysInProgress> {
                   ),
                 ),
               ),
-              createListInProgress(context)
+              createListInProgress(context),
             ],
           ),
         ),
@@ -124,209 +126,66 @@ class _SurveysInProgressState extends State<SurveysInProgress> {
 
   Widget createListInProgress(BuildContext context) {
     return (FutureBuilder(
-      future: surveyBloc.fetchSurveysInProgress(() {}, (msg) {
+      future: surveyBloc.fetchSurveysInProgress(token, () {}, (msg) {
         LoadingDialog.hideLoadingDialog(context);
         MsgDialog.showMsgDialog(context, LanguageConfig.getNotice(), msg);
       }),
+      // future: _listInProgressdata,
       builder: (context, snapshot) {
         final values = snapshot.data;
 
-        if (values == null || values.length == 0)
+        if (values == null)
           return Container(
               alignment: Alignment.center,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(LanguageConfig.getNoSaveDraft()),
               ));
+
         return SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 15, top: 10),
-                child: Text(
-                    LanguageConfig.getEditAndRemoveNotice(),
-                    style: TextStyle(color: Colors.red)),
-              ),
               ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: values == null ? 0 : values.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return ExpansionTile(
-                    title: Text(typeUser +
-                        " - " +
-                        values[index].dateSubmitSurvey),
-                    children: <Widget>[
-                      ListTile(
-                        title: Text(
-                          LanguageConfig.getVillageName(values[index].villageName),
-                          textAlign: TextAlign.left,
-                        ),
-                        onTap: () {
-                          print("abbbbb");
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          LanguageConfig.getNumberOfMainQuestion(values[index].totalQuestion.toString()),
-                          //  "Số câu hỏi: 17",
-                          textAlign: TextAlign.left,
-                        ),
-                        onTap: () {
-                          print("abbbbb");
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          LanguageConfig.getNumberOfMainAnswer( values[index].totalAnswer.toString()),
-                         
-                          //  "Số câu đã trả lời: 6",
-                          textAlign: TextAlign.left,
-                        ),
-                        onTap: () {
-                          print("abbbbb");
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          LanguageConfig.getNumberImage(values[index].totalImage.toString()),
-                          //  "Số ảnh:  2",
-                          textAlign: TextAlign.left,
-                        ),
-                        onTap: () {
-                          print("abbbbb");
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          LanguageConfig.getTypeSurvey(typeUser),
-                          //  "Số ảnh:  2",
-                          textAlign: TextAlign.left,
-                        ),
-                        onTap: () {
-                          print("abbbbb");
-                        },
-                      ),
-                      // ListTile(
-                      //   title: Text(
-                      //     "Survey active ID: " + values[index].surveyActiveID.toString(),
-                      //     textAlign: TextAlign.left,
-                      //   ),
-                      //   onTap: () {
-                      //     print("abbbbb");
-                      //   },
-                      // ),
-                      // // ListTile(
-                      // //   title: Text(
-                      // //     "Ngày kết thúc: " + values[index].dateEnd.toString(),
-                      // //     textAlign: TextAlign.left,
-                      // //   ),
-                      // //   onTap: () {
-                      // //     print("abbbbb");
-                      // //   },
-                      // // ),
-                      values[index].typeSurvey == (typeUser == "Người riêng tư" ? "PrivatePerson" : (typeUser == "Hộ gia đình") ? "HouseHold" : "LocalAuthority") ? Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: NiceButton(
-                              width: _width/2,
-                              text:  LanguageConfig.getContinueSurvey(),
-                              fontSize: 18,
-                              textColor: Colors.white,
-                              background: Color(0xff5b86e5),
-                              gradientColors: [
-                                Color(0xff5b86e5),
-                                Color(0xff36d1dc)
-                              ],
-                              onPressed: () {
-                                MsgDialog.showAlertDialog(context,  LanguageConfig.getNotice(),
-                                    LanguageConfig.getContinueSurveyNotice(),
-                                    () {
-                                  Navigator.push(
-                                    context,
-                                    new MaterialPageRoute(
-                                        builder: (context) => CraftPage(
-                                            values[index].surveyActiveID,
-                                            values[index].totalImage,
-                                            values[index].userSurveyId,
-                                            values[index].filename)),
-                                  );
-                                });
-                              },
-                            ),
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  physics: NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: values == null ? 0 : values.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: LightColors.kLightYellow3,
+                        // border: Border.all(color: Colors.black,),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                            bottomLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(10)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(5, 5), // changes position of shadow
                           ),
-                          NiceButton(
-                            width: _width/3,
-                                text:  LanguageConfig.getRemove(),
-                                fontSize: 18,
-                                textColor: Colors.white,
-                                background: LightColors.kLightYellow3,
-                                gradientColors: [
-                                  Colors.orangeAccent[100],
-                                  Colors.orangeAccent
-                                ],
-                                onPressed: () {
-                                  showCheckInProgressDialog(context);
-                                },
-                              ),
                         ],
-                      ) : Container()
-                    
-                    ],
-                  );
-                },
-              )
+                      ),
+                      padding:
+                          const EdgeInsets.only(left: 15, top: 10, bottom: 10),
+                      margin: 
+                          const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 5),
+                      child: TaskColumn(
+                        icon: Icons.watch_later_outlined,
+                        iconBackgroundColor: LightColors.kDarkYellow,
+                        title: values[index]['villageName'].toString(),
+                        subtitle: values[index]['date'].toString(),
+                      ),
+                    );
+                  })
             ],
           ),
         );
       },
     ));
-  }
-
-  showCheckInProgressDialog(BuildContext context) {
-    // set up the buttons
-    Widget cancelButton = FlatButton(
-      child: Text(LanguageConfig.getOK()),
-      onPressed: () {
-        answerBloc.resetUserSurvey(() {}, (msg) {
-        LoadingDialog.hideLoadingDialog(context);
-        MsgDialog.showMsgDialog(context, LanguageConfig.getNotice(), msg);
-      }).then((value) {
-          print("value delete $value");
-          Navigator.pop(context);
-          if (value.toString() == "true") {
-            MsgDialog.showMsgDialog(context, LanguageConfig.getNotice(), LanguageConfig.getRemoveSurvey());
-            setState(() {});
-          }
-        });
-      },
-    );
-    Widget continueButton = FlatButton(
-      child: Text(LanguageConfig.getCancel()),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text(LanguageConfig.getNotice()),
-      content: Text(LanguageConfig.getRemoveSurveyNotice()),
-      actions: [
-        continueButton,
-        cancelButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
   }
 }

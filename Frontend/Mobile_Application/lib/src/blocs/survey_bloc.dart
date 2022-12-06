@@ -23,9 +23,14 @@ class SurveyBloc {
         id, usersurveyid, onSuccess, onError);
   }
 
-  Future<List<SurveysInProgressModel>> fetchSurveysInProgress(
-      Function onSuccess, Function(String) onError) async {
-    return _apiAuth.fetchSurveysInProgress(onSuccess, onError);
+  // Future<List<SurveysInProgressModel>> fetchSurveysInProgress(
+  //     Function onSuccess, Function(String) onError) async {
+  //   return _apiAuth.fetchSurveysInProgress(onSuccess, onError);
+  // }
+
+  fetchSurveysInProgress(
+      String token, Function onSuccess, Function(String) onError) async {
+    return _apiAuth.fetchSurveysInProgress(token, onSuccess, onError);
   }
 
   Future<List<SurveysCompletedModel>> fetchSurveysCompleted(

@@ -54,10 +54,10 @@ class _SurveysCompletedState extends State<SurveysCompleted> {
     setState(() {
       fullname = sharedPreferences.getString("fullname") != null
           ? sharedPreferences.getString("fullname")
-          : "Nguyen Duc Nghia";
+          : "Van Cong Le Ca";
       email = sharedPreferences.getString("email") != null
           ? sharedPreferences.getString("email")
-          : "ndnghia69@gmail.com";
+          : "cascabusiness@gmail.com";
       typeUser = sharedPreferences.getString("typeUser") != null
           ? sharedPreferences.getString("typeUser")
           : "none";

@@ -1621,21 +1621,6 @@ class _CraftPageState extends State<CraftPage> {
     }
   }
 
-  Village addIDToVillage(String adWardId, Village newVillage) {
-    Village village = newVillage;
-
-    Future createNewResult = villageBloc.createNewVillage(adWardId, village);
-
-    if (createNewResult != null) {
-      createNewResult.then((value) {
-        print("Village Id: " + value);
-        village.villageId = int.parse(value);
-      });
-    }
-
-    return village;
-  }
-
   _onSubmitClick(String typeSubmit) async {
     print("type tab selection: $selectTabVillage");
     lsAnswerUser = [];
@@ -1731,10 +1716,12 @@ class _CraftPageState extends State<CraftPage> {
 
     String coord = "${_latController.text},${_longController.text}";
     print(coord);
+
     Village newVillage = new Village(
         villageName: _addCraftVillage.text,
         note: _addInfoCraftVillage.text,
         coordinate: coord);
+
     if (selectedVillage != null || newVillage != null) {
       lsVil = [];
       LoadingDialog.showLoadingDialog(context, LanguageConfig.getProcessing());
@@ -1758,21 +1745,50 @@ class _CraftPageState extends State<CraftPage> {
 
       print("Loai O nhiem: " + result);
 
+      if (selectTabVillage != 0) {
+        await villageBloc
+            .createNewVillage(selectedWard.wardId.toString(), newVillage)
+            .then((value) {
+          print("Value: " + value.toString());
+          if (value != null) {
+            print("Village Id after add: " + value.toString());
+            newVillage.villageId = value;
+          }
+        });
+      }
+
       villageBloc.submitVillage(
-          selectedVillage.villageId.toString(),
+          selectTabVillage == 0
+              ? selectedVillage.villageId.toString()
+              : newVillage.villageId.toString(),
           _longController.text,
           _latController.text,
           base64Img,
           result,
           _additionalInfo.text, (msg) {
         LoadingDialog.hideLoadingDialog(context);
-        // MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
         MsgDialog.showMsgDialogAndPushToScreenPage(
             context, LanguageConfig.getSubmit(), msg);
       }, (msg) {
         LoadingDialog.hideLoadingDialog(context);
         MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
       });
+
+      // villageBloc.submitVillage(
+      //     selectedVillage.villageId.toString(),
+      //     _longController.text,
+      //     _latController.text,
+      //     base64Img,
+      //     result,
+      //     _additionalInfo.text, (msg) {
+      //   LoadingDialog.hideLoadingDialog(context);
+      //   // MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
+      //   MsgDialog.showMsgDialogAndPushToScreenPage(
+      //       context, LanguageConfig.getSubmit(), msg);
+      // }, (msg) {
+      //   LoadingDialog.hideLoadingDialog(context);
+      //   MsgDialog.showMsgDialog(context, LanguageConfig.getSubmit(), msg);
+      // });
 
       // if (surveyActiveID != null) {
       //   print("totalImage: $totalImage");

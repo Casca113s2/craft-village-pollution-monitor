@@ -111,7 +111,7 @@ class ApiAuth {
     });
 
     // print("IM HERE RIGHT NOW!");
-    print("LOCATION RESPONE BODY: " + response.body);
+    print("LOCATION RESPONE BODY: " + utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
       // print("Code: 200!-LOCATION");
       jsonResponse = json.decode(utf8.decode(response.bodyBytes));
@@ -236,7 +236,7 @@ class ApiAuth {
       onSignInError("Có lỗi trong đường truyền, vui lòng thử lại sau.");
     });
 
-    print("ME HERE!!!");
+    print("ME HERE!!!" + response.body);
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
       print(response.body);
@@ -380,7 +380,6 @@ class ApiAuth {
       onError("Có lỗi trong đường truyền, vui lòng thử lại sau.");
     });
     // onSuccess();
-    // return "ndnghia69@gmail.com";
     print("isEmailCorrect status: " + response.statusCode.toString());
     if (response.statusCode == 200) {
       jsonResponse = response.body;
@@ -494,8 +493,8 @@ class ApiAuth {
             json.decode(response.body)['firstname']);
         return us;
       } else {
-        sharedPreferences.setString("fullname", "Nguyen Duc Nghia");
-        sharedPreferences.setString("email", "demoemail@gmail.com");
+        sharedPreferences.setString("fullname", "Van Cong Le Ca");
+        sharedPreferences.setString("email", "cascabusiness@gmail.com");
         return null;
       }
     } catch (e) {
@@ -674,7 +673,7 @@ class ApiAuth {
       Function(String) onError) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     //goi o day
-    print("NOTE HERE: " + note);
+    print("SUBMIT HERE: " + villageId);
     String token = sharedPreferences.getString("token");
     var jsonResponse = null;
     var response = await http.post(
@@ -726,6 +725,7 @@ class ApiAuth {
           'note': village.note,
           'longitude': long,
           'latitude': lat,
+          'hasAdded': '0'
         }),
         headers: {
           HttpHeaders.authorizationHeader: "Bearer $token",
@@ -734,11 +734,11 @@ class ApiAuth {
       print("Có lỗi trong đường truyền, vui lòng thử lại sau.");
     });
 
-    print("Create village code: " + response.statusCode.toString());
+    print("Create village code: " + response.body.toString());
     if (response.statusCode == 200) {
-      jsonResponse = json.decode(response.body);
-      print("Code: 200! " + jsonResponse['village_id']);
-      return jsonResponse['village_id'];
+      // jsonResponse = json.decode(response.body);
+      // print("Code: 200! " + json.decode(response.body));
+      return int.parse(response.body);
     } else {
       print("Tạo làng nghề thất bại, xin thử lại sau");
       return null;
@@ -855,17 +855,41 @@ class ApiAuth {
   //lay du lieu truyen vao surveys completed
   Future<List<SurveysCompletedModel>> fetchSurveysCompleted(
       String token, Function onSuccess, Function(String) onError) async {
+    // final response = await http.get(
+    //     Uri.parse(ConstantParameter.getAddressUrl() +
+    //         ServiceSurvey.getActiveInfor() +
+    //         "?status=Completed"),
+    //     headers: {
+    //       HttpHeaders.authorizationHeader: "Bearer $token",
+    //       'Content-Type': 'application/json'
+    //     }).catchError((err) {
+    //   onError("Có lỗi trong đường truyền, vui lòng thử lại sau.");
+    // });
+    // print("fetch sv completed: " + response.statusCode.toString());
+    // if (response.statusCode == 200) {
+    //   List<SurveysCompletedModel> lsSurveyCompleted;
+    //   Iterable list = json.decode(utf8.decode(response.bodyBytes));
+    //   lsSurveyCompleted =
+    //       list.map((model) => SurveysCompletedModel.fromJson(model)).toList();
+    //   return lsSurveyCompleted;
+    // } else {
+    //   throw Exception('Failed to load post');
+    // }
+    print("URL SURVEY: " +
+        ConstantParameter.getAddressUrl() +
+        ServiceSurvey.getAllSurvey());
     final response = await http.get(
-        Uri.parse(ConstantParameter.getAddressUrl() +
-            ServiceSurvey.getActiveInfor() +
-            "?status=Completed"),
+        Uri.parse(
+            ConstantParameter.getAddressUrl() + ServiceSurvey.getAllSurvey()),
         headers: {
           HttpHeaders.authorizationHeader: "Bearer $token",
           'Content-Type': 'application/json'
         }).catchError((err) {
       onError("Có lỗi trong đường truyền, vui lòng thử lại sau.");
     });
-    print("fetch sv completed: " + response.statusCode.toString());
+
+    print("Fetch survey completed: " + utf8.decode(response.bodyBytes));
+
     if (response.statusCode == 200) {
       List<SurveysCompletedModel> lsSurveyCompleted;
       Iterable list = json.decode(utf8.decode(response.bodyBytes));
@@ -877,27 +901,27 @@ class ApiAuth {
     }
   }
 
-  Future<List<SurveysInProgressModel>> fetchSurveysInProgress(
-      Function onSuccess, Function(String) onError) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    //goi o day
-    String token = sharedPreferences.getString("token");
+  fetchSurveysInProgress(
+      String token, Function onSuccess, Function(String) onError) async {
+    print("URL SURVEY: " +
+        ConstantParameter.getAddressUrl() +
+        ServiceSurvey.getAllSurvey());
+
     final response = await http.get(
-        Uri.parse(ConstantParameter.getAddressUrl() +
-            ServiceSurvey.getActiveInfor() +
-            "?status=InProgress"),
+        Uri.parse(
+            ConstantParameter.getAddressUrl() + ServiceSurvey.getAllSurvey()),
         headers: {
           HttpHeaders.authorizationHeader: "Bearer $token",
           'Content-Type': 'application/json'
         }).catchError((err) {
       onError("Có lỗi trong đường truyền, vui lòng thử lại sau.");
     });
+
+    print("Fetch survey in progress: " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      List<SurveysInProgressModel> lsSurveyInProgress;
-      Iterable list = json.decode(utf8.decode(response.bodyBytes));
-      lsSurveyInProgress =
-          list.map((model) => SurveysInProgressModel.fromJson(model)).toList();
-      return lsSurveyInProgress;
+      var jsonResponse = json.decode(utf8.decode(response.bodyBytes));
+      // print("Here: " + jsonResponse['inprogressSurvey'].toString());
+      return jsonResponse['inprogressSurvey'];
     } else {
       throw Exception('Failed to load post');
     }

@@ -19,7 +19,7 @@ class VillageBloc {
     return _apiAuth.fetchVillageUserByID(id, onSuccess, onError);
   }
 
-  createNewVillage(
+  Future<int> createNewVillage(
     String adWardId, Village village) async{
     return _apiAuth.createNewVillage(adWardId, village);
   }

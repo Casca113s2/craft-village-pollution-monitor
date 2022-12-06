@@ -25,6 +25,8 @@ dependencies:
   cupertino_icons: 
   permission_handler: 
   image_picker: ^0.6.7+17
+  avatar_glow: 2.0.1
+  
   # image_picker: ^0.8.4+2
   path_provider: 
   http:  
