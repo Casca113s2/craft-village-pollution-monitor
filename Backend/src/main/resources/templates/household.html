@@ -535,12 +535,12 @@
 			    		$('#error-message2').text("Phát hiện lỗi!");
 			    		$('#error-message2').addClass("display");
 		        	}
-		        	else if(data == 1){
+		        	else if(data == -1){
 		        		$('#success-message2').removeClass("display");
 			    		$('#error-message2').text("Làng nghề đã tồn tại!");
 			    		$('#error-message2').addClass("display")
 		        	}
-		        	else if(data == 2){
+		        	else {
 		        		$('#success-message2').text("Yêu cầu đã được gửi");
 		        		$('#success-message2').addClass("display");
 			    		$('#error-message2').removeClass("display");
