@@ -39,7 +39,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     // http.csrf().disable();
     http.csrf().ignoringAntMatchers("/craftvillage/api/village/newvillage", "/admin-site/**",
-        "/craftvillage/api/village/newvillage",
+        "/craftvillage/api/village/newvillage", "/web/household/**", "/web/authority/**",
         url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_GET_COMPLETED,
         url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_GET_INPROGRESS,
         url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_UPLOAD_FILE,
@@ -81,13 +81,14 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
             url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_GET_INFOR,
             url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_GET_SURVEY,
             url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_DETECT)
-        .access("hasRole('ROLE_USER')").antMatchers("/web/home")
+        .access("hasRole('ROLE_USER')").antMatchers("/web/household/**").hasAuthority("HOUSEHOLD")
+        .antMatchers("/web/authority/**").hasAuthority("LOCALAUTHORITY")
+        .antMatchers("/admin-site/**").hasAuthority("ADMIN").antMatchers("/web/home")
         .hasAnyAuthority("HOUSEHOLD", "LOCALAUTHORITY", "ADMIN")
         .antMatchers("/web/home", url_user + "/" + ConstantParameter.ServiceUser._USER_CHANGE_PASS,
             url_user + "/" + ConstantParameter.ServiceUser._USER_UPDATE_INFOR)
         .hasAnyAuthority("HOUSEHOLD", "LOCALAUTHORITY", "ADMIN", "ROLE_USER")
-        .antMatchers("/web/household/**").hasAuthority("HOUSEHOLD").antMatchers("/web/authority/**")
-        .hasAuthority("LOCALAUTHORITY").antMatchers("/admin-site/**").hasAuthority("ADMIN")
+
         .anyRequest().authenticated();
     http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
