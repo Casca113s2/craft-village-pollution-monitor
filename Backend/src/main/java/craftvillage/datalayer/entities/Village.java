@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import craftvillage.corelayer.utilities.ConstantParameter;
 
 @Entity
@@ -92,6 +93,7 @@ public class Village implements java.io.Serializable {
     return adWard;
   }
 
+  @JsonIgnore
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "village", targetEntity = UrUser.class,
       cascade = CascadeType.ALL)
   public Set<UrUser> getHouseholds() {
@@ -107,6 +109,7 @@ public class Village implements java.io.Serializable {
   }
 
   @OrderBy("Id ASC")
+  @JsonIgnore
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "village", targetEntity = UserSurvey.class,
       cascade = CascadeType.ALL)
   public Set<UserSurvey> getUserSurveys() {

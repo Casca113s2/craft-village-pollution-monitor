@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -145,15 +146,12 @@ public class AuthorityController {
     return "villagedata";
   }
 
-  @PostMapping("/newhousehold/accept")
+  @PostMapping("/makedecision/{action}")
   @ResponseBody
-  public boolean acceptNewVillage(@RequestParam("villageId") int villageId) {
-    return villageService.acceptNewVillage(villageId);
-  }
-
-  @PostMapping("/newhousehold/deny")
-  @ResponseBody
-  public boolean denyNewVillage(@RequestParam("villageId") int villageId) {
+  public boolean acceptNewVillage(@PathVariable String action,
+      @RequestParam("villageId") int villageId) {
+    if (action.equals("accept"))
+      return villageService.acceptNewVillage(villageId);
     return villageService.denyNewVillage(villageId);
   }
 

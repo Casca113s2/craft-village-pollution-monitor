@@ -328,7 +328,7 @@
                 let villageId = $(this).parent().parent().parent().children()[0].innerText;
                 $.ajax({
     		        type: "POST",
-    		        url: "/web/authority/newhousehold/accept",
+    		        url: "/web/authority/makedecision/accept",
     		        data: { villageId : villageId },
     		        success: function(data){
     		          	if(data){
@@ -347,7 +347,7 @@
                 let villageId = $(this).parent().parent().parent().children()[0].innerText;
                 $.ajax({
     		        type: "POST",
-    		        url: "/web/authority/newhousehold/deny",
+    		        url: "/web/authority/makedecision/decline",
     		        data: { villageId : villageId },
     		        success: function(data){
     		          	if(data){

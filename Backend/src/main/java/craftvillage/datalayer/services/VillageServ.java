@@ -2,13 +2,18 @@ package craftvillage.datalayer.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import craftvillage.bizlayer.support_api.location.Coordinate;
 import craftvillage.datalayer.dao.CrudDao;
 import craftvillage.datalayer.entities.Village;
+import craftvillage.datalayer.repositories.VillageRepository;
 
 @Repository
 public class VillageServ {
+
+  @Autowired
+  VillageRepository villageRepo;
 
   public boolean addVillage(Village village) {
     CrudDao<Village> vil = new CrudDao<>(Village.class);
@@ -28,20 +33,16 @@ public class VillageServ {
     return vill;
   }
 
-  public List<Village> findVillageByCoordinate(Coordinate coordinate) {
-
-    CrudDao<Village> crudVillage = new CrudDao<>(Village.class);
-    String hql = "SELECT c FROM Village c";
-    if (crudVillage.queyObject(hql).size() == 0)
-      return null;
-    List<Village> listVillage = crudVillage.queyObject(hql);
-    List<Village> villages = new ArrayList<Village>();
-    for (int i = 0; i < listVillage.size(); i++) {
-      Coordinate temp = toCoordinate(listVillage.get(i).getCoordinate());
-      if (coordinate.compareTo(temp) == 0)
-        villages.add(listVillage.get(i));
+  public List<Village> findVillageByCoordinate(Coordinate currentCoordinate) {
+    List<Village> detectedVillages = new ArrayList<Village>();
+    List<Village> villages = villageRepo.findAll();
+    for (Village village : villages) {
+      Coordinate coordinate = toCoordinate(village.getCoordinate());
+      if (village.getHasAdded() == 1 && currentCoordinate.compareTo(coordinate)) {
+        detectedVillages.add(village);
+      }
     }
-    return villages;
+    return detectedVillages;
   }
 
   private Coordinate toCoordinate(String coordinate) {

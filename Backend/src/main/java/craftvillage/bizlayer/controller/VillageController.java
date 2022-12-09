@@ -90,7 +90,7 @@ public class VillageController {
     userSurvey.setCoordinate(coordinate);
     userSurvey.setImage(image);
     userSurvey.setPollution(pollution);
-    userSurvey.setNote(note);;
+    userSurvey.setNote(note);
     userSurvey.setUrUser(user);
     if (village.getHasAdded() == 0)
       userSurvey.setIsTemporary("Deactived");
@@ -110,7 +110,7 @@ public class VillageController {
       @RequestParam String longitude) {
 
     Coordinate coordinate =
-        new Coordinate(Double.parseDouble(latitude), Double.parseDouble(longitude));
+        new Coordinate(Double.parseDouble(longitude), Double.parseDouble(latitude));
 
     List<Village> villages = villageService.findVillageByCoordinate(coordinate);
     System.out.println("coordinate: " + coordinate.x + " - " + coordinate.y);
@@ -122,10 +122,6 @@ public class VillageController {
 
       String villageId = String.valueOf(village.getVillageId());
       String strHasAdded = String.valueOf(village.getHasAdded());
-      String wardId = String.valueOf(village.getAdWard().getWardId());
-      String districtId = String.valueOf(village.getAdWard().getAdDistrict().getDistrictId());
-      String provinceId =
-          String.valueOf(village.getAdWard().getAdDistrict().getAdProvince().getProvinceId());
       String wardName = String.valueOf(village.getAdWard().getWardName());
       String districtName = String.valueOf(village.getAdWard().getAdDistrict().getDistrictName());
       String provinceName =
@@ -136,15 +132,12 @@ public class VillageController {
       villageInfo.put("hasAdded", strHasAdded);
       villageInfo.put("villageName", village.getVillageName());
 
-      villageInfo.put("wardId", wardId);
       villageInfo.put("wardName", wardName);
-      villageInfo.put("districtId", districtId);
       villageInfo.put("districtName", districtName);
-      villageInfo.put("provinceId", provinceId);
       villageInfo.put("provinceName", provinceName);
       villageInfo.put("villageNote", villageNote);
 
-      String villagecoordinate[] = village.getCoordinate().split(",");
+      String villagecoordinate[] = village.getCoordinate().split(", ");
       villageInfo.put("villageLatitude", villagecoordinate[0]);
       villageInfo.put("villageLongitude", villagecoordinate[1]);
 
@@ -153,29 +146,4 @@ public class VillageController {
 
     return res;
   }
-
-  public MyUserDetailsService getUserDeailsService() {
-    return userDeailsService;
-  }
-
-  public void setUserDeailsService(MyUserDetailsService userDeailsService) {
-    this.userDeailsService = userDeailsService;
-  }
-
-  public SurveyServices getSurveyServices() {
-    return surveyServices;
-  }
-
-  public void setSurveyServices(SurveyServices surveyServices) {
-    this.surveyServices = surveyServices;
-  }
-
-  public AddressServices getAddressService() {
-    return addressService;
-  }
-
-  public void setAddressService(AddressServices addressService) {
-    this.addressService = addressService;
-  }
-
 }
