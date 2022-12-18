@@ -1722,6 +1722,15 @@ class _CraftPageState extends State<CraftPage> {
         note: _addInfoCraftVillage.text,
         coordinate: coord);
 
+    //Validate form
+    if ((selectedVillage == null && newVillage == null) ||
+        (_longController.text == '') ||
+        (_latController.text == '') ||
+        (base64Img == null)) {
+      MsgDialog.showMsgDialog(context, "Lỗi", "Không thể gửi đi!");
+      return;
+    }
+
     if (selectedVillage != null || newVillage != null) {
       lsVil = [];
       LoadingDialog.showLoadingDialog(context, LanguageConfig.getProcessing());
