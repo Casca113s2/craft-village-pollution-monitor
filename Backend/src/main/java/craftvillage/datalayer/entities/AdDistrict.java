@@ -6,18 +6,14 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import craftvillage.corelayer.utilities.ConstantParameter;
 
 /**
@@ -27,85 +23,71 @@ import craftvillage.corelayer.utilities.ConstantParameter;
 @Table(name = "AD_DISTRICT", schema = ConstantParameter._SCHEMA_NAME)
 public class AdDistrict implements java.io.Serializable {
 
-	private int districtId;
-	private AdProvince adProvince;
-	private String districtCode;
-	private String districtName;
-	@JsonIgnore
-	private Set<AdWard> adWards = new HashSet<AdWard>(0);
-	@JsonIgnore
-	private Set<UrUser> authorities = new HashSet<UrUser>(0);
+  private int districtId;
+  private AdProvince adProvince;
+  private String districtCode;
+  private String districtName;
+  @JsonIgnore
+  private Set<AdWard> adWards = new HashSet<AdWard>(0);
+  private Set<UrUser> authorities = new HashSet<UrUser>(0);
 
-	public AdDistrict() {
-	}
+  @Id
+  @Column(name = "DISTRICT_ID", unique = true, nullable = false, precision = 22, scale = 0)
+  public int getDistrictId() {
+    return this.districtId;
+  }
 
-	public AdDistrict(int districtId) {
-		this.districtId = districtId;
-	}
+  public void setDistrictId(int districtId) {
+    this.districtId = districtId;
+  }
 
-	public AdDistrict(int districtId, AdProvince adProvince, String districtCode, String districtName,
-			Set<AdWard> adWards) {
-		this.districtId = districtId;
-		this.adProvince = adProvince;
-		this.districtCode = districtCode;
-		this.districtName = districtName;
-		this.adWards = adWards;
-	}
-	
-	@Id
-	@Column(name = "DISTRICT_ID", unique = true, nullable = false, precision = 22, scale = 0)
-	public int getDistrictId() {
-		return this.districtId;
-	}
+  @JsonBackReference
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "PROVINCE_ID")
+  public AdProvince getAdProvince() {
+    return this.adProvince;
+  }
 
-	public void setDistrictId(int districtId) {
-		this.districtId = districtId;
-	}
-	@JsonBackReference
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "PROVINCE_ID")
-	public AdProvince getAdProvince() {
-		return this.adProvince;
-	}
+  public void setAdProvince(AdProvince adProvince) {
+    this.adProvince = adProvince;
+  }
 
-	public void setAdProvince(AdProvince adProvince) {
-		this.adProvince = adProvince;
-	}
+  @Column(name = "DISTRICT_CODE", length = 20)
+  public String getDistrictCode() {
+    return this.districtCode;
+  }
 
-	@Column(name = "DISTRICT_CODE", length = 20)
-	public String getDistrictCode() {
-		return this.districtCode;
-	}
+  public void setDistrictCode(String districtCode) {
+    this.districtCode = districtCode;
+  }
 
-	public void setDistrictCode(String districtCode) {
-		this.districtCode = districtCode;
-	}
+  @Column(name = "DISTRICT_NAME", length = 50)
+  public String getDistrictName() {
+    return this.districtName;
+  }
 
-	@Column(name = "DISTRICT_NAME", length = 50)
-	public String getDistrictName() {
-		return this.districtName;
-	}
+  public void setDistrictName(String districtName) {
+    this.districtName = districtName;
+  }
 
-	public void setDistrictName(String districtName) {
-		this.districtName = districtName;
-	}
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "district")
-	public Set<UrUser> getAuthorites() {
-		return this.authorities;
-	}
-	public void setAuthorites(Set<UrUser> authorities) {
-		this.authorities = authorities;
-	}
-	
-	@OrderBy("wardId ASC")
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "adDistrict")
-	public Set<AdWard> getAdWards() {
-		return this.adWards;
-	}
+  @JsonIgnore
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "district")
+  public Set<UrUser> getAuthorites() {
+    return this.authorities;
+  }
 
-	public void setAdWards(Set<AdWard> adWards) {
-		this.adWards = adWards;
-	}
+  public void setAuthorites(Set<UrUser> authorities) {
+    this.authorities = authorities;
+  }
+
+  @OrderBy("wardId ASC")
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "adDistrict")
+  public Set<AdWard> getAdWards() {
+    return this.adWards;
+  }
+
+  public void setAdWards(Set<AdWard> adWards) {
+    this.adWards = adWards;
+  }
 
 }

@@ -96,6 +96,10 @@
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__body">
+                                            	<div class="account-dropdown__item">
+													<a href="#" id="modal-profile">
+														<i class="zmdi zmdi-account"></i>Profile</a>
+												</div>
                                                 <div class="account-dropdown__item">
                                                     <a href="#" id="modal-change-password">
                                                         <i class="zmdi zmdi-settings"></i>Change password</a>
@@ -220,7 +224,7 @@
                 </div>
             </div>
             <!-- modal static -->
-			<div class="modal fade" id="staticModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
+			<div class="modal fade" id="staticModal1" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
 			 data-backdrop="static">
 				<div class="modal-dialog modal-sm" role="document">
 					<div class="modal-content">
@@ -249,6 +253,39 @@
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 							<button id="btn-change-password" type="button" class="btn btn-primary">Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" id="staticModal2" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
+			 data-backdrop="static">
+				<div class="modal-dialog modal-sm" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="staticModalLabel">Profile</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label>First name</label>
+								<input class="au-input au-input--full" id="firstname" type="text" th:value="${firstname}">
+							</div>
+							<div class="form-group">
+								<label>Last name</label>
+								<input class="au-input au-input--full" id="lastname" type="text" th:value="${lastname}">
+							</div>
+							<div class="form-group">
+								<label>Phone number</label>
+								<input class="au-input au-input--full" id="phone" type="tel" th:value="${phone}">
+							</div>
+							<div id="error-profile-modal" class="alert alert-danger message" role="alert" style="margin: 0;"></div>
+							<div id="success-profile-modal" class="alert alert-success message" role="alert" style="margin: 0;"></div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							<button id="btn-update-profile" type="button" class="btn btn-primary">Save</button>
 						</div>
 					</div>
 				</div>
@@ -291,7 +328,7 @@
                 let villageId = $(this).parent().parent().parent().children()[0].innerText;
                 $.ajax({
     		        type: "POST",
-    		        url: "/web/authority/newhousehold/accept",
+    		        url: "/web/authority/makedecision/accept",
     		        data: { villageId : villageId },
     		        success: function(data){
     		          	if(data){
@@ -310,7 +347,7 @@
                 let villageId = $(this).parent().parent().parent().children()[0].innerText;
                 $.ajax({
     		        type: "POST",
-    		        url: "/web/authority/newhousehold/deny",
+    		        url: "/web/authority/makedecision/decline",
     		        data: { villageId : villageId },
     		        success: function(data){
     		          	if(data){
@@ -322,7 +359,7 @@
     		    }); 
             })
         })
-        $.each($('.tr-shadow'), function(index, element){
+/*         $.each($('.tr-shadow'), function(index, element){
         	$(element).on('click', function(event){
         		$('#village').val($(this).children()[1].innerText);
         		let coordinate = $(this).children()[3].innerText.split(", ");
@@ -331,7 +368,7 @@
         		$('#note').val($(this).children()[6].innerText);
         		$('#select-ward2').val($(this).children()[7].innerText);
         	})
-        })
+        }) */
         
         $('#form').submit(function(e){
 			e.preventDefault();
@@ -361,7 +398,7 @@
 			    		$('#error-message').text("Làng nghề đã tồn tại!");
 			    		$('#error-message').addClass("display")
 		        	}
-		        	else if(data == 2){
+		        	else {
 			    		$('#error-message').removeClass("display");
 		        		$('#success-message').text("Tạo thành công!");
 		        		$('#success-message').addClass("display");

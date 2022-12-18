@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -71,8 +72,11 @@ public class AuthorityController {
     model.addAttribute("numberOfNewSurvey", numberOfNewSurvey);
     model.addAttribute("numberOfVillage", numberOfVillage);
     model.addAttribute("numberOfNewVillage", numberOfNewVillage);
-    model.addAttribute("name", user.getFirstname() + " " + user.getLastname());
+    model.addAttribute("name", principal.getName());
     model.addAttribute("email", user.getEmail());
+    model.addAttribute("firstname", user.getFirstname());
+    model.addAttribute("lastname", user.getLastname());
+    model.addAttribute("phone", user.getPhone());
     return "index";
   }
 
@@ -90,8 +94,11 @@ public class AuthorityController {
     }
     model.addAttribute("pendingVillages", villages);
     model.addAttribute("wards", wards);
-    model.addAttribute("name", user.getFirstname() + " " + user.getLastname());
+    model.addAttribute("name", principal.getName());
     model.addAttribute("email", user.getEmail());
+    model.addAttribute("firstname", user.getFirstname());
+    model.addAttribute("lastname", user.getLastname());
+    model.addAttribute("phone", user.getPhone());
     return "newvillage";
   }
 
@@ -130,21 +137,21 @@ public class AuthorityController {
       data.put("date", household.getActiveDate());
       villageData.add(data);
     }
-    model.addAttribute("name", user.getFirstname() + " " + user.getLastname());
+    model.addAttribute("name", principal.getName());
     model.addAttribute("email", user.getEmail());
     model.addAttribute("info", villageData);
+    model.addAttribute("firstname", user.getFirstname());
+    model.addAttribute("lastname", user.getLastname());
+    model.addAttribute("phone", user.getPhone());
     return "villagedata";
   }
 
-  @PostMapping("/newhousehold/accept")
+  @PostMapping("/makedecision/{action}")
   @ResponseBody
-  public boolean acceptNewVillage(@RequestParam("villageId") int villageId) {
-    return villageService.acceptNewVillage(villageId);
-  }
-
-  @PostMapping("/newhousehold/deny")
-  @ResponseBody
-  public boolean denyNewVillage(@RequestParam("villageId") int villageId) {
+  public boolean acceptNewVillage(@PathVariable String action,
+      @RequestParam("villageId") int villageId) {
+    if (action.equals("accept"))
+      return villageService.acceptNewVillage(villageId);
     return villageService.denyNewVillage(villageId);
   }
 
@@ -170,8 +177,11 @@ public class AuthorityController {
       }
     }
     model.addAttribute("surveys", surveys);
-    model.addAttribute("name", user.getFirstname() + " " + user.getLastname());
+    model.addAttribute("name", principal.getName());
     model.addAttribute("email", user.getEmail());
+    model.addAttribute("firstname", user.getFirstname());
+    model.addAttribute("lastname", user.getLastname());
+    model.addAttribute("phone", user.getPhone());
     return "survey";
   }
 }
