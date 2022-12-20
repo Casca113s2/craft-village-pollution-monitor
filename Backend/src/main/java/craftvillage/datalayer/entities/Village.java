@@ -2,6 +2,7 @@ package craftvillage.datalayer.entities;
 
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import craftvillage.corelayer.utilities.ConstantParameter;
 
 @Entity
@@ -57,7 +59,7 @@ public class Village implements java.io.Serializable {
   }
 
   // end
-  @Column(name = "NOTE", length = 100)
+  @Column(name = "NOTE", length = 250)
   public String getNote() {
     return note;
   }
@@ -91,7 +93,9 @@ public class Village implements java.io.Serializable {
     return adWard;
   }
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "village", targetEntity = UrUser.class)
+  @JsonIgnore
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "village", targetEntity = UrUser.class,
+      cascade = CascadeType.ALL)
   public Set<UrUser> getHouseholds() {
     return households;
   }
@@ -105,7 +109,9 @@ public class Village implements java.io.Serializable {
   }
 
   @OrderBy("Id ASC")
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "village", targetEntity = UserSurvey.class)
+  @JsonIgnore
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "village", targetEntity = UserSurvey.class,
+      cascade = CascadeType.ALL)
   public Set<UserSurvey> getUserSurveys() {
     return userSurveys;
   }

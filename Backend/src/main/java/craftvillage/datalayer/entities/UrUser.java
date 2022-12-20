@@ -78,29 +78,6 @@ public class UrUser implements java.io.Serializable {
       this.type = "PrivatePerson";
   }
 
-  public UrUser() {}
-
-  public UrUser(int id, String account) {
-    this.id = id;
-    this.account = account;
-  }
-
-  public UrUser(int id, String account, String password, String firstname, String phone,
-      String lastname, String email, String type, Set<UserSurvey> userSurveys, Set<UrRole> urRoles,
-      Set<UrSession> urSessions) {
-    this.id = id;
-    this.account = account;
-    this.password = password;
-    this.firstname = firstname;
-    this.phone = phone;
-    this.lastname = lastname;
-    this.email = email;
-    this.userSurveys = userSurveys;
-    this.urRoles = urRoles;
-    this.urSessions = urSessions;
-    this.type = type;
-  }
-
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO, generator = "UR_USER_SEQ")
   @Column(name = "ID", unique = true, nullable = false, precision = 22, scale = 0)
@@ -209,6 +186,7 @@ public class UrUser implements java.io.Serializable {
     this.urRoles = urRoles;
   }
 
+  @JsonIgnore
   @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "urUser")
   public Set<UrSession> getUrSessions() {

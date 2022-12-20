@@ -103,9 +103,9 @@ public class MyUserDetailsService implements UserDetailsService {
     return userServ.changePassword(username, pass);
   }
 
-  public boolean updateUserInfo(String username, String firstname, String lastname, String phone,
-      String email, String type) throws ParseException {
-    return userServ.updateInfo(username, firstname, lastname, phone, email, type);
+  public boolean updateUserInfo(String username, String firstname, String lastname, String phone)
+      throws ParseException {
+    return userServ.updateInfo(username, firstname, lastname, phone);
   }
 
   public boolean updateType(String username, String type) {
