@@ -33,7 +33,7 @@ class SurveyBloc {
     return _apiAuth.fetchSurveysInProgress(token, onSuccess, onError);
   }
 
-  Future<List<SurveysCompletedModel>> fetchSurveysCompleted(
+  fetchSurveysCompleted(
       String token, Function onSuccess, Function(String) onError) async {
     return _apiAuth.fetchSurveysCompleted(token, onSuccess, onError);
   }

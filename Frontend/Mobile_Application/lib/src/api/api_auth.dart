@@ -853,31 +853,60 @@ class ApiAuth {
   }
 
   //lay du lieu truyen vao surveys completed
-  Future<List<SurveysCompletedModel>> fetchSurveysCompleted(
+  // Future<List<SurveysCompletedModel>> fetchSurveysCompleted(
+  //     String token, Function onSuccess, Function(String) onError) async {
+  //   // final response = await http.get(
+  //   //     Uri.parse(ConstantParameter.getAddressUrl() +
+  //   //         ServiceSurvey.getActiveInfor() +
+  //   //         "?status=Completed"),
+  //   //     headers: {
+  //   //       HttpHeaders.authorizationHeader: "Bearer $token",
+  //   //       'Content-Type': 'application/json'
+  //   //     }).catchError((err) {
+  //   //   onError("Có lỗi trong đường truyền, vui lòng thử lại sau.");
+  //   // });
+  //   // print("fetch sv completed: " + response.statusCode.toString());
+  //   // if (response.statusCode == 200) {
+  //   //   List<SurveysCompletedModel> lsSurveyCompleted;
+  //   //   Iterable list = json.decode(utf8.decode(response.bodyBytes));
+  //   //   lsSurveyCompleted =
+  //   //       list.map((model) => SurveysCompletedModel.fromJson(model)).toList();
+  //   //   return lsSurveyCompleted;
+  //   // } else {
+  //   //   throw Exception('Failed to load post');
+  //   // }
+  //   print("URL SURVEY: " +
+  //       ConstantParameter.getAddressUrl() +
+  //       ServiceSurvey.getAllSurvey());
+  //   final response = await http.get(
+  //       Uri.parse(
+  //           ConstantParameter.getAddressUrl() + ServiceSurvey.getAllSurvey()),
+  //       headers: {
+  //         HttpHeaders.authorizationHeader: "Bearer $token",
+  //         'Content-Type': 'application/json'
+  //       }).catchError((err) {
+  //     onError("Có lỗi trong đường truyền, vui lòng thử lại sau.");
+  //   });
+
+  //   print("Fetch survey completed: " + utf8.decode(response.bodyBytes));
+
+  //   if (response.statusCode == 200) {
+  //     List<SurveysCompletedModel> lsSurveyCompleted;
+  //     Iterable list = json.decode(utf8.decode(response.bodyBytes));
+  //     lsSurveyCompleted =
+  //         list.map((model) => SurveysCompletedModel.fromJson(model)).toList();
+  //     return lsSurveyCompleted;
+  //   } else {
+  //     throw Exception('Failed to load post');
+  //   }
+  // }
+
+  fetchSurveysCompleted(
       String token, Function onSuccess, Function(String) onError) async {
-    // final response = await http.get(
-    //     Uri.parse(ConstantParameter.getAddressUrl() +
-    //         ServiceSurvey.getActiveInfor() +
-    //         "?status=Completed"),
-    //     headers: {
-    //       HttpHeaders.authorizationHeader: "Bearer $token",
-    //       'Content-Type': 'application/json'
-    //     }).catchError((err) {
-    //   onError("Có lỗi trong đường truyền, vui lòng thử lại sau.");
-    // });
-    // print("fetch sv completed: " + response.statusCode.toString());
-    // if (response.statusCode == 200) {
-    //   List<SurveysCompletedModel> lsSurveyCompleted;
-    //   Iterable list = json.decode(utf8.decode(response.bodyBytes));
-    //   lsSurveyCompleted =
-    //       list.map((model) => SurveysCompletedModel.fromJson(model)).toList();
-    //   return lsSurveyCompleted;
-    // } else {
-    //   throw Exception('Failed to load post');
-    // }
     print("URL SURVEY: " +
         ConstantParameter.getAddressUrl() +
         ServiceSurvey.getAllSurvey());
+
     final response = await http.get(
         Uri.parse(
             ConstantParameter.getAddressUrl() + ServiceSurvey.getAllSurvey()),
@@ -888,14 +917,12 @@ class ApiAuth {
       onError("Có lỗi trong đường truyền, vui lòng thử lại sau.");
     });
 
-    print("Fetch survey completed: " + utf8.decode(response.bodyBytes));
-
+    print("Fetch survey in progress: " + response.statusCode.toString());
+    print(json.decode(utf8.decode(response.bodyBytes).toString()));
     if (response.statusCode == 200) {
-      List<SurveysCompletedModel> lsSurveyCompleted;
-      Iterable list = json.decode(utf8.decode(response.bodyBytes));
-      lsSurveyCompleted =
-          list.map((model) => SurveysCompletedModel.fromJson(model)).toList();
-      return lsSurveyCompleted;
+      var jsonResponse = json.decode(utf8.decode(response.bodyBytes));
+      // print("Here: " + jsonResponse['completeSurvey'].toString());
+      return jsonResponse['completedSurvey'];
     } else {
       throw Exception('Failed to load post');
     }

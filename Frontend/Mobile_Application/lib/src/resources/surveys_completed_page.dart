@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:nice_button/NiceButton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'custom_widget/task_column.dart';
+
 class SurveysCompleted extends StatefulWidget {
   @override
   _SurveysCompletedState createState() => _SurveysCompletedState();
@@ -66,11 +68,11 @@ class _SurveysCompletedState extends State<SurveysCompleted> {
 
   @override
   Widget build(BuildContext context) {
-    _height = MediaQuery.of(context).size.height;
+     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
-
     Helper helper =
         new Helper(_height, _width, scaffoldKey, context, fullname, email);
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: LightColors.kLightYellow3,
@@ -90,8 +92,11 @@ class _SurveysCompletedState extends State<SurveysCompleted> {
                 child: Container(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    LanguageConfig.getListSurveysCompleted(),
-                    style: TextStyle(fontSize: 20, color: Colors.red),
+                    LanguageConfig.getListSurveysInprogress(),
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.red,
+                    ),
                     textAlign: TextAlign.left,
                   ),
                 ),
@@ -103,10 +108,12 @@ class _SurveysCompletedState extends State<SurveysCompleted> {
                 padding: const EdgeInsets.only(left: 15),
                 child: Container(
                   alignment: Alignment.centerLeft,
-                  child: Text(LanguageConfig.getGroupUsing(typeUser)),
+                  child: Text(
+                    LanguageConfig.getGroupUsing(typeUser),
+                  ),
                 ),
               ),
-              createListCompleted(context)
+              createListCompleted(context),
             ],
           ),
         ),
@@ -121,123 +128,58 @@ class _SurveysCompletedState extends State<SurveysCompleted> {
         LoadingDialog.hideLoadingDialog(context);
         MsgDialog.showMsgDialog(context, LanguageConfig.getNotice(), msg);
       }),
+      // future: _listInProgressdata,
       builder: (context, snapshot) {
-        var values = snapshot.data;
-        if (values == null || values.length == 0)
+        final values = snapshot.data;
+
+        if (values == null)
           return Container(
               alignment: Alignment.center,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(LanguageConfig.getNoCompleted()),
+                child: Text(LanguageConfig.getNoSaveDraft()),
               ));
+
         return SingleChildScrollView(
           child: Column(
             children: <Widget>[
               ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: values == null ? 0 : values.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return ExpansionTile(
-                    title: Text(typeUser +
-                        " - " +
-                        values[index].dateSubmitSurvey),
-                    children: <Widget>[
-                      ListTile(
-                        title: Text(
-                          LanguageConfig.getVillageName(values[index].villageName.toString()),
-                         // "Tên làng nghề: ${values[index].villageName.toString()}",
-                          textAlign: TextAlign.left,
-                        ),
-                        onTap: () {
-                          print("abbbbb");
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          LanguageConfig.getNumberOfMainQuestion(values[index].totalQuestion.toString()),
-                          //"Số câu hỏi chính:  " +
-                         //     values[index].totalQuestion.toString(),
-                          //  "Số câu hỏi: 17",
-                          textAlign: TextAlign.left,
-                        ),
-                        onTap: () {
-                          print("abbbbb");
-                        },
-                      ),
-
-                      ListTile(
-                        title: Text(
-                          LanguageConfig.getNumberOfMainAnswer(values[index].totalAnswer.toString()),
-                        //  "Số câu đã trả lời chính:  " +
-                        //      values[index].totalAnswer.toString(),
-                          //  "Số câu đã trả lời: 6",
-                          textAlign: TextAlign.left,
-                        ),
-                        onTap: () {
-                          print("abbbbb");
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          LanguageConfig.getNumberImage(values[index].totalImage.toString()),
-                       //   "Số ảnh:  " + values[index].totalImage.toString(),
-                          //     "Số ảnh:  2",
-                          textAlign: TextAlign.left,
-                        ),
-                        onTap: () {
-                          print("abbbbb");
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          LanguageConfig.getTypeSurvey(typeUser),
-                          //  "Số ảnh:  2",
-                          textAlign: TextAlign.left,
-                        ),
-                        onTap: () {
-                          print("abbbbb");
-                        },
-                      ),
-                      values[index].typeSurvey == (typeUser == "Người riêng tư" ? "PrivatePerson" : (typeUser == "Hộ gia đình") ? "HouseHold" : "LocalAuthority") ? Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: NiceButton(
-                              width: _width/2,
-                              text:  LanguageConfig.getContinueSurvey(),
-                              fontSize: 18,
-                              textColor: Colors.white,
-                              background: Color(0xff5b86e5),
-                              gradientColors: [
-                                Color(0xff5b86e5),
-                                Color(0xff36d1dc)
-                              ],
-                              onPressed: () {
-                                MsgDialog.showAlertDialog(context,  LanguageConfig.getNotice(),
-                                    LanguageConfig.getContinueSurveyNotice(),
-                                    () {
-                                  Navigator.push(
-                                    context,
-                                    new MaterialPageRoute(
-                                        builder: (context) => CraftPage(
-                                            values[index].surveyActiveID,
-                                            values[index].totalImage,
-                                            values[index].userSurveyId,
-                                            values[index].filename)),
-                                  );
-                                });
-                              },
-                            ),
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  physics: NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: values == null ? 0 : values.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: LightColors.kLightYellow3,
+                        // border: Border.all(color: Colors.black,),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                            bottomLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(10)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(5, 5), // changes position of shadow
                           ),
                         ],
-                      ) : Container()
-                    ],
-                  );
-                },
-              )
+                      ),
+                      padding:
+                          const EdgeInsets.only(left: 15, top: 10, bottom: 10),
+                      margin: 
+                          const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 5),
+                      child: TaskColumn(
+                        icon: Icons.check_circle_outline,
+                        iconBackgroundColor: LightColors.kBlue,
+                        title: values[index]['villageName'].toString(),
+                        subtitle: values[index]['date'].toString(),
+                      ),
+                    );
+                  })
             ],
           ),
         );
