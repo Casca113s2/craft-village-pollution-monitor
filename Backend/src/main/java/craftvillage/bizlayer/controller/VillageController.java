@@ -78,7 +78,7 @@ public class VillageController {
       Principal principal) {
     String username = principal.getName();
     String villageId = VillageInfoForm.get("villageId");
-    String coordinate = VillageInfoForm.get("longitude") + ", " + VillageInfoForm.get("latitude");
+    String coordinate = VillageInfoForm.get("latitude") + ", " + VillageInfoForm.get("longitude");
     String image = VillageInfoForm.get("image");
     String pollution = VillageInfoForm.get("result");
     String note = VillageInfoForm.get("note");
@@ -110,7 +110,7 @@ public class VillageController {
       @RequestParam String longitude) {
 
     Coordinate coordinate =
-        new Coordinate(Double.parseDouble(longitude), Double.parseDouble(latitude));
+        new Coordinate(Double.parseDouble(latitude), Double.parseDouble(longitude));
 
     List<Village> villages = villageService.findVillageByCoordinate(coordinate);
     System.out.println("coordinate: " + coordinate.x + " - " + coordinate.y);
