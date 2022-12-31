@@ -126,6 +126,10 @@ public class VillageController {
       String districtName = String.valueOf(village.getAdWard().getAdDistrict().getDistrictName());
       String provinceName =
           String.valueOf(village.getAdWard().getAdDistrict().getAdProvince().getProvinceName());
+      String wardId = String.valueOf(village.getAdWard().getWardId());
+      String districtId = String.valueOf(village.getAdWard().getAdDistrict().getDistrictId());
+      String provinceId =
+          String.valueOf(village.getAdWard().getAdDistrict().getAdProvince().getProvinceId());
       String villageNote = village.getNote();
 
       villageInfo.put("villageId", villageId);
@@ -135,6 +139,11 @@ public class VillageController {
       villageInfo.put("wardName", wardName);
       villageInfo.put("districtName", districtName);
       villageInfo.put("provinceName", provinceName);
+
+      villageInfo.put("wardId", wardId);
+      villageInfo.put("districtId", districtId);
+      villageInfo.put("provinceId", provinceId);
+
       villageInfo.put("villageNote", villageNote);
 
       String villagecoordinate[] = village.getCoordinate().split(", ");
