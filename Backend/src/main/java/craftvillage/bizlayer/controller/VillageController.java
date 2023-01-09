@@ -78,7 +78,7 @@ public class VillageController {
       Principal principal) {
     String username = principal.getName();
     String villageId = VillageInfoForm.get("villageId");
-    String coordinate = VillageInfoForm.get("longitude") + ", " + VillageInfoForm.get("latitude");
+    String coordinate = VillageInfoForm.get("latitude") + ", " + VillageInfoForm.get("longitude");
     String image = VillageInfoForm.get("image");
     String pollution = VillageInfoForm.get("result");
     String note = VillageInfoForm.get("note");
@@ -110,7 +110,7 @@ public class VillageController {
       @RequestParam String longitude) {
 
     Coordinate coordinate =
-        new Coordinate(Double.parseDouble(longitude), Double.parseDouble(latitude));
+        new Coordinate(Double.parseDouble(latitude), Double.parseDouble(longitude));
 
     List<Village> villages = villageService.findVillageByCoordinate(coordinate);
     System.out.println("coordinate: " + coordinate.x + " - " + coordinate.y);
@@ -126,6 +126,10 @@ public class VillageController {
       String districtName = String.valueOf(village.getAdWard().getAdDistrict().getDistrictName());
       String provinceName =
           String.valueOf(village.getAdWard().getAdDistrict().getAdProvince().getProvinceName());
+      String wardId = String.valueOf(village.getAdWard().getWardId());
+      String districtId = String.valueOf(village.getAdWard().getAdDistrict().getDistrictId());
+      String provinceId =
+          String.valueOf(village.getAdWard().getAdDistrict().getAdProvince().getProvinceId());
       String villageNote = village.getNote();
 
       villageInfo.put("villageId", villageId);
@@ -135,6 +139,11 @@ public class VillageController {
       villageInfo.put("wardName", wardName);
       villageInfo.put("districtName", districtName);
       villageInfo.put("provinceName", provinceName);
+
+      villageInfo.put("wardId", wardId);
+      villageInfo.put("districtId", districtId);
+      villageInfo.put("provinceId", provinceId);
+
       villageInfo.put("villageNote", villageNote);
 
       String villagecoordinate[] = village.getCoordinate().split(", ");

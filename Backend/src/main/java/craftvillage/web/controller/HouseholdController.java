@@ -56,7 +56,7 @@ public class HouseholdController {
   public int newVillage(@RequestParam Map<String, String> form) {
     Village village = new Village();
     village.setVillageName(form.get("villageName"));
-    village.setCoordinate(form.get("longitude") + ", " + form.get("latitude"));
+    village.setCoordinate(form.get("latitude") + ", " + form.get("longitude"));
     village.setNote(form.get("note"));
     village.setHasAdded(0);
     village.setAdWard(addressService.getAdward(Integer.parseInt(form.get("ward"))));
