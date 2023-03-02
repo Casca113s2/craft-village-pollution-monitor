@@ -1,7 +1,9 @@
 package craftvillage.bizlayer.services;
 
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -18,36 +20,33 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import craftvillage.datalayer.entities.UrRole;
 import craftvillage.datalayer.entities.UrUser;
+import craftvillage.datalayer.repositories.RoleRepository;
+import craftvillage.datalayer.repositories.UserRepository;
 import craftvillage.datalayer.services.LoginServ;
-import craftvillage.datalayer.services.RegisterServ;
-import craftvillage.datalayer.services.SurveyServ;
-import craftvillage.datalayer.services.UserServ;
 
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
-
-  // static int id = 5;
-
   @Autowired
   PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-  @Autowired
-  private RegisterServ registerServ = new RegisterServ();
+
   @Autowired
   private LoginServ loginServ = new LoginServ();
+
   @Autowired
-  private SurveyServ surveyServ = new SurveyServ();
+  UserService userService;
+
   @Autowired
-  private UserServ userServ = new UserServ();
-  // @Autowired
-  // private UrAnswerServ urAnswerServ = new UrAnswerServ();
+  UserRepository userRepo;
+
+  @Autowired
+  RoleRepository roleRepo;
 
   @Override
   public UserDetails loadUserByUsername(String username) {
-
     UrUser urUser = new UrUser();
     User user = null;
-    urUser = userServ.findByAccount(username);
+    urUser = userRepo.findByAccount(username);
     // System.out.println(urUser.getUrRoles());
     if (urUser == null)
       return user;
@@ -69,22 +68,58 @@ public class MyUserDetailsService implements UserDetailsService {
     return user;
   }
 
-
-
+  /**
+   * Register
+   * 
+   * @return Number - 1: Success - 2: Username exist - 3: Email exist - 4: Phone exist - 0: fail
+   */
   public int RegisterUsername(String username, String password, String role, String firstname,
       String lastname, String phone, String email, Date activeDate)
       throws ClassNotFoundException, SQLException, ParseException {
     String pass = passwordEncoder.encode(password);
     System.out.println(role);
-    int roleID;
+    int roleId;
     if (role.equals("USER"))
-      roleID = 1;
+      roleId = 1;
     else if (role.equals("HOUSEHOLD"))
-      roleID = 3;
+      roleId = 3;
     else
-      roleID = 2;
-    return (registerServ.registeAnUser(username, pass, roleID, firstname, lastname, phone, email,
-        activeDate));
+      roleId = 2;
+
+    UrUser newUser = userRepo.findByAccount(username);
+    boolean emailChecker = userService.emailChecker(email);
+    int returnValue = 0;
+    if (newUser == null && emailChecker) {
+      newUser = new UrUser();
+      newUser.setAccount(username);
+      newUser.setPassword(pass);
+      UrRole roleUser = roleRepo.getOne(roleId);
+      newUser.addRole(roleUser);
+      newUser.setEmail(email);
+      newUser.setFirstname(firstname);
+      newUser.setLastname(lastname);
+      newUser.setPhone(phone);
+      DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+      String strDate = dateFormat.format(activeDate);
+      Date ActiveDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(strDate);
+      newUser.setActiveDate(ActiveDate);
+
+      if (roleId == 1)
+        newUser.setType("PrivatePerson");
+      else if (roleId == 2)
+        newUser.setType("LocalAuthority");
+      else if (roleId == 3)
+        newUser.setType("Household");
+      if (userRepo.save(newUser) != null)
+        returnValue = 1;
+    } else if (userService.findByUsername(username) != null) {
+      returnValue = 2;
+    } else if (userService.emailChecker(email) == false) {
+      returnValue = 3;
+    } else if (userService.phoneChecked(phone) == false) {
+      returnValue = 4;
+    }
+    return returnValue;
   }
 
   public boolean AddSession(String username, String sessionID) {
@@ -94,38 +129,34 @@ public class MyUserDetailsService implements UserDetailsService {
   }
 
   public UrUser GetUserData(String username) {
-    UrUser user = userServ.findByAccount(username);
+    UrUser user = userService.findByUsername(username);
     return user;
   }
 
   public boolean changePass(String newPass, String username) {
     String pass = passwordEncoder.encode(newPass);
-    return userServ.changePassword(username, pass);
+    return userService.changePassword(username, pass);
   }
 
   public boolean updateUserInfo(String username, String firstname, String lastname, String phone)
       throws ParseException {
-    return userServ.updateInfo(username, firstname, lastname, phone);
-  }
-
-  public boolean updateType(String username, String type) {
-    return userServ.updateType(username, type);
+    return userService.updateInfo(username, firstname, lastname, phone);
   }
 
   public UrUser getUrUser(String account) {
-    return userServ.findByAccount(account);
+    return userService.findByUsername(account);
   }
 
   public String getEmailUser(String account) {
-    return userServ.getEmailUser(account);
+    return userService.getEmailUser(account);
   }
 
   public boolean checkEmailUser(String email, String username) {
-    return userServ.checkEmailUser(email, username);
+    return userService.checkEmailUser(email, username);
   }
 
   public boolean AddOrUpdateActiveCode(String ActiveCode, Date ActiveDate, String username) {
-    return userServ.AddOrUpdateActiveUser(ActiveCode, ActiveDate, username);
+    return userService.AddOrUpdateActiveUser(ActiveCode, ActiveDate, username);
   }
 
   public int checkActiveCode(String ActiveCode, Date DateNow, String ActiveCodeSubmit,
@@ -140,9 +171,5 @@ public class MyUserDetailsService implements UserDetailsService {
     }
     // expired code
     return 2;
-  }
-
-  public boolean changeType(String username, String typeUser) {
-    return userServ.changeType(username, typeUser);
   }
 }

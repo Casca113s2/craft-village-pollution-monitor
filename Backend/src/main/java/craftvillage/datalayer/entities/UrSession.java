@@ -1,10 +1,7 @@
 package craftvillage.datalayer.entities;
 // Generated Mar 10, 2020 9:28:01 AM by Hibernate Tools 4.3.5.Final
 
-import java.io.Serializable;
 import java.util.Date;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,10 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import craftvillage.corelayer.utilities.ConstantParameter;
 
 /**
@@ -27,62 +22,62 @@ import craftvillage.corelayer.utilities.ConstantParameter;
 @Table(name = "UR_SESSION", schema = ConstantParameter._SCHEMA_NAME)
 public class UrSession implements java.io.Serializable {
 
-	private int id;
-	private UrUser urUser;
-	private Date loginTime;
-	private String sessionString;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "ID", unique = true, nullable = false, precision = 22, scale = 0)
+  private int id;
 
-	public UrSession() {
-	}
+  @JsonBackReference
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "UR_ID")
+  private UrUser urUser;
 
-	public UrSession(int id) {
-		this.id = id;
-	}
+  @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss")
+  @Column(name = "LOGIN_TIME")
+  private Date loginTime;
 
-	public UrSession(int id, UrUser urUser, Date loginTime, String sessionString) {
-		this.id = id;
-		this.urUser = urUser;
-		this.loginTime = loginTime;
-		this.sessionString = sessionString;
-	}
+  @Column(name = "SESSION_STRING", length = 120)
+  private String sessionString;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator="UR_SESSION_SEQ")
-	@Column(name = "ID", unique = true, nullable = false, precision = 22, scale = 0)
-	public int getId() {
-		return this.id;
-	}
+  public UrSession() {}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-	@JsonBackReference
-	@ManyToOne( fetch = FetchType.LAZY)
-	@JoinColumn(name = "UR_ID")
-	public UrUser getUrUser() {
-		return this.urUser;
-	}
+  public UrSession(int id, UrUser urUser, Date loginTime, String sessionString) {
+    this.id = id;
+    this.urUser = urUser;
+    this.loginTime = loginTime;
+    this.sessionString = sessionString;
+  }
 
-	public void setUrUser(UrUser urUser) {
-		this.urUser = urUser;
-	}
-	@JsonFormat(pattern="dd-MM-yyyy hh:mm:ss")
-	@Column(name = "LOGIN_TIME")
-	public Date getLoginTime() {
-		return this.loginTime;
-	}
+  public int getId() {
+    return this.id;
+  }
 
-	public void setLoginTime(Date loginTime) {
-		this.loginTime = loginTime;
-	}
+  public void setId(int id) {
+    this.id = id;
+  }
 
-	@Column(name = "SESSION_STRING", length = 120)
-	public String getSessionString() {
-		return this.sessionString;
-	}
+  public UrUser getUrUser() {
+    return this.urUser;
+  }
 
-	public void setSessionString(String sessionString) {
-		this.sessionString = sessionString;
-	}
+  public void setUrUser(UrUser urUser) {
+    this.urUser = urUser;
+  }
+
+  public Date getLoginTime() {
+    return this.loginTime;
+  }
+
+  public void setLoginTime(Date loginTime) {
+    this.loginTime = loginTime;
+  }
+
+  public String getSessionString() {
+    return this.sessionString;
+  }
+
+  public void setSessionString(String sessionString) {
+    this.sessionString = sessionString;
+  }
 
 }

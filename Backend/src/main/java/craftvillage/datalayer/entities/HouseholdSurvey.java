@@ -23,7 +23,7 @@ public class HouseholdSurvey {
   private SrSurveyQuestionAnswer srSurveyQuestionAnswer;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", unique = true, nullable = false, precision = 22, scale = 0)
   public Integer getId() {
     return id;
