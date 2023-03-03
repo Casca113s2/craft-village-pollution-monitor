@@ -47,7 +47,7 @@ public class SrSurveyQuestionAnswer implements java.io.Serializable {
   }
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO, generator = "SR_SURVEY_QUESTION_ANSWER_SEQ")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", unique = true, nullable = false, precision = 22, scale = 0)
   public int getId() {
     return this.id;

@@ -8,7 +8,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,20 +31,6 @@ public class SurveyController {
   private AddressServices addressService;
   @Autowired
   private UserService userService;
-
-  /**
-   * Function : getstatus : Trả về trạng thái của survey
-   * 
-   * @param activeId
-   * @param principal
-   * @return String
-   */
-  @RequestMapping(value = "/" + ConstantParameter.ServiceSurvey._SURVEY_GET_STATUS_SURVEY,
-      method = RequestMethod.GET)
-  public String getStatus(@RequestParam("id") int activeId, Principal principal) {
-    String account = principal.getName();
-    return surveyServices.getStatus(account, activeId);
-  }
 
   @GetMapping("/getimage")
   @ResponseBody
