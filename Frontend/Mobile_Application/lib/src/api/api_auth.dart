@@ -54,7 +54,8 @@ class ApiAuth {
     var response = await http
         .post(
       // ConstantParameter.getAIAddressUrl(),
-      Uri.parse('http://10.0.2.2:8000/detect'), //Emulator
+      // Uri.parse('http://10.0.2.2:8000/detect'), //Emulator
+      Uri.parse('http://13.229.113.126:8000/detect'), //Server
       // headers: <String, String>{
       //   'Content-Type': 'application/x-www-form-urlencoded',
       // },

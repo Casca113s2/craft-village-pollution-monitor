@@ -2747,7 +2747,7 @@ class _CraftPageState extends State<CraftPage> {
         // _latController.text = _locationData.latitude.toString();
         // _longController.text = _locationData.longitude.toString();
 
-        Position _locationData = await Geolocator.getLastKnownPosition();
+        Position _locationData = await Geolocator.getCurrentPosition();
 
         _latController.text = _locationData.latitude.toString();
         _longController.text = _locationData.longitude.toString();
@@ -2810,6 +2810,7 @@ class _CraftPageState extends State<CraftPage> {
                 setState(() {
                   lsProvince = pro;
                   lsProvince.forEach((f) {
+                    print("Debug here: " + value.toString());
                     if (f.provinceId == int.parse(value[0]["provinceId"]))
                       setState(() {
                         selectedProvince = f;
