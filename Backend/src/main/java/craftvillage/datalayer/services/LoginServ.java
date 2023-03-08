@@ -26,7 +26,6 @@ public class LoginServ {
       session.setUrUser(userRepo.findByAccount(account));
       session.setLoginTime(date);
       session.setSessionString(sessionString);
-      System.out.println("\n---------------");
       if (sessionRepo.save(session) != null) {
         return true;
       }
