@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import craftvillage.bizlayer.services.AddressServices;
-import craftvillage.bizlayer.services.FileService;
 import craftvillage.bizlayer.services.MyUserDetailsService;
 import craftvillage.bizlayer.services.SurveyServices;
 import craftvillage.corelayer.utilities.ConstantParameter;
@@ -21,8 +20,6 @@ public class UserAnswerController {
   private SurveyServices surveyServices;
   @Autowired
   private AddressServices addressService;
-  @Autowired
-  private FileService fileService;
   @Autowired
   private ServletContext sc;
 
@@ -56,13 +53,4 @@ public class UserAnswerController {
   public void setAddressService(AddressServices addressService) {
     this.addressService = addressService;
   }
-
-  public FileService getFileService() {
-    return fileService;
-  }
-
-  public void setFileService(FileService fileService) {
-    this.fileService = fileService;
-  }
-
 }

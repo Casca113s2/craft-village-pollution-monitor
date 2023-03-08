@@ -29,7 +29,7 @@ public class SrSurveyQuestion implements java.io.Serializable {
   private Set<SrSurveyQuestionAnswer> srSurveyQuestionAnswers;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO, generator = "SR_SURVEY_QUESTION_SEQ")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", unique = true, nullable = false, precision = 22, scale = 0)
   public int getId() {
     return this.id;

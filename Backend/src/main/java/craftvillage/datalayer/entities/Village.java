@@ -39,7 +39,7 @@ public class Village implements java.io.Serializable {
   }
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO, generator = "VILLAGE_SEQ")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "VILLAGE_ID", unique = true, nullable = false, precision = 22, scale = 0)
   public int getVillageId() {
     return this.villageId;

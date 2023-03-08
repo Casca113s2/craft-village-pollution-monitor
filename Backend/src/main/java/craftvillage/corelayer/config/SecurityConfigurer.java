@@ -81,13 +81,13 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
             url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_GET_INFOR,
             url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_GET_SURVEY,
             url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_DETECT)
-        .access("hasRole('ROLE_USER')").antMatchers("/web/household/**").hasAuthority("HOUSEHOLD")
+        .hasAuthority("USER").antMatchers("/web/household/**").hasAuthority("HOUSEHOLD")
         .antMatchers("/web/authority/**").hasAuthority("LOCALAUTHORITY")
         .antMatchers("/admin-site/**").hasAuthority("ADMIN").antMatchers("/web/home")
         .hasAnyAuthority("HOUSEHOLD", "LOCALAUTHORITY", "ADMIN")
         .antMatchers("/web/home", url_user + "/" + ConstantParameter.ServiceUser._USER_CHANGE_PASS,
             url_user + "/" + ConstantParameter.ServiceUser._USER_UPDATE_INFOR)
-        .hasAnyAuthority("HOUSEHOLD", "LOCALAUTHORITY", "ADMIN", "ROLE_USER")
+        .hasAnyAuthority("HOUSEHOLD", "LOCALAUTHORITY", "ADMIN", "USER")
 
         .anyRequest().authenticated();
     http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
