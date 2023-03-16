@@ -55,11 +55,10 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
     http.authorizeRequests()
-        .antMatchers("/web/login", "/vendor/**", "/css/*", "/fonts/**", "/images/**", "/js/**",
-            "/media/**", "/web/forgetpassword", "/craftvillage/api/survey/getimage", "/web/signup",
-            url_user + "/" + ConstantParameter.ServiceUser._USER_LOGIN,
+        .antMatchers("/web/login", "/web/logout", "/vendor/**", "/css/*", "/fonts/**", "/images/**",
+            "/js/**", "/media/**", "/web/forgetpassword", "/craftvillage/api/survey/getimage",
+            "/web/signup", url_user + "/" + ConstantParameter.ServiceUser._USER_LOGIN,
             url_user + "/" + ConstantParameter.ServiceUser._USER_REGISTER,
-            url_user + "/" + ConstantParameter.ServiceUser._USER_LOGOUT,
             url_user + "/" + ConstantParameter.ServiceUser._USER_SEND_EMAIL,
             url_user + "/" + ConstantParameter.ServiceUser._USER_FORGOTTEN_PASS,
             url_user + "/" + ConstantParameter.ServiceUser._USER_GET_PASSWORD,

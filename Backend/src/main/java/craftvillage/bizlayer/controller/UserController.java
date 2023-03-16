@@ -10,13 +10,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,7 +29,6 @@ import craftvillage.bizlayer.services.SurveyServices;
 import craftvillage.corelayer.utilities.ConstantParameter;
 import craftvillage.corelayer.utilities.JwtUtil;
 import craftvillage.datalayer.entities.UrUser;
-import craftvillage.datalayer.model.JwtModel;
 import craftvillage.datalayer.services.MailService;
 
 @RestController
@@ -53,22 +49,21 @@ public class UserController {
   private SurveyServices surveyServices;
   @Autowired
   private MailService mailService;
-  @Autowired
-  private ServletContext sc;
 
-  @RequestMapping(value = "/" + ConstantParameter.ServiceUser._USER_LOGOUT,
-      method = RequestMethod.GET)
-  public boolean apilogout(Principal principal, HttpServletRequest request) {
-    HttpSession session = request.getSession();
-
-    String username = principal.getName();
-    if (jwtService.removeUsername(username)) {
-      SecurityContextHolder.getContext().setAuthentication(null);
-      session.invalidate();
-      return true;
-    }
-    return false;
-  }
+  // @RequestMapping(value = "/" + ConstantParameter.ServiceUser._USER_LOGOUT,
+  // method = RequestMethod.GET)
+  // public String apilogout(Principal principal, HttpServletRequest request) {
+  // // HttpSession session = request.getSession();
+  // //
+  // // String username = principal.getName();
+  // // if (jwtService.removeUsername(username)) {
+  // // SecurityContextHolder.getContext().setAuthentication(null);
+  // // session.invalidate();
+  // // return true;
+  // // }
+  // // return false;
+  // return "login";
+  // }
 
   /**
    * Funciton : apiloginapp : Truyen api login
@@ -82,81 +77,12 @@ public class UserController {
   @RequestMapping(value = "/" + ConstantParameter.ServiceUser._USER_LOGIN,
       method = RequestMethod.POST, produces = "application/json")
   @ResponseBody
-  public HashMap<String, String> apiloginapp(@RequestBody Map<String, String> formLogin,
+  public Map<String, String> login(@RequestBody Map<String, String> formLogin,
       HttpServletRequest request) throws Exception {
     String username = formLogin.get("name");
     String password = formLogin.get("password");
-    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    HashMap<String, String> console = new HashMap<>();
-
-    String jwt = null;
-    HttpSession session = request.getSession();
-
-    String sessionid = session.getId();
-    UserDetails user = userDetailsService.loadUserByUsername(username);
-    if (user == null) {
-      console.put("token", null);
-      console.put("error", "ERR_USER_NOT_EXIST");
-      return console;
-    } else {
-      if (passwordEncoder.matches(password, user.getPassword())) {
-
-        if (jwtService.sizeJwtList() == 0) {
-
-          jwt = jwtTokenUtil.generateToken(user, sessionid);
-          JwtModel jwtmodel = new JwtModel(jwt, username);
-
-          jwtService.addJwtModel(jwtmodel);
-          console.put("token", jwt);
-          console.put("error", null);
-          userDetailsService.AddSession(username, sessionid);
-
-          return console;
-        } else {
-
-          JwtModel jwtmodel = jwtService.checkUsername(username);
-
-          if (jwtmodel != null)
-            if (jwtTokenUtil.checktoken(jwtmodel.getToken()) == 0) {
-
-              console.put("token", null);
-              console.put("error", "ERROR_LOGIN_DOUBLE");
-
-              return console;
-            } else {
-
-              jwt = jwtTokenUtil.generateToken(user, sessionid);
-              jwtmodel.setToken(jwt);
-
-              console.put("token", jwt);
-              console.put("error", null);
-              userDetailsService.AddSession(username, sessionid);
-
-              return console;
-            }
-
-        }
-        jwt = jwtTokenUtil.generateToken(user, sessionid);
-
-        JwtModel jwtmodel = new JwtModel(jwt, sessionid);
-        jwtService.addJwtModel(jwtmodel);
-        console.put("token", jwt);
-        console.put("error", null);
-        userDetailsService.AddSession(username, sessionid);
-
-        return console;
-
-      }
-
-      else {
-
-        console.put("token", null);
-        console.put("error", "ERR_USER_WRONG_PASS");
-        return console;
-      }
-    }
-
+    return userDetailsService.loginApp(username, password, request.getSession().getId());
   }
 
   /**
@@ -203,7 +129,7 @@ public class UserController {
     switch (i) {
       // valid code
       case 1: {
-        int register = userDetailsService.RegisterUsername(username, password, Role, firstname,
+        int register = userDetailsService.registerUsername(username, password, Role, firstname,
             lastname, phone, email, ActiveDate);
         // success
         if (register == 1) {

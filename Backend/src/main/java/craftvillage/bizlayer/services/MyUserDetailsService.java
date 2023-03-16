@@ -6,8 +6,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,12 +20,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import craftvillage.corelayer.utilities.JwtUtil;
 import craftvillage.datalayer.entities.UrRole;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.repositories.RoleRepository;
 import craftvillage.datalayer.repositories.UserRepository;
 import craftvillage.datalayer.services.LoginServ;
-
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
@@ -31,7 +33,13 @@ public class MyUserDetailsService implements UserDetailsService {
   PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
   @Autowired
+  private JwtUtil jwtUtil;
+
+  @Autowired
   private LoginServ loginServ = new LoginServ();
+
+  @Autowired
+  private MyUserDetailsService userDetailsService;
 
   @Autowired
   UserService userService;
@@ -47,24 +55,19 @@ public class MyUserDetailsService implements UserDetailsService {
     UrUser urUser = new UrUser();
     User user = null;
     urUser = userRepo.findByAccount(username);
-    // System.out.println(urUser.getUrRoles());
     if (urUser == null)
       return user;
 
     Set<UrRole> urRoles = new HashSet<>();
-
     urRoles = urUser.getUrRoles();
-    // System.out.println(urRoles);
+
     List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
     for (UrRole role : urRoles) {
       GrantedAuthority authority = new SimpleGrantedAuthority(role.getRoleCode());
-      // System.out.println(role.getRoleCode());
       grantList.add(authority);
     }
 
     user = new User(urUser.getAccount(), urUser.getPassword(), grantList);
-
-    System.out.println(user);
     return user;
   }
 
@@ -73,11 +76,10 @@ public class MyUserDetailsService implements UserDetailsService {
    * 
    * @return Number - 1: Success - 2: Username exist - 3: Email exist - 4: Phone exist - 0: fail
    */
-  public int RegisterUsername(String username, String password, String role, String firstname,
+  public int registerUsername(String username, String password, String role, String firstname,
       String lastname, String phone, String email, Date activeDate)
       throws ClassNotFoundException, SQLException, ParseException {
     String pass = passwordEncoder.encode(password);
-    System.out.println(role);
     int roleId;
     if (role.equals("USER"))
       roleId = 1;
@@ -122,15 +124,32 @@ public class MyUserDetailsService implements UserDetailsService {
     return returnValue;
   }
 
-  public boolean AddSession(String username, String sessionID) {
+  public Map<String, String> loginApp(String username, String password, String sessionId) {
+    Map<String, String> response = new HashMap<>();
+    UserDetails user = userDetailsService.loadUserByUsername(username);
+
+    if (user == null) {
+      response.put("token", null);
+      response.put("error", "USER NOT EXIST");
+      return response;
+    }
+
+    if (passwordEncoder.matches(password, user.getPassword())) {
+      response.put("token", jwtUtil.generateToken(user, sessionId));
+      response.put("error", null);
+      userDetailsService.addSession(username, sessionId);
+      return response;
+    }
+
+    response.put("token", null);
+    response.put("error", "WRONG PASSWORD");
+    return response;
+  }
+
+  public boolean addSession(String username, String sessionID) {
     if (loginServ.addSession(username, sessionID))
       return true;
     return false;
-  }
-
-  public UrUser GetUserData(String username) {
-    UrUser user = userService.findByUsername(username);
-    return user;
   }
 
   public boolean changePass(String newPass, String username) {

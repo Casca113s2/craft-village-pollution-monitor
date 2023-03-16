@@ -1679,12 +1679,7 @@
   // Load more
   try {
     $('#btn-logout').on('click', function() {
-		  	$.get("/craftvillage/api/user/logoutapp", function(data){
-		  		if(data){
-		  			document.cookie = "token=; max-age=-1; path=/;";
-		  			window.location.replace(window.location.origin + "/web/login");
-		  		}
-		  	});
+			document.cookie = "token=; max-age=-1; path=/;";
 		});
   } catch (error) {
     console.log(error);
