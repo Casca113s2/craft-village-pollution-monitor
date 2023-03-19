@@ -10,9 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.hibernate.annotations.DynamicUpdate;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import craftvillage.corelayer.utilities.ConstantParameter;
 
+@DynamicUpdate
 @Entity
 @Table(name = "HOUSEHOLD_SURVEY", schema = ConstantParameter._SCHEMA_NAME)
 public class HouseholdSurvey {
@@ -63,5 +65,4 @@ public class HouseholdSurvey {
   public void setSrSurveyQuestionAnswer(SrSurveyQuestionAnswer srSurveyQuestionAnswer) {
     this.srSurveyQuestionAnswer = srSurveyQuestionAnswer;
   }
-
 }

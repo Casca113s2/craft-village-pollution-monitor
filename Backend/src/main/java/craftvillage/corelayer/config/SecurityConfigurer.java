@@ -38,8 +38,8 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     String url_village = url + ConstantParameter.ServiceVillage._VILLAGE_SERVICE;
 
     // http.csrf().disable();
-    http.csrf().ignoringAntMatchers("/craftvillage/api/village/newvillage", "/admin-site/**",
-        "/craftvillage/api/village/newvillage", "/web/household/**", "/web/authority/**",
+    http.csrf().ignoringAntMatchers("/craftvillage/api/village/newvillage", "/administration/**",
+        "/craftvillage/api/village/newvillage", "/web/household/**", "/web/authority/**", "/report",
         url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_GET_COMPLETED,
         url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_GET_INPROGRESS,
         url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_UPLOAD_FILE,
@@ -70,9 +70,8 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_WARD,
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_VILLAGE,
             "/web/household/question")
-        .permitAll().antMatchers(
-            // url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_VILLAGE,
-            "/craftvillage/api/village/newvillage",
+        .permitAll()
+        .antMatchers("/craftvillage/api/village/newvillage",
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_ADDRESS,
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_CHECK_VILLAGE,
             url_user + "/" + ConstantParameter.ServiceUser._USER_GET_DATA,
@@ -82,10 +81,10 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
             url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_DETECT)
         .hasAuthority("USER").antMatchers("/web/household/**").hasAuthority("HOUSEHOLD")
         .antMatchers("/web/authority/**").hasAuthority("LOCALAUTHORITY")
-        .antMatchers("/admin-site/**").hasAuthority("ADMIN").antMatchers("/web/home")
+        .antMatchers("/administration/**").hasAuthority("ADMIN").antMatchers("/web/home")
         .hasAnyAuthority("HOUSEHOLD", "LOCALAUTHORITY", "ADMIN")
         .antMatchers("/web/home", url_user + "/" + ConstantParameter.ServiceUser._USER_CHANGE_PASS,
-            url_user + "/" + ConstantParameter.ServiceUser._USER_UPDATE_INFOR)
+            url_user + "/" + ConstantParameter.ServiceUser._USER_UPDATE_INFOR, "/report")
         .hasAnyAuthority("HOUSEHOLD", "LOCALAUTHORITY", "ADMIN", "USER")
 
         .anyRequest().authenticated();
