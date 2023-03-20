@@ -20,7 +20,7 @@ import craftvillage.bizlayer.services.UserService;
 import craftvillage.datalayer.entities.UrUser;
 
 @Controller
-@RequestMapping("/admin-site")
+@RequestMapping("/administration")
 public class AdminController {
 
   @Autowired
