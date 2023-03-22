@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -74,5 +75,9 @@ public class SurveyServices {
       }
     }
     return true;
+  }
+
+  public Set<HouseholdSurvey> getHouseholdSurvey(UrUser user) {
+    return user.getHouseholdSurvey();
   }
 }

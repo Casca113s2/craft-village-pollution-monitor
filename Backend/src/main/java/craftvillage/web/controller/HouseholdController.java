@@ -3,6 +3,7 @@ package craftvillage.web.controller;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import craftvillage.bizlayer.services.SrSurveyQuestionService;
 import craftvillage.bizlayer.services.SurveyServices;
 import craftvillage.bizlayer.services.UserService;
 import craftvillage.bizlayer.services.VillageServices;
+import craftvillage.datalayer.entities.HouseholdSurvey;
 import craftvillage.datalayer.entities.SrSurveyQuestion;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.Village;
@@ -83,7 +85,14 @@ public class HouseholdController {
     return srSurveyQuestionService.findByActive(1);
   }
 
-  @PostMapping("/question")
+  @GetMapping("/answer")
+  @ResponseBody
+  public Set<HouseholdSurvey> getAnswer(Principal principal) {
+    UrUser user = userService.findByUsername(principal.getName());
+    return surveyServices.getHouseholdSurvey(user);
+  }
+
+  @PostMapping("/answer")
   @ResponseBody
   public boolean submitAnswer(@RequestParam Map<String, List<Map<String, String>>> form,
       Principal principal) {
