@@ -18,10 +18,10 @@ import craftvillage.bizlayer.services.SrSurveyQuestionService;
 import craftvillage.bizlayer.services.SurveyServices;
 import craftvillage.bizlayer.services.UserService;
 import craftvillage.bizlayer.services.VillageServices;
-import craftvillage.datalayer.entities.HouseholdSurvey;
 import craftvillage.datalayer.entities.SrSurveyQuestion;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.Village;
+import craftvillage.datalayer.entities.dto.HouseholdSurveyDTO;
 
 @Controller
 @RequestMapping("/web/household")
@@ -88,7 +88,7 @@ public class HouseholdController {
 
   @GetMapping("/answer")
   @ResponseBody
-  public Set<HouseholdSurvey> getAnswer(Principal principal) {
+  public Set<HouseholdSurveyDTO> getAnswer(Principal principal) {
     UrUser user = userService.findByUsername(principal.getName());
     return surveyServices.getHouseholdSurvey(user);
   }
