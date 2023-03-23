@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -92,9 +93,9 @@ public class HouseholdController {
     return surveyServices.getHouseholdSurvey(user);
   }
 
-  @PostMapping("/answer")
+  @PostMapping(value = "/answer", produces = "application/json")
   @ResponseBody
-  public boolean submitAnswer(@RequestParam Map<String, List<Map<String, String>>> form,
+  public boolean submitAnswer(@RequestBody Map<String, List<Map<String, String>>> form,
       Principal principal) {
     List<Map<String, String>> answers = form.get("answers");
     return surveyServices.addHouseholdSurvey(userService.findByUsername(principal.getName()),
