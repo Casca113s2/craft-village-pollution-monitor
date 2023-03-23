@@ -4,11 +4,17 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import craftvillage.datalayer.entities.HouseholdSurvey;
+import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.UserSurvey;
 import craftvillage.datalayer.entities.Village;
+import craftvillage.datalayer.repositories.HouseholdSurveyRepository;
+import craftvillage.datalayer.repositories.SrSurveyQuestionAnswerRepository;
 import craftvillage.datalayer.repositories.UserSurveyRepository;
 
 @Service
@@ -18,6 +24,12 @@ public class SurveyServices {
 
   @Autowired
   UserSurveyRepository userSurveyRepository;
+
+  @Autowired
+  HouseholdSurveyRepository householdSurveyRepo;
+
+  @Autowired
+  SrSurveyQuestionAnswerRepository surveyQuestionAnswerRepository;
 
   public int countMonthlySurvey(Village village) {
     int count = 0;
@@ -49,5 +61,23 @@ public class SurveyServices {
         result.add(list[i]);
     }
     return String.join(" - ", list);
+  }
+
+  public boolean addHouseholdSurvey(UrUser user, List<Map<String, String>> answers) {
+    for (Map<String, String> answer : answers) {
+      HouseholdSurvey householdSurvey = new HouseholdSurvey();
+      householdSurvey.setHousehold(user);
+      householdSurvey.setSrSurveyQuestionAnswer(
+          surveyQuestionAnswerRepository.getOne(Integer.parseInt(answer.get("id"))));
+      householdSurvey.setAnswerContent(answer.get("value"));
+      if (householdSurveyRepo.save(householdSurvey) == null) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public Set<HouseholdSurvey> getHouseholdSurvey(UrUser user) {
+    return user.getHouseholdSurvey();
   }
 }

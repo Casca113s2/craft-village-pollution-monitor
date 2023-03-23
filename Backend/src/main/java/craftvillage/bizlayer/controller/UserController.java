@@ -206,12 +206,6 @@ public class UserController {
     return userDetailsService.changePass(newPass, username);
   }
 
-  /**
-   * Function : forgetPassword
-   * 
-   * @param username
-   * @return : null if username sai email if username dung
-   */
   @RequestMapping(value = "/" + ConstantParameter.ServiceUser._USER_FORGOTTEN_PASS,
       method = RequestMethod.POST, produces = "application/json")
   public boolean forgetPassword(@RequestBody Map<String, String> forgetpass) {

@@ -39,7 +39,7 @@ public class PageController {
     } else if (user.getType().equals("LocalAuthority")) {
       return "redirect:/web/authority/index";
     } else
-      return "redirect:/admin-site/localauthority";
+      return "redirect:/administration/localauthority";
   }
 
 }

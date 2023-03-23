@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import craftvillage.bizlayer.services.AddressServices;
-import craftvillage.bizlayer.services.MyUserDetailsService;
 import craftvillage.bizlayer.services.SurveyServices;
 import craftvillage.bizlayer.services.UserService;
 import craftvillage.corelayer.utilities.ConstantParameter;
@@ -25,10 +23,6 @@ import craftvillage.datalayer.entities.UserSurvey;
 public class SurveyController {
   @Autowired
   private SurveyServices surveyServices;
-  @Autowired
-  private MyUserDetailsService userDetailsService;
-  @Autowired
-  private AddressServices addressService;
   @Autowired
   private UserService userService;
 
@@ -59,29 +53,5 @@ public class SurveyController {
     response.put("completedSurvey", completedSurvey);
     response.put("inprogressSurvey", inprogressSurvey);
     return response;
-  }
-
-  public SurveyServices getSurveyServices() {
-    return surveyServices;
-  }
-
-  public void setSurveyServices(SurveyServices surveyServices) {
-    this.surveyServices = surveyServices;
-  }
-
-  public MyUserDetailsService getUserDetailsService() {
-    return userDetailsService;
-  }
-
-  public void setUserDetailsService(MyUserDetailsService _userDetailsService) {
-    this.userDetailsService = _userDetailsService;
-  }
-
-  public AddressServices getAddressService() {
-    return addressService;
-  }
-
-  public void setAddressService(AddressServices addressService) {
-    this.addressService = addressService;
   }
 }
