@@ -40,11 +40,19 @@ function getQuestionList(render) {
           return `
             <div class="question_item question_text-filed">
             <div class="question_content">${item.questionContent} ${question_label}</div>
-            <input placeholder="Enter response here" type="${
-              item.questionType === "TextFieldNumber" ? "number" : "text"
-            }" />
+            ${(() => {
+              return item.srSurveyQuestionAnswers
+                .map((item2) => {
+                  return `
+                    <input type = ${item.questionType === "TextFieldNumber" ? "number" : "text"}
+                           name = ${item2.id}
+                           placeholder = '${item2.answerContent}' />
+                  `
+                })
+                .join("")
+            })()}
           </div>
-            `;
+          `;
             
         else if (item.questionType === "RadioCheckBox")
           return `
@@ -55,7 +63,7 @@ function getQuestionList(render) {
                       return item.srSurveyQuestionAnswers
                         .map((item2) => {
                           return `<li>
-                                <input type="radio" name="${item2.answerType}" id="${item2.id}" />
+                                <input type="radio" name="${item.id}" id="${item2.id}" value="${item2.id}" />
                                 <label for="${item2.id}">${item2.answerContent}</label>
                             </li>`;
                         })
@@ -73,7 +81,7 @@ function getQuestionList(render) {
           return item.srSurveyQuestionAnswers
             .map((item2) => {
               return `<li>
-                      <input type="checkbox" name="${item2.answerType}" id="${item2.id}" />
+                      <input type="checkbox" name="${item2.id}" id="${item2.id}" value="${item2.id}"/>
                       <label for="${item2.id}">${item2.answerContent}</label>
                   </li>`;
             })
@@ -86,4 +94,9 @@ function getQuestionList(render) {
       question_list.innerHTML = questionUI.join("");
       render();
     });
+}
+
+function submitFormInfo() {
+  var form = $("form-new-village").serialize();
+  console.log(form)
 }
