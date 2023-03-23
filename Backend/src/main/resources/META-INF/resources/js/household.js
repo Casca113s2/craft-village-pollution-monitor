@@ -26,7 +26,7 @@ handleSlide();
 let questionUI = [];
 
 function getQuestionList(render) {
-  fetch("http://localhost:5000/web/household/question")
+  fetch("/web/household/question")
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
@@ -44,9 +44,9 @@ function getQuestionList(render) {
               return item.srSurveyQuestionAnswers
                 .map((item2) => {
                   return `
-                    <input type = ${item.questionType === "TextFieldNumber" ? "number" : "text"}
-                           name = ${item2.id}
-                           placeholder = '${item2.answerContent}' />
+                    <input type = ${(item.questionType === "TextFieldNumber" ? "number" : "text")}
+                           name = t${item2.id}
+                           placeholder = '${item.questionType === "TextFieldNumber" ? "" : item2.answerContent}' />
                   `
                 })
                 .join("")
@@ -94,9 +94,4 @@ function getQuestionList(render) {
       question_list.innerHTML = questionUI.join("");
       render();
     });
-}
-
-function submitFormInfo() {
-  var form = $("form-new-village").serialize();
-  console.log(form)
 }

@@ -237,13 +237,15 @@
                                 </div>
                             </div>
                         </div>
+
+
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="card">
                                     <!-- <div class="card-header"><button class="accordion">Thông tin sản xuất</button></div> -->
                                     <button class="card-header accordion" style="text-align:left;">Thông tin sản xuất</button>
                                     <div class="panel">
-                                        <form id="form-new-village" name="form-new-village" onsubmit="submitFormInfo()">
+                                        <form id="form-new-village" method="post" th:action="@{/web/household/answer}">
                                             <div class="question_list">
 
                                             </div>
@@ -260,9 +262,13 @@
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
                 </div>
             </div>
+
+
             <!-- END MAIN CONTENT-->
             <!-- modal static -->
 			<div class="modal fade" id="staticModal1" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
@@ -525,48 +531,64 @@
 		    });
 		})
 
+        //--QA--
+        $('#form-new-village').submit(function(e) {
+            e.preventDefault();
+            var form = $(this);
+            //console.log(form)
+            var QA = [];
+            for (item of form.serializeArray()) {
+                // if(item.value == '0' || item.value.length == 0) {
+                //     $('#success-message3').removeClass("display");
+		    	// 	$('#error-message3').text("Vui lòng điền đầy đủ thông tin!");
+		    	// 	$('#error-message3').addClass("display");
+                //     return;
+                // }
+                //else{
+                    //console.log(item);                    
+                    if(item.name.includes("t")) {
+                        var QA_temp = {}
+                        QA_temp.id = item.name.slice(1)
+                        QA_temp.value = item.value;
+                        QA.push(QA_temp)
+                    }
+                    else {
+                        var QA_temp = {}
+                        QA_temp.id = item.value;
+                        QA_temp.value = "true";
+                        QA.push(QA_temp)
+                    }
+                //}
+            }
+            
+            //console.log(QA);
+
+            var QA_obj = {};
+            QA_obj.answers = QA;
+
+            console.log(QA_obj);
+            
+            var actionUrl = form.attr('action');
+
+            $.ajax({
+		        type: "POST",
+		        url: actionUrl,
+		        data: QA_obj,
+		        success: function(data){
+		        	if(!data){
+			        	$('#success-message3').removeClass("display");
+			    		$('#error-message3').text("Phát hiện lỗi!");
+			    		$('#error-message3').addClass("display");
+		        	}
+		        	else{
+		        		$('#success-message3').text("Yêu cầu đã được gửi");
+		        		$('#success-message3').addClass("display");
+			    		$('#error-message3').removeClass("display");
+		        	}
+		        }
+		    });
+        });
 	</script>
 </body>
-<!-- <div class="card-body" style="display: flex;">
-                                                <div class="w-50 p-r-20 p-l-20">
-                                                    <div class="form-group">
-                                                        <label>Sản lượng</label>
-                                                        <input class="au-input au-input--full" type="text" name="quantity">
-                                                    </div>
-                                                </div>
-
-                                                <div class="w-50 p-l-20">
-                                                    <div class="form-group">
-                                                        <label>Đơn vị sản xuất</label>
-                                                        <div class="form-check">
-                                                            <div class="radio">
-                                                                <label for="radio1" class="form-check-label ">
-                                                                    <input type="radio" id="radio1" name="production-unit" value="option1"
-                                                                        class="form-check-input" checked>tấn/năm
-                                                                </label>
-                                                            </div>
-                                                            <div class="radio">
-                                                                <label for="radio2" class="form-check-label ">
-                                                                    <input type="radio" id="radio2" name="production-unit" value="option2"
-                                                                        class="form-check-input">m3/năm
-                                                                </label>
-                                                            </div>
-                                                            <div class="radio">
-                                                                <label for="radio3" class="form-check-label ">
-                                                                    <input type="radio" id="radio3" name="production-unit" value="option3"
-                                                                        class="form-check-input">1000 đơn vị/năm
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                
-                                                    <div class="w-50 p-r-20 p-l-20">
-                                                        <div class="form-group">
-                                                            <label>Sản lượng</label>
-                                                            <input class="au-input au-input--full" type="text" name="quantity">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div> -->
 </html>
 <!-- end document-->
