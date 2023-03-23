@@ -121,6 +121,9 @@
 
             <!-- MAIN CONTENT-->
             <div class="main-content">
+            	<a href="#" class="gototop">
+                    <i class="fa fa-arrow-up fa-lg"></i>
+                </a>
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="row">
@@ -195,6 +198,24 @@
                             </div>
                         </div>
                     </div>
+                    
+                </div>
+                 <a href="#" title="Báo lỗi" class="btn-report" id="btn-report">
+                   	<i class="fa-regular fa-comment-dots fa-2x"></i>
+               	</a>
+                   
+                <div class="report-form" id="report-form">
+                   	<div class="report-header">
+                   		<label style="width: 90%; font-size: 24px; color: white; padding: 0 0 0 20px; vertical-align: middle; margin: 0;">Báo lỗi</label>
+                   		<a href="#" id="btn-close-report" style="font-size: 24px; color: white;">
+                   			<i class="fa-solid fa-circle-xmark"></i>
+                   		</a>
+                   	</div>
+                   	<div class="report-body">
+                   		<input class="report-title" id="report-title" type="text" placeholder="Lỗi gặp phải">
+                   		<textarea class="report-detail" id="report-detail" placeholder="Mô tả chi tiết"></textarea>
+                   		<button class="btn btn-primary btn-send-report" id="btn-send-report">Gửi</button>
+                   	</div>
                 </div>
             </div>
             <!-- END MAIN CONTENT-->

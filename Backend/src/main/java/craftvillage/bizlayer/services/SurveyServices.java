@@ -7,12 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import craftvillage.datalayer.entities.HouseholdSurvey;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.UserSurvey;
 import craftvillage.datalayer.entities.Village;
+import craftvillage.datalayer.entities.dto.HouseholdSurveyDTO;
 import craftvillage.datalayer.repositories.HouseholdSurveyRepository;
 import craftvillage.datalayer.repositories.SrSurveyQuestionAnswerRepository;
 import craftvillage.datalayer.repositories.UserSurveyRepository;
@@ -77,7 +79,8 @@ public class SurveyServices {
     return true;
   }
 
-  public Set<HouseholdSurvey> getHouseholdSurvey(UrUser user) {
-    return user.getHouseholdSurvey();
+  public Set<HouseholdSurveyDTO> getHouseholdSurvey(UrUser user) {
+    return user.getHouseholdSurvey().stream().map(HouseholdSurveyDTO::from)
+        .collect(Collectors.toSet());
   }
 }
