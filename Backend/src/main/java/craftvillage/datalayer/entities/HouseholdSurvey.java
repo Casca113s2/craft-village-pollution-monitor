@@ -1,6 +1,5 @@
 package craftvillage.datalayer.entities;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -45,7 +44,7 @@ public class HouseholdSurvey {
   }
 
   @JsonBackReference
-  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "HOUSEHOLD")
   public UrUser getHousehold() {
     return household;
@@ -56,7 +55,7 @@ public class HouseholdSurvey {
   }
 
   @JsonBackReference
-  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "SR_SQA_ID")
   public SrSurveyQuestionAnswer getSrSurveyQuestionAnswer() {
     return srSurveyQuestionAnswer;

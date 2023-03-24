@@ -17,6 +17,7 @@ import craftvillage.datalayer.entities.Village;
 import craftvillage.datalayer.entities.dto.HouseholdSurveyDTO;
 import craftvillage.datalayer.repositories.HouseholdSurveyRepository;
 import craftvillage.datalayer.repositories.SrSurveyQuestionAnswerRepository;
+import craftvillage.datalayer.repositories.UserRepository;
 import craftvillage.datalayer.repositories.UserSurveyRepository;
 
 @Service
@@ -32,6 +33,9 @@ public class SurveyServices {
 
   @Autowired
   SrSurveyQuestionAnswerRepository surveyQuestionAnswerRepository;
+
+  @Autowired
+  UserRepository userRepository;
 
   public int countMonthlySurvey(Village village) {
     int count = 0;
@@ -66,12 +70,16 @@ public class SurveyServices {
   }
 
   public boolean addHouseholdSurvey(UrUser user, List<Map<String, String>> answers) {
+    for (HouseholdSurvey item : householdSurveyRepo.findByHousehold(user)) {
+      householdSurveyRepo.delete(item);
+    }
+
     for (Map<String, String> answer : answers) {
       HouseholdSurvey householdSurvey = new HouseholdSurvey();
-      householdSurvey.setHousehold(user);
       householdSurvey.setSrSurveyQuestionAnswer(
           surveyQuestionAnswerRepository.getOne(Integer.parseInt(answer.get("id"))));
       householdSurvey.setAnswerContent(answer.get("value"));
+      householdSurvey.setHousehold(user);
       if (householdSurveyRepo.save(householdSurvey) == null) {
         return false;
       }
