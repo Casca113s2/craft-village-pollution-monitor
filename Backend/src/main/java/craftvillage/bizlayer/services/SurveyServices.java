@@ -70,14 +70,16 @@ public class SurveyServices {
   }
 
   public boolean addHouseholdSurvey(UrUser user, List<Map<String, String>> answers) {
-    user.setHouseholdSurvey(null);
-    userRepository.save(user);
+    for (HouseholdSurvey item : householdSurveyRepo.findByHousehold(user)) {
+      householdSurveyRepo.delete(item);
+    }
+
     for (Map<String, String> answer : answers) {
       HouseholdSurvey householdSurvey = new HouseholdSurvey();
-      householdSurvey.setHousehold(user);
       householdSurvey.setSrSurveyQuestionAnswer(
           surveyQuestionAnswerRepository.getOne(Integer.parseInt(answer.get("id"))));
       householdSurvey.setAnswerContent(answer.get("value"));
+      householdSurvey.setHousehold(user);
       if (householdSurveyRepo.save(householdSurvey) == null) {
         return false;
       }
