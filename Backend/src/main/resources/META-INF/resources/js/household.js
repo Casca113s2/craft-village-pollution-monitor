@@ -29,14 +29,27 @@ function getQuestionList(render) {
   fetch("/web/household/question")
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
-      var question_list = document.querySelector(".question_list");
-      questionUI = data.map((item) => {
+      //console.log(data);
+      fetch("/web/household/answer")
+      .then((res) => res.json())
+      .then((data1) => {
+      //console.log(data1)
+
+        var question_list = document.querySelector(".question_list");
+        questionUI = data.map((item) => {
         var question_label = (item.questionLabel) ? "(" + item.questionLabel + ")" : "";
         if (
           item.questionType === "TextFieldNumber" ||
-          item.questionType === "TextField"
-        )
+          item.questionType === "TextField"           
+        ){
+          //console.log(item.srSurveyQuestionAnswers[0].id)
+          var answer = data1.find(function(item1) {
+            //console.log(item.srSurveyQuestionAnswers.id)
+            //console.log(item1.answerId)
+            return item1.answerId === item.srSurveyQuestionAnswers[0].id
+          })
+          //console.log(answer);
+          
           return `
             <div class="question_item question_text-filed">
             <div class="question_content">${item.questionContent} ${question_label}</div>
@@ -46,15 +59,24 @@ function getQuestionList(render) {
                   return `
                     <input type = ${(item.questionType === "TextFieldNumber" ? "number" : "text")}
                            name = t${item2.id}
-                           placeholder = '${item.questionType === "TextFieldNumber" ? "" : item2.answerContent}' />
+                           placeholder = '${item.questionType === "TextFieldNumber" ? "" : item2.answerContent}' 
+                           value = '${typeof answer === "undefined" ? "" : answer.answerContent}'       
+                    />
                   `
                 })
                 .join("")
             })()}
           </div>
           `;
-            
-        else if (item.questionType === "RadioCheckBox")
+        }   
+        else if (item.questionType === "RadioCheckBox"){
+          var answer = data1.find(function(item1) {
+            return item.srSurveyQuestionAnswers.find(function(item_temp) {
+              //console.log
+              return item_temp.id === item1.answerId
+            })
+          })
+          //console.log(answer);
           return `
             <div class="question_item question_radio">
                 <div class="question_content">${item.questionContent}</div>
@@ -63,7 +85,13 @@ function getQuestionList(render) {
                       return item.srSurveyQuestionAnswers
                         .map((item2) => {
                           return `<li>
-                                <input type="radio" name="${item.id}" id="${item2.id}" value="${item2.id}" />
+                                <input 
+                                  type="radio" 
+                                  name="${item.id}" 
+                                  id="${item2.id}" 
+                                  value="${item2.id}" 
+                                  ${item2.id === answer.answerId ? "checked" : ""}
+                                />
                                 <label for="${item2.id}">${item2.answerContent}</label>
                             </li>`;
                         })
@@ -72,7 +100,13 @@ function getQuestionList(render) {
                 </ul>
             </div>
             `;
-
+        }
+        
+        var answer = data1.filter(function(item1) {
+          return item.srSurveyQuestionAnswers.find(function(item_temp) {
+            return item_temp.id === item1.answerId
+          })
+        })
         return `
         <div class="question_item question_checkbox">
         <div class="question_content">${item.questionContent}</div>
@@ -81,7 +115,16 @@ function getQuestionList(render) {
           return item.srSurveyQuestionAnswers
             .map((item2) => {
               return `<li>
-                      <input type="checkbox" name="${item2.id}" id="${item2.id}" value="${item2.id}"/>
+                      <input 
+                        type="checkbox" 
+                        name="${item2.id}" 
+                        id="${item2.id}" 
+                        value="${item2.id}"
+                        ${answer.find(function(item_temp) {
+                          //console.log(item2.id === item_temp.answerId)
+                          return item2.id === item_temp.answerId
+                        }) ? "checked" : ""}
+                      />
                       <label for="${item2.id}">${item2.answerContent}</label>
                   </li>`;
             })
@@ -93,5 +136,6 @@ function getQuestionList(render) {
       });
       question_list.innerHTML = questionUI.join("");
       render();
+      })  
     });
 }

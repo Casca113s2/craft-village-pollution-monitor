@@ -561,19 +561,30 @@
                 //}
             }
             
-            //console.log(QA);
+            QA_remove_token = [];
+            for(let i = 1; i < QA.length; i++)
+            {
+                QA_remove_token.push(QA[i]);
+            }
+            console.log(QA_remove_token);
+            
 
             var QA_obj = {};
-            QA_obj.answers = QA;
-
+            QA_obj.answers = QA_remove_token;
             console.log(QA_obj);
             
-            var actionUrl = form.attr('action');
+            
+
+            var QA_json = JSON.stringify(QA_obj);
+            console.log(QA_json);
+            
+            var actionUrl = form.attr('action')
 
             $.ajax({
 		        type: "POST",
+                contentType: "application/json; charset=utf-8",
 		        url: actionUrl,
-		        data: QA_obj,
+		        data: QA_json,
 		        success: function(data){
 		        	if(!data){
 			        	$('#success-message3').removeClass("display");
