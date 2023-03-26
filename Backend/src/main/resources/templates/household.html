@@ -116,7 +116,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="card">
-                                    <div class="card-header">Hộ sản xuất<span class="active" th:utext="${villageName}"></span></div>
+                                    <div class="card-header">Hộ sản xuất<span class="active" th:utext="${villageName}" style="color: #007bff;" id="hsx">Chưa khai báo</span></div>
                                     <div class="card-body">
                                     <form id="form1" th:action="@{/web/household/village}" method="post">
                                         <div class="form-group">
@@ -243,7 +243,7 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <!-- <div class="card-header"><button class="accordion">Thông tin sản xuất</button></div> -->
-                                    <button class="card-header accordion" style="text-align:left;">Thông tin sản xuất</button>
+                                    <button class="card-header accordion" style="text-align:left;">Thông tin sản xuất </button>
                                     <div class="panel">
                                         <form id="form-new-village" method="post" th:action="@{/web/household/answer}">
                                             <div class="question_list">
@@ -257,6 +257,7 @@
                                                 <button class="btn btn-light">Làm mới</button>
                                                 <button class="btn btn-primary" type="submit">Khai báo</button>
                                             </div>
+    
                                         </form>                                       
                                     </div> 
                                 </div>
@@ -536,6 +537,16 @@
             e.preventDefault();
             var form = $(this);
             //console.log(form)
+
+            khaibao = document.getElementById('hsx').textContent;
+            if(khaibao.includes("Chưa khai báo")) {
+                alert("Bạn cần khai báo hộ sản xuất trước")
+                // $('#success-message3').removeClass("display");
+                // $('#error-message3').text();
+                // $('#error-message3').addClass("display");
+                return;
+            }
+
             var QA = [];
             for (item of form.serializeArray()) {
                 // if(item.value == '0' || item.value.length == 0) {
@@ -561,16 +572,12 @@
                 //}
             }
             
-            QA_remove_token = [];
-            for(let i = 1; i < QA.length; i++)
-            {
-                QA_remove_token.push(QA[i]);
-            }
-            console.log(QA_remove_token);
+            //remove token (phần tử token đầu tiên)
+            QA.shift();
             
 
             var QA_obj = {};
-            QA_obj.answers = QA_remove_token;
+            QA_obj.answers = QA;
             console.log(QA_obj);
             
             
@@ -587,14 +594,16 @@
 		        data: QA_json,
 		        success: function(data){
 		        	if(!data){
-			        	$('#success-message3').removeClass("display");
-			    		$('#error-message3').text("Phát hiện lỗi!");
-			    		$('#error-message3').addClass("display");
+			        	// $('#success-message3').removeClass("display");
+			    		// $('#error-message3').text("Phát hiện lỗi!");
+			    		// $('#error-message3').addClass("display");
+                        alert("Phát hiện lỗi!")
 		        	}
 		        	else{
-		        		$('#success-message3').text("Yêu cầu đã được gửi");
-		        		$('#success-message3').addClass("display");
-			    		$('#error-message3').removeClass("display");
+		        		// $('#success-message3').text("Yêu cầu đã được gửi");
+		        		// $('#success-message3').addClass("display");
+			    		// $('#error-message3').removeClass("display");
+                        alert("Yêu cầu đã được gửi")
 		        	}
 		        }
 		    });
