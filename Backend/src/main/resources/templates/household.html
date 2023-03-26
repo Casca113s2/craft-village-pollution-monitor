@@ -556,38 +556,32 @@
             var form = $(this);
             //console.log(form)
 
-            khaibao = document.getElementById('hsx').textContent;
-            if(khaibao.includes("Chưa khai báo")) {
-                alert("Bạn cần khai báo hộ sản xuất trước")
-                // $('#success-message3').removeClass("display");
-                // $('#error-message3').text();
-                // $('#error-message3').addClass("display");
+            console.log()
+
+            //Kiểm tra đã khai báo hộ sx và hoàn thành profile hay chưa
+            const khaibao = document.getElementById('hsx').textContent;
+            const firstname = document.getElementById('firstname').value;
+            const lastname = document.getElementById('lastname').value;
+            const phone = document.getElementById('phone').value;
+            if(khaibao.includes("Chưa khai báo") || typeof firstname === "undefined" || typeof lastname === "undefined" || typeof phone === "undefined") {
+                alert("Vui lòng khai báo hộ sản xuất và cập nhật đầy đủ thông tin cá nhân")
                 return;
             }
 
             var QA = [];
-            for (item of form.serializeArray()) {
-                // if(item.value == '0' || item.value.length == 0) {
-                //     $('#success-message3').removeClass("display");
-		    	// 	$('#error-message3').text("Vui lòng điền đầy đủ thông tin!");
-		    	// 	$('#error-message3').addClass("display");
-                //     return;
-                // }
-                //else{
-                    //console.log(item);                    
-                    if(item.name.includes("t")) {
-                        var QA_temp = {}
-                        QA_temp.id = item.name.slice(1)
-                        QA_temp.value = item.value;
-                        QA.push(QA_temp)
-                    }
-                    else {
-                        var QA_temp = {}
-                        QA_temp.id = item.value;
-                        QA_temp.value = "true";
-                        QA.push(QA_temp)
-                    }
-                //}
+            for (item of form.serializeArray()) {                   
+                if(item.name.includes("t")) {
+                    var QA_temp = {}
+                    QA_temp.id = item.name.slice(1)
+                    QA_temp.value = item.value;
+                    QA.push(QA_temp)
+                }
+                else {
+                    var QA_temp = {}
+                    QA_temp.id = item.value;
+                    QA_temp.value = "true";
+                    QA.push(QA_temp)
+                }
             }
             
             //remove token (phần tử token đầu tiên)
@@ -599,7 +593,6 @@
             console.log(QA_obj);
             
             
-
             var QA_json = JSON.stringify(QA_obj);
             console.log(QA_json);
             
@@ -612,15 +605,9 @@
 		        data: QA_json,
 		        success: function(data){
 		        	if(!data){
-			        	// $('#success-message3').removeClass("display");
-			    		// $('#error-message3').text("Phát hiện lỗi!");
-			    		// $('#error-message3').addClass("display");
                         alert("Phát hiện lỗi!")
 		        	}
 		        	else{
-		        		// $('#success-message3').text("Yêu cầu đã được gửi");
-		        		// $('#success-message3').addClass("display");
-			    		// $('#error-message3').removeClass("display");
                         alert("Yêu cầu đã được gửi")
 		        	}
 		        }

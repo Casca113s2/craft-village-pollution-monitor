@@ -223,3 +223,14 @@ function getQuestionList(render) {
     })  
     });
 }
+
+// function validateQAForm() {
+// const khaibao = document.getElementById('hsx').textContent;
+//   const firstname = document.getElementById('firstname').value;
+//   const lastname = document.getElementById('lastname').value;
+//   const phone = document.getElementById('phone').value;
+//   if(khaibao.includes("Chưa khai báo") || typeof firstname === "undefined" || typeof lastname === "undefined" || typeof phone === "undefined") {
+//       return false;
+//   }
+//   return true;
+// }
