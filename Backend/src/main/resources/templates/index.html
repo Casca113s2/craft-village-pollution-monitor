@@ -27,7 +27,7 @@
 
     <!-- Main CSS-->
     <link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
-
+	<link th:href="@{/css/village-map.css}" rel="stylesheet" media="all">
 </head>
 
 <body class="animsition">
@@ -197,6 +197,37 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="map-container">
+									<div class="map"></div>
+									<div class="map-detail">
+										<div class="map-label-container">
+	                                        <div>Làng nghề</div>
+	                                        <div class="value" id="village-name">123</div>										
+										</div>
+										<div class="map-label-container">
+	                                        <div>Số hộ sản xuất</div>
+	                                        <div class="value" id="household-number">123</div>										
+										</div>
+                                        <div style="display: flex;">
+	                                        <div class="map-location-label">
+	                                            <div>Kinh độ</div>
+	                                            <div class="value" id="longitude">123</div>
+	                                        </div>
+	                                        <div class="map-location-label" style="margin-left: auto;">
+	                                            <div>Vĩ độ</div>
+	                                            <div class="value" id="latitude">123</div>
+	                                        </div>
+	                                    </div>
+									</div>
+                                </div>
+                            </div>
+                        </div>
+          				
+          				<div class="card">
+                            <div id="image-container" class="card-body"></div>
+                        </div>
                     </div>
                     
                 </div>
@@ -316,6 +347,7 @@
     <!-- Main JS-->
     <script th:src="@{/js/main.js}"></script>
 	<script th:src="@{/js/myfunction.js}"></script>
+	<script th:src="@{/js/village-map.js}"></script>
 </body>
 
 </html>
