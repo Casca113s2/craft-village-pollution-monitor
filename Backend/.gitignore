@@ -3,4 +3,4 @@ target/
 !**/src/main/**
 !**/src/test/**
 *.log
-*.log
+*.gz
