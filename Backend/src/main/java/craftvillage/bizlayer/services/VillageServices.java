@@ -1,7 +1,9 @@
 package craftvillage.bizlayer.services;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import craftvillage.bizlayer.support_api.location.Coordinate;
@@ -61,6 +63,15 @@ public class VillageServices {
       }
     }
     return detectedVillages;
+  }
+
+  public Map<String, Object> getVillageMapInfo(int villageId) {
+    Map<String, Object> result = new HashMap<String, Object>();
+    Village village = villageRepo.getOne(villageId);
+    result.put("wardName", village.getAdWard().getWardName());
+    result.put("numberOfHousehold", village.getHouseholds().size());
+    result.put("coordinate", village.getCoordinate());
+    return result;
   }
 
   private Coordinate toCoordinate(String coordinate) {
