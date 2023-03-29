@@ -320,14 +320,6 @@ public class UserController {
     return password.toString();
   }
 
-  public MailService getMailService() {
-    return mailService;
-  }
-
-  public void setMailService(MailService mailService) {
-    this.mailService = mailService;
-  }
-
   public static String getCharacterForCreatePassword() {
     return CHARACTER_FOR_CREATE_PASSWORD;
   }

@@ -51,6 +51,7 @@ public class AuthorityController {
     int numberOfVillage = 0;
     int numberOfNewVillage = 0;
     int numberOfNewSurvey = 0;
+    List<Map<String, String>> villages = new ArrayList<Map<String, String>>();
     UrUser user = userService.findByUsername(principal.getName());
     AdDistrict district = user.getDistrict();
     Calendar localCalendar = Calendar.getInstance(TimeZone.getDefault());
@@ -59,10 +60,17 @@ public class AuthorityController {
     for (AdWard ward : district.getAdWards()) {
       for (Village village : ward.getVillages()) {
         newHouseholds.addAll(village.getHouseholds());
-        if (village.getHasAdded() == 1)
+        if (village.getHasAdded() == 1) {
+          Map<String, String> villageInfo = new HashMap<String, String>();
+          villageInfo.put("villageId", village.getVillageId() + "");
+          String[] coordinate = village.getCoordinate().split(", ");
+          villageInfo.put("longitude", coordinate[0]);
+          villageInfo.put("latitude", coordinate[1]);
+          villages.add(villageInfo);
           numberOfVillage += 1;
-        else
+        } else {
           numberOfNewVillage += 1;
+        }
         numberOfNewSurvey += surveyService.countMonthlySurvey(village);
       }
     }
@@ -77,6 +85,8 @@ public class AuthorityController {
     model.addAttribute("firstname", user.getFirstname());
     model.addAttribute("lastname", user.getLastname());
     model.addAttribute("phone", user.getPhone());
+
+    model.addAttribute("villages", villages);
     return "index";
   }
 

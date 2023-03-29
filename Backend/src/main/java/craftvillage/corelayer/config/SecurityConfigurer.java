@@ -79,9 +79,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
             url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_GET_SURVEY,
             url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_DETECT)
         .hasAuthority("USER").antMatchers("/web/household/**").hasAuthority("HOUSEHOLD")
-        .antMatchers("/web/authority/**").hasAuthority("LOCALAUTHORITY")
-        .antMatchers("/administration/**").hasAuthority("ADMIN").antMatchers("/web/home")
-        .hasAnyAuthority("HOUSEHOLD", "LOCALAUTHORITY", "ADMIN")
+        .antMatchers("/web/authority/**", "/craftvillage/api/survey/listImage", "/api/map/**")
+        .hasAuthority("LOCALAUTHORITY").antMatchers("/administration/**").hasAuthority("ADMIN")
+        .antMatchers("/web/home").hasAnyAuthority("HOUSEHOLD", "LOCALAUTHORITY", "ADMIN")
         .antMatchers("/web/home", url_user + "/" + ConstantParameter.ServiceUser._USER_CHANGE_PASS,
             url_user + "/" + ConstantParameter.ServiceUser._USER_UPDATE_INFOR, "/report")
         .hasAnyAuthority("HOUSEHOLD", "LOCALAUTHORITY", "ADMIN", "USER")

@@ -1,12 +1,18 @@
 package craftvillage.bizlayer.services;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import craftvillage.datalayer.entities.UrRole;
 import craftvillage.datalayer.entities.UrUser;
+import craftvillage.datalayer.entities.Village;
 import craftvillage.datalayer.repositories.RoleRepository;
 import craftvillage.datalayer.repositories.UserRepository;
+import craftvillage.datalayer.repositories.VillageRepository;
 
 @Service
 public class UserService {
@@ -15,6 +21,9 @@ public class UserService {
 
   @Autowired
   RoleRepository roleRepo;
+
+  @Autowired
+  VillageRepository villageRepo;
 
   public UrUser save(UrUser user) {
     return userRepo.save(user);
@@ -95,5 +104,20 @@ public class UserService {
     user.setActiveCode(ActiveCode);
     user.setActiveDate(ActiveDate);
     return userRepo.save(user) != null ? true : false;
+  }
+
+  public List<Map<String, Object>> getHouseholdMapInfo(int villageId) {
+    List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+    Village village = villageRepo.getOne(villageId);
+    for (UrUser household : village.getHouseholds()) {
+      if (household.getHouseholdSurvey() != null) {
+        Map<String, Object> householdInfo = new HashMap<String, Object>();
+        householdInfo.put("householdId", household.getId());
+        householdInfo.put("householdName",
+            household.getFirstname() + " " + household.getLastname());
+        result.add(householdInfo);
+      }
+    }
+    return result;
   }
 }

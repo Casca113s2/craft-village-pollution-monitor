@@ -28,7 +28,7 @@ public class SurveyController {
 
   @GetMapping("/getimage")
   @ResponseBody
-  public String getImage(@RequestParam("surveyId") int id) {
+  public Map<String, String> getImage(@RequestParam("surveyId") int id) {
     return surveyServices.getImageBySurveyId(id);
   }
 
@@ -53,5 +53,11 @@ public class SurveyController {
     response.put("completedSurvey", completedSurvey);
     response.put("inprogressSurvey", inprogressSurvey);
     return response;
+  }
+
+  @GetMapping("/listImage")
+  @ResponseBody
+  public List<Integer> getListImage(@RequestParam("villageId") int villageId) {
+    return surveyServices.getListImage(villageId);
   }
 }

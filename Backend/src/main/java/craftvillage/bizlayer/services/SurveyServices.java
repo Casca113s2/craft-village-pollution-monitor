@@ -3,6 +3,7 @@ package craftvillage.bizlayer.services;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,6 +20,7 @@ import craftvillage.datalayer.repositories.HouseholdSurveyRepository;
 import craftvillage.datalayer.repositories.SrSurveyQuestionAnswerRepository;
 import craftvillage.datalayer.repositories.UserRepository;
 import craftvillage.datalayer.repositories.UserSurveyRepository;
+import craftvillage.datalayer.repositories.VillageRepository;
 
 @Service
 public class SurveyServices {
@@ -37,6 +39,9 @@ public class SurveyServices {
   @Autowired
   UserRepository userRepository;
 
+  @Autowired
+  VillageRepository villageRepository;
+
   public int countMonthlySurvey(Village village) {
     int count = 0;
     Calendar localCalendar = Calendar.getInstance(TimeZone.getDefault());
@@ -50,9 +55,14 @@ public class SurveyServices {
     return count;
   }
 
-  public String getImageBySurveyId(int id) {
+  public Map<String, String> getImageBySurveyId(int id) {
     UserSurvey userSurvey = userSurveyRepository.getOne(id);
-    return userSurvey.getImage();
+    Map<String, String> result = new HashMap<String, String>();
+    result.put("date", userSurvey.getDateSubmitSurvey().toString());
+    result.put("pollution", userSurvey.getPollution());
+    result.put("note", userSurvey.getNote());
+    result.put("image", userSurvey.getImage());
+    return result;
   }
 
   public boolean addUserSurvey(UserSurvey userSurvey) {
@@ -90,5 +100,10 @@ public class SurveyServices {
   public Set<HouseholdSurveyDTO> getHouseholdSurvey(UrUser user) {
     return user.getHouseholdSurvey().stream().map(HouseholdSurveyDTO::from)
         .collect(Collectors.toSet());
+  }
+
+  public List<Integer> getListImage(int villageId) {
+    return villageRepository.getOne(villageId).getUserSurveys().stream()
+        .map(survey -> survey.getId()).collect(Collectors.toList());
   }
 }
