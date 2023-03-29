@@ -56,7 +56,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
     http.authorizeRequests()
         .antMatchers("/web/login", "/web/logout", "/vendor/**", "/css/*", "/fonts/**", "/images/**",
-            "/js/**", "/media/**", "/web/forgetpassword", "/craftvillage/api/survey/getimage",
+            "/js/**", "/media/**", "/web/forgetpassword", "/craftvillage/api/survey/question",
             "/web/signup", url_user + "/" + ConstantParameter.ServiceUser._USER_LOGIN,
             url_user + "/" + ConstantParameter.ServiceUser._USER_REGISTER,
             url_user + "/" + ConstantParameter.ServiceUser._USER_SEND_EMAIL,
@@ -79,7 +79,8 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
             url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_GET_SURVEY,
             url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_DETECT)
         .hasAuthority("USER").antMatchers("/web/household/**").hasAuthority("HOUSEHOLD")
-        .antMatchers("/web/authority/**", "/craftvillage/api/survey/listImage", "/api/map/**")
+        .antMatchers("/web/authority/**", "/craftvillage/api/survey/listImage", "/api/map/**",
+            "/craftvillage/api/survey/getImage")
         .hasAuthority("LOCALAUTHORITY").antMatchers("/administration/**").hasAuthority("ADMIN")
         .antMatchers("/web/home").hasAnyAuthority("HOUSEHOLD", "LOCALAUTHORITY", "ADMIN")
         .antMatchers("/web/home", url_user + "/" + ConstantParameter.ServiceUser._USER_CHANGE_PASS,

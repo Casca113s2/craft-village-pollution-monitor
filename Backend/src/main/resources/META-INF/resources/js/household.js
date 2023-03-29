@@ -27,7 +27,7 @@ let questionUI = [];
 
 function getQuestionList(render) {
   //console.log(document.getElementById('hsx').textContent)
-  fetch("/web/household/question")
+  fetch("/craftvillage/api/survey/question")
     .then((res) => res.json())
     .then((data) => {
       //console.log(data);

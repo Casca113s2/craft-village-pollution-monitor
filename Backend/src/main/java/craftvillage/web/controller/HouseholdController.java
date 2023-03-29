@@ -18,7 +18,6 @@ import craftvillage.bizlayer.services.SrSurveyQuestionService;
 import craftvillage.bizlayer.services.SurveyServices;
 import craftvillage.bizlayer.services.UserService;
 import craftvillage.bizlayer.services.VillageServices;
-import craftvillage.datalayer.entities.SrSurveyQuestion;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.Village;
 import craftvillage.datalayer.entities.dto.HouseholdSurveyDTO;
@@ -78,12 +77,6 @@ public class HouseholdController {
     int villageId = Integer.parseInt(form.get("village"));
     user.setVillage(villageService.findVillageById(villageId));
     return userService.save(user) != null ? true : false;
-  }
-
-  @GetMapping("/question")
-  @ResponseBody
-  public List<SrSurveyQuestion> getQuestion() {
-    return srSurveyQuestionService.findByActive(1);
   }
 
   @GetMapping("/answer")
