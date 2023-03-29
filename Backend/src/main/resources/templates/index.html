@@ -5,6 +5,13 @@
     <!-- Required meta tags-->
     <meta charset="UTF-8">
 
+    <!-- Map -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <style>
+        #map {position: absolute; top: 0; right: 0; bottom: 0; left: 0;}
+    </style>
+
     <!-- Title Page-->
     <title>Dashboard</title>
 
@@ -200,7 +207,12 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="map-container">
-									<div class="map"></div>
+									<div class="wrap-map">
+                                        <div id="map">
+                                            <a href="https://www.maptiler.com" style="position:absolute;left:10px;bottom:10px;z-index:999;"><img src="https://api.maptiler.com/resources/logo.svg" alt="MapTiler logo"></a>
+                                        </div>
+                                        <p><a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a></p>
+                                    </div>
 									<div class="map-detail">
 										<div class="map-label-container">
 	                                        <div>Xã / Phường</div>
@@ -391,6 +403,18 @@
     <script th:src="@{/js/main.js}"></script>
 	<script th:src="@{/js/myfunction.js}"></script>
 	<script th:src="@{/js/village-map.js}"></script>
+
+    <!--  Map -->
+    <script>
+        var map = L.map('map').setView([0, 0], 1);
+        L.tileLayer('https://api.maptiler.com/maps/bright/256/{z}/{x}/{y}.png?key=Xx2LVdpWdk1UyVYRKzN0',{
+          tileSize: 512,
+          zoomOffset: -1,
+          minZoom: 1,
+          attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
+          crossOrigin: true
+        }).addTo(map);
+    </script>
 </body>
 
 </html>

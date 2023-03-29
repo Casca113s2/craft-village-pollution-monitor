@@ -33,9 +33,10 @@
 	background-color: white;
 }
 
-.map {
+.wrap-map {
 	width: 65%;
 	height: 100%;
+	position: relative;
 }
 
 .map-detail {
