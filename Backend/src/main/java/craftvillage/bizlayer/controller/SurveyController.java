@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import craftvillage.bizlayer.services.SrSurveyQuestionService;
 import craftvillage.bizlayer.services.SurveyServices;
 import craftvillage.bizlayer.services.UserService;
 import craftvillage.corelayer.utilities.ConstantParameter;
+import craftvillage.datalayer.entities.SrSurveyQuestion;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.UserSurvey;
 
@@ -25,8 +27,16 @@ public class SurveyController {
   private SurveyServices surveyServices;
   @Autowired
   private UserService userService;
+  @Autowired
+  private SrSurveyQuestionService srSurveyQuestionService;
 
-  @GetMapping("/getimage")
+  @GetMapping("/question")
+  @ResponseBody
+  public List<SrSurveyQuestion> getQuestion() {
+    return srSurveyQuestionService.findByActive(1);
+  }
+
+  @GetMapping("/getImage")
   @ResponseBody
   public Map<String, String> getImage(@RequestParam("surveyId") int id) {
     return surveyServices.getImageBySurveyId(id);

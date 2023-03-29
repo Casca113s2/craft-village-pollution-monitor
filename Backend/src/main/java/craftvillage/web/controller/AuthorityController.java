@@ -28,6 +28,7 @@ import craftvillage.datalayer.entities.AdWard;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.UserSurvey;
 import craftvillage.datalayer.entities.Village;
+import craftvillage.datalayer.entities.dto.HouseholdSurveyDTO;
 
 
 @Controller
@@ -193,5 +194,12 @@ public class AuthorityController {
     model.addAttribute("lastname", user.getLastname());
     model.addAttribute("phone", user.getPhone());
     return "survey";
+  }
+
+  @GetMapping("/householdAnswer")
+  @ResponseBody
+  public Set<HouseholdSurveyDTO> getAnswer(@RequestParam("householdId") int householdId) {
+    UrUser user = userService.findById(householdId);
+    return surveyService.getHouseholdSurvey(user);
   }
 }

@@ -25,6 +25,10 @@ public class UserService {
   @Autowired
   VillageRepository villageRepo;
 
+  public UrUser findById(int userId) {
+    return userRepo.getOne(userId);
+  }
+
   public UrUser save(UrUser user) {
     return userRepo.save(user);
   }
