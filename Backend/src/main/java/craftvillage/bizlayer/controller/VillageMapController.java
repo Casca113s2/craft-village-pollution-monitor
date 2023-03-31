@@ -50,6 +50,7 @@ public class VillageMapController {
           String[] coordinate = village.getCoordinate().split(", ");
           villageInfo.put("longitude", coordinate[0]);
           villageInfo.put("latitude", coordinate[1]);
+          villageInfo.put("villageName", village.getVillageName());
           villages.add(villageInfo);
         }
       }
