@@ -1,10 +1,21 @@
 function getImage(id){
-		$.get("/craftvillage/api/survey/getimage?surveyId=" + id, function(data){
+		console.log(id);
+		$.get("/craftvillage/api/survey/getImage?surveyId=" + id, function(data){
+			console.log(data)
 	  		$('#image-container').empty();
-	  		$('#image-container').append("<img src='data:image/jpeg;base64,"+ data +"' alt= Picture />");
+	  		$('#image-container').append("<img src='data:image/jpeg;base64,"+ data['image'] +"' alt= Picture />");
+
+			$('#date').empty();
+	  		$('#date').append(data['date'].slice(0,10));
+
+			$('#pollution').empty();
+	  		$('#pollution').append(data['pollution']);
+			
+			$('#note').empty();
+	  		$('#note').append(data['note']);
 	  	});
-	}
-	
+}
+
 $("#btn-previous-image").click(function(){
 	let imageIndex = parseInt($("#current-image").text(), 10);
 	if(imageIndex > 1) {

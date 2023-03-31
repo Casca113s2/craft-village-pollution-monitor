@@ -267,19 +267,19 @@
 		                            </div>
 		                            <div class="image-detail">
 		                            	<div class="label">Ngày</div>
-		                            	<div class="value" id="date">123</div>
+		                            	<div class="value" id="date">---</div>
 		                            	<div class="label">Loại ô nhiễm</div>
-		                            	<div class="value" id="pollution">123</div>
+		                            	<div class="value" id="pollution">---</div>
 		                            	<div class="label">Ghi chú</div>
-		                            	<div class="value" id="note">123</div>
+		                            	<div class="value" id="note">---</div>
 		                            	<div class="image-button-container">
 		                            		<a id="btn-previous-image" title="Ảnh trước">
 		                            			<i class="fa-solid fa-chevron-left fa-2x"></i>
 		                            		</a>
 		                            		<div class="image-index-container">
-			                            		<label id="current-image" class="image-index">123</label>
+			                            		<label id="current-image" class="image-index">--</label>
 			                            		<label>/</label>
-			                            		<label id="total-image" class="image-index">123</label>
+			                            		<label id="total-image" class="image-index">--</label>
 		                            		</div>
 		                            		<a id="btn-next-image" title="Ảnh sau">
 		                            			<i class="fa-solid fa-chevron-right fa-2x"></i>
@@ -413,7 +413,12 @@
     <!--  Map -->
     <script type="text/javascript">
 
-        
+        var current = document.querySelector('#current-image');
+        var total = document.querySelector('#total-image');
+        var btn_prev = document.querySelector('#btn-previous-image');
+        var btn_next = document.querySelector('#btn-next-image');
+
+        console.log(total);
 
         //set View ban đầu
         var map = L.map('map').setView([9.2940, 105.7216], 12);
@@ -452,7 +457,7 @@
                 id_name = el.attr('id').split(', ');
                 id = id_name[0]
                 village_name = id_name[1]
-                console.log(id_name);
+                //console.log(id_name);
                 //alert('Here is the markers ID: ' + id + '. Use it as you wish.')'
                 fetch("/api/map/getVillage?villageId="+id)
                  .then((res) => res.json())
@@ -470,10 +475,27 @@
                     document.getElementById('household-number').innerHTML = data.length               
                 });
                 document.getElementById('village-name').innerHTML = village_name
+
+                //Ảnh
+                fetch("/craftvillage/api/survey/listImage?villageId="+id)
+                 .then((res) => res.json())
+                 .then((data) => {
+                    data.sort(function(a,b) {return b-a})
+                    getImage(data[0])
+                    console.log(data);
+                    current.textContent=1
+                    total.textContent=data.length       
+                    btn_prev.onclick = function() {
+                        getImage(data[Number(current.textContent)-1])
+                    }
+                    btn_next.onclick = function() {
+                        getImage(data[Number(current.textContent)-1])
+                    } 
+                });
             });
            }, 1000);
         });
-
+        
         // function onMapClick(e) {
         //     console.log(e)
         // }
