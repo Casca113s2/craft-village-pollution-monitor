@@ -12,6 +12,11 @@
         #map {position: absolute; top: 0; right: 0; bottom: 0; left: 0;}
     </style>
 
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
+     <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+
     <!-- Title Page-->
     <title>Dashboard</title>
 
@@ -35,6 +40,7 @@
     <!-- Main CSS-->
     <link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
 	<link th:href="@{/css/village-map.css}" rel="stylesheet" media="all">
+
 </head>
 
 <body class="animsition">
@@ -216,24 +222,24 @@
 									<div class="map-detail">
 										<div class="map-label-container">
 	                                        <div>Xã / Phường</div>
-	                                        <div class="value" id="ward-name">123</div>										
+	                                        <div class="value" id=""><span id="ward-name">---</span></div>										
 										</div>
 										<div class="map-label-container">
 	                                        <div>Làng nghề</div>
-	                                        <div class="value" id="village-name">123</div>										
+	                                        <div class="value" id=""><span id="village-name">---</span></div>										
 										</div>
 										<div class="map-label-container">
 	                                        <div>Số hộ sản xuất</div>
-	                                        <div class="value" id="household-number">123</div>										
+	                                        <div class="value" id=""><span id="household-number">---</span></div>										
 										</div>
                                         <div style="display: flex;">
 	                                        <div class="map-location-label">
 	                                            <div>Kinh độ</div>
-	                                            <div class="value" id="longitude">123</div>
+	                                            <div class="value" id=""><span id="longitude">---</span></div>
 	                                        </div>
 	                                        <div class="map-location-label" style="margin-left: auto;">
 	                                            <div>Vĩ độ</div>
-	                                            <div class="value" id="latitude">123</div>
+	                                            <div class="value" id=""><span id="latitude">---</span></div>
 	                                        </div>
 	                                    </div>
 									</div>
@@ -405,15 +411,74 @@
 	<script th:src="@{/js/village-map.js}"></script>
 
     <!--  Map -->
-    <script>
-        var map = L.map('map').setView([0, 0], 1);
+    <script type="text/javascript">
+
+        
+
+        //set View ban đầu
+        var map = L.map('map').setView([9.2940, 105.7216], 12);
         L.tileLayer('https://api.maptiler.com/maps/bright/256/{z}/{x}/{y}.png?key=Xx2LVdpWdk1UyVYRKzN0',{
-          tileSize: 512,
-          zoomOffset: -1,
-          minZoom: 1,
-          attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
-          crossOrigin: true
+        tileSize: 512,
+        zoomOffset: -1,
+        minZoom: 1,
+        attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
+        crossOrigin: true
         }).addTo(map);
+
+        fetch("/api/map/getVillageLocation")
+         .then((res) => res.json())
+         .then((data) => {           
+            //console.log(data)
+            villages =  data.villages
+            var markers = {}
+            villages.map((item) => {
+                // Create and save a reference to each marker
+                markers[item.villageId] = L.marker([item.longitude, item.latitude],{
+                    riseOnHover : true,
+
+                }).addTo(map);
+                // Add the ID
+                markers[item.villageId]._icon.id = item.villageId + ", " + item.villageName;
+            })           
+        });
+
+
+        //Onclick Marker 
+        $(document).ready(function() {
+           setTimeout(() => {
+            $('.leaflet-marker-icon').click(function(e) {
+                // Use the event to find the clicked element
+                var el = $(e.srcElement || e.target),
+                id_name = el.attr('id').split(', ');
+                id = id_name[0]
+                village_name = id_name[1]
+                console.log(id_name);
+                //alert('Here is the markers ID: ' + id + '. Use it as you wish.')'
+                fetch("/api/map/getVillage?villageId="+id)
+                 .then((res) => res.json())
+                 .then((data) => {
+                    var coordinate = data.coordinate.split(", ")
+                    //console.log(coordinate)
+                    document.getElementById('ward-name').innerHTML = data.wardName
+                    document.getElementById('latitude').innerHTML = coordinate[0]
+                    document.getElementById('longitude').innerHTML = coordinate[1]                   
+                 });
+
+                fetch("/api/map/getHousehold?villageId="+id)
+                 .then((res) => res.json())
+                 .then((data) => {
+                    document.getElementById('household-number').innerHTML = data.length               
+                });
+                document.getElementById('village-name').innerHTML = village_name
+            });
+           }, 1000);
+        });
+
+        // function onMapClick(e) {
+        //     console.log(e)
+        // }
+  // nó là class của marker á click duoc
+        // map.on('click', onMapClick);
     </script>
 </body>
 

@@ -19,3 +19,11 @@ $("#btn-next-image").click(function(){
 		$("#current-image").text(imageIndex + 1);
 	}
 });
+
+// $('.leaflet-marker-icon').on('click', function(e) {
+// 	// Use the event to find the clicked element
+// 	var el = $(e.srcElement || e.target),
+// 	id = el.attr('id');
+// 	console.log(id);
+// 	alert('Here is the markers ID: ' + id + '. Use it as you wish.')
+// });
