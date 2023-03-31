@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import craftvillage.bizlayer.services.UserService;
@@ -16,7 +17,8 @@ import craftvillage.datalayer.entities.AdWard;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.Village;
 
-@RestController("/api/map")
+@RestController
+@RequestMapping("/api/map")
 public class VillageMapController {
   @Autowired
   VillageServices villageServices;
