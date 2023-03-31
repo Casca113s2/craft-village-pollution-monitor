@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,6 +21,7 @@ import craftvillage.corelayer.utilities.ConstantParameter;
 import craftvillage.datalayer.entities.SrSurveyQuestion;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.UserSurvey;
+import craftvillage.datalayer.entities.dto.HouseholdSurveyDTO;
 
 @RestController
 @RequestMapping("/" + ConstantParameter._URL_ROOT + "/" + ConstantParameter._URL_API + "/"
@@ -34,6 +38,22 @@ public class SurveyController {
   @ResponseBody
   public List<SrSurveyQuestion> getQuestion() {
     return srSurveyQuestionService.findByActive(1);
+  }
+
+  @GetMapping("/answer")
+  @ResponseBody
+  public Set<HouseholdSurveyDTO> getAnswer(Principal principal) {
+    UrUser user = userService.findByUsername(principal.getName());
+    return surveyServices.getHouseholdSurvey(user);
+  }
+
+  @PostMapping(value = "/answer", produces = "application/json")
+  @ResponseBody
+  public boolean submitAnswer(@RequestBody Map<String, List<Map<String, String>>> form,
+      Principal principal) {
+    List<Map<String, String>> answers = form.get("answers");
+    return surveyServices.addHouseholdSurvey(userService.findByUsername(principal.getName()),
+        answers);
   }
 
   @GetMapping("/getImage")

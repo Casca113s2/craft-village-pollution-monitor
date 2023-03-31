@@ -37,7 +37,8 @@ public class VillageMapController {
   }
 
   @GetMapping("/getVillageLocation")
-  public List<Map<String, Object>> getVillageLocation(Principal principal) {
+  public Map<String, Object> getVillageLocation(Principal principal) {
+    Map<String, Object> response = new HashMap<String, Object>();
     List<Map<String, Object>> villages = new ArrayList<Map<String, Object>>();
     UrUser user = userService.findByUsername(principal.getName());
     AdDistrict district = user.getDistrict();
@@ -53,6 +54,8 @@ public class VillageMapController {
         }
       }
     }
-    return villages;
+    response.put("districtCoordinate", district.getCoordinate());
+    response.put("villages", villages);
+    return response;
   }
 }

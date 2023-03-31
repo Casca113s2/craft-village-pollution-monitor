@@ -31,7 +31,7 @@ function getQuestionList(render) {
     .then((res) => res.json())
     .then((data) => {
       //console.log(data);
-      fetch("/web/household/answer")
+      fetch("/craftvillage/api/survey/answer")
       .then((res) => res.json())
       .then((data1) => {
       //console.log(data1.length == 0)
