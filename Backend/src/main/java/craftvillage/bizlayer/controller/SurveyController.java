@@ -47,6 +47,13 @@ public class SurveyController {
     return surveyServices.getHouseholdSurvey(user);
   }
 
+  @GetMapping("/answerHousehold")
+  @ResponseBody
+  public Set<HouseholdSurveyDTO> getAnswerByHoushold(@RequestParam("householdId") int householdId) {
+    UrUser user = userService.findById(householdId);
+    return surveyServices.getHouseholdSurvey(user);
+  }
+
   @PostMapping(value = "/answer", produces = "application/json")
   @ResponseBody
   public boolean submitAnswer(@RequestBody Map<String, List<Map<String, String>>> form,
