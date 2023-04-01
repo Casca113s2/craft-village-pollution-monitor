@@ -444,6 +444,14 @@
                 }).addTo(map);
                 // Add the ID
                 markers[item.villageId]._icon.id = item.villageId + ", " + item.villageName;
+                //gắn popup khi mouseover vào
+                markers[item.villageId].bindPopup(item.villageName)
+                markers[item.villageId].on('mouseover', function(e){
+                    this.openPopup();
+                });
+                markers[item.villageId].on('mouseout', function(e){
+                    this.closePopup();
+                });
             })           
         });
 
@@ -483,7 +491,7 @@
                     data.sort(function(a,b) {return b-a})
                     getImage(data[0])
                     console.log(data);
-                    current.textContent=1
+                    current.textContent= (data.length) ? 1 : 0
                     total.textContent=data.length       
                     btn_prev.onclick = function() {
                         getImage(data[Number(current.textContent)-1])
