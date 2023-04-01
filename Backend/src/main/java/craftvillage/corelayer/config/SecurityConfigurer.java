@@ -82,7 +82,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         .hasAuthority("USER").antMatchers("/web/household/**", "/craftvillage/api/survey/answer")
         .hasAuthority("HOUSEHOLD")
         .antMatchers("/web/authority/**", "/craftvillage/api/survey/listImage", "/api/map/**",
-            "/craftvillage/api/survey/getImage", "/craftvillage/api/survey/answer")
+            "/craftvillage/api/survey/getImage", "/craftvillage/api/survey/answerHousehold")
         .hasAuthority("LOCALAUTHORITY").antMatchers("/administration/**").hasAuthority("ADMIN")
         .antMatchers("/web/home").hasAnyAuthority("HOUSEHOLD", "LOCALAUTHORITY", "ADMIN")
         .antMatchers("/web/home", url_user + "/" + ConstantParameter.ServiceUser._USER_CHANGE_PASS,

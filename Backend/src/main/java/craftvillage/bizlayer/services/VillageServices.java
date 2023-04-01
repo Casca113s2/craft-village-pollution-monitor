@@ -68,6 +68,7 @@ public class VillageServices {
   public Map<String, Object> getVillageMapInfo(int villageId) {
     Map<String, Object> result = new HashMap<String, Object>();
     Village village = villageRepo.getOne(villageId);
+    result.put("villageName", village.getVillageName());
     result.put("wardName", village.getAdWard().getWardName());
     result.put("numberOfHousehold", village.getHouseholds().size());
     result.put("coordinate", village.getCoordinate());
