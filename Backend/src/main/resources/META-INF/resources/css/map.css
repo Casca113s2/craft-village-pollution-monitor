@@ -1,0 +1,107 @@
+@charset "UTF-8";
+
+/* width */
+.list-village-body::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+.list-village-body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px #a7a7a7; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+.list-village-body::-webkit-scrollbar-thumb {
+  background: #ebebeb; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.list-village-body::-webkit-scrollbar-thumb:hover {
+  background: #b7b7b7; 
+}
+
+.list-village-container {
+	background-color: white;
+	border: solid 0px;
+	border-radius: 20px;
+	height: auto;
+	max-height: 100%;
+	padding: 20px 0;
+}
+
+.list-village-header {
+	display: flex;
+	padding: 0 25px 0 20px;
+}
+
+.list-village-body {
+	padding-top: 10px;
+	overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 700px;
+}
+
+.village-tag {
+	display: flex;
+	width: 100%;
+	padding: 10px 20px;
+}
+
+.village-tag:hover {
+	cursor: pointer;
+	background-color: #9d9d9d;
+	color: white;
+}
+
+.village-field-name {
+	width: 80%;
+	font-size: 20px;
+}
+
+.map {
+	height: 60%;
+	width: 100%;
+	background-color: white;
+	border: solid 0px;
+	border-radius: 20px;
+}
+
+.village-info-container {
+	height: 35%;
+	width: 100%;
+	background-color: white;
+	border: solid 0px;
+	border-radius: 20px;
+	padding: 20px;
+	display: flex;
+	margin-top: auto;
+}
+
+.village-info-left {
+	width: 60%;
+}
+
+.village-info-right {
+	margin-top: 8px;
+	padding-left: 20px;
+	width: 40%;
+}
+
+.input-field {
+	width: 100%;
+	padding: 5px 10px;
+	font-size: 20px;
+	border: solid 0px;
+	border-radius: 5px;
+	background-color: #f3f3f3;
+}
+
+#note {
+	resize: none;
+	height: 165px;
+	border: solid 0px;
+	border-radius: 10px;
+	background-color: #f3f3f3;
+}
