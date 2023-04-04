@@ -1,24 +1,24 @@
 @charset "UTF-8";
 
 /* width */
-.list-village-body::-webkit-scrollbar {
+#list-village-body::-webkit-scrollbar {
   width: 5px;
 }
 
 /* Track */
-.list-village-body::-webkit-scrollbar-track {
+#list-village-body::-webkit-scrollbar-track {
   box-shadow: inset 0 0 5px #a7a7a7; 
   border-radius: 10px;
 }
  
 /* Handle */
-.list-village-body::-webkit-scrollbar-thumb {
+#list-village-body::-webkit-scrollbar-thumb {
   background: #ebebeb; 
   border-radius: 10px;
 }
 
 /* Handle on hover */
-.list-village-body::-webkit-scrollbar-thumb:hover {
+#list-village-body::-webkit-scrollbar-thumb:hover {
   background: #b7b7b7; 
 }
 
@@ -36,7 +36,7 @@
 	padding: 0 25px 0 20px;
 }
 
-.list-village-body {
+#list-village-body {
 	padding-top: 10px;
 	overflow-x: hidden;
     overflow-y: auto;

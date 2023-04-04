@@ -59,7 +59,7 @@ public class SurveyServices {
     UserSurvey userSurvey = userSurveyRepository.getOne(id);
     Map<String, String> result = new HashMap<String, String>();
     result.put("date", userSurvey.getDateSubmitSurvey().toString());
-    result.put("pollution", userSurvey.getPollution());
+    result.put("pollution", getPollution(userSurvey.getPollution()));
     result.put("note", userSurvey.getNote());
     result.put("image", userSurvey.getImage());
     return result;

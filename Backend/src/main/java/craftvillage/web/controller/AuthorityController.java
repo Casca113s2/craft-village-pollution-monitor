@@ -2,11 +2,14 @@ package craftvillage.web.controller;
 
 import java.security.Principal;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +28,7 @@ import craftvillage.datalayer.entities.AdWard;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.Village;
 import craftvillage.datalayer.entities.dto.HouseholdSurveyDTO;
+import craftvillage.datalayer.entities.dto.MapVillageDTO;
 
 
 @Controller
@@ -119,6 +123,11 @@ public class AuthorityController {
     UrUser user = userService.findByUsername(principal.getName());
     AdDistrict district = user.getDistrict();
     Set<AdWard> wards = district.getAdWards();
+    List<MapVillageDTO> villages = new ArrayList<MapVillageDTO>();
+    for (AdWard adWard : wards) {
+      villages.addAll(
+          adWard.getVillages().stream().map(MapVillageDTO::from).collect(Collectors.toList()));
+    }
     model.addAttribute("name", principal.getName());
     model.addAttribute("email", user.getEmail());
     model.addAttribute("firstname", user.getFirstname());
@@ -126,6 +135,7 @@ public class AuthorityController {
     model.addAttribute("phone", user.getPhone());
 
     model.addAttribute("wards", wards);
+    model.addAttribute("villages", villages);
     return "map";
   }
 
