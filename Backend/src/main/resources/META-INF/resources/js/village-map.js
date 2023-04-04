@@ -1,5 +1,7 @@
+var marker;
+
 function getImage(id){
-		console.log(id);
+		//console.log(id);
 		$.get("/craftvillage/api/survey/getImage?surveyId=" + id, function(data){
 			console.log(data)
 	  		$('#image-container').empty();
@@ -9,7 +11,13 @@ function getImage(id){
 	  		$('#date').append(data['date'].slice(0,10));
 
 			$('#pollution').empty();
-	  		$('#pollution').append(data['pollution']);
+			pollution_str="";
+			if(data['pollution'][0] === '1') pollution_str += "Đất, ";
+			if(data['pollution'][1] === '1') pollution_str += "Nước, "
+			if(data['pollution'][2] === '1') pollution_str += "Không Khí"
+			if(pollution_str[pollution_str.length-2] === ',')
+				pollution_str = pollution_str.slice(0, pollution_str.length-2)
+	  		$('#pollution').append(pollution_str);
 			
 			$('#note').empty();
 	  		$('#note').append(data['note']);
@@ -30,11 +38,3 @@ $("#btn-next-image").click(function(){
 		$("#current-image").text(imageIndex + 1);
 	}
 });
-
-// $('.leaflet-marker-icon').on('click', function(e) {
-// 	// Use the event to find the clicked element
-// 	var el = $(e.srcElement || e.target),
-// 	id = el.attr('id');
-// 	console.log(id);
-// 	alert('Here is the markers ID: ' + id + '. Use it as you wish.')
-// });

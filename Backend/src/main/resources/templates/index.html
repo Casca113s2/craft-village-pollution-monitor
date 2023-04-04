@@ -251,11 +251,11 @@
                             <div class="col-md-4">
                             	<div class="table-layout">
                             		<div style="text-align: center; font-size: 22px; color: white; padding: 5px 0; font-weight: bold;">Khai báo</div>
-	                                <div class="household-table">
-	                                	<div class="household-record">
+	                                <div class="household-table" id="household-table">
+	                                	<div class="household-record" >
 	                                		<div class="household-index-field">1</div>
 	                                		<div class="household-name-field">Hua Hoang Phuc</div>
-	                                		<div class="household-info-field">Chi tiết >></div>
+	                                		<div class="household-info-field"><a id="modal-household-info" href="#" style="color: white; position: right">Chi tiết >></a> </div>
 	                                	</div>
 	                                </div>
                             	</div>
@@ -378,6 +378,27 @@
 					</div>
 				</div>
 			</div>
+            <!-- Model map-->
+            <div class="modal fade" id="staticModal3" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
+			 data-backdrop="static">
+				<div class="modal-dialog modal-sm" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="staticModalLabel">Thông tin sản xuất</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+                            #
+						</div>
+						<div class="modal-footer">
+							#
+						</div>
+					</div>
+				</div>
+			</div>
+            <!-- End Model map-->
 			<!-- end modal static -->
             <!-- END PAGE CONTAINER-->
         </div>
@@ -418,22 +439,27 @@
         var btn_prev = document.querySelector('#btn-previous-image');
         var btn_next = document.querySelector('#btn-next-image');
 
-        console.log(total);
+        //console.log(total);
 
         //set View ban đầu
-        var map = L.map('map').setView([9.2940, 105.7216], 12);
-        L.tileLayer('https://api.maptiler.com/maps/bright/256/{z}/{x}/{y}.png?key=Xx2LVdpWdk1UyVYRKzN0',{
-        tileSize: 512,
-        zoomOffset: -1,
-        minZoom: 1,
-        attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
-        crossOrigin: true
-        }).addTo(map);
-
+        //var map = L.map('map').setView([9.2940, 105.7216], 13); 
         fetch("/api/map/getVillageLocation")
          .then((res) => res.json())
          .then((data) => {           
             //console.log(data)
+            //set view ban đầu
+            var coordinate = data.districtCoordinate.split(",")
+            console.log(coordinate);
+            var map = L.map('map').setView([+coordinate[0], +coordinate[1]], 13); //CL
+            L.tileLayer('https://api.maptiler.com/maps/bright/256/{z}/{x}/{y}.png?key=Xx2LVdpWdk1UyVYRKzN0',{
+            tileSize: 512,
+            zoomOffset: -1,
+            minZoom: 1,
+            attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
+            crossOrigin: true
+            }).addTo(map);
+
+            //Hiện các marker làng nghề
             villages =  data.villages
             var markers = {}
             villages.map((item) => {
@@ -445,9 +471,11 @@
                 // Add the ID
                 markers[item.villageId]._icon.id = item.villageId + ", " + item.villageName;
                 //gắn popup khi mouseover vào
+                //var bigIcon = new L.Icon.Big();
                 markers[item.villageId].bindPopup(item.villageName)
                 markers[item.villageId].on('mouseover', function(e){
                     this.openPopup();
+
                 });
                 markers[item.villageId].on('mouseout', function(e){
                     this.closePopup();
@@ -490,7 +518,7 @@
                  .then((data) => {
                     data.sort(function(a,b) {return b-a})
                     getImage(data[0])
-                    console.log(data);
+                    //console.log(data);
                     current.textContent= (data.length) ? 1 : 0
                     total.textContent=data.length       
                     btn_prev.onclick = function() {
@@ -500,15 +528,31 @@
                         getImage(data[Number(current.textContent)-1])
                     } 
                 });
+
+                //Khai báo
+                //console.log(id);
+                fetch("/api/map/getHousehold?villageId="+id)
+                 .then((res) => res.json())
+                 .then((data) => {
+                    var html="";
+                    for(var i = 0; i < data.length; i++) {
+                        html += `
+                            <div class="household-record">
+                                <div class="household-index-field">${i+1}</div>
+                                <div class="household-name-field">${data[i].householdName}</div>
+                                <div class="household-info-field"><a id="modal-household-info-${id}" href="#" style="color: white;" >Chi tiết >></a> </div>
+                            </div>
+                        `
+                        //console.log(html)
+                    }
+                    let householdRecord = document.getElementById("household-table")
+                    //console.log(html)
+                    householdRecord.innerHTML = html
+                });               
             });
            }, 1000);
         });
         
-        // function onMapClick(e) {
-        //     console.log(e)
-        // }
-  // nó là class của marker á click duoc
-        // map.on('click', onMapClick);
     </script>
 </body>
 
