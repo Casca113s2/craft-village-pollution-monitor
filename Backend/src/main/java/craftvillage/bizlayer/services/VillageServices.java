@@ -9,11 +9,14 @@ import org.springframework.stereotype.Service;
 import craftvillage.bizlayer.support_api.location.Coordinate;
 import craftvillage.datalayer.entities.Village;
 import craftvillage.datalayer.repositories.VillageRepository;
+import craftvillage.datalayer.repositories.WardRepository;
 
 @Service
 public class VillageServices {
   @Autowired
   VillageRepository villageRepo;
+  @Autowired
+  WardRepository wardRepo;
 
   public int newVillage(Village village) {
     try {
@@ -73,6 +76,15 @@ public class VillageServices {
     result.put("numberOfHousehold", village.getHouseholds().size());
     result.put("coordinate", village.getCoordinate());
     return result;
+  }
+
+  public Village updateVillage(Map<String, String> villageInfo) {
+    Village village = villageRepo.getOne(Integer.parseInt(villageInfo.get("villageId")));
+    village.setAdWard(wardRepo.getOne(Integer.parseInt(villageInfo.get("wardId"))));
+    village.setVillageName(villageInfo.get("villageName"));
+    village.setCoordinate(villageInfo.get("longitude") + ", " + villageInfo.get("latitude"));
+    village.setNote(villageInfo.get("note"));
+    return villageRepo.save(village);
   }
 
   private Coordinate toCoordinate(String coordinate) {
