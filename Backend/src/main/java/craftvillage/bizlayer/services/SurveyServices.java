@@ -60,6 +60,7 @@ public class SurveyServices {
     Map<String, String> result = new HashMap<String, String>();
     result.put("date", userSurvey.getDateSubmitSurvey().toString());
     result.put("pollution", getPollution(userSurvey.getPollution()));
+    result.put("coordinate", userSurvey.getCoordinate());
     result.put("note", userSurvey.getNote());
     result.put("image", userSurvey.getImage());
     return result;
