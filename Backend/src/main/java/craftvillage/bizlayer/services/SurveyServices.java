@@ -76,7 +76,7 @@ public class SurveyServices {
       if (pollution.charAt(i) == '1')
         result.add(list[i]);
     }
-    return String.join(" - ", list);
+    return String.join(" - ", result);
   }
 
   public boolean addHouseholdSurvey(UrUser user, List<Map<String, String>> answers) {
