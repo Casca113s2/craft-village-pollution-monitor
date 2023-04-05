@@ -1,7 +1,7 @@
 $("#switch-all").click(function(){
-	let checked = $(this).attr("checked");
-	$(".switch-input").each(function() {
-		$(this).attr("checked", !checked);
+	let checked = $(this).is(":checked");
+	$.each($(".switch-input"), function(index, value) {
+		value.checked = checked;
 	});
 });
 
@@ -18,10 +18,24 @@ $( document ).ready(function(){
 			</div>
 		`);
 	}
-});
+	
+	var index;
 
-$(".village-tag").each(function(){
-     $(this).click(function(){
-		
+	$(".village-tag").click(function(){
+		index = $(this).attr("index");
+		let coordinate = villages[index].coordinate;
+		$("#ward").val(villages[index].wardId);
+		$("#villageName").val(villages[index].villageName);
+		$("#longitude").val(coordinate[0]);
+		$("#latitude").val(coordinate[1]);
+		$("#note").val(villages[index].note);
+	});
+	
+	$("#btn-update").click(function(){
+		villages[index].wardId = Number($("#ward").val());
+		villages[index].villageName = $("#villageName").val();
+		villages[index].coordinate = $("#longitude").val() + ", " + $("#latitude").val();
+		villages[index].note = $("#note").val();
+		console.log(villages[index]);
 	});
 });

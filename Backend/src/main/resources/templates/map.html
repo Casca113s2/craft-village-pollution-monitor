@@ -132,7 +132,7 @@
 											<tr>
 												<td style="font-size: 20px; padding: 15px 0;">Xã / Phường:</td>
 												<td>
-													<select class="au-input au-input--full" name="ward" style="padding: 5px;">
+													<select class="au-input au-input--full" id="ward" style="padding: 5px; font-size: 16px;">
                                                     	<th:block th:each="ward : ${wards}">
                                                     		<option th:value="${ward.wardId}" th:utext="${ward.wardName}"></option>
                                                     	</th:block>
@@ -142,7 +142,7 @@
 											<tr>
 												<td style="font-size: 20px; padding: 15px 0;">Làng nghề:</td>
 												<td>
-													<input class="input-field"/>
+													<input class="input-field" id="villageName"/>
 												</td>
 											</tr>
 										</table>
@@ -159,7 +159,7 @@
 									</div>
 									<div class="village-info-right">
                                         <textarea id="note" class="au-input au-input--full" placeholder="Mô tả"></textarea>
-                                        <button class="btn btn-primary" style="margin-left: auto; margin-right: 0; display: block;">Cập nhật</button>
+                                        <button class="btn btn-primary" style="margin-left: auto; margin-right: 0; display: block;" id="btn-update">Cập nhật</button>
 									</div>
 								</div>
                             </div>
@@ -168,7 +168,7 @@
 									<div class="list-village-header">
 										<label style="font-size: 20px; margin: 0; color: #4272d7;">Chọn tất cả</label>
 										<label class="switch switch-3d switch-primary mr-3" style="margin: auto;">
-					                      <input id="switch-all" type="checkbox" class="switch-input" checked="true">
+					                      <input id="switch-all" type="checkbox" class="switch-input" checked>
 					                      <span class="switch-label"></span>
 					                      <span class="switch-handle"></span>
 					                    </label>
