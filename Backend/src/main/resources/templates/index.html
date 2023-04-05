@@ -41,6 +41,9 @@
     <link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
 	<link th:href="@{/css/village-map.css}" rel="stylesheet" media="all">
 
+    <!-- CSS for question -->
+    <!-- <link th:href="@{/css/village-map.css}" rel="stylesheet" media="all"> -->
+
 </head>
 
 <body class="animsition">
@@ -248,16 +251,16 @@
                             	<div class="table-layout">
                             		<div style="text-align: center; font-size: 22px; color: white; padding: 5px 0; font-weight: bold;">Khai báo</div>
 	                                <div class="household-table" id="household-table">
-	                                	<div class="household-record" >
+	                                	<!-- <div class="household-record" >
 	                                		<div class="household-index-field">1</div>
 	                                		<div class="household-name-field">Hua Hoang Phuc</div>
 	                                		<div class="household-info-field"><a id="modal-household-info" href="#" style="color: white; position: right">Chi tiết >></a> </div>
-	                                	</div>
+	                                	</div> -->
 	                                </div>
                             	</div>
                             </div>
                             <div class="col-md-8">
-                                <div class="image-view">
+                                <div class="image-view" id="image-view">
 		                            <div id="image-container">
 		                            	<div class="no-data">No data</div>
 		                            </div>
@@ -377,19 +380,26 @@
             <!-- Model map-->
             <div class="modal fade" id="staticModal3" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
 			 data-backdrop="static">
-				<div class="modal-dialog modal-sm" role="document">
+				<div class="modal-dialog modal-lg" role="document">
 					<div class="modal-content">
-						<div class="modal-header">
+                        <!-- <div class="modal-header">
+							<h5>Hộ sản xuất:</h5>
+                            
+						</div> -->
+                        <div class="modal-header">
 							<h5 class="modal-title" id="staticModalLabel">Thông tin sản xuất</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
-							</button>
+							</button>							
 						</div>
-						<div class="modal-body">
-                            #
+                        <div class="modal-body" id="modal-body">
+                            <div class="question_list">
+
+                            </div>
 						</div>
+						
 						<div class="modal-footer">
-							#
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 						</div>
 					</div>
 				</div>
@@ -439,14 +449,15 @@
 
         //set View ban đầu
         //var map = L.map('map').setView([9.2940, 105.7216], 13); 
+        var map;
         fetch("/api/map/getVillageLocation")
          .then((res) => res.json())
          .then((data) => {           
             //console.log(data)
             //set view ban đầu
             var coordinate = data.districtCoordinate.split(",")
-            console.log(coordinate);
-            var map = L.map('map').setView([+coordinate[0], +coordinate[1]], 13); //CL
+            //console.log(coordinate);
+            map = L.map('map').setView([+coordinate[0], +coordinate[1]], 13); //CL
             L.tileLayer('https://api.maptiler.com/maps/bright/256/{z}/{x}/{y}.png?key=Xx2LVdpWdk1UyVYRKzN0',{
             tileSize: 512,
             zoomOffset: -1,
@@ -459,10 +470,16 @@
             villages =  data.villages
             var markers = {}
             villages.map((item) => {
+
+                //icon villages
+                var myIcon = L.icon({
+                    iconUrl: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|e85141&chf=a,s,ee00FFFF",
+                    iconSize: [21, 34],
+                })
+
                 // Create and save a reference to each marker
                 markers[item.villageId] = L.marker([item.longitude, item.latitude],{
-                    riseOnHover : true,
-
+                    icon: myIcon,              
                 }).addTo(map);
                 // Add the ID
                 markers[item.villageId]._icon.id = item.villageId + ", " + item.villageName;
@@ -478,7 +495,6 @@
                 });
             })           
         });
-
 
         //Onclick Marker 
         $(document).ready(function() {
@@ -512,17 +528,19 @@
                 fetch("/craftvillage/api/survey/listImage?villageId="+id)
                  .then((res) => res.json())
                  .then((data) => {
-                    data.sort(function(a,b) {return b-a})
-                    getImage(data[0])
-                    //console.log(data);
-                    current.textContent= (data.length) ? 1 : 0
-                    total.textContent=data.length       
-                    btn_prev.onclick = function() {
-                        getImage(data[Number(current.textContent)-1])
-                    }
-                    btn_next.onclick = function() {
-                        getImage(data[Number(current.textContent)-1])
-                    } 
+                    //if(data.length != 0) {
+                        data.sort(function(a,b) {return b-a})
+                        getImage(data[0])
+                        //console.log(data);
+                        current.textContent= (data.length) ? 1 : 0
+                        total.textContent=data.length       
+                        btn_prev.onclick = function() {
+                            getImage(data[Number(current.textContent)-1])
+                        }
+                        btn_next.onclick = function() {
+                            getImage(data[Number(current.textContent)-1])
+                        } 
+                    //}
                 });
 
                 //Khai báo
@@ -530,13 +548,14 @@
                 fetch("/api/map/getHousehold?villageId="+id)
                  .then((res) => res.json())
                  .then((data) => {
+                    //console.log(data);
                     var html="";
                     for(var i = 0; i < data.length; i++) {
                         html += `
                             <div class="household-record">
                                 <div class="household-index-field">${i+1}</div>
                                 <div class="household-name-field">${data[i].householdName}</div>
-                                <div class="household-info-field"><a id="modal-household-info-${id}" href="#" style="color: white;" >Chi tiết >></a> </div>
+                                <div class="household-info-field"><a id="${data[i].householdId}" href="#" style="color: white;" class="household-info" >Chi tiết >></a> </div>
                             </div>
                         `
                         //console.log(html)
@@ -544,8 +563,20 @@
                     let householdRecord = document.getElementById("household-table")
                     //console.log(html)
                     householdRecord.innerHTML = html
+
+                    //Xem khai báo chi tiết của household
+                    detail = document.querySelectorAll(".household-info");
+                    for(var i=0; i<detail.length; i++) {
+                        detail[i].onclick = function(e) {
+                            var html = "";
+                            var id = $(e.srcElement || e.target).attr('id')
+                            //console.log(id);
+                            getQuestionList(id)
+                            $('#staticModal3').modal();
+                        }
+                    }
                 });               
-            });
+            });         
            }, 1000);
         });
         
