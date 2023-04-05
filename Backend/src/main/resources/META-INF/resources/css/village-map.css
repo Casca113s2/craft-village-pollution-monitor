@@ -15,6 +15,7 @@
 .household-table::-webkit-scrollbar-thumb {
   background: #e0e0e0; 
   border-radius: 10px;
+  cursor: pointer;
 }
 
 /* Handle on hover */
@@ -127,7 +128,7 @@
 .household-table {
 	background-color: #00b5e9;
 	padding: 0 10px;
-	height: auto;
+	max-height: 90%;
 	width: 100%;
 	overflow: auto; 
 }
