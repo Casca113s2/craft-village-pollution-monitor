@@ -1690,7 +1690,7 @@
 var btnTop = document.querySelector('.gototop')
 
 window.addEventListener('scroll', function(){
-  if(window.scrollY>100){
+  if(window.scrollY>500){
       btnTop.classList.add('active')
   }
   else{

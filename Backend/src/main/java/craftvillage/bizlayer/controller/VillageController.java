@@ -78,7 +78,7 @@ public class VillageController {
       Principal principal) {
     String username = principal.getName();
     String villageId = VillageInfoForm.get("villageId");
-    String coordinate = VillageInfoForm.get("latitude") + ", " + VillageInfoForm.get("longitude");
+    String coordinate = VillageInfoForm.get("longitude") + ", " + VillageInfoForm.get("latitude");
     String image = VillageInfoForm.get("image");
     String pollution = VillageInfoForm.get("result");
     String note = VillageInfoForm.get("note");
@@ -100,6 +100,10 @@ public class VillageController {
 
   }
 
+  @PostMapping("/update")
+  public Village updateVillage(@RequestBody Map<String, String> villageInfo) {
+    return villageService.updateVillage(villageInfo);
+  }
 
   /**
    * Dò làng nghề theo tọa độ

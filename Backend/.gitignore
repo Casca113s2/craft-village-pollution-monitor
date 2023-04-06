@@ -4,3 +4,4 @@ target/
 !**/src/test/**
 *.log
 *.gz
+src/main/resources/application.properties

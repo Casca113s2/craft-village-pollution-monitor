@@ -4,12 +4,12 @@ import java.security.Principal;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,8 +26,9 @@ import craftvillage.bizlayer.services.VillageServices;
 import craftvillage.datalayer.entities.AdDistrict;
 import craftvillage.datalayer.entities.AdWard;
 import craftvillage.datalayer.entities.UrUser;
-import craftvillage.datalayer.entities.UserSurvey;
 import craftvillage.datalayer.entities.Village;
+import craftvillage.datalayer.entities.dto.HouseholdSurveyDTO;
+import craftvillage.datalayer.entities.dto.MapVillageDTO;
 
 
 @Controller
@@ -59,10 +60,11 @@ public class AuthorityController {
     for (AdWard ward : district.getAdWards()) {
       for (Village village : ward.getVillages()) {
         newHouseholds.addAll(village.getHouseholds());
-        if (village.getHasAdded() == 1)
+        if (village.getHasAdded() == 1) {
           numberOfVillage += 1;
-        else
+        } else {
           numberOfNewVillage += 1;
+        }
         numberOfNewSurvey += surveyService.countMonthlySurvey(village);
       }
     }
@@ -77,6 +79,7 @@ public class AuthorityController {
     model.addAttribute("firstname", user.getFirstname());
     model.addAttribute("lastname", user.getLastname());
     model.addAttribute("phone", user.getPhone());
+
     return "index";
   }
 
@@ -115,35 +118,25 @@ public class AuthorityController {
     return result;
   }
 
-  @GetMapping("/villagedata")
-  public String villageData(Model model, Principal principal) {
+  @GetMapping("/map")
+  public String map(Model model, Principal principal) {
     UrUser user = userService.findByUsername(principal.getName());
     AdDistrict district = user.getDistrict();
     Set<AdWard> wards = district.getAdWards();
-    Set<UrUser> households = new HashSet<UrUser>();
-    List<Map<String, Object>> villageData = new ArrayList<Map<String, Object>>();
-    for (AdWard ward : wards) {
-      for (Village village : ward.getVillages()) {
-        if (village.getHasAdded() == 1)
-          households.addAll(village.getHouseholds());
-      }
-    }
-    for (UrUser household : households) {
-      Map<String, Object> data = new HashMap<String, Object>();
-      data.put("id", household.getId());
-      data.put("household", household.getFirstname() + " " + household.getLastname());
-      data.put("ward", household.getVillage().getAdWard().getWardName());
-      data.put("village", household.getVillage().getVillageName());
-      data.put("date", household.getActiveDate());
-      villageData.add(data);
+    List<MapVillageDTO> villages = new ArrayList<MapVillageDTO>();
+    for (AdWard adWard : wards) {
+      villages.addAll(
+          adWard.getVillages().stream().map(MapVillageDTO::from).collect(Collectors.toList()));
     }
     model.addAttribute("name", principal.getName());
     model.addAttribute("email", user.getEmail());
-    model.addAttribute("info", villageData);
     model.addAttribute("firstname", user.getFirstname());
     model.addAttribute("lastname", user.getLastname());
     model.addAttribute("phone", user.getPhone());
-    return "villagedata";
+
+    model.addAttribute("wards", wards);
+    model.addAttribute("villages", villages);
+    return "map";
   }
 
   @PostMapping("/makedecision/{action}")
@@ -155,33 +148,10 @@ public class AuthorityController {
     return villageService.denyNewVillage(villageId);
   }
 
-  @GetMapping("/surveys")
-  public String getSurveys(Model model, Principal principal) {
-    UrUser user = userService.findByUsername(principal.getName());
-    AdDistrict district = user.getDistrict();
-    Set<AdWard> wards = district.getAdWards();
-    List<Map<String, String>> surveys = new ArrayList<Map<String, String>>();
-    for (AdWard ward : wards) {
-      for (Village village : ward.getVillages()) {
-        if (village.getHasAdded() == 1)
-          for (UserSurvey survey : village.getUserSurveys()) {
-            Map<String, String> info = new HashMap<String, String>();
-            info.put("id", Integer.toString(survey.getId()));
-            info.put("ward", ward.getWardName());
-            info.put("village", village.getVillageName());
-            info.put("pollution", surveyService.getPollution(survey.getPollution()));
-            info.put("date", survey.getDateSubmitSurvey().toString());
-            info.put("image", survey.getImage());
-            surveys.add(info);
-          }
-      }
-    }
-    model.addAttribute("surveys", surveys);
-    model.addAttribute("name", principal.getName());
-    model.addAttribute("email", user.getEmail());
-    model.addAttribute("firstname", user.getFirstname());
-    model.addAttribute("lastname", user.getLastname());
-    model.addAttribute("phone", user.getPhone());
-    return "survey";
+  @GetMapping("/householdAnswer")
+  @ResponseBody
+  public Set<HouseholdSurveyDTO> getAnswer(@RequestParam("householdId") int householdId) {
+    UrUser user = userService.findById(householdId);
+    return surveyService.getHouseholdSurvey(user);
   }
 }

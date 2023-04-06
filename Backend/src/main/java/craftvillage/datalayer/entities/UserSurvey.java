@@ -69,9 +69,8 @@ public class UserSurvey implements java.io.Serializable {
     this.isTemporary = isTemporary;
   }
 
-
   // end
-
+  @JsonBackReference
   @ManyToOne(fetch = FetchType.LAZY, targetEntity = Village.class)
   @JoinColumn(name = "VILLAGE_ID")
   public Village getVillage() {

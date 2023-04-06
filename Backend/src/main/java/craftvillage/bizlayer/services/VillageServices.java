@@ -1,17 +1,22 @@
 package craftvillage.bizlayer.services;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import craftvillage.bizlayer.support_api.location.Coordinate;
 import craftvillage.datalayer.entities.Village;
 import craftvillage.datalayer.repositories.VillageRepository;
+import craftvillage.datalayer.repositories.WardRepository;
 
 @Service
 public class VillageServices {
   @Autowired
   VillageRepository villageRepo;
+  @Autowired
+  WardRepository wardRepo;
 
   public int newVillage(Village village) {
     try {
@@ -61,6 +66,25 @@ public class VillageServices {
       }
     }
     return detectedVillages;
+  }
+
+  public Map<String, Object> getVillageMapInfo(int villageId) {
+    Map<String, Object> result = new HashMap<String, Object>();
+    Village village = villageRepo.getOne(villageId);
+    result.put("villageName", village.getVillageName());
+    result.put("wardName", village.getAdWard().getWardName());
+    result.put("numberOfHousehold", village.getHouseholds().size());
+    result.put("coordinate", village.getCoordinate());
+    return result;
+  }
+
+  public Village updateVillage(Map<String, String> villageInfo) {
+    Village village = villageRepo.getOne(Integer.parseInt(villageInfo.get("villageId")));
+    village.setAdWard(wardRepo.getOne(Integer.parseInt(villageInfo.get("wardId"))));
+    village.setVillageName(villageInfo.get("villageName"));
+    village.setCoordinate(villageInfo.get("longitude") + ", " + villageInfo.get("latitude"));
+    village.setNote(villageInfo.get("note"));
+    return villageRepo.save(village);
   }
 
   private Coordinate toCoordinate(String coordinate) {

@@ -1,15 +1,12 @@
 package craftvillage.web.controller;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,10 +15,8 @@ import craftvillage.bizlayer.services.SrSurveyQuestionService;
 import craftvillage.bizlayer.services.SurveyServices;
 import craftvillage.bizlayer.services.UserService;
 import craftvillage.bizlayer.services.VillageServices;
-import craftvillage.datalayer.entities.SrSurveyQuestion;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.Village;
-import craftvillage.datalayer.entities.dto.HouseholdSurveyDTO;
 
 @Controller
 @RequestMapping("/web/household")
@@ -78,27 +73,5 @@ public class HouseholdController {
     int villageId = Integer.parseInt(form.get("village"));
     user.setVillage(villageService.findVillageById(villageId));
     return userService.save(user) != null ? true : false;
-  }
-
-  @GetMapping("/question")
-  @ResponseBody
-  public List<SrSurveyQuestion> getQuestion() {
-    return srSurveyQuestionService.findByActive(1);
-  }
-
-  @GetMapping("/answer")
-  @ResponseBody
-  public Set<HouseholdSurveyDTO> getAnswer(Principal principal) {
-    UrUser user = userService.findByUsername(principal.getName());
-    return surveyServices.getHouseholdSurvey(user);
-  }
-
-  @PostMapping(value = "/answer", produces = "application/json")
-  @ResponseBody
-  public boolean submitAnswer(@RequestBody Map<String, List<Map<String, String>>> form,
-      Principal principal) {
-    List<Map<String, String>> answers = form.get("answers");
-    return surveyServices.addHouseholdSurvey(userService.findByUsername(principal.getName()),
-        answers);
   }
 }
