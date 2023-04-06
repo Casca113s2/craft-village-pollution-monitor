@@ -72,7 +72,7 @@ public class SurveyServices {
 
   public String getPollution(String pollution) {
     List<String> result = new ArrayList<String>();
-    String[] list = {"Đất", "Nước", "Không khí"};
+    String[] list = {"Đất", "Không khí", "Nước"};
     for (int i = 0; i < pollution.length(); i++) {
       if (pollution.charAt(i) == '1')
         result.add(list[i]);

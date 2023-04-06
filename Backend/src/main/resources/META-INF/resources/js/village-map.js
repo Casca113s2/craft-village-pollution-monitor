@@ -16,7 +16,7 @@ function getImage(id){
 			var coordinate = data['coordinate'].split(', ');
 			//console.log(coordinate);
 			//marker = L.marker([+coordinate[0], +coordinate[1]], {icon: pollution_icon}).addTo(map);
-			marker= L.marker([+coordinate[0], +coordinate[1]],{
+			marker= L.marker([+coordinate[1], +coordinate[0]],{
 				icon: pollution_icon,              
 			}).addTo(map);
 	  		$('#image-container').empty();
@@ -92,7 +92,8 @@ function getQuestionList(id) {
 						<input type = ${(item.questionType === "TextFieldNumber" ? "number" : "text")}
 							  name = t${item2.id}
 							  placeholder = '${item.questionType === "TextFieldNumber" ? "" : item2.answerContent}' 
-							  value = '${typeof answer === "undefined" ? "" : answer.answerContent}'       
+							  value = '${typeof answer === "undefined" ? "" : answer.answerContent}' 
+							  disabled      
 						/>
 					  `
 					})
@@ -123,6 +124,7 @@ function getQuestionList(id) {
 									  id="${item2.id}" 
 									  value="${item2.id}" 
 									  ${typeof answer !== "undefined" ? (item2.id === answer.answerId ? "checked" : "") : ""}
+									  disabled
 									/>
 									<label for="${item2.id}">${item2.answerContent}</label>
 								</li>`;
@@ -156,6 +158,7 @@ function getQuestionList(id) {
 							  //console.log(item2.id === item_temp.answerId)
 							  return item2.id === item_temp.answerId
 							}) ? "checked" : ""}
+							disabled
 						  />
 						  <label for="${item2.id}">${item2.answerContent}</label>
 					  </li>`;
@@ -189,7 +192,8 @@ function getQuestionList(id) {
 					  return `
 						<input type = ${(item.questionType === "TextFieldNumber" ? "number" : "text")}
 							  name = t${item2.id}
-							  placeholder = '${item.questionType === "TextFieldNumber" ? "" : item2.answerContent}'       
+							  placeholder = '${item.questionType === "TextFieldNumber" ? "" : item2.answerContent}'
+							  disabled       
 						/>
 					  `
 					})
@@ -212,6 +216,7 @@ function getQuestionList(id) {
 									  name="${item.id}" 
 									  id="${item2.id}" 
 									  value="${item2.id}" 
+									  disabled
 									/>
 									<label for="${item2.id}">${item2.answerContent}</label>
 								</li>`;
@@ -236,6 +241,7 @@ function getQuestionList(id) {
 							name="${item2.id}" 
 							id="${item2.id}" 
 							value="${item2.id}"
+							disabled
 						  />
 						  <label for="${item2.id}">${item2.answerContent}</label>
 					  </li>`;
