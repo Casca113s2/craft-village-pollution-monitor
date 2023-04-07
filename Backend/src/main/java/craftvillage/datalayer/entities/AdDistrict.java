@@ -27,6 +27,7 @@ public class AdDistrict implements java.io.Serializable {
   private AdProvince adProvince;
   private String districtCode;
   private String districtName;
+  private String coordinate;
   @JsonIgnore
   private Set<AdWard> adWards = new HashSet<AdWard>(0);
   private Set<UrUser> authorities = new HashSet<UrUser>(0);
@@ -55,6 +56,15 @@ public class AdDistrict implements java.io.Serializable {
   @Column(name = "DISTRICT_CODE", length = 20)
   public String getDistrictCode() {
     return this.districtCode;
+  }
+
+  @Column(name = "COORDINATE", length = 50)
+  public String getCoordinate() {
+    return coordinate;
+  }
+
+  public void setCoordinate(String coordinate) {
+    this.coordinate = coordinate;
   }
 
   public void setDistrictCode(String districtCode) {
@@ -89,5 +99,4 @@ public class AdDistrict implements java.io.Serializable {
   public void setAdWards(Set<AdWard> adWards) {
     this.adWards = adWards;
   }
-
 }

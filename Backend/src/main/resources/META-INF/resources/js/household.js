@@ -27,11 +27,11 @@ let questionUI = [];
 
 function getQuestionList(render) {
   //console.log(document.getElementById('hsx').textContent)
-  fetch("/web/household/question")
+  fetch("/craftvillage/api/survey/question")
     .then((res) => res.json())
     .then((data) => {
       //console.log(data);
-      fetch("/web/household/answer")
+      fetch("/craftvillage/api/survey/answer")
       .then((res) => res.json())
       .then((data1) => {
       //console.log(data1.length == 0)
@@ -223,3 +223,14 @@ function getQuestionList(render) {
     })  
     });
 }
+
+// function validateQAForm() {
+// const khaibao = document.getElementById('hsx').textContent;
+//   const firstname = document.getElementById('firstname').value;
+//   const lastname = document.getElementById('lastname').value;
+//   const phone = document.getElementById('phone').value;
+//   if(khaibao.includes("Chưa khai báo") || typeof firstname === "undefined" || typeof lastname === "undefined" || typeof phone === "undefined") {
+//       return false;
+//   }
+//   return true;
+// }

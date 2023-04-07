@@ -44,21 +44,17 @@
                         <li class="has-sub">
                             <a class="js-arrow open" href="#" >
                                 <i class="fa-solid fa-users"></i>Village</a>
-                            <ul class="list-unstyled navbar__sub-list js-sub-list">
+                            <ul class="list-unstyled navbar__sub-list js-sub-list" style="display: block;">
                                 <li class="active">
                                     <a th:href="@{/web/authority/newvillage}">
-                                        <i class="fa-solid fa-user-plus"></i>New</a>
+                                        <i class="fa-solid fa-user-plus"></i>New village</a>
                                 </li>
-<!--                                 <li>
-                                    <a th:href="@{/web/authority/villagedata}">
-                                        <i class="fa-solid fa-database"></i>Data</a>
-                                </li> -->
+                                <li>
+                                    <a th:href="@{/web/authority/map}">
+                                        <i class="fa-solid fa-map-location-dot"></i>Map</a>
+                                </li>
                             </ul>
                         </li>
-<!--                         <li>
-                            <a th:href="@{/web/authority/surveys}">
-                                <i class="fa-solid fa-file-lines"></i>Surveys</a>
-                        </li> -->
                     </ul>
                 </nav>
             </div>

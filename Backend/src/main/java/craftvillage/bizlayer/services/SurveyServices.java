@@ -3,6 +3,7 @@ package craftvillage.bizlayer.services;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,6 +20,7 @@ import craftvillage.datalayer.repositories.HouseholdSurveyRepository;
 import craftvillage.datalayer.repositories.SrSurveyQuestionAnswerRepository;
 import craftvillage.datalayer.repositories.UserRepository;
 import craftvillage.datalayer.repositories.UserSurveyRepository;
+import craftvillage.datalayer.repositories.VillageRepository;
 
 @Service
 public class SurveyServices {
@@ -37,6 +39,9 @@ public class SurveyServices {
   @Autowired
   UserRepository userRepository;
 
+  @Autowired
+  VillageRepository villageRepository;
+
   public int countMonthlySurvey(Village village) {
     int count = 0;
     Calendar localCalendar = Calendar.getInstance(TimeZone.getDefault());
@@ -50,9 +55,15 @@ public class SurveyServices {
     return count;
   }
 
-  public String getImageBySurveyId(int id) {
+  public Map<String, String> getImageBySurveyId(int id) {
     UserSurvey userSurvey = userSurveyRepository.getOne(id);
-    return userSurvey.getImage();
+    Map<String, String> result = new HashMap<String, String>();
+    result.put("date", userSurvey.getDateSubmitSurvey().toString());
+    result.put("pollution", getPollution(userSurvey.getPollution()));
+    result.put("coordinate", userSurvey.getCoordinate());
+    result.put("note", userSurvey.getNote());
+    result.put("image", userSurvey.getImage());
+    return result;
   }
 
   public boolean addUserSurvey(UserSurvey userSurvey) {
@@ -61,12 +72,12 @@ public class SurveyServices {
 
   public String getPollution(String pollution) {
     List<String> result = new ArrayList<String>();
-    String[] list = {"Đất", "Nước", "Không khí"};
+    String[] list = {"Đất", "Không khí", "Nước"};
     for (int i = 0; i < pollution.length(); i++) {
       if (pollution.charAt(i) == '1')
         result.add(list[i]);
     }
-    return String.join(" - ", list);
+    return String.join(" - ", result);
   }
 
   public boolean addHouseholdSurvey(UrUser user, List<Map<String, String>> answers) {
@@ -90,5 +101,10 @@ public class SurveyServices {
   public Set<HouseholdSurveyDTO> getHouseholdSurvey(UrUser user) {
     return user.getHouseholdSurvey().stream().map(HouseholdSurveyDTO::from)
         .collect(Collectors.toSet());
+  }
+
+  public List<Integer> getListImage(int villageId) {
+    return villageRepository.getOne(villageId).getUserSurveys().stream()
+        .map(survey -> survey.getId()).collect(Collectors.toList());
   }
 }
