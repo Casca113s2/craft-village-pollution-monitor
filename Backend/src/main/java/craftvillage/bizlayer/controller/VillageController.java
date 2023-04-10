@@ -53,7 +53,7 @@ public class VillageController {
   public int newVillage(@RequestBody Map<String, String> newVillage) {
     int wardId = Integer.parseInt(newVillage.get("wardId"));
     int hasAdded = Integer.parseInt(newVillage.get("hasAdded"));
-    String coordinate = newVillage.get("longitude") + ", " + newVillage.get("latitude");
+    String coordinate = newVillage.get("latitude") + ", " + newVillage.get("longitude");
     Village village = new Village();
     village.setAdWard(addressService.getAdward(wardId));
     village.setCoordinate(coordinate);
@@ -78,7 +78,7 @@ public class VillageController {
       Principal principal) {
     String username = principal.getName();
     String villageId = VillageInfoForm.get("villageId");
-    String coordinate = VillageInfoForm.get("longitude") + ", " + VillageInfoForm.get("latitude");
+    String coordinate = VillageInfoForm.get("latitude") + ", " + VillageInfoForm.get("longitude");
     String image = VillageInfoForm.get("image");
     String pollution = VillageInfoForm.get("result");
     String note = VillageInfoForm.get("note");

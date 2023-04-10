@@ -82,7 +82,7 @@ public class VillageServices {
     Village village = villageRepo.getOne(Integer.parseInt(villageInfo.get("villageId")));
     village.setAdWard(wardRepo.getOne(Integer.parseInt(villageInfo.get("wardId"))));
     village.setVillageName(villageInfo.get("villageName"));
-    village.setCoordinate(villageInfo.get("longitude") + ", " + villageInfo.get("latitude"));
+    village.setCoordinate(villageInfo.get("latitude") + ", " + villageInfo.get("longitude"));
     village.setNote(villageInfo.get("note"));
     return villageRepo.save(village);
   }
