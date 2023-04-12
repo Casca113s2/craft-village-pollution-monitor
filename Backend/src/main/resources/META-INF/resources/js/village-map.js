@@ -1,7 +1,6 @@
 var marker;
 
 function getImage(id){
-		//console.log(id);
 		$.get("/craftvillage/api/survey/getImage?surveyId=" + id, function(data){
 			//console.log(data)
 			//Remove marker before
@@ -20,18 +19,12 @@ function getImage(id){
 				icon: pollution_icon,              
 			}).addTo(map);
 	  		$('#image-container').empty();
-	  		$('#image-container').append("<img src='data:image/jpeg;base64,"+ data['image'] +"' alt= Picture />");
+	  		$('#image-container').append("<img src='data:image/jpeg;base64,"+ data['image'] +"' alt= Picture style='object-fit:cover' />");
 
 			$('#date').empty();
 	  		$('#date').append(data['date'].slice(0,10));
 
 			$('#pollution').empty();
-			// pollution_str="";
-			// if(data['pollution'][0] === '1') pollution_str += "Đất, ";
-			// if(data['pollution'][1] === '1') pollution_str += "Nước, "
-			// if(data['pollution'][2] === '1') pollution_str += "Không Khí"
-			// if(pollution_str[pollution_str.length-2] === ',')
-			// 	pollution_str = pollution_str.slice(0, pollution_str.length-2)
 	  		$('#pollution').append(data['pollution']);
 			
 			$('#note').empty();
