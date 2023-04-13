@@ -2737,6 +2737,35 @@ class _CraftPageState extends State<CraftPage> {
     });
   }
 
+  getImageGPSTag(String path) async {
+
+    final fileBytes = File(path).readAsBytesSync();
+    final data = await readExifFromBytes(fileBytes);
+
+    final latitudeValue = data['GPS GPSLatitude'].values.map<double>( (item) => (item.numerator.toDouble() / item.denominator.toDouble()) ).toList();
+    final latitudeSignal = data['GPS GPSLatitudeRef'].printable;
+
+
+    final longitudeValue = data['GPS GPSLongitude'].values.map<double>( (item) => (item.numerator.toDouble() / item.denominator.toDouble()) ).toList();
+    final longitudeSignal = data['GPS GPSLongitudeRef'].printable;
+
+    double latitude = latitudeValue[0]
+      + (latitudeValue[1] / 60)
+      + (latitudeValue[2] / 3600);
+
+    double longitude = longitudeValue[0]
+      + (longitudeValue[1] / 60)
+      + (longitudeValue[2] / 3600);
+
+    if (latitudeSignal == 'S') latitude = -latitude;
+    if (longitudeSignal == 'W') longitude = -longitude;
+
+    print("Image GPS: " + latitude.toString() + " " + longitude.toString());
+
+    _latController.text = latitude.toStringAsFixed(7);
+    _longController.text = longitude.toStringAsFixed(7);
+  }
+
   _onTakePhotoImageClick(int index, BuildContext context) async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -2756,8 +2785,11 @@ class _CraftPageState extends State<CraftPage> {
       _imageFile.then((image) async {
         Position _locationData = await Geolocator.getCurrentPosition();
 
-        _latController.text = _locationData.latitude.toString();
-        _longController.text = _locationData.longitude.toString();
+        // _latController.text = _locationData.latitude.toString();
+        // _longController.text = _locationData.longitude.toString();
+
+        //Get GPS from image
+        await getImageGPSTag(image.path);
 
         setState(() {
           // print("IM HERE RIGHT NOW");
