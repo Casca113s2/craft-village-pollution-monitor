@@ -193,6 +193,10 @@ class _CraftPageState extends State<CraftPage> {
     lgnQuestion = 0;
     lengthListQuest = 0;
 
+    _checkedAirPollution = false;
+    _checkedSoilPollution = false;
+    _checkedWaterPollution = false;
+
     countFatherQuest = 0;
     checkLoadingVillage = false;
     surveyStatus = new SurveyStatus();
@@ -626,7 +630,7 @@ class _CraftPageState extends State<CraftPage> {
                       Padding(
                         padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
                         child: SizedBox(
-                          width: _width / 3.5,
+                          width: _width / 2.5,
                           height: 52,
                           child: RaisedButton(
                             color: Colors.blue,
@@ -2725,6 +2729,14 @@ class _CraftPageState extends State<CraftPage> {
     }
   }
 
+  _setPollutionState(bool airValue, bool soilValue, bool waterValue) {
+    setState(() {
+      _checkedAirPollution = airValue;
+      _checkedSoilPollution = soilValue;
+      _checkedWaterPollution = waterValue;
+    });
+  }
+
   _onTakePhotoImageClick(int index, BuildContext context) async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -2742,18 +2754,13 @@ class _CraftPageState extends State<CraftPage> {
       // _imageFile = ImagePicker().getImage(source: ImageSource.gallery);
 
       _imageFile.then((image) async {
-        // Geolocator _locationData = await location.getLocation();
-
-        // _latController.text = _locationData.latitude.toString();
-        // _longController.text = _locationData.longitude.toString();
-
         Position _locationData = await Geolocator.getCurrentPosition();
 
         _latController.text = _locationData.latitude.toString();
         _longController.text = _locationData.longitude.toString();
 
         setState(() {
-          print("IM HERE RIGHT NOW");
+          // print("IM HERE RIGHT NOW");
           _mapController
               .animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
             target: LatLng(double.parse(_latController.text),
@@ -2778,20 +2785,23 @@ class _CraftPageState extends State<CraftPage> {
           print("Tra ve: " + (imageDetectionResult != null).toString());
           if (imageDetectionResult != null) {
             imageDetectionResult.then((value) {
+
+              bool airValue = false;
+              bool soilValue = false;
+              bool waterValue = false;
+
               if (value['air_pollution'] > 50)
-                _checkedAirPollution = true;
-              else
-                _checkedAirPollution = false;
+                airValue = true;
 
               if (value['soil_pollution'] > 50)
-                _checkedSoilPollution = true;
-              else
-                _checkedSoilPollution = false;
+                soilValue = true;
 
               if (value['water_pollution'] > 50)
-                _checkedWaterPollution = true;
-              else
-                _checkedWaterPollution = false;
+                waterValue = true;
+
+              _setPollutionState(airValue, soilValue, waterValue);
+
+              print("Casca Here! - " + _checkedSoilPollution.toString());
             });
           }
 
