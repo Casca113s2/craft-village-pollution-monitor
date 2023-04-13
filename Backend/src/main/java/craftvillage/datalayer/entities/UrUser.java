@@ -45,12 +45,12 @@ public class UrUser implements java.io.Serializable {
   private Date activeDate;
   private String type;
 
-  private Set<UserSurvey> userSurveys;
+  private Set<UserSurvey> userSurveys = new HashSet<UserSurvey>();
   private Set<UrRole> urRoles = new HashSet<UrRole>();
-  private Set<UrSession> urSessions;
+  private Set<UrSession> urSessions = new HashSet<UrSession>();
   private Village village;
   private AdDistrict district;
-  private Set<HouseholdSurvey> householdSurvey;
+  private Set<HouseholdSurvey> householdSurvey = new HashSet<HouseholdSurvey>();
 
   @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY, targetEntity = Village.class)
