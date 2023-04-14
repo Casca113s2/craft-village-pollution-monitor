@@ -67,6 +67,9 @@ public class AdminController {
       mailMessage.setTo(email);
       mailMessage.setSubject("Craftvillage: Tài khoản");
       mailMessage.setText("Tài khoản: " + username + "\nMật khẩu: " + password);
+      mailMessage.setText("\n");
+      mailMessage
+          .setText("<a href=\"http://150.95.113.16:5000/web/login\">Đi đến trang chủ >>></a>");
       mailService.sendEmail(mailMessage);
     } else if (register == 2) {
       console.put("key", "2");
