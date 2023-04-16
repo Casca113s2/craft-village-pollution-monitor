@@ -264,7 +264,7 @@
                             <div class="col-md-8">
                                 <div class="image-view" id="image-view">
 		                            <div id="image-container">
-		                            	<div class="no-data">No data</div>
+		                            	<div class="no-data" id="no-data">No data</div>
 		                            </div>
 		                            <div class="image-detail">
 		                            	<div class="label">Ngày</div>
@@ -452,6 +452,7 @@
         //set View ban đầu
         //var map = L.map('map').setView([9.2940, 105.7216], 13); 
         var map;
+        var marker ={};
         fetch("/api/map/getVillageLocation")
          .then((res) => res.json())
          .then((data) => {           
@@ -469,7 +470,8 @@
             }).addTo(map);
 
             //Hiện các marker làng nghề
-            villages =  data.villages
+            let villages =  data.villages
+            //console.log();
             var markers = {}
             villages.map((item) => {
 
@@ -480,7 +482,7 @@
                 })
 
                 // Create and save a reference to each marker
-                markers[item.villageId] = L.marker([item.longitude, item.latitude],{
+                markers[item.villageId] = L.marker([item.latitude, item.longitude],{
                     icon: myIcon,              
                 }).addTo(map);
                 // Add the ID
@@ -508,41 +510,70 @@
                 id = id_name[0]
                 village_name = id_name[1]
                 //console.log(id_name);
-                //alert('Here is the markers ID: ' + id + '. Use it as you wish.')'
-                fetch("/api/map/getVillage?villageId="+id)
-                 .then((res) => res.json())
-                 .then((data) => {
-                    var coordinate = data.coordinate.split(", ")
-                    //console.log(coordinate)
-                    document.getElementById('ward-name').innerHTML = data.wardName
-                    document.getElementById('latitude').innerHTML = coordinate[0]
-                    document.getElementById('longitude').innerHTML = coordinate[1]                   
-                 });
+                //alert('Here is the markers ID: ' + id + '. Use it as you wish.')'                
+                // fetch("/api/map/getVillage?villageId="+id)
+                //  .then((res) => res.json())
+                //  .then((data) => {
+                //     if(map.hasLayer(marker)) map.removeLayer(marker);
+                //     var coordinate = data.coordinate.split(", ")
+                //     //console.log(coordinate)
+                //     document.getElementById('ward-name').innerHTML = data.wardName
+                //     document.getElementById('latitude').innerHTML = (+coordinate[0]).toFixed(5)
+                //     document.getElementById('longitude').innerHTML = (+coordinate[1]).toFixed(5)                   
+                //  });
 
-                fetch("/api/map/getHousehold?villageId="+id)
-                 .then((res) => res.json())
-                 .then((data) => {
-                    document.getElementById('household-number').innerHTML = data.length               
+                // fetch("/api/map/getHousehold?villageId="+id)
+                //  .then((res) => res.json())
+                //  .then((data) => {
+                //     document.getElementById('household-number').innerHTML = data.length               
+                // });
+                // document.getElementById('village-name').innerHTML = village_name
+
+                $.getJSON("/api/map/getVillage?villageId="+id, function(data) {
+                    if (map.hasLayer(marker)) map.removeLayer(marker);
+                    var coordinate = data.coordinate.split(", ");
+                    $("#ward-name").html(data.wardName);
+                    $("#latitude").html(parseFloat(coordinate[0]).toFixed(5));
+                    $("#longitude").html(parseFloat(coordinate[1]).toFixed(5));                   
+                    });
+
+                    $.getJSON("/api/map/getHousehold?villageId="+id, function(data) {
+                    $("#household-number").html(data.length);               
                 });
-                document.getElementById('village-name').innerHTML = village_name
+
+                $("#village-name").html(village_name);
 
                 //Ảnh
                 fetch("/craftvillage/api/survey/listImage?villageId="+id)
                  .then((res) => res.json())
                  .then((data) => {
-                    //if(data.length != 0) {
+                    console.log(data.length == 0);
+                    current.textContent= (data.length) ? 1 : 0
+                    total.textContent=data.length 
+                    if(data.length != 0) {
                         data.sort(function(a,b) {return b-a})
                         getImage(data[0])
-                        //console.log(data);
-                        current.textContent= (data.length) ? 1 : 0
-                        total.textContent=data.length       
+                        //console.log(data);      
                         btn_prev.onclick = function() {
                             getImage(data[Number(current.textContent)-1])
                         }
                         btn_next.onclick = function() {
                             getImage(data[Number(current.textContent)-1])
                         } 
-                    //}
+                    }
+                    else {
+                        $('#image-container').empty();
+                        $('#no-data').append("No data");
+
+                        $('#date').empty();
+                        $('#date').append("---");
+
+                        $('#pollution').empty();
+                        $('#pollution').append("---");
+                        
+                        $('#note').empty();
+                        $('#note').append("---");
+                    }
                 });
 
                 //Khai báo

@@ -47,5 +47,5 @@ def predict_img():
 
 # Thực thi server
 if __name__ == "__main__":
-    app.run(port=8000, debug=False)
+    app.run(host="http://150.95.113.16", port=8000, debug=False) #server host
     #  app.run(debug=False, host='0.0.0.0',port=8000)
