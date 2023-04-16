@@ -1,10 +1,10 @@
-var marker;
+//var marker;
 
 function getImage(id){
 		$.get("/craftvillage/api/survey/getImage?surveyId=" + id, function(data){
 			//console.log(data)
 			//Remove marker before
-			if(marker) marker.remove();
+			if(map.hasLayer(marker)) map.removeLayer(marker);
 			//Marker icon
 			var pollution_icon = L.icon({
 				iconUrl: "https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|0B08DF&chf=a,s,ee00FFFF",
