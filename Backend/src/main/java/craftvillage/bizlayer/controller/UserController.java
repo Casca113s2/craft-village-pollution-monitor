@@ -2,7 +2,6 @@ package craftvillage.bizlayer.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
-import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -26,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import craftvillage.bizlayer.services.JwtService;
 import craftvillage.bizlayer.services.MyUserDetailsService;
 import craftvillage.bizlayer.services.SurveyServices;
+import craftvillage.corelayer.utilities.CommonUtil;
 import craftvillage.corelayer.utilities.ConstantParameter;
 import craftvillage.corelayer.utilities.JwtUtil;
 import craftvillage.datalayer.entities.UrUser;
@@ -35,10 +35,6 @@ import craftvillage.datalayer.services.MailService;
 @RequestMapping("/" + ConstantParameter._URL_ROOT + "/" + ConstantParameter._URL_API + "/"
     + ConstantParameter.ServiceUser._USER_SERVICE)
 public class UserController {
-
-  private static final String CHARACTER_FOR_CREATE_PASSWORD =
-      "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-
   @Autowired
   private JwtUtil jwtTokenUtil;
   @Autowired
@@ -49,21 +45,6 @@ public class UserController {
   private SurveyServices surveyServices;
   @Autowired
   private MailService mailService;
-
-  // @RequestMapping(value = "/" + ConstantParameter.ServiceUser._USER_LOGOUT,
-  // method = RequestMethod.GET)
-  // public String apilogout(Principal principal, HttpServletRequest request) {
-  // // HttpSession session = request.getSession();
-  // //
-  // // String username = principal.getName();
-  // // if (jwtService.removeUsername(username)) {
-  // // SecurityContextHolder.getContext().setAuthentication(null);
-  // // session.invalidate();
-  // // return true;
-  // // }
-  // // return false;
-  // return "login";
-  // }
 
   /**
    * Funciton : apiloginapp : Truyen api login
@@ -213,7 +194,7 @@ public class UserController {
     String email = forgetpass.get("email");
     if (userDetailsService.getEmailUser(username).equals(email)) {
       SimpleMailMessage mailMessage = new SimpleMailMessage();
-      String password = stringGenerator(6);
+      String password = CommonUtil.stringGenerator(6);
       userDetailsService.changePass(password, username);
       mailMessage.setTo(email);
       mailMessage.setSubject("Reset password");
@@ -293,7 +274,7 @@ public class UserController {
       method = RequestMethod.GET)
   public HashMap<String, String> SendMail(@RequestParam String email, HttpServletRequest request) {
     HashMap<String, String> console = new HashMap<>();
-    String Activecode = stringGenerator(6);
+    String Activecode = CommonUtil.stringGenerator(6);
     Date dateNow = new Date();
 
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -310,18 +291,4 @@ public class UserController {
     console.put("activeDate", strDate);
     return console;
   }
-
-  private String stringGenerator(int len) {
-    SecureRandom random = new SecureRandom();
-    StringBuilder password = new StringBuilder(len);
-    for (int i = 0; i < len; i++)
-      password.append(CHARACTER_FOR_CREATE_PASSWORD
-          .charAt(random.nextInt(CHARACTER_FOR_CREATE_PASSWORD.length())));
-    return password.toString();
-  }
-
-  public static String getCharacterForCreatePassword() {
-    return CHARACTER_FOR_CREATE_PASSWORD;
-  }
-
 }

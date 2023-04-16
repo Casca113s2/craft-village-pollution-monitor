@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -28,6 +29,7 @@ public class Village implements java.io.Serializable {
   private String note;
   private AdWard adWard;
   private int hasAdded;
+  private String state;
 
   private Set<UserSurvey> userSurveys = new HashSet<UserSurvey>();
   private Set<UrUser> households = new HashSet<UrUser>();
@@ -36,6 +38,13 @@ public class Village implements java.io.Serializable {
 
   public Village(int villageId) {
     this.villageId = villageId;
+  }
+
+  @PrePersist
+  void preInsert() {
+    if (this.state == null) {
+      this.state = "000";
+    }
   }
 
   @Id
@@ -84,6 +93,15 @@ public class Village implements java.io.Serializable {
 
   public void setVillageName(String villageName) {
     this.villageName = villageName;
+  }
+
+  @Column(name = "STATE", length = 3)
+  public String getState() {
+    return state;
+  }
+
+  public void setState(String state) {
+    this.state = state;
   }
 
   @JsonBackReference

@@ -1,6 +1,7 @@
 package craftvillage.datalayer.entities;
 // Generated Mar 10, 2020 9:28:01 AM by Hibernate Tools 4.3.5.Final
 
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,7 +27,8 @@ public class SrSurveyQuestion implements java.io.Serializable {
   private String questionType;
   private String questionLabel;
   private int active;
-  private Set<SrSurveyQuestionAnswer> srSurveyQuestionAnswers;
+  private Set<SrSurveyQuestionAnswer> srSurveyQuestionAnswers =
+      new HashSet<SrSurveyQuestionAnswer>();
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
