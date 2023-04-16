@@ -160,13 +160,6 @@ $( document ).ready(function(){
 			//console.log($("#longitude").val() + " + " + $("#latitude").val() + " + " + $("#villageName").val());
 			return alert("Vui lòng điền đầy đủ thông tin")
 		}
-
-		//Cập nhật cho mảng
-		villages[point_index].wardId = Number($("#ward").val());
-		villages[point_index].villageName = $("#villageName").val();
-		villages[point_index].coordinate = $("#latitude").val() + ", " + $("#longitude").val();
-		villages[point_index].note = $("#note").val();
-		console.log(villages[point_index]);
 		
 		//Gởi cập nhật về cho DB
 		data = {}
@@ -209,6 +202,13 @@ $( document ).ready(function(){
 					alert("Phát hiện lỗi!")
 				}
 				else{
+					//Cập nhật cho mảng
+					villages[point_index].wardId = Number($("#ward").val());
+					villages[point_index].villageName = $("#villageName").val();
+					villages[point_index].coordinate = $("#latitude").val() + ", " + $("#longitude").val();
+					villages[point_index].note = $("#note").val();
+					villages[point_index].state = state;
+					console.log(villages[point_index]);
 					//console.log(data);
 					//đặt thành marker chính khi update thành công
 					if(map.hasLayer(point_marker_temp)) {
