@@ -146,7 +146,7 @@
 									<div class="village-info-left">
 										<table style="width: 100%;">
 											<tr>
-												<td style="font-size: 20px; padding: 15px 0;">Xã / Phường:</td>
+												<td style="font-size: 20px; padding: 10px 0;">Xã / Phường:</td>
 												<td>
 													<select class="au-input au-input--full" id="ward" style="padding: 5px; font-size: 16px;">
                                                     	<th:block th:each="ward : ${wards}">
@@ -156,21 +156,36 @@
 												</td>
 											</tr>
 											<tr>
-												<td style="font-size: 20px; padding: 15px 0;">Làng nghề:</td>
+												<td style="font-size: 20px; padding: 10px 0;">Làng nghề:</td>
 												<td>
 													<input class="input-field" id="villageName"/>
 												</td>
 											</tr>
 										</table>
-										<div style="display: flex; width: 100%; margin-top: 20px;">
+										<div style="display: flex; width: 100%;">
 											<div style="width: 40%;">
-												<div style="font-size: 20px;">Kinh độ:</div>
-												<input id="longitude" class="input-field"/>
-											</div>
-											<div style="width: 40%; margin-left: auto;">
 												<div style="font-size: 20px;">Vĩ độ:</div>
 												<input id="latitude" class="input-field"/>
 											</div>
+											<div style="width: 40%; margin-left: auto;">
+												<div style="font-size: 20px;">Kinh độ:</div>
+												<input id="longitude" class="input-field"/>
+											</div>				
+										</div>
+										<div style="font-size: 20px; margin: 15px 0;">Tình trạng ô nhiễm</div>
+										<div style="display: flex; width: 100%; justify-content: space-between;">
+											<div style="width: 30%;">
+												<input id="earth" type="checkbox" value="1"/>
+												<label for="earth" class="pollution-label">Đất</label>
+											</div>
+											<div style="width: 30%;">
+												<input id="air" type="checkbox" value="1"/>
+												<label for="air" class="pollution-label">Không khí</label>
+											</div>
+											<div style="width: 30%;">
+												<input id="water" type="checkbox" value="1"/>
+												<label for="water" class="pollution-label">Nước</label>
+											</div>			
 										</div>
 									</div>
 									<div class="village-info-right">

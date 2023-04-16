@@ -251,3 +251,19 @@
     margin-right: 20px;
     flex-shrink: 0;
 }
+
+#earth, #air, #water {
+	transform: scale(1.25);
+}
+
+#earth {
+	accent-color: red;
+}
+
+#air {
+	accent-color: green;
+}
+
+#water {
+	accent-color: #007bff;
+}

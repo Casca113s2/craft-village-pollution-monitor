@@ -51,6 +51,7 @@ public class VillageMapController {
           villageInfo.put("latitude", coordinate[0]);
           villageInfo.put("longitude", coordinate[1]);
           villageInfo.put("villageName", village.getVillageName());
+          villageInfo.put("state", village.getState());
           villages.add(villageInfo);
         }
       }

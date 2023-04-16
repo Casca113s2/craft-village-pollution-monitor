@@ -176,8 +176,26 @@ $( document ).ready(function(){
 		data.longitude   = $("#longitude").val();
 		data.latitude	= $("#latitude").val();
 		data.villageName = $("#villageName").val();
-		
-		
+		let state = "";
+		if($('#earth').is(':checked')){
+			state += "1";
+		}
+		else {
+			state += "0";
+		}
+		if($('#air').is(':checked')){
+			state += "1";
+		}
+		else {
+			state += "0";
+		}
+		if($('#water').is(':checked')){
+			state += "1";
+		}
+		else {
+			state += "0";
+		}
+		data.state = state;
 		data = JSON.stringify(data);
 		//console.log(data);
 

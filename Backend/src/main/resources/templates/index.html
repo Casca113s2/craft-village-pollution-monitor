@@ -231,16 +231,31 @@
 	                                        <div>Số hộ sản xuất</div>
 	                                        <div class="value" id=""><span id="household-number">---</span></div>										
 										</div>
-                                        <div style="display: flex;">
+                                        <div style="display: flex; width: 100%; justify-content: space-between;">
+	                                        <div class="map-location-label">
+	                                            <div>Vĩ độ</div>
+	                                            <div class="value" id=""><span id="latitude">---</span></div>
+	                                        </div>
 	                                        <div class="map-location-label">
 	                                            <div>Kinh độ</div>
 	                                            <div class="value" id=""><span id="longitude">---</span></div>
 	                                        </div>
-	                                        <div class="map-location-label" style="margin-left: auto;">
-	                                            <div>Vĩ độ</div>
-	                                            <div class="value" id=""><span id="latitude">---</span></div>
-	                                        </div>
 	                                    </div>
+										<div>Cảnh báo ô nhiễm:</div>
+										<div style="display: flex; width: 100%; justify-content: space-between;">
+											<div style="width: 30%;">
+												<input id="earth" type="checkbox" value="1"/>
+												<label for="earth" class="pollution-label">Đất</label>
+											</div>
+											<div style="width: 30%;">
+												<input id="air" type="checkbox" value="1"/>
+												<label for="air" class="pollution-label">Không khí</label>
+											</div>
+											<div style="width: 30%;">
+												<input id="water" type="checkbox" value="1"/>
+												<label for="water" class="pollution-label">Nước</label>
+											</div>			
+										</div>
 									</div>
                                 </div>
                             </div>
@@ -250,12 +265,6 @@
                             <div class="col-md-4">
                             	<div class="table-layout">
                             		<div style="text-align: center; font-size: 22px; color: white; padding: 5px 0; font-weight: bold;">Khai báo</div>
-	                                <!-- <div class="household-table" >
-	                                	<div class="household-record" >
-	                                		<div class="household-index-field">1</div>
-	                                		<div class="household-name-field">Hua Hoang Phuc</div>
-	                                		<div class="household-info-field"><a id="modal-household-info" href="#" style="color: white; position: right">Chi tiết >></a> </div>
-	                                	</div> -->
 	                                <div class="household-table" id="household-table">
 	                                	
 	                                </div>
