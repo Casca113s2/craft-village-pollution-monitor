@@ -8,6 +8,7 @@ public class MapVillageDTO {
   private String coordinate;
   private String villageName;
   private String note;
+  private String state;
 
   public MapVillageDTO(Village village) {
     this.villageId = village.getVillageId();
@@ -15,6 +16,7 @@ public class MapVillageDTO {
     this.coordinate = village.getCoordinate();
     this.villageName = village.getVillageName();
     this.note = village.getNote();
+    this.state = village.getState();
   }
 
   public static MapVillageDTO from(Village village) {
@@ -39,5 +41,9 @@ public class MapVillageDTO {
 
   public String getNote() {
     return note;
+  }
+
+  public String getState() {
+    return state;
   }
 }
