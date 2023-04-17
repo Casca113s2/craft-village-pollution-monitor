@@ -27,6 +27,7 @@ public class SrSurveyQuestion implements java.io.Serializable {
   private String questionType;
   private String questionLabel;
   private int active;
+  private int required;
   private Set<SrSurveyQuestionAnswer> srSurveyQuestionAnswers =
       new HashSet<SrSurveyQuestionAnswer>();
 
@@ -75,6 +76,15 @@ public class SrSurveyQuestion implements java.io.Serializable {
 
   public void setActive(int active) {
     this.active = active;
+  }
+
+  @Column(name = "REQUIRED", columnDefinition = "integer default 0")
+  public int getRequired() {
+    return required;
+  }
+
+  public void setRequired(int required) {
+    this.required = required;
   }
 
   @OrderBy("id ASC")

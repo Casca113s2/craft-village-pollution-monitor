@@ -13,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -38,13 +37,6 @@ public class Village implements java.io.Serializable {
 
   public Village(int villageId) {
     this.villageId = villageId;
-  }
-
-  @PrePersist
-  void preInsert() {
-    if (this.state == null) {
-      this.state = "000";
-    }
   }
 
   @Id
@@ -95,7 +87,7 @@ public class Village implements java.io.Serializable {
     this.villageName = villageName;
   }
 
-  @Column(name = "STATE", length = 3)
+  @Column(name = "STATE", columnDefinition = "varchar(3) default '000'")
   public String getState() {
     return state;
   }
