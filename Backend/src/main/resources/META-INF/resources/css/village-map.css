@@ -66,6 +66,10 @@
 	margin-bottom: 15px;
 }
 
+#map {
+	border-radius: 20px;
+}
+
 .image-view {
 	display: flex;
 	background-color: white;
@@ -267,3 +271,7 @@
 #water {
 	accent-color: #007bff;
 }
+
+.leaflet-popup-close-button {
+	display: none; 
+ }

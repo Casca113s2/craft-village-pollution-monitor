@@ -244,15 +244,15 @@
 										<div>Cảnh báo ô nhiễm:</div>
 										<div style="display: flex; width: 100%; justify-content: space-between;">
 											<div style="width: 30%;">
-												<input id="earth" type="checkbox" value="1"/>
+												<input id="earth" type="checkbox" />
 												<label for="earth" class="pollution-label">Đất</label>
 											</div>
 											<div style="width: 30%;">
-												<input id="air" type="checkbox" value="1"/>
+												<input id="air" type="checkbox" />
 												<label for="air" class="pollution-label">Không khí</label>
 											</div>
 											<div style="width: 30%;">
-												<input id="water" type="checkbox" value="1"/>
+												<input id="water" type="checkbox"/>
 												<label for="water" class="pollution-label">Nước</label>
 											</div>			
 										</div>
@@ -539,12 +539,18 @@
                 // document.getElementById('village-name').innerHTML = village_name
 
                 $.getJSON("/api/map/getVillage?villageId="+id, function(data) {
+                    console.log(data);
                     if (map.hasLayer(marker)) map.removeLayer(marker);
-                    var coordinate = data.coordinate.split(", ");
-                    $("#ward-name").html(data.wardName);
-                    $("#latitude").html(parseFloat(coordinate[0]).toFixed(5));
-                    $("#longitude").html(parseFloat(coordinate[1]).toFixed(5));                   
-                    });
+                        var coordinate = data.coordinate.split(", ");
+                        $("#ward-name").html(data.wardName);
+                        $("#latitude").html(parseFloat(coordinate[0]).toFixed(5));
+                        $("#longitude").html(parseFloat(coordinate[1]).toFixed(5));
+                        
+                        //Pollution
+                        if(data.state[0] === '1') $('#earth').prop('checked', true);
+                        if(data.state[1] === '1') $('#air').prop('checked', true)
+                        if(data.state[2] === '1') $('#water').prop('checked', true)
+                });
 
                     $.getJSON("/api/map/getHousehold?villageId="+id, function(data) {
                     $("#household-number").html(data.length);               
@@ -556,7 +562,7 @@
                 fetch("/craftvillage/api/survey/listImage?villageId="+id)
                  .then((res) => res.json())
                  .then((data) => {
-                    console.log(data.length == 0);
+                    //console.log(data.length == 0);
                     current.textContent= (data.length) ? 1 : 0
                     total.textContent=data.length 
                     if(data.length != 0) {
