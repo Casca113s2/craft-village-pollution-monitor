@@ -3,27 +3,44 @@ package craftvillage.bizlayer.services;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import craftvillage.datalayer.entities.HouseholdSurvey;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.UserSurvey;
 import craftvillage.datalayer.entities.Village;
+import craftvillage.datalayer.entities.dto.HouseholdSurveyDTO;
+import craftvillage.datalayer.repositories.HouseholdSurveyRepository;
+import craftvillage.datalayer.repositories.SrSurveyQuestionAnswerRepository;
+import craftvillage.datalayer.repositories.UserRepository;
 import craftvillage.datalayer.repositories.UserSurveyRepository;
-import craftvillage.datalayer.services.SurveyServ;
-import craftvillage.datalayer.services.UserServ;
+import craftvillage.datalayer.repositories.VillageRepository;
 
 @Service
 public class SurveyServices {
+  @Autowired
+  UserSurveyRepository userSurveyRepo;
 
   @Autowired
-  SurveyServ surveyServ = new SurveyServ();
-  @Autowired
-  UserServ userServ = new UserServ();
-  @Autowired
   UserSurveyRepository userSurveyRepository;
+
+  @Autowired
+  HouseholdSurveyRepository householdSurveyRepo;
+
+  @Autowired
+  SrSurveyQuestionAnswerRepository surveyQuestionAnswerRepository;
+
+  @Autowired
+  UserRepository userRepository;
+
+  @Autowired
+  VillageRepository villageRepository;
 
   public int countMonthlySurvey(Village village) {
     int count = 0;
@@ -38,50 +55,56 @@ public class SurveyServices {
     return count;
   }
 
-  public String getImageBySurveyId(int id) {
+  public Map<String, String> getImageBySurveyId(int id) {
     UserSurvey userSurvey = userSurveyRepository.getOne(id);
-    return userSurvey.getImage();
-  }
-
-  public UserSurvey getSubmitSurvey(String account, int activeId) {
-    return surveyServ.getSubmitSurvey(account, activeId);
-  }
-
-  public UserSurvey getUserSurvey(UrUser user, String status) {
-    return surveyServ.getUserSurvey(user, status);
-  }
-
-  public UserSurvey getUserSurveyById(int userSurveyId) {
-    return surveyServ.getUserSurveyById(userSurveyId);
+    Map<String, String> result = new HashMap<String, String>();
+    result.put("date", userSurvey.getDateSubmitSurvey().toString());
+    result.put("pollution", getPollution(userSurvey.getPollution()));
+    result.put("coordinate", userSurvey.getCoordinate());
+    result.put("note", userSurvey.getNote());
+    result.put("image", userSurvey.getImage());
+    return result;
   }
 
   public boolean addUserSurvey(UserSurvey userSurvey) {
-    return surveyServ.addUserSurvey(userSurvey);
-  }
-
-  public List<UserSurvey> getSrActiveInfoByStatus(UrUser user, String status) {
-    return userServ.getSrActiveInfoByStatus(user, status);
-  }
-
-  public boolean changeStatus(int idUserSurvey, String newStatus) {
-    return surveyServ.changeStatus(idUserSurvey, newStatus);
-  }
-
-  public String getStatus(String account, int activeId) {
-    return userServ.getStatus(account, activeId);
-  }
-
-  public boolean setDateSubmitSurvey(int userSurveyId, Date dateSubmitSurvey) {
-    return userServ.setDateSubmitSurvey(userSurveyId, dateSubmitSurvey);
+    return userSurveyRepo.save(userSurvey) != null ? true : false;
   }
 
   public String getPollution(String pollution) {
     List<String> result = new ArrayList<String>();
-    String[] list = {"Đất", "Nước", "Không khí"};
+    String[] list = {"Đất", "Không khí", "Nước"};
     for (int i = 0; i < pollution.length(); i++) {
       if (pollution.charAt(i) == '1')
         result.add(list[i]);
     }
-    return String.join(" - ", list);
+    return String.join(" - ", result);
+  }
+
+  public boolean addHouseholdSurvey(UrUser user, List<Map<String, String>> answers) {
+    for (HouseholdSurvey item : householdSurveyRepo.findByHousehold(user)) {
+      householdSurveyRepo.delete(item);
+    }
+
+    for (Map<String, String> answer : answers) {
+      HouseholdSurvey householdSurvey = new HouseholdSurvey();
+      householdSurvey.setSrSurveyQuestionAnswer(
+          surveyQuestionAnswerRepository.getOne(Integer.parseInt(answer.get("id"))));
+      householdSurvey.setAnswerContent(answer.get("value"));
+      householdSurvey.setHousehold(user);
+      if (householdSurveyRepo.save(householdSurvey) == null) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public Set<HouseholdSurveyDTO> getHouseholdSurvey(UrUser user) {
+    return user.getHouseholdSurvey().stream().map(HouseholdSurveyDTO::from)
+        .collect(Collectors.toSet());
+  }
+
+  public List<Integer> getListImage(int villageId) {
+    return villageRepository.getOne(villageId).getUserSurveys().stream()
+        .map(survey -> survey.getId()).collect(Collectors.toList());
   }
 }

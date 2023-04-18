@@ -1,0 +1,253 @@
+@charset "UTF-8";
+
+/* width */
+.household-table::-webkit-scrollbar {
+  width: 3px;
+}
+
+/* Track */
+.household-table::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+.household-table::-webkit-scrollbar-thumb {
+  background: #e0e0e0; 
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* Handle on hover */
+.household-table::-webkit-scrollbar-thumb:hover {
+  background: #b7b7b7; 
+}
+
+.map-container {
+	width: 100%;
+	height: 560px;
+	border: solid 0px;
+	border-radius: 20px;
+	padding: 25px;
+	box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+	display: flex;
+	background-color: white;
+}
+
+.wrap-map {
+	width: 65%;
+	height: 100%;
+	position: relative;
+}
+
+.map-detail {
+	width: 35%;
+	height: 100%;
+	padding-left: 30px;
+}
+
+.map-detail div {
+	font-size: 20px;
+}
+
+.map-detail .value {
+	color: #007bff;
+	padding-left: 10px;
+}
+
+.map-location-label {
+	width: 48%;
+}
+
+.map-label-container, .map-location-label {
+	border: solid 2px #e0e0e0;
+	border-radius: 20px;
+	padding: 10px 15px;
+	margin-bottom: 15px;
+}
+
+.image-view {
+	display: flex;
+	background-color: white;
+	border: solid 0px;
+	border-radius: 20px;
+	padding: 20px;
+	height: 540px;
+	width: 100%;
+	margin: 40px 0px;
+	box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+}
+
+#image-container {
+	height: 100%;
+	width: 70%;
+}
+
+#image-container img{
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.no-data {
+	display: flex;
+	background-color: #e0e0e0;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	font-size: 24px;
+}
+
+.image-detail {
+	padding-left: 20px;
+	width: 30%;
+	position: relative;
+}
+
+.image-detail .label {
+	font-size: 20px;
+}
+
+.image-detail .value {
+	color: #007bff;
+	padding-left: 10px;
+	font-size: 20px;
+}
+
+.table-layout {
+	background-color: #00b5e9;
+	border: solid 0px;
+	border-radius: 20px;
+	padding: 20px;
+	height: 540px;
+	width: 100%;
+	margin: 40px 0px;
+	box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+}
+
+.household-table {
+	background-color: #00b5e9;
+	padding: 0 10px;
+	max-height: 90%;
+	width: 100%;
+	overflow: auto; 
+}
+
+.household-record {
+	width: 100%;
+	border: solid #d7d7d7;
+	border-width: 1px 0 0 0;
+	display: flex;
+	padding: 15px 0;
+}
+
+.household-index-field {
+	font-size: 20px;
+	width: 10%;
+	color: white;
+}
+
+.household-name-field {
+	font-size: 20px;
+	font-style: italic;
+	width: 60%;
+	color: white;
+}
+
+.household-info-field {
+	font-size: 20px;
+	color: white;
+	font-style: italic;
+	cursor: pointer;
+}
+
+.household-info-field:hover {
+	color: #2080df;
+}
+
+.image-button-container {
+	text-align: center;
+	position: absolute;
+    bottom: 0px;
+}
+
+#btn-previous-image, #btn-next-image {
+	position: relative;
+	color: #183153;
+	background: white;
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	border: solid 0px;
+	box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+}
+
+#btn-previous-image i, #btn-next-image i {
+	margin: 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+
+.image-index-container {
+	display: inline-block;
+	transform: translate(0, -50%);
+}
+
+.image-index {
+	margin: 0 10px;
+	font-size: 20px;
+}
+
+
+.question_list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+  }
+  
+.question_item {
+    padding: 0 20px;
+}
+  
+.question_item .question_content {
+    margin-top: 20px;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+  
+.question_item ul {
+    list-style: none;
+}
+  
+.question_text-filed input {
+    width: 100%;
+    height: 36px;
+    padding: 0 20px;
+    outline: none;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+  
+.question_text-filed input:focus {
+    /* border-bottom-color: rgb(115, 11, 115); */
+    border-bottom: 2px solid rgb(115, 11, 115);
+}
+  
+.question_checkbox ul li,
+.question_radio ul li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+  
+.question_checkbox ul li input,
+.question_radio ul li input {
+    width: 18px;
+    height: 18px;
+    accent-color: rgb(115, 11, 115);
+    margin-right: 20px;
+    flex-shrink: 0;
+}

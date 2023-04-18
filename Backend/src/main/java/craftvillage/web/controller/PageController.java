@@ -15,7 +15,7 @@ public class PageController {
   @Autowired
   private UserService userService;
 
-  @GetMapping("/login")
+  @GetMapping({"/login", "/logout"})
   public String loginPage() {
     return "login";
   }
@@ -33,12 +33,13 @@ public class PageController {
   @GetMapping("/home")
   public String home(Principal principal) {
     UrUser user = userService.findByUsername(principal.getName());
-    if (user.getType().equals("Household"))
+    System.out.println(user.getType());
+    if (user.getType().equals("Household")) {
       return "redirect:/web/household/declare";
-    else if (user.getType().equals("LocalAuthority"))
+    } else if (user.getType().equals("LocalAuthority")) {
       return "redirect:/web/authority/index";
-    else
-      return "redirect:/admin-site/localauthority";
+    } else
+      return "redirect:/administration/localauthority";
   }
 
 }

@@ -5,6 +5,18 @@
     <!-- Required meta tags-->
     <meta charset="UTF-8">
 
+    <!-- Map -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <style>
+        #map {position: absolute; top: 0; right: 0; bottom: 0; left: 0;}
+    </style>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
+     <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+
     <!-- Title Page-->
     <title>Dashboard</title>
 
@@ -27,6 +39,10 @@
 
     <!-- Main CSS-->
     <link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
+	<link th:href="@{/css/village-map.css}" rel="stylesheet" media="all">
+
+    <!-- CSS for question -->
+    <!-- <link th:href="@{/css/village-map.css}" rel="stylesheet" media="all"> -->
 
 </head>
 
@@ -42,23 +58,19 @@
                                 <i class="fa-solid fa-chart-line"></i>Dashboard</a>
                         </li>
                         <li class="has-sub">
-                            <a class="js-arrow open" href="#" >
+                            <a class="js-arrow" href="#" >
                                 <i class="fa-solid fa-users"></i>Village</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
                                 <li>
                                     <a th:href="@{/web/authority/newvillage}">
-                                        <i class="fa-solid fa-user-plus"></i>New</a>
+                                        <i class="fa-solid fa-user-plus"></i>New village</a>
                                 </li>
-<!--                                 <li>
-                                    <a th:href="@{/web/authority/villagedata}">
-                                        <i class="fa-solid fa-database"></i>Data</a>
-                                </li> -->
+								<li>
+                                    <a th:href="@{/web/authority/map}">
+                                        <i class="fa-solid fa-map-location-dot"></i>Map</a>
+                                </li>
                             </ul>
                         </li>
-<!--                         <li>
-                            <a th:href="@{/web/authority/surveys}">
-                                <i class="fa-solid fa-file-lines"></i>Surveys</a>
-                        </li> -->
                     </ul>
                 </nav>
             </div>
@@ -106,7 +118,7 @@
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__footer">
-                                                <a id="btn-logout">
+                                                <a id="btn-logout" th:href="@{/web/logout}">
                                                     <i class="zmdi zmdi-power"></i>Logout</a>
                                             </div>
                                         </div>
@@ -121,6 +133,9 @@
 
             <!-- MAIN CONTENT-->
             <div class="main-content">
+            	<a href="#" class="gototop">
+                    <i class="fa fa-arrow-up fa-lg"></i>
+                </a>
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="row">
@@ -194,7 +209,106 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="map-container">
+									<div class="wrap-map">
+                                        <div id="map">
+                                            <a href="https://www.maptiler.com" style="position:absolute;left:10px;bottom:10px;z-index:999;"><img src="https://api.maptiler.com/resources/logo.svg" alt="MapTiler logo"></a>
+                                        </div>
+                                        <p><a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a></p>
+                                    </div>
+									<div class="map-detail">
+										<div class="map-label-container">
+	                                        <div>Xã / Phường</div>
+	                                        <div class="value" id=""><span id="ward-name">---</span></div>										
+										</div>
+										<div class="map-label-container">
+	                                        <div>Làng nghề</div>
+	                                        <div class="value" id=""><span id="village-name">---</span></div>										
+										</div>
+										<div class="map-label-container">
+	                                        <div>Số hộ sản xuất</div>
+	                                        <div class="value" id=""><span id="household-number">---</span></div>										
+										</div>
+                                        <div style="display: flex;">
+	                                        <div class="map-location-label">
+	                                            <div>Kinh độ</div>
+	                                            <div class="value" id=""><span id="longitude">---</span></div>
+	                                        </div>
+	                                        <div class="map-location-label" style="margin-left: auto;">
+	                                            <div>Vĩ độ</div>
+	                                            <div class="value" id=""><span id="latitude">---</span></div>
+	                                        </div>
+	                                    </div>
+									</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                            	<div class="table-layout">
+                            		<div style="text-align: center; font-size: 22px; color: white; padding: 5px 0; font-weight: bold;">Khai báo</div>
+	                                <!-- <div class="household-table" >
+	                                	<div class="household-record" >
+	                                		<div class="household-index-field">1</div>
+	                                		<div class="household-name-field">Hua Hoang Phuc</div>
+	                                		<div class="household-info-field"><a id="modal-household-info" href="#" style="color: white; position: right">Chi tiết >></a> </div>
+	                                	</div> -->
+	                                <div class="household-table" id="household-table">
+	                                	
+	                                </div>
+                            	</div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="image-view" id="image-view">
+		                            <div id="image-container">
+		                            	<div class="no-data">No data</div>
+		                            </div>
+		                            <div class="image-detail">
+		                            	<div class="label">Ngày</div>
+		                            	<div class="value" id="date">---</div>
+		                            	<div class="label">Loại ô nhiễm</div>
+		                            	<div class="value" id="pollution">---</div>
+		                            	<div class="label">Ghi chú</div>
+		                            	<div class="value" id="note">---</div>
+		                            	<div class="image-button-container">
+		                            		<a id="btn-previous-image" title="Ảnh trước">
+		                            			<i class="fa-solid fa-chevron-left fa-2x"></i>
+		                            		</a>
+		                            		<div class="image-index-container">
+			                            		<label id="current-image" class="image-index">--</label>
+			                            		<label>/</label>
+			                            		<label id="total-image" class="image-index">--</label>
+		                            		</div>
+		                            		<a id="btn-next-image" title="Ảnh sau">
+		                            			<i class="fa-solid fa-chevron-right fa-2x"></i>
+		                            		</a>
+		                            	</div>
+		                            </div>
+		                        </div>
+                            </div>
+                        </div>
                     </div>
+                    
+                </div>
+                 <a href="#" title="Báo lỗi" class="btn-report" id="btn-report">
+                   	<i class="fa-regular fa-comment-dots fa-2x"></i>
+               	</a>
+                   
+                <div class="report-form" id="report-form">
+                   	<div class="report-header">
+                   		<label style="width: 90%; font-size: 24px; color: white; padding: 0 0 0 20px; vertical-align: middle; margin: 0;">Báo lỗi</label>
+                   		<a href="#" id="btn-close-report" style="font-size: 24px; color: white;">
+                   			<i class="fa-solid fa-circle-xmark"></i>
+                   		</a>
+                   	</div>
+                   	<div class="report-body">
+                   		<input class="report-title" id="report-title" type="text" placeholder="Lỗi gặp phải">
+                   		<textarea class="report-detail" id="report-detail" placeholder="Mô tả chi tiết"></textarea>
+                   		<button class="btn btn-primary btn-send-report" id="btn-send-report">Gửi</button>
+                   	</div>
                 </div>
             </div>
             <!-- END MAIN CONTENT-->
@@ -265,6 +379,34 @@
 					</div>
 				</div>
 			</div>
+            <!-- Model map-->
+            <div class="modal fade" id="staticModal3" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
+			 data-backdrop="static">
+				<div class="modal-dialog modal-lg" role="document" style="max-width: 1200px;">
+					<div class="modal-content">
+                        <!-- <div class="modal-header">
+							<h5>Hộ sản xuất:</h5>
+                            
+						</div> -->
+                        <div class="modal-header">
+							<h5 class="modal-title" id="staticModalLabel">Thông tin sản xuất</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>							
+						</div>
+                        <div class="modal-body" id="modal-body">
+                            <div class="question_list">
+
+                            </div>
+						</div>
+						
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+            <!-- End Model map-->
 			<!-- end modal static -->
             <!-- END PAGE CONTAINER-->
         </div>
@@ -295,6 +437,152 @@
     <!-- Main JS-->
     <script th:src="@{/js/main.js}"></script>
 	<script th:src="@{/js/myfunction.js}"></script>
+	<script th:src="@{/js/village-map.js}"></script>
+
+    <!--  Map -->
+    <script type="text/javascript">
+
+        var current = document.querySelector('#current-image');
+        var total = document.querySelector('#total-image');
+        var btn_prev = document.querySelector('#btn-previous-image');
+        var btn_next = document.querySelector('#btn-next-image');
+
+        //console.log(total);
+
+        //set View ban đầu
+        //var map = L.map('map').setView([9.2940, 105.7216], 13); 
+        var map;
+        fetch("/api/map/getVillageLocation")
+         .then((res) => res.json())
+         .then((data) => {           
+            //console.log(data)
+            //set view ban đầu
+            var coordinate = data.districtCoordinate.split(",")
+            //console.log(coordinate);
+            map = L.map('map').setView([+coordinate[0], +coordinate[1]], 13); //CL
+            L.tileLayer('https://api.maptiler.com/maps/bright/256/{z}/{x}/{y}.png?key=Xx2LVdpWdk1UyVYRKzN0',{
+            tileSize: 512,
+            zoomOffset: -1,
+            minZoom: 1,
+            attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
+            crossOrigin: true
+            }).addTo(map);
+
+            //Hiện các marker làng nghề
+            villages =  data.villages
+            var markers = {}
+            villages.map((item) => {
+
+                //icon villages
+                var myIcon = L.icon({
+                    iconUrl: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|e85141&chf=a,s,ee00FFFF",
+                    iconSize: [21, 34],
+                })
+
+                // Create and save a reference to each marker
+                markers[item.villageId] = L.marker([item.longitude, item.latitude],{
+                    icon: myIcon,              
+                }).addTo(map);
+                // Add the ID
+                markers[item.villageId]._icon.id = item.villageId + ", " + item.villageName;
+                //gắn popup khi mouseover vào
+                //var bigIcon = new L.Icon.Big();
+                markers[item.villageId].bindPopup(item.villageName)
+                markers[item.villageId].on('mouseover', function(e){
+                    this.openPopup();
+
+                });
+                markers[item.villageId].on('mouseout', function(e){
+                    this.closePopup();
+                });
+            })           
+        });
+
+        //Onclick Marker 
+        $(document).ready(function() {
+           setTimeout(() => {
+            $('.leaflet-marker-icon').click(function(e) {
+                // Use the event to find the clicked element
+                var el = $(e.srcElement || e.target),
+                id_name = el.attr('id').split(', ');
+                id = id_name[0]
+                village_name = id_name[1]
+                //console.log(id_name);
+                //alert('Here is the markers ID: ' + id + '. Use it as you wish.')'
+                fetch("/api/map/getVillage?villageId="+id)
+                 .then((res) => res.json())
+                 .then((data) => {
+                    var coordinate = data.coordinate.split(", ")
+                    //console.log(coordinate)
+                    document.getElementById('ward-name').innerHTML = data.wardName
+                    document.getElementById('latitude').innerHTML = coordinate[0]
+                    document.getElementById('longitude').innerHTML = coordinate[1]                   
+                 });
+
+                fetch("/api/map/getHousehold?villageId="+id)
+                 .then((res) => res.json())
+                 .then((data) => {
+                    document.getElementById('household-number').innerHTML = data.length               
+                });
+                document.getElementById('village-name').innerHTML = village_name
+
+                //Ảnh
+                fetch("/craftvillage/api/survey/listImage?villageId="+id)
+                 .then((res) => res.json())
+                 .then((data) => {
+                    //if(data.length != 0) {
+                        data.sort(function(a,b) {return b-a})
+                        getImage(data[0])
+                        //console.log(data);
+                        current.textContent= (data.length) ? 1 : 0
+                        total.textContent=data.length       
+                        btn_prev.onclick = function() {
+                            getImage(data[Number(current.textContent)-1])
+                        }
+                        btn_next.onclick = function() {
+                            getImage(data[Number(current.textContent)-1])
+                        } 
+                    //}
+                });
+
+                //Khai báo
+                //console.log(id);
+                fetch("/api/map/getHousehold?villageId="+id)
+                 .then((res) => res.json())
+                 .then((data) => {
+                    //console.log(data);
+                    var html="";
+                    for(var i = 0; i < data.length; i++) {
+                        html += `
+                            <div class="household-record">
+                                <div class="household-index-field">${i+1}</div>
+                                <div class="household-name-field">${data[i].householdName}</div>
+                                <div class="household-info-field"><a id="${data[i].householdId}" href="#" style="color: white;" class="household-info" >Chi tiết >></a> </div>
+                            </div>
+                        `
+                        //console.log(html)
+                    }
+                    let householdRecord = document.getElementById("household-table")
+                    //console.log(html)
+                    householdRecord.innerHTML = html
+
+                    //Xem khai báo chi tiết của household
+                    detail = document.querySelectorAll(".household-info");
+                    for(var i=0; i<detail.length; i++) {
+                        detail[i].onclick = function(e) {
+                            var html = "";
+                            var id = $(e.srcElement || e.target).attr('id')
+                            //console.log(id);
+                            getQuestionList(id)
+                            $('#staticModal3').modal();
+                        }
+                    }
+                });               
+            });         
+           }, 1000);
+        });
+        
+    </script>
 </body>
 
 </html>

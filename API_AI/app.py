@@ -13,7 +13,7 @@ from flask_cors import CORS, cross_origin
 
 import pathlib
 temp = pathlib.PosixPath
-pathlib.PosixPath = pathlib.WindowsPath
+#pathlib.PosixPath = pathlib.WindowsPath
 
 # Khởi tạo server
 app = Flask(__name__)

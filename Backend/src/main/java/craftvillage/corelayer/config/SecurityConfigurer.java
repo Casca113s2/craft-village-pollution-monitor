@@ -38,8 +38,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     String url_village = url + ConstantParameter.ServiceVillage._VILLAGE_SERVICE;
 
     // http.csrf().disable();
-    http.csrf().ignoringAntMatchers("/craftvillage/api/village/newvillage", "/admin-site/**",
-        "/craftvillage/api/village/newvillage", "/web/household/**", "/web/authority/**",
+    http.csrf().ignoringAntMatchers("/craftvillage/api/village/newvillage", "/administration/**",
+        "/craftvillage/api/village/newvillage", "/web/household/**", "/web/authority/**", "/report",
+        "/craftvillage/api/survey/answer", "/craftvillage/api/village/update",
         url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_GET_COMPLETED,
         url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_GET_INPROGRESS,
         url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_UPLOAD_FILE,
@@ -55,11 +56,10 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
     http.authorizeRequests()
-        .antMatchers("/web/login", "/vendor/**", "/css/*", "/fonts/**", "/images/**", "/js/**",
-            "/media/**", "/web/forgetpassword", "/craftvillage/api/survey/getimage", "/web/signup",
-            url_user + "/" + ConstantParameter.ServiceUser._USER_LOGIN,
+        .antMatchers("/web/login", "/web/logout", "/vendor/**", "/css/*", "/fonts/**", "/images/**",
+            "/js/**", "/media/**", "/web/forgetpassword", "/craftvillage/api/survey/question",
+            "/web/signup", url_user + "/" + ConstantParameter.ServiceUser._USER_LOGIN,
             url_user + "/" + ConstantParameter.ServiceUser._USER_REGISTER,
-            url_user + "/" + ConstantParameter.ServiceUser._USER_LOGOUT,
             url_user + "/" + ConstantParameter.ServiceUser._USER_SEND_EMAIL,
             url_user + "/" + ConstantParameter.ServiceUser._USER_FORGOTTEN_PASS,
             url_user + "/" + ConstantParameter.ServiceUser._USER_GET_PASSWORD,
@@ -69,11 +69,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_PROVINCE,
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_DISTRICT,
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_WARD,
-            url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_VILLAGE,
-            "/web/household/question")
-        .permitAll().antMatchers(
-            // url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_VILLAGE,
-            "/craftvillage/api/village/newvillage",
+            url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_VILLAGE)
+        .permitAll()
+        .antMatchers("/craftvillage/api/village/newvillage",
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_ADDRESS,
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_CHECK_VILLAGE,
             url_user + "/" + ConstantParameter.ServiceUser._USER_GET_DATA,
@@ -81,13 +79,16 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
             url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_GET_INFOR,
             url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_GET_SURVEY,
             url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_DETECT)
-        .access("hasRole('ROLE_USER')").antMatchers("/web/household/**").hasAuthority("HOUSEHOLD")
-        .antMatchers("/web/authority/**").hasAuthority("LOCALAUTHORITY")
-        .antMatchers("/admin-site/**").hasAuthority("ADMIN").antMatchers("/web/home")
-        .hasAnyAuthority("HOUSEHOLD", "LOCALAUTHORITY", "ADMIN")
+        .hasAuthority("USER").antMatchers("/web/household/**", "/craftvillage/api/survey/answer")
+        .hasAuthority("HOUSEHOLD")
+        .antMatchers("/web/authority/**", "/craftvillage/api/survey/listImage", "/api/map/**",
+            "/craftvillage/api/survey/getImage", "/craftvillage/api/survey/answerHousehold",
+            "/craftvillage/api/village/update")
+        .hasAuthority("LOCALAUTHORITY").antMatchers("/administration/**").hasAuthority("ADMIN")
+        .antMatchers("/web/home").hasAnyAuthority("HOUSEHOLD", "LOCALAUTHORITY", "ADMIN")
         .antMatchers("/web/home", url_user + "/" + ConstantParameter.ServiceUser._USER_CHANGE_PASS,
-            url_user + "/" + ConstantParameter.ServiceUser._USER_UPDATE_INFOR)
-        .hasAnyAuthority("HOUSEHOLD", "LOCALAUTHORITY", "ADMIN", "ROLE_USER")
+            url_user + "/" + ConstantParameter.ServiceUser._USER_UPDATE_INFOR, "/report")
+        .hasAnyAuthority("HOUSEHOLD", "LOCALAUTHORITY", "ADMIN", "USER")
 
         .anyRequest().authenticated();
     http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

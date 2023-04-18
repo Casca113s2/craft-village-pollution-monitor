@@ -8,62 +8,48 @@ import craftvillage.datalayer.entities.AdCountry;
 import craftvillage.datalayer.entities.AdDistrict;
 import craftvillage.datalayer.entities.AdProvince;
 import craftvillage.datalayer.entities.AdWard;
-import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.Village;
+import craftvillage.datalayer.repositories.CountryRepository;
 import craftvillage.datalayer.repositories.DistrictRepository;
+import craftvillage.datalayer.repositories.ProvinceRepository;
+import craftvillage.datalayer.repositories.VillageRepository;
 import craftvillage.datalayer.repositories.WardRepository;
-import craftvillage.datalayer.services.AddressServ;
-import craftvillage.datalayer.services.UserServ;
 
 @Service
 public class AddressServices {
   @Autowired
-  AddressServ addressServ = new AddressServ();
-  UserServ userServ = new UserServ();
+  CountryRepository countryRepo;
+  @Autowired
+  ProvinceRepository provinceRepo;
   @Autowired
   DistrictRepository districtRepo;
   @Autowired
   WardRepository wardRepo;
+  @Autowired
+  VillageRepository villageRepo;
 
   public List<AdCountry> getCountryList() {
-
-    return addressServ.getCountryList();
+    return countryRepo.findAll();
   }
 
   public Set<AdProvince> getProvinceList(int countryId) {
-    return addressServ.getProvinceList(countryId);
+    return countryRepo.getOne(countryId).getAdProvinces();
   }
 
   public Set<AdDistrict> getDistrictList(int provinceId) {
-    return addressServ.getDistrictList(provinceId);
+    return provinceRepo.getOne(provinceId).getAdDistricts();
   }
 
   public Set<AdWard> getWardList(int districtId) {
-    return addressServ.getWardList(districtId);
-  }
-
-  public String getInfoCountry(int countryId) {
-    return addressServ.getInfoCountry(countryId);
-  }
-
-  public String getInfoProvince(int provinceId) {
-    return addressServ.getInfoProvince(provinceId);
-  }
-
-  public String getInfoDictrict(int dictrictId) {
-    return addressServ.getInfoDictrict(dictrictId);
+    return districtRepo.getOne(districtId).getAdWards();
   }
 
   public AdDistrict getAdDistrict(int districtId) {
     return districtRepo.getOne(districtId);
   }
 
-  public String getInfoWard(int wardId) {
-    return addressServ.getInfoWard(wardId);
-  }
-
   public AdWard getAdward(int adWardId) {
-    return addressServ.getWard(adWardId);
+    return wardRepo.getOne(adWardId);
   }
 
   public Set<Village> getVillages(int wardId) {
@@ -71,59 +57,6 @@ public class AddressServices {
   }
 
   public Village getVillageInfo(int villageId) {
-    return addressServ.getVillageInfo(villageId);
+    return villageRepo.getOne(villageId);
   }
-
-  public List<Village> getAllVillage() {
-    return addressServ.getAllVillage();
-  }
-
-  public boolean checkVillage(int villageId, UrUser user, String status) {
-    return userServ.checkVillage(villageId, user, status);
-  }
-
-
-
-  /**
-   * Hàm tính khoảng cách 2 điểm bằng lat , lon
-   * 
-   * @param lat1
-   * @param lon1
-   * @param lat2
-   * @param lon2
-   * @return
-   */
-  public double distance(double lat1, double lon1, double lat2, double lon2) {
-    double theta = lon1 - lon2;
-    double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2))
-        + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
-    dist = Math.acos(dist);
-    dist = rad2deg(dist);
-    dist = dist * 60 * 1.1515;
-    return (dist);
-  }
-
-  /* ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: */
-  /* :: This function converts decimal degrees to radians : */
-  /* ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: */
-  private double deg2rad(double deg) {
-    return (deg * Math.PI / 180.0);
-  }
-
-  /* ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: */
-  /* :: This function converts radians to decimal degrees : */
-  /* ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: */
-  private double rad2deg(double rad) {
-    return (rad * 180.0 / Math.PI);
-  }
-
-  public double convertCoordinates(double degrees, double minutes, double seconds) {
-
-    double decimal = ((minutes * 60) + seconds) / (60 * 60);
-    decimal = decimal + degrees;
-    return decimal;
-  }
-
-
-
 }

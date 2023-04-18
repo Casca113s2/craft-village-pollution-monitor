@@ -39,7 +39,7 @@ public class UserSurvey implements java.io.Serializable {
 
   @Id
   @OrderBy("id ASC")
-  @GeneratedValue(strategy = GenerationType.AUTO, generator = "UR_SERVEY_SEQ")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", unique = true, nullable = false, precision = 22, scale = 0)
   public int getId() {
     return this.id;
@@ -69,9 +69,8 @@ public class UserSurvey implements java.io.Serializable {
     this.isTemporary = isTemporary;
   }
 
-
   // end
-
+  @JsonBackReference
   @ManyToOne(fetch = FetchType.LAZY, targetEntity = Village.class)
   @JoinColumn(name = "VILLAGE_ID")
   public Village getVillage() {

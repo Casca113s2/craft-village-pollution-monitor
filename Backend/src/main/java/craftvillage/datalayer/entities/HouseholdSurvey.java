@@ -1,6 +1,5 @@
 package craftvillage.datalayer.entities;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,9 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.hibernate.annotations.DynamicUpdate;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import craftvillage.corelayer.utilities.ConstantParameter;
 
+@DynamicUpdate
 @Entity
 @Table(name = "HOUSEHOLD_SURVEY", schema = ConstantParameter._SCHEMA_NAME)
 public class HouseholdSurvey {
@@ -23,7 +24,7 @@ public class HouseholdSurvey {
   private SrSurveyQuestionAnswer srSurveyQuestionAnswer;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", unique = true, nullable = false, precision = 22, scale = 0)
   public Integer getId() {
     return id;
@@ -43,7 +44,7 @@ public class HouseholdSurvey {
   }
 
   @JsonBackReference
-  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "HOUSEHOLD")
   public UrUser getHousehold() {
     return household;
@@ -54,7 +55,7 @@ public class HouseholdSurvey {
   }
 
   @JsonBackReference
-  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "SR_SQA_ID")
   public SrSurveyQuestionAnswer getSrSurveyQuestionAnswer() {
     return srSurveyQuestionAnswer;
@@ -63,5 +64,4 @@ public class HouseholdSurvey {
   public void setSrSurveyQuestionAnswer(SrSurveyQuestionAnswer srSurveyQuestionAnswer) {
     this.srSurveyQuestionAnswer = srSurveyQuestionAnswer;
   }
-
 }

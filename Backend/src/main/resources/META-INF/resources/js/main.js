@@ -1679,12 +1679,7 @@
   // Load more
   try {
     $('#btn-logout').on('click', function() {
-		  	$.get("/craftvillage/api/user/logoutapp", function(data){
-		  		if(data){
-		  			document.cookie = "token=; max-age=-1; path=/;";
-		  			window.location.replace(window.location.origin + "/web/login");
-		  		}
-		  	});
+			document.cookie = "token=; max-age=-1; path=/;";
 		});
   } catch (error) {
     console.log(error);
@@ -1695,7 +1690,7 @@
 var btnTop = document.querySelector('.gototop')
 
 window.addEventListener('scroll', function(){
-  if(window.scrollY>100){
+  if(window.scrollY>500){
       btnTop.classList.add('active')
   }
   else{
@@ -1706,3 +1701,36 @@ window.addEventListener('scroll', function(){
 btnTop.onclick = function(){
   window.pageYOffset = 0
 }
+
+$(document).ready(function(){
+  $("#btn-report").click(function(){
+    $("#report-form").toggle();
+  });
+  
+  $("#btn-close-report").click(function(){
+    $("#report-form").hide();
+  });
+  
+  $("#btn-send-report").click(function(){
+    if($("#report-title").val().length * $("#report-detail").val().length != 0){
+    	$.ajax({
+		        url: "/report",
+		        type: 'POST',
+		        contentType: "application/json; charset=utf-8",
+		        data: JSON.stringify({
+		        		title : $('#report-title').val(),
+		        		detail : $('#report-detail').val(),
+		        	}),
+		        success: function(res) {
+		        	if(res){
+		        		alert("Cảm ơn vì bạn đã thông báo")
+		        	}
+		        	else {
+		        		alert("Gửi thất bại, vui lòng kiểm tra mạng")
+		        	}
+		        }
+		    });
+    }
+  });
+});
+

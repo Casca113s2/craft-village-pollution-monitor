@@ -20,7 +20,7 @@ import craftvillage.bizlayer.services.UserService;
 import craftvillage.datalayer.entities.UrUser;
 
 @Controller
-@RequestMapping("/admin-site")
+@RequestMapping("/administration")
 public class AdminController {
 
   @Autowired
@@ -52,7 +52,7 @@ public class AdminController {
     String role = "LOCALAUTHORITY";
     int districtId = Integer.parseInt(form.get("district"));
     Date dateActive = new Date();
-    int register = userDetailsService.RegisterUsername(username, password, role, name, "", phone,
+    int register = userDetailsService.registerUsername(username, password, role, name, "", phone,
         email, dateActive);
     if (register == 1) {
       console.put("key", "1");

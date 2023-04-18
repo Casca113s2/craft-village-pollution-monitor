@@ -88,7 +88,7 @@
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__footer">
-                                                <a id="btn-logout">
+                                                <a id="btn-logout" th:href="@{/web/logout}">
                                                     <i class="zmdi zmdi-power"></i>Logout</a>
                                             </div>
                                         </div>
@@ -113,7 +113,7 @@
                                 <div class="card">
                                     <div class="card-header">Create Account</div>
                                     <div class="card-body">
-                                    <form id="form1" th:action="@{/admin-site/createauthority}">
+                                    <form id="form1" th:action="@{/administration/createauthority}">
         								<div class="row form-group">
                                                <div class="col-6">
                                                     <label>Province/City</label>
@@ -153,7 +153,7 @@
 	                                          <div class="col-6">
 	                                              <label for="x_card_code" class="control-label mb-1">Password</label>
 	                                              <div class="input-group">
-	                                                  <input id="latitude" name="password" type="text" class="form-control cc-cvc">
+	                                                  <input id="latitude" name="password" type="password" class="form-control cc-cvc">
 	                                              </div>
 	                                          </div>
                                         </div>
@@ -161,14 +161,14 @@
 	                                          <div class="col-6">
 	                                              <label for="x_card_code" class="control-label mb-1">Phone</label>
 	                                              <div class="input-group">
-	                                                  <input id="longitude" name="phone" type="text" class="form-control cc-cvc">
+	                                                  <input id="longitude" name="phone" type="tel" class="form-control cc-cvc">
 	
 	                                              </div>
 	                                          </div>
 	                                          <div class="col-6">
 	                                              <label for="x_card_code" class="control-label mb-1">Email</label>
 	                                              <div class="input-group">
-	                                                  <input id="latitude" name="email" type="text" class="form-control cc-cvc">
+	                                                  <input id="latitude" name="email" type="email" class="form-control cc-cvc">
 	                                              </div>
 	                                          </div>
                                         </div>

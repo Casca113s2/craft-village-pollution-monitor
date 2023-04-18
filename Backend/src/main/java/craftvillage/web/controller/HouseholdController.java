@@ -1,7 +1,6 @@
 package craftvillage.web.controller;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import craftvillage.bizlayer.services.AddressServices;
 import craftvillage.bizlayer.services.SrSurveyQuestionService;
+import craftvillage.bizlayer.services.SurveyServices;
 import craftvillage.bizlayer.services.UserService;
 import craftvillage.bizlayer.services.VillageServices;
-import craftvillage.datalayer.entities.SrSurveyQuestion;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.Village;
 
@@ -34,6 +33,9 @@ public class HouseholdController {
 
   @Autowired
   private SrSurveyQuestionService srSurveyQuestionService;
+
+  @Autowired
+  private SurveyServices surveyServices;
 
   @GetMapping("/declare")
   public String getForm(Model model, Principal principal) {
@@ -56,7 +58,7 @@ public class HouseholdController {
   public int newVillage(@RequestParam Map<String, String> form) {
     Village village = new Village();
     village.setVillageName(form.get("villageName"));
-    village.setCoordinate(form.get("longitude") + ", " + form.get("latitude"));
+    village.setCoordinate(form.get("latitude") + ", " + form.get("longitude"));
     village.setNote(form.get("note"));
     village.setHasAdded(0);
     village.setAdWard(addressService.getAdward(Integer.parseInt(form.get("ward"))));
@@ -71,11 +73,5 @@ public class HouseholdController {
     int villageId = Integer.parseInt(form.get("village"));
     user.setVillage(villageService.findVillageById(villageId));
     return userService.save(user) != null ? true : false;
-  }
-
-  @GetMapping("/question")
-  @ResponseBody
-  public List<SrSurveyQuestion> getQuestion() {
-    return srSurveyQuestionService.findByActive(1);
   }
 }

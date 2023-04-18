@@ -8,15 +8,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MailService {
-	private JavaMailSender javaMailSender;
-	
-	 @Autowired
-	    public MailService(JavaMailSender javaMailSender) {
-	        this.javaMailSender = javaMailSender;
-	    }
+  private JavaMailSender javaMailSender;
 
-	    @Async
-	    public void sendEmail(SimpleMailMessage email) {
-	        javaMailSender.send(email);
-	    }
+  @Autowired
+  public MailService(JavaMailSender javaMailSender) {
+    this.javaMailSender = javaMailSender;
+  }
+
+  @Async
+  public void sendEmail(SimpleMailMessage email) {
+    javaMailSender.send(email);
+  }
 }

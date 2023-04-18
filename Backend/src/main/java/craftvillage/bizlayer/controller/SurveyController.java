@@ -5,20 +5,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import craftvillage.bizlayer.services.AddressServices;
-import craftvillage.bizlayer.services.MyUserDetailsService;
+import craftvillage.bizlayer.services.SrSurveyQuestionService;
 import craftvillage.bizlayer.services.SurveyServices;
 import craftvillage.bizlayer.services.UserService;
 import craftvillage.corelayer.utilities.ConstantParameter;
+import craftvillage.datalayer.entities.SrSurveyQuestion;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.UserSurvey;
+import craftvillage.datalayer.entities.dto.HouseholdSurveyDTO;
 
 @RestController
 @RequestMapping("/" + ConstantParameter._URL_ROOT + "/" + ConstantParameter._URL_API + "/"
@@ -27,29 +30,42 @@ public class SurveyController {
   @Autowired
   private SurveyServices surveyServices;
   @Autowired
-  private MyUserDetailsService userDetailsService;
-  @Autowired
-  private AddressServices addressService;
-  @Autowired
   private UserService userService;
+  @Autowired
+  private SrSurveyQuestionService srSurveyQuestionService;
 
-  /**
-   * Function : getstatus : Trả về trạng thái của survey
-   * 
-   * @param activeId
-   * @param principal
-   * @return String
-   */
-  @RequestMapping(value = "/" + ConstantParameter.ServiceSurvey._SURVEY_GET_STATUS_SURVEY,
-      method = RequestMethod.GET)
-  public String getStatus(@RequestParam("id") int activeId, Principal principal) {
-    String account = principal.getName();
-    return surveyServices.getStatus(account, activeId);
+  @GetMapping("/question")
+  @ResponseBody
+  public List<SrSurveyQuestion> getQuestion() {
+    return srSurveyQuestionService.findByActive(1);
   }
 
-  @GetMapping("/getimage")
+  @GetMapping("/answer")
   @ResponseBody
-  public String getImage(@RequestParam("surveyId") int id) {
+  public Set<HouseholdSurveyDTO> getAnswer(Principal principal) {
+    UrUser user = userService.findByUsername(principal.getName());
+    return surveyServices.getHouseholdSurvey(user);
+  }
+
+  @GetMapping("/answerHousehold")
+  @ResponseBody
+  public Set<HouseholdSurveyDTO> getAnswerByHoushold(@RequestParam("householdId") int householdId) {
+    UrUser user = userService.findById(householdId);
+    return surveyServices.getHouseholdSurvey(user);
+  }
+
+  @PostMapping(value = "/answer", produces = "application/json")
+  @ResponseBody
+  public boolean submitAnswer(@RequestBody Map<String, List<Map<String, String>>> form,
+      Principal principal) {
+    List<Map<String, String>> answers = form.get("answers");
+    return surveyServices.addHouseholdSurvey(userService.findByUsername(principal.getName()),
+        answers);
+  }
+
+  @GetMapping("/getImage")
+  @ResponseBody
+  public Map<String, String> getImage(@RequestParam("surveyId") int id) {
     return surveyServices.getImageBySurveyId(id);
   }
 
@@ -76,27 +92,9 @@ public class SurveyController {
     return response;
   }
 
-  public SurveyServices getSurveyServices() {
-    return surveyServices;
-  }
-
-  public void setSurveyServices(SurveyServices surveyServices) {
-    this.surveyServices = surveyServices;
-  }
-
-  public MyUserDetailsService getUserDetailsService() {
-    return userDetailsService;
-  }
-
-  public void setUserDetailsService(MyUserDetailsService _userDetailsService) {
-    this.userDetailsService = _userDetailsService;
-  }
-
-  public AddressServices getAddressService() {
-    return addressService;
-  }
-
-  public void setAddressService(AddressServices addressService) {
-    this.addressService = addressService;
+  @GetMapping("/listImage")
+  @ResponseBody
+  public List<Integer> getListImage(@RequestParam("villageId") int villageId) {
+    return surveyServices.getListImage(villageId);
   }
 }

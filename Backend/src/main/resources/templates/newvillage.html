@@ -44,21 +44,17 @@
                         <li class="has-sub">
                             <a class="js-arrow open" href="#" >
                                 <i class="fa-solid fa-users"></i>Village</a>
-                            <ul class="list-unstyled navbar__sub-list js-sub-list">
+                            <ul class="list-unstyled navbar__sub-list js-sub-list" style="display: block;">
                                 <li class="active">
                                     <a th:href="@{/web/authority/newvillage}">
-                                        <i class="fa-solid fa-user-plus"></i>New</a>
+                                        <i class="fa-solid fa-user-plus"></i>New village</a>
                                 </li>
-<!--                                 <li>
-                                    <a th:href="@{/web/authority/villagedata}">
-                                        <i class="fa-solid fa-database"></i>Data</a>
-                                </li> -->
+                                <li>
+                                    <a th:href="@{/web/authority/map}">
+                                        <i class="fa-solid fa-map-location-dot"></i>Map</a>
+                                </li>
                             </ul>
                         </li>
-<!--                         <li>
-                            <a th:href="@{/web/authority/surveys}">
-                                <i class="fa-solid fa-file-lines"></i>Surveys</a>
-                        </li> -->
                     </ul>
                 </nav>
             </div>
@@ -106,7 +102,7 @@
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__footer">
-                                                <a id="btn-logout">
+                                                <a id="btn-logout" th:href="@{/web/logout}">
                                                     <i class="zmdi zmdi-power"></i>Logout</a>
                                             </div>
                                         </div>
@@ -221,6 +217,23 @@
                         	</div>
                         </div>
                     </div>
+                </div>
+                 <a href="#" title="Báo lỗi" class="btn-report" id="btn-report">
+                   	<i class="fa-regular fa-comment-dots fa-2x"></i>
+               	</a>
+                   
+                <div class="report-form" id="report-form">
+                   	<div class="report-header">
+                   		<label style="width: 90%; font-size: 24px; color: white; padding: 0 0 0 20px; vertical-align: middle; margin: 0;">Báo lỗi</label>
+                   		<a href="#" id="btn-close-report" style="font-size: 24px; color: white;">
+                   			<i class="fa-solid fa-circle-xmark"></i>
+                   		</a>
+                   	</div>
+                   	<div class="report-body">
+                   		<input class="report-title" id="report-title" type="text" placeholder="Lỗi gặp phải">
+                   		<textarea class="report-detail" id="report-detail" placeholder="Mô tả chi tiết"></textarea>
+                   		<button class="btn btn-primary btn-send-report" id="btn-send-report">Gửi</button>
+                   	</div>
                 </div>
             </div>
             <!-- modal static -->

@@ -84,3 +84,6 @@ $('#modal-change-password').on('click', function(){
 $('#modal-profile').on('click', function(){
     $('#staticModal2').modal();
 })
+// $('#modal-household-info-'+{id}).on('click', function() {
+    // $('#staticModal3').modal();
+// })
