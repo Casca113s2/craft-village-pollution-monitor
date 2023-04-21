@@ -61,11 +61,11 @@ public class SrSurveyQuestion implements java.io.Serializable {
   }
 
   @Column(name = "QUESTION_LABEL", length = 40)
-  public String getquestionLabel() {
+  public String getQuestionLabel() {
     return questionLabel;
   }
 
-  public void setquestionLabel(String questionLabel) {
+  public void setQuestionLabel(String questionLabel) {
     this.questionLabel = questionLabel;
   }
 
