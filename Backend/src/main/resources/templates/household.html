@@ -206,19 +206,17 @@
                                             </div>
                                         </div>
                                         <div class="row form-group">
-                                                <div class="col-6">
-                                                    <label for="x_card_code" class="control-label mb-1">Kinh độ</label>
-                                                    <div class="input-group">
-                                                        <input id="longitude" name="longitude" type="text" class="form-control cc-cvc">
-
-                                                    </div>
+                                                <div class="col-12" style="display: flex; width: 100%;justify-content: space-between;">
+	                                                <div style="width: 40%;">
+	                                                    <div class="control-label mb-1">Vĩ độ</div>
+	                                                    <input id="latitude" name="latitude" type="text" class="form-control cc-cvc">
+	                                                </div>
+	                                                <div style="width: 40%;">
+	                                                    <div class="control-label mb-1">Kinh độ</div>
+	                                                    <input id="longitude" name="longitude" type="text" class="form-control cc-cvc">
+	                                                </div>
                                                 </div>
-                                                <div class="col-6">
-                                                    <label for="x_card_code" class="control-label mb-1">Vĩ độ</label>
-                                                    <div class="input-group">
-                                                        <input id="latitude" name="latitude" type="text" class="form-control cc-cvc">
-                                                    </div>
-                                                </div>
+                                                
                                             </div>
                                         <div class="form-group">
                                             <label>Tên làng nghề</label>
@@ -498,15 +496,16 @@
 		        url: actionUrl,
 		        data: form.serialize(),
 		        success: function(data){
-		        	if(!data){
+		        	if(data.lenght == 0){
 			        	$('#success-message1').removeClass("display");
 			    		$('#error-message1').text("Phát hiện lỗi!");
 			    		$('#error-message1').addClass("display");
 		        	}
 		        	else{
-		        		$('#success-message1').text("Yêu cầu đã được gửi");
+		        		$('#success-message1').text("Khai báo thành công!");
 		        		$('#success-message1').addClass("display");
 			    		$('#error-message1').removeClass("display");
+			    		$('#hsx').text(`: ${data}`);
 		        	}
 		        }
 		    });

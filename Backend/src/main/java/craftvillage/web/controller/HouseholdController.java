@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import craftvillage.bizlayer.services.AddressServices;
 import craftvillage.bizlayer.services.SrSurveyQuestionService;
-import craftvillage.bizlayer.services.SurveyServices;
 import craftvillage.bizlayer.services.UserService;
 import craftvillage.bizlayer.services.VillageServices;
 import craftvillage.datalayer.entities.UrUser;
@@ -33,9 +32,6 @@ public class HouseholdController {
 
   @Autowired
   private SrSurveyQuestionService srSurveyQuestionService;
-
-  @Autowired
-  private SurveyServices surveyServices;
 
   @GetMapping("/declare")
   public String getForm(Model model, Principal principal) {
@@ -68,10 +64,11 @@ public class HouseholdController {
 
   @PostMapping("/village")
   @ResponseBody
-  public boolean village(@RequestParam Map<String, String> form, Principal principal) {
+  public String village(@RequestParam Map<String, String> form, Principal principal) {
     UrUser user = userService.findByUsername(principal.getName());
     int villageId = Integer.parseInt(form.get("village"));
-    user.setVillage(villageService.findVillageById(villageId));
-    return userService.save(user) != null ? true : false;
+    Village village = villageService.findVillageById(villageId);
+    user.setVillage(village);
+    return userService.save(user) != null ? village.getVillageName() : "";
   }
 }

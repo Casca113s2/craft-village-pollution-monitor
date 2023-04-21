@@ -11,11 +11,13 @@ import java.util.TimeZone;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import craftvillage.ai.QuestionDataSet;
 import craftvillage.datalayer.entities.HouseholdSurvey;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.UserSurvey;
 import craftvillage.datalayer.entities.Village;
 import craftvillage.datalayer.entities.dto.HouseholdSurveyDTO;
+import craftvillage.datalayer.repositories.DataSetRepository;
 import craftvillage.datalayer.repositories.HouseholdSurveyRepository;
 import craftvillage.datalayer.repositories.SrSurveyQuestionAnswerRepository;
 import craftvillage.datalayer.repositories.UserRepository;
@@ -26,21 +28,18 @@ import craftvillage.datalayer.repositories.VillageRepository;
 public class SurveyServices {
   @Autowired
   UserSurveyRepository userSurveyRepo;
-
   @Autowired
   UserSurveyRepository userSurveyRepository;
-
   @Autowired
   HouseholdSurveyRepository householdSurveyRepo;
-
   @Autowired
   SrSurveyQuestionAnswerRepository surveyQuestionAnswerRepository;
-
   @Autowired
   UserRepository userRepository;
-
   @Autowired
   VillageRepository villageRepository;
+  @Autowired
+  DataSetRepository dataSetRepo;
 
   public int countMonthlySurvey(Village village) {
     int count = 0;
@@ -94,6 +93,12 @@ public class SurveyServices {
       if (householdSurveyRepo.save(householdSurvey) == null) {
         return false;
       }
+    }
+    int villageId = user.getVillage().getVillageId();
+    if (dataSetRepo.updateDataSetByVillageId(villageId, QuestionDataSet.QUETION_IDS) > 0) {
+      System.out.println("Updated dataset with villageId: " + villageId);
+    } else {
+      System.out.println("Failed to update dataset with villageId: " + villageId);
     }
     return true;
   }
