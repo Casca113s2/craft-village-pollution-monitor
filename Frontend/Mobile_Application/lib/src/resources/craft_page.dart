@@ -193,6 +193,10 @@ class _CraftPageState extends State<CraftPage> {
     lgnQuestion = 0;
     lengthListQuest = 0;
 
+    _checkedAirPollution = false;
+    _checkedSoilPollution = false;
+    _checkedWaterPollution = false;
+
     countFatherQuest = 0;
     checkLoadingVillage = false;
     surveyStatus = new SurveyStatus();
@@ -626,7 +630,7 @@ class _CraftPageState extends State<CraftPage> {
                       Padding(
                         padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
                         child: SizedBox(
-                          width: _width / 3.5,
+                          width: _width / 2.5,
                           height: 52,
                           child: RaisedButton(
                             color: Colors.blue,
@@ -2725,6 +2729,43 @@ class _CraftPageState extends State<CraftPage> {
     }
   }
 
+  _setPollutionState(bool airValue, bool soilValue, bool waterValue) {
+    setState(() {
+      _checkedAirPollution = airValue;
+      _checkedSoilPollution = soilValue;
+      _checkedWaterPollution = waterValue;
+    });
+  }
+
+  getImageGPSTag(String path) async {
+
+    final fileBytes = File(path).readAsBytesSync();
+    final data = await readExifFromBytes(fileBytes);
+
+    final latitudeValue = data['GPS GPSLatitude'].values.map<double>( (item) => (item.numerator.toDouble() / item.denominator.toDouble()) ).toList();
+    final latitudeSignal = data['GPS GPSLatitudeRef'].printable;
+
+
+    final longitudeValue = data['GPS GPSLongitude'].values.map<double>( (item) => (item.numerator.toDouble() / item.denominator.toDouble()) ).toList();
+    final longitudeSignal = data['GPS GPSLongitudeRef'].printable;
+
+    double latitude = latitudeValue[0]
+      + (latitudeValue[1] / 60)
+      + (latitudeValue[2] / 3600);
+
+    double longitude = longitudeValue[0]
+      + (longitudeValue[1] / 60)
+      + (longitudeValue[2] / 3600);
+
+    if (latitudeSignal == 'S') latitude = -latitude;
+    if (longitudeSignal == 'W') longitude = -longitude;
+
+    print("Image GPS: " + latitude.toString() + " " + longitude.toString());
+
+    _latController.text = latitude.toStringAsFixed(7);
+    _longController.text = longitude.toStringAsFixed(7);
+  }
+
   _onTakePhotoImageClick(int index, BuildContext context) async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -2742,18 +2783,16 @@ class _CraftPageState extends State<CraftPage> {
       // _imageFile = ImagePicker().getImage(source: ImageSource.gallery);
 
       _imageFile.then((image) async {
-        // Geolocator _locationData = await location.getLocation();
+        Position _locationData = await Geolocator.getCurrentPosition();
 
         // _latController.text = _locationData.latitude.toString();
         // _longController.text = _locationData.longitude.toString();
 
-        Position _locationData = await Geolocator.getLastKnownPosition();
-
-        _latController.text = _locationData.latitude.toString();
-        _longController.text = _locationData.longitude.toString();
+        //Get GPS from image
+        await getImageGPSTag(image.path);
 
         setState(() {
-          print("IM HERE RIGHT NOW");
+          // print("IM HERE RIGHT NOW");
           _mapController
               .animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
             target: LatLng(double.parse(_latController.text),
@@ -2778,20 +2817,23 @@ class _CraftPageState extends State<CraftPage> {
           print("Tra ve: " + (imageDetectionResult != null).toString());
           if (imageDetectionResult != null) {
             imageDetectionResult.then((value) {
+
+              bool airValue = false;
+              bool soilValue = false;
+              bool waterValue = false;
+
               if (value['air_pollution'] > 50)
-                _checkedAirPollution = true;
-              else
-                _checkedAirPollution = false;
+                airValue = true;
 
               if (value['soil_pollution'] > 50)
-                _checkedSoilPollution = true;
-              else
-                _checkedSoilPollution = false;
+                soilValue = true;
 
               if (value['water_pollution'] > 50)
-                _checkedWaterPollution = true;
-              else
-                _checkedWaterPollution = false;
+                waterValue = true;
+
+              _setPollutionState(airValue, soilValue, waterValue);
+
+              print("Casca Here! - " + _checkedSoilPollution.toString());
             });
           }
 
@@ -2810,6 +2852,7 @@ class _CraftPageState extends State<CraftPage> {
                 setState(() {
                   lsProvince = pro;
                   lsProvince.forEach((f) {
+                    print("Debug here: " + value.toString());
                     if (f.provinceId == int.parse(value[0]["provinceId"]))
                       setState(() {
                         selectedProvince = f;
