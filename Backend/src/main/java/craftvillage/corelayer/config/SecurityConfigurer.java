@@ -61,6 +61,22 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     // url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_CHECK_VILLAGE);
 
     http.csrf().disable().authorizeRequests()
+        .antMatchers("/web/login", "/web/logout", "/vendor/**", "/css/*", "/fonts/**", "/images/**",
+            "/js/**", "/media/**", "/web/forgetpassword", "/craftvillage/api/survey/question",
+            "/web/signup", url_user + "/" + ConstantParameter.ServiceUser._USER_LOGIN,
+            url_user + "/" + ConstantParameter.ServiceUser._USER_REGISTER,
+            url_user + "/" + ConstantParameter.ServiceUser._USER_SEND_EMAIL,
+            url_user + "/" + ConstantParameter.ServiceUser._USER_FORGOTTEN_PASS,
+            url_user + "/" + ConstantParameter.ServiceUser._USER_GET_PASSWORD,
+            url_survey + "/" + ConstantParameter.ServiceSurvey._SURVEY_GET_SURVEY_BYID,
+            url_survey + "/" + ConstantParameter.ServiceSurvey._SURVEY_GET_ALL_SURVEY,
+            url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_COUNTRY,
+            url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_PROVINCE,
+            url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_DISTRICT,
+            url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_WARD,
+            url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_VILLAGE,
+            "/craftvillage/api/dataSet/getAll")
+        .permitAll()
         .antMatchers("/craftvillage/api/village/newvillage",
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_ADDRESS,
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_CHECK_VILLAGE,
@@ -84,23 +100,6 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         .antMatchers("/web/home", url_user + "/" + ConstantParameter.ServiceUser._USER_CHANGE_PASS,
             url_user + "/" + ConstantParameter.ServiceUser._USER_UPDATE_INFOR, "/report")
         .hasAnyAuthority("HOUSEHOLD", "LOCALAUTHORITY", "ADMIN", "USER")
-
-        .antMatchers("/web/login", "/web/logout", "/vendor/**", "/css/*", "/fonts/**", "/images/**",
-            "/js/**", "/media/**", "/web/forgetpassword", "/craftvillage/api/survey/question",
-            "/web/signup", url_user + "/" + ConstantParameter.ServiceUser._USER_LOGIN,
-            url_user + "/" + ConstantParameter.ServiceUser._USER_REGISTER,
-            url_user + "/" + ConstantParameter.ServiceUser._USER_SEND_EMAIL,
-            url_user + "/" + ConstantParameter.ServiceUser._USER_FORGOTTEN_PASS,
-            url_user + "/" + ConstantParameter.ServiceUser._USER_GET_PASSWORD,
-            url_survey + "/" + ConstantParameter.ServiceSurvey._SURVEY_GET_SURVEY_BYID,
-            url_survey + "/" + ConstantParameter.ServiceSurvey._SURVEY_GET_ALL_SURVEY,
-            url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_COUNTRY,
-            url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_PROVINCE,
-            url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_DISTRICT,
-            url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_WARD,
-            url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_VILLAGE,
-            "/craftvillage/api/dataSet**")
-        .permitAll()
 
         .anyRequest().authenticated().and().exceptionHandling()
         .authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
