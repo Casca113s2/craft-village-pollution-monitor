@@ -11,7 +11,6 @@ import java.util.TimeZone;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import craftvillage.ai.QuestionDataSet;
 import craftvillage.datalayer.entities.HouseholdSurvey;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.UserSurvey;
@@ -95,7 +94,7 @@ public class SurveyServices {
       }
     }
     int villageId = user.getVillage().getVillageId();
-    if (dataSetRepo.updateDataSetByVillageId(villageId, QuestionDataSet.QUETION_IDS) > 0) {
+    if (dataSetRepo.updateDataSetByVillageId(villageId) > 0) {
       System.out.println("Updated dataset with villageId: " + villageId);
     } else {
       System.out.println("Failed to update dataset with villageId: " + villageId);
