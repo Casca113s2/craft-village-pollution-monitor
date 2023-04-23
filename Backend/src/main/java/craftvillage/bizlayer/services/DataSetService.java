@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import craftvillage.ai.Answer;
 import craftvillage.ai.DataSet;
 import craftvillage.ai.DataSetDTO;
-import craftvillage.ai.DetectedDataDTO;
 import craftvillage.ai.Question;
 import craftvillage.datalayer.repositories.DataSetRepository;
 import craftvillage.datalayer.repositories.SrSurveyQuestionRepository;
@@ -34,8 +33,8 @@ public class DataSetService {
     return result;
   }
 
-  public DetectedDataDTO getDetectedDataByVillageId(int villageId) {
-    return new DetectedDataDTO(villageId, dataSetFormatter(villageId));
+  public List<Question> getDetectedDataByVillageId(int villageId) {
+    return dataSetFormatter(villageId);
   }
 
   private List<Question> dataSetFormatter(int villageId) {
