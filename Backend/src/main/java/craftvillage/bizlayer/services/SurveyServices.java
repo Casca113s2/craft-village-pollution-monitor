@@ -93,12 +93,12 @@ public class SurveyServices {
         return false;
       }
     }
-    int villageId = user.getVillage().getVillageId();
-    if (dataSetRepo.updateDataSetByVillageId(villageId) > 0) {
-      System.out.println("Updated dataset with villageId: " + villageId);
-    } else {
-      System.out.println("Failed to update dataset with villageId: " + villageId);
-    }
+    // int villageId = user.getVillage().getVillageId();
+    // if (dataSetRepo.updateDataSetByVillageId(villageId) > 0) {
+    // System.out.println("Updated dataset with villageId: " + villageId);
+    // } else {
+    // System.out.println("Failed to update dataset with villageId: " + villageId);
+    // }
     return true;
   }
 
