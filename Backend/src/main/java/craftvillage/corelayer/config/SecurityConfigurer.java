@@ -75,7 +75,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_DISTRICT,
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_WARD,
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_VILLAGE,
-            "/craftvillage/api/dataSet/getAll")
+            "/craftvillage/api/dataSet/getAll", "/craftvillage/api/survey/question")
         .permitAll()
         .antMatchers("/craftvillage/api/village/newvillage",
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_ADDRESS,
@@ -93,7 +93,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         .antMatchers("/web/authority/**", "/craftvillage/api/survey/listImage", "/api/map/**",
             "/craftvillage/api/survey/getImage", "/craftvillage/api/survey/answerHousehold",
             "/craftvillage/api/village/update")
-        .hasAuthority("LOCALAUTHORITY").antMatchers("/administration/**").hasAuthority("ADMIN")
+        .hasAuthority("LOCALAUTHORITY")
+        .antMatchers("/administration/**", "/craftvillage/api/survey/question")
+        .hasAuthority("ADMIN")
 
         .antMatchers("/web/home").hasAnyAuthority("HOUSEHOLD", "LOCALAUTHORITY", "ADMIN")
 
