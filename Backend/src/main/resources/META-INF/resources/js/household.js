@@ -1,5 +1,6 @@
 var acc = document.getElementsByClassName("accordion");
 var i;
+var required_checkbox = [];
 
 async function handleSlide() {
     for (i = 0; i < acc.length; i++) {
@@ -39,6 +40,7 @@ function getQuestionList(render) {
       if(data1.length != 0) {
           var question_list = document.querySelector(".question_list");
           questionUI = data.map((item) => {
+            // console.log(item.required === 1);
           var question_label = (item.questionLabel) ? "(" + item.questionLabel + ")" : "";
           if (
             item.questionType === "TextFieldNumber" ||
@@ -49,20 +51,20 @@ function getQuestionList(render) {
               //console.log(item.srSurveyQuestionAnswers.id)
               //console.log(item1.answerId)
               return item1.answerId === item.srSurveyQuestionAnswers[0].id
-            })
-            //console.log(answer);
+            })            
             
             return `
               <div class="question_item question_text-filed">
-              <div class="question_content">${item.questionContent} ${question_label}</div>
+              <div class="question_content">${item.questionContent} ${question_label} <label style="color: red">${item.required === 1 ? "*" :""}</lable></div>
               ${(() => {
                 return item.srSurveyQuestionAnswers
                   .map((item2) => {
                     return `
                       <input type = ${(item.questionType === "TextFieldNumber" ? "number" : "text")}
-                            name = t${item2.id}
+                            name =  '${item.questionType === "TextFieldNumber" ? "n" : "t"}${item2.id}'
                             placeholder = '${item.questionType === "TextFieldNumber" ? "" : item2.answerContent}' 
-                            value = '${typeof answer === "undefined" ? "" : answer.answerContent}'       
+                            value = '${typeof answer === "undefined" ? "" : answer.answerContent}'
+                            ${item.required===1 ? "required" :""}
                       />
                     `
                   })
@@ -81,7 +83,7 @@ function getQuestionList(render) {
             //console.log(answer);
             return `
               <div class="question_item question_radio">
-                  <div class="question_content">${item.questionContent}</div>
+                  <div class="question_content">${item.questionContent} <label style="color: red">${item.required === 1 ? "*" :""}</lable></div>
                   <ul>
                       ${(() => {
                         return item.srSurveyQuestionAnswers
@@ -93,6 +95,7 @@ function getQuestionList(render) {
                                     id="${item2.id}" 
                                     value="${item2.id}" 
                                     ${typeof answer !== "undefined" ? (item2.id === answer.answerId ? "checked" : "") : ""}
+                                    ${item.required===1 ? "required" : ""}
                                   />
                                   <label for="${item2.id}">${item2.answerContent}</label>
                               </li>`;
@@ -109,9 +112,16 @@ function getQuestionList(render) {
               return item_temp.id === item1.answerId
             })
           })
+
+          //Save to validate
+          if(item.required === 1) required_checkbox.push(item.id);
+
           return `
           <div class="question_item question_checkbox">
-          <div class="question_content">${item.questionContent}</div>
+          <div class="question_content" id="${item.id}">
+            ${item.questionContent} 
+            <label style="color: red">${item.required === 1 ? "*" :""}</lable>
+          </div>
           <ul>
           ${(() => {
             return item.srSurveyQuestionAnswers
@@ -119,7 +129,7 @@ function getQuestionList(render) {
                 return `<li>
                         <input 
                           type="checkbox" 
-                          name="${item2.id}" 
+                          name="${item.id}[]" 
                           id="${item2.id}" 
                           value="${item2.id}"
                           ${answer.find(function(item_temp) {
@@ -152,14 +162,15 @@ function getQuestionList(render) {
             
             return `
               <div class="question_item question_text-filed">
-              <div class="question_content">${item.questionContent} ${question_label}</div>
+              <div class="question_content">${item.questionContent} ${question_label} <label style="color: red">${item.required === 1 ? "*" :""}</lable></div>
               ${(() => {
                 return item.srSurveyQuestionAnswers
                   .map((item2) => {
                     return `
                       <input type = ${(item.questionType === "TextFieldNumber" ? "number" : "text")}
                             name = t${item2.id}
-                            placeholder = '${item.questionType === "TextFieldNumber" ? "" : item2.answerContent}'       
+                            placeholder = '${item.questionType === "TextFieldNumber" ? "" : item2.answerContent}'
+                            ${item.required===1 ? "required" :""}       
                       />
                     `
                   })
@@ -171,7 +182,7 @@ function getQuestionList(render) {
           else if (item.questionType === "RadioCheckBox"){
             return `
               <div class="question_item question_radio">
-                  <div class="question_content">${item.questionContent}</div>
+                  <div class="question_content">${item.questionContent} <label style="color: red">${item.required === 1 ? "*" :""}</lable></div>
                   <ul>
                       ${(() => {
                         return item.srSurveyQuestionAnswers
@@ -182,6 +193,7 @@ function getQuestionList(render) {
                                     name="${item.id}" 
                                     id="${item2.id}" 
                                     value="${item2.id}" 
+                                    ${item.required===1 ? "required" :""}
                                   />
                                   <label for="${item2.id}">${item2.answerContent}</label>
                               </li>`;
@@ -193,9 +205,15 @@ function getQuestionList(render) {
               `;
           }
           
+          //Save to validate
+          if(item.required === 1) required_checkbox.push(item.id);
+          
           return `
           <div class="question_item question_checkbox">
-          <div class="question_content">${item.questionContent}</div>
+          <div class="question_content" id="${item.id}">
+            ${item.questionContent} 
+            <label style="color: red">${item.required === 1 ? "*" :""}</lable>
+          </div>
           <ul>
           ${(() => {
             return item.srSurveyQuestionAnswers
@@ -203,7 +221,7 @@ function getQuestionList(render) {
                 return `<li>
                         <input 
                           type="checkbox" 
-                          name="${item2.id}" 
+                          name="${item.id}[]" 
                           id="${item2.id}" 
                           value="${item2.id}"
                         />

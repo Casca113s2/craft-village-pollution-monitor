@@ -95,9 +95,9 @@ $( document ).ready(function(){
 			$("#longitude").val(coordinate[1]);
 			$("#latitude").val(coordinate[0]);
 			$("#note").val(villages[index].note);
-			if(villages[index].state[0] === '1') $('#earth').prop('checked', true);
-            if(villages[index].state[1] === '1') $('#air').prop('checked', true)
-            if(villages[index].state[2] === '1') $('#water').prop('checked', true)
+			if(villages[index].state[0] === '1') $('#earth').prop('checked', true); else $('#earth').prop('checked', false);
+            if(villages[index].state[1] === '1') $('#air').prop('checked', true); else $('#air').prop('checked', false);
+            if(villages[index].state[2] === '1') $('#water').prop('checked', true); else $('#water').prop('checked', false);
 			point_index_temp = index;
 
 			//khi chưa click nào cả
