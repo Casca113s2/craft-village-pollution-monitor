@@ -223,6 +223,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="map-container">
@@ -230,7 +231,22 @@
                                         <div id="map">
                                             <a href="https://www.maptiler.com" style="position:absolute;left:10px;bottom:10px;z-index:999;"><img src="https://api.maptiler.com/resources/logo.svg" alt="MapTiler logo"></a>
                                         </div>
-                                        <p><a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a></p>
+                                        <!-- <p><a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a></p> -->
+                                        <!-- <div class="filter-pollution">
+                                            <label for="filter" class="filter"><b>Lọc:</b></label> 
+                                            <label for="earth" class="pollution-label-filter">
+                                              <input id="earth-filter" type="checkbox">
+                                              Đất
+                                            </label>
+                                            <label for="air" class="pollution-label-filter">
+                                              <input id="air-filter" type="checkbox">
+                                              Không khí
+                                            </label>
+                                            <label for="water" class="pollution-label-filter">
+                                              <input id="water-filter" type="checkbox">
+                                              Nước
+                                            </label>
+                                        </div> -->
                                     </div>
 									<div class="map-detail">
 										<div class="map-label-container">
@@ -258,15 +274,15 @@
 										<div>Cảnh báo ô nhiễm:</div>
 										<div style="display: flex; width: 100%; justify-content: space-between;">
 											<div style="width: 30%;">
-												<input id="earth" type="checkbox" value="1"/>
+												<input id="earth" type="checkbox" />
 												<label for="earth" class="pollution-label">Đất</label>
 											</div>
 											<div style="width: 30%;">
-												<input id="air" type="checkbox" value="1"/>
+												<input id="air" type="checkbox" />
 												<label for="air" class="pollution-label">Không khí</label>
 											</div>
 											<div style="width: 30%;">
-												<input id="water" type="checkbox" value="1"/>
+												<input id="water" type="checkbox"/>
 												<label for="water" class="pollution-label">Nước</label>
 											</div>			
 										</div>
@@ -553,12 +569,18 @@
                 // document.getElementById('village-name').innerHTML = village_name
 
                 $.getJSON("/api/map/getVillage?villageId="+id, function(data) {
+                    console.log(data);
                     if (map.hasLayer(marker)) map.removeLayer(marker);
-                    var coordinate = data.coordinate.split(", ");
-                    $("#ward-name").html(data.wardName);
-                    $("#latitude").html(parseFloat(coordinate[0]).toFixed(5));
-                    $("#longitude").html(parseFloat(coordinate[1]).toFixed(5));                   
-                    });
+                        var coordinate = data.coordinate.split(", ");
+                        $("#ward-name").html(data.wardName);
+                        $("#latitude").html(parseFloat(coordinate[0]).toFixed(5));
+                        $("#longitude").html(parseFloat(coordinate[1]).toFixed(5));
+                        
+                        //Pollution
+                        if(data.state[0] === '1') $('#earth').prop('checked', true); else $('#earth').prop('checked', false);
+                        if(data.state[1] === '1') $('#air').prop('checked', true); else $('#air').prop('checked', false);
+                        if(data.state[2] === '1') $('#water').prop('checked', true); else $('#water').prop('checked', false);
+                });
 
                     $.getJSON("/api/map/getHousehold?villageId="+id, function(data) {
                     $("#household-number").html(data.length);               
@@ -570,7 +592,7 @@
                 fetch("/craftvillage/api/survey/listImage?villageId="+id)
                  .then((res) => res.json())
                  .then((data) => {
-                    console.log(data.length == 0);
+                    //console.log(data.length == 0);
                     current.textContent= (data.length) ? 1 : 0
                     total.textContent=data.length 
                     if(data.length != 0) {

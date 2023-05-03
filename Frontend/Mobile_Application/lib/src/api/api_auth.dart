@@ -54,7 +54,8 @@ class ApiAuth {
     var response = await http
         .post(
       // ConstantParameter.getAIAddressUrl(),
-      Uri.parse('http://10.0.2.2:8000/detect'), //Emulator
+      // Uri.parse('http://10.0.2.2:8000/detect'), //Emulator
+      Uri.parse('http://150.95.113.16:8000/detect'), //Server
       // headers: <String, String>{
       //   'Content-Type': 'application/x-www-form-urlencoded',
       // },
@@ -676,6 +677,8 @@ class ApiAuth {
     print("SUBMIT HERE: " + villageId);
     String token = sharedPreferences.getString("token");
     var jsonResponse = null;
+
+    print("Note: " + note);
     var response = await http.post(
         Uri.parse(
             ConstantParameter.getAddressUrl() + ServiceVillage.submitVillage()),

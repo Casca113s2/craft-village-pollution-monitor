@@ -95,6 +95,9 @@ $( document ).ready(function(){
 			$("#longitude").val(coordinate[1]);
 			$("#latitude").val(coordinate[0]);
 			$("#note").val(villages[index].note);
+			if(villages[index].state[0] === '1') $('#earth').prop('checked', true); else $('#earth').prop('checked', false);
+            if(villages[index].state[1] === '1') $('#air').prop('checked', true); else $('#air').prop('checked', false);
+            if(villages[index].state[2] === '1') $('#water').prop('checked', true); else $('#water').prop('checked', false);
 			point_index_temp = index;
 
 			//khi chưa click nào cả
@@ -155,8 +158,9 @@ $( document ).ready(function(){
 		
 	$("#btn-update").click(function(){
 		//validate
-
-		if($("#villageName").val()=="" || $("#latitude").val()=="" || $("#longitude").val()==""){
+		if(point_index==-1) return alert("Bạn chưa chọn làng nghề");
+		
+		if($("#villageName").val().trim()=="" || $("#latitude").val().trim()=="" || $("#longitude").val().trim()==""){
 			//console.log($("#longitude").val() + " + " + $("#latitude").val() + " + " + $("#villageName").val());
 			return alert("Vui lòng điền đầy đủ thông tin")
 		}
@@ -165,10 +169,10 @@ $( document ).ready(function(){
 		data = {}
 		data.villageId   = villages[point_index].villageId;
 		data.wardId      = Number($("#ward").val());
-		data.note        = $("#note").val();		
-		data.longitude   = $("#longitude").val();
-		data.latitude	= $("#latitude").val();
-		data.villageName = $("#villageName").val();
+		data.note        = $("#note").val().trim();		
+		data.longitude   = $("#longitude").val().trim();
+		data.latitude	= $("#latitude").val().trim();
+		data.villageName = $("#villageName").val().trim();
 		let state = "";
 		if($('#earth').is(':checked')){
 			state += "1";

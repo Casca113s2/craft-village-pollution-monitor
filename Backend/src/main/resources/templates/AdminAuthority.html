@@ -168,13 +168,16 @@
                                 <div class="card">
                                     <div class="card-header">Question</div>
                                     <div class="card-body">
-                                    	<div id="questionList">
-                                    		<div class="question">
+										<form id="update-question" th:action="@{/craftvillage/api/survey/question}">
+											<div id="questionList">
+
+											</div>
+											<button class="btn btn-primary" style="margin-left: auto; margin-right: 0; display: block;">Save</button>
+										</form>
+                                    		<!-- <div class="question">
 	                                    		<label class="question-content">cau hoi 1</label>
 	                                    		<input type="checkbox" name="question1" class="question-checkbox">
-	                                    	</div>                                    	
-                                    	</div>
-                                    	<button class="btn btn-primary" style="margin-left: auto; margin-right: 0; display: block;">Save</button>
+	                                    	</div> -->
                                     </div>
                                 </div>
                             </div>
@@ -284,6 +287,28 @@
     <script th:src="@{/js/admin.js}"></script>
 	<script type="text/javascript">
 		
+		$(document).ready(function() {
+			$.get("/craftvillage/api/survey/question", function(data) {
+				//console.log(data);
+				let QL = ``;
+				$('#questionList').empty();
+				for(let i=0; i<data.length; i++) {
+					QL += `
+						<div class="question">
+							<label class="question-content">${data[i].questionContent}</label>
+							<input class="question-checkbox"
+								id="${data[i].id}"
+								type="checkbox" 
+								name="${data[i].id}" 
+								${data[i].required === 1 ? "checked" : ""}
+							>
+						</div>    
+					`
+				}
+				$('#questionList').append(QL)
+			});
+		});
+
 		$('#select-province1').on('change', function() {
 		  	$.get("/craftvillage/api/address/getdistrictlist?provinceid=" + this.value, function(data){
 		  		$('#select-district1').empty()
@@ -338,6 +363,35 @@
 			        	$('#success-message1').removeClass("display");
 			    		$('#error-message1').text(data.message);
 			    		$('#error-message1').addClass("display");
+		        	}
+		        }
+		    });
+		})
+
+		$('#update-question').submit(function(e) {
+			e.preventDefault();
+			var form = $(this);
+			//console.log(form);
+			var questions = [];
+			form.find('input[type="checkbox"]').each(function() {
+				let question_temp = {}
+				question_temp.questionId = $(this).attr('name');
+				question_temp.required   = ($(this).is(':checked') === true) ? 1 : 0;
+				questions.push(question_temp);
+    		});
+			var actionUrl = form.attr('action')
+			$.ajax({
+		        type: "PUT",
+                contentType: "application/json; charset=utf-8",
+		        url: actionUrl,
+		        data: JSON.stringify(questions),
+		        success: function(data){
+		        	if(!data){
+                        alert("Phát hiện lỗi!")
+		        	}
+		        	else{
+						location.reload()
+                        alert("Yêu cầu đã được gửi")
 		        	}
 		        }
 		    });

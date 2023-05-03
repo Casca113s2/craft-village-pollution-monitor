@@ -68,7 +68,7 @@ function getQuestionList(id) {
 			  item.questionType === "TextField"           
 			){
 			  //console.log(item.srSurveyQuestionAnswers[0].id)
-			  var answer = data1.find(function(item1) {
+			  let answer = data1.find(function(item1) {
 				//console.log(item.srSurveyQuestionAnswers.id)
 				//console.log(item1.answerId)
 				return item1.answerId === item.srSurveyQuestionAnswers[0].id
