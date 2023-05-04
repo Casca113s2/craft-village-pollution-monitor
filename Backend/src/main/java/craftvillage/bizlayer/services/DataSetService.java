@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import craftvillage.ai.Answer;
 import craftvillage.ai.DataSet;
 import craftvillage.ai.DataSetDTO;
+import craftvillage.ai.DetectedDataDTO;
 import craftvillage.ai.Question;
 import craftvillage.datalayer.repositories.DataSetRepository;
 import craftvillage.datalayer.repositories.SrSurveyQuestionRepository;
@@ -23,7 +24,7 @@ public class DataSetService {
   @Autowired
   SrSurveyQuestionRepository questionRepo;
 
-  public List<DataSetDTO> getAllDataSet() {
+  public List<DataSetDTO> getAllDataSetAndPollution() {
     List<DataSetDTO> result = new ArrayList<DataSetDTO>();
     List<Integer> villageIds = dataSetRepo.getAllVillageId();
     for (Integer villageId : villageIds) {
@@ -33,8 +34,13 @@ public class DataSetService {
     return result;
   }
 
-  public List<Question> getDetectedDataByVillageId(int villageId) {
-    return dataSetFormatter(villageId);
+  public List<DetectedDataDTO> getAllDataSetAndVillageId() {
+    List<DetectedDataDTO> result = new ArrayList<DetectedDataDTO>();
+    List<Integer> villageIds = dataSetRepo.getAllVillageId();
+    for (Integer villageId : villageIds) {
+      result.add(new DetectedDataDTO(villageId, dataSetFormatter(villageId)));
+    }
+    return result;
   }
 
   private List<Question> dataSetFormatter(int villageId) {

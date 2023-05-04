@@ -17,6 +17,6 @@ public class DataSetController {
 
   @GetMapping("/getAll")
   public List<DataSetDTO> getAllDataSet() {
-    return dataSetService.getAllDataSet();
+    return dataSetService.getAllDataSetAndPollution();
   }
 }
