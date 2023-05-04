@@ -21,6 +21,74 @@ var lon_temp = 0;
 // var markers = [];
 $( document ).ready(function(){
 	setTimeout(()=> {
+		loadAllMarker();
+		//console.log(mapMarkers);
+		switchChildHandler();
+		villageClickHandler();
+	}, 500)
+	
+	function switchChildHandler(){
+		//thiết lập cho từng thành phần con
+		$(".switch-child").click(function() {
+			index = $(this).attr("index")
+			let checked = $(this).is(":checked")
+			//console.log(index + " " + checked);
+			if(checked == true) {
+				switchAllOnOff[index] = 1;
+				if(!switchAllOnOff.includes(0)) document.getElementById("switch-all").checked = true;
+				let coordinate = villages[index].coordinate.split(", ");
+				markers[villages[index].villageId] = L.marker([+coordinate[0], +coordinate[1]], {
+					icon: myIcon,
+				}).addTo(map)
+				markers[villages[index].villageId].bindPopup(villages[index].villageName)
+						markers[villages[index].villageId].on('mouseover', function(e){
+							this.openPopup();
+				});
+				markers[villages[index].villageId].on('mouseout', function(e){
+					this.closePopup();
+				});
+				//mapMarkers.push(villages[index].villageId)
+			}
+			else {
+				map.removeLayer(markers[mapMarkers[index]])
+				//tắt chọn tất cả
+				//console.log($(""))
+				if (!$('#list-village-header').is(':empty')){
+					document.getElementById("switch-all").checked = false;	
+				}
+				//đổi trạng tháng phường trong biến switchAllOnOff
+				switchAllOnOff[index] = 0;
+			}
+		});
+	}
+
+	var index;
+
+	function clearAllMarker() {
+		for(let i = 0; i < mapMarkers.length; i++)
+			if(map.hasLayer(markers[mapMarkers[i]])) {
+				map.removeLayer(markers[mapMarkers[i]])
+				switchAllOnOff[i] = 0;
+			}
+	}
+
+	function loadAllMarker() {
+		$("#list-village-header").empty();
+		$('#list-village-body').empty();
+		mapMarkers = [];
+		markers = {};
+		switchAllOnOff = [];
+		$("#list-village-header").append(`
+			<div class="list-village-header" >
+				<label style="font-size: 20px; margin: 0; color: #4272d7;">Chọn tất cả</label>
+				<label class="switch switch-3d switch-primary mr-3" style="margin: auto;">
+					<input id="switch-all" type="checkbox" class="switch-input" checked>
+					<span class="switch-label"></span>
+					<span class="switch-handle"></span>
+				</label>
+			</div>
+		`)
+
 		for (let i=0; i < villages.length; i++) {
 			$("#list-village-body").append(`
 				<div class="village-tag" index="${i}">
@@ -56,35 +124,11 @@ $( document ).ready(function(){
 				this.closePopup();
 			});
 		}
-		//console.log(mapMarkers);
+		let check_test = $("#switch-all").prop("checked");
+		if(check_test === false) $("#switch-all").prop("checked", true);
+	}
 
-		//thiết lập cho từng thành phần con
-		$(".switch-child").click(function() {
-			index = $(this).attr("index")
-			let checked = $(this).is(":checked")
-			//console.log(index + " " + checked);
-			if(checked == true) {
-				switchAllOnOff[index] = 1;
-				if(!switchAllOnOff.includes(0)) document.getElementById("switch-all").checked = true;
-				let coordinate = villages[index].coordinate.split(", ");
-				markers[villages[index].villageId] = L.marker([+coordinate[0], +coordinate[1]], {
-					icon: myIcon,
-				}).addTo(map)
-				//mapMarkers.push(villages[index].villageId)
-			}
-			else {
-				map.removeLayer(markers[mapMarkers[index]])
-				//tắt chọn tất cả
-				document.getElementById("switch-all").checked = false;
-				//đổi trạng tháng phường trong biến switchAllOnOff
-				switchAllOnOff[index] = 0;
-			}
-		});
-	}, 500)
-	
-	var index;
-
-	setTimeout(() => {
+	function villageClickHandler(){
 		$(".village-tag").click(function(){
 			point_index = point_index_temp
 			//ban đầu
@@ -154,7 +198,8 @@ $( document ).ready(function(){
 				}
 			})
 		});
-	}, 1000);
+	}
+		
 		
 	$("#btn-update").click(function(){
 		//validate
@@ -250,7 +295,15 @@ $( document ).ready(function(){
 					if(!map.hasLayer(markers[mapMarkers[i]])) {
 						markers[villages[i].villageId] = L.marker([+coordinate[0], +coordinate[1]], {
 							icon: myIcon,
-						}).addTo(map)
+						}).addTo(map);
+						markers[villages[i].villageId].bindPopup(villages[i].villageName)
+						markers[villages[i].villageId].on('mouseover', function(e){
+							this.openPopup();
+
+						});
+						markers[villages[i].villageId].on('mouseout', function(e){
+							this.closePopup();
+						});
 					}
 					switchAllOnOff[i] = 1;	
 				}		
@@ -267,5 +320,71 @@ $( document ).ready(function(){
 				
 		}
 	});
+
+	function searchVillages(query) {
+		var filteredVillages = [];
+		// villages.filter(function(village, index) {
+		// 	console.log(index)
+		// 	return village.villageName.toLowerCase().indexOf(query.toLowerCase()) > -1;
+		// });
+
+		clearAllMarker();
+
+		//bỏ nút chọn tất cả
+		$("#list-village-header").empty();
+
+		for(let i=0; i<villages.length; i++) {
+			if(villages[i].villageName.toLowerCase().includes(query.toLowerCase())) {
+				filteredVillages[i] = villages[i];
+			}
+			else {
+				filteredVillages[i] = "null";
+			}
+		}
+		console.log(filteredVillages);
+
+		// display the filtered villages
+		$('#list-village-body').empty();
+		filteredVillages.forEach(function(village, index) {
+			if(village !== 'null'){
+				$('#list-village-body').append(`
+					<div class="village-tag" index="${index}">
+					<span class="village-field-name">${village.villageName}</span>
+					<label class="switch switch-3d switch-primary mr-3" style="margin: auto;">
+						<input id="child-switch-${index}" type="checkbox" class="switch-input switch-child" checked="true" index="${index}">
+						<span class="switch-label"></span>
+						<span class="switch-handle"></span>
+					</label>
+					</div>
+				`);
+				// taoj laji marker
+				switchAllOnOff[index] = 1;
+				let coordinate = villages[index].coordinate.split(", ");
+				markers[villages[index].villageId] = L.marker([+coordinate[0], +coordinate[1]], {
+					icon: myIcon,
+				}).addTo(map)
+				markers[villages[index].villageId].bindPopup(villages[index].villageName)
+						markers[villages[index].villageId].on('mouseover', function(e){
+							this.openPopup();
+				});
+				markers[villages[index].villageId].on('mouseout', function(e){
+					this.closePopup();
+				});
+			}		
+		});
+	  }
+	  
+	  $('#search-input').on('input change', function() {
+		var query = $(this).val();
+		//console.log(query);
+		if(query == ""){
+			clearAllMarker();
+			loadAllMarker();
+			return;
+		}
+		searchVillages(query);
+		switchChildHandler();
+		villageClickHandler();
+	  });
 
 });

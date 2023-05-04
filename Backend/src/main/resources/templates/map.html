@@ -87,11 +87,17 @@
                             	<div class="noti-wrap">
 	                            	<div class="noti__item js-item-menu">
                                         <i class="zmdi zmdi-notifications"></i>
-                                        <span class="quantity">!</span>
-                                        <div class="notifi-dropdown js-dropdown">
+                                        <span class="quantity" id="quantity-noti">!</span>
+                                        <div class="notifi-dropdown js-dropdown" id="noti-dropdown">
                                             <div class="notifi__item">
                                                 <div class="content">
                                                     <p>Title</p>
+                                                    <span class="date">content</span>
+                                                </div>
+                                            </div>
+                                            <div class="notifi__item">
+                                                <div class="content">
+                                                    <p>Title2</p>
                                                     <span class="date">content</span>
                                                 </div>
                                             </div>
@@ -154,7 +160,7 @@
                                     <div id="map">
                                         <a href="https://www.maptiler.com" ><img src="https://api.maptiler.com/resources/logo.svg" alt="MapTiler logo"></a>
                                     </div>
-                                    <p><a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a></p>
+                                    <!-- <p><a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a></p> -->
                                 </div>
 								<div class="village-info-container">
 									<div class="village-info-left">
@@ -210,13 +216,21 @@
                             </div>
                             <div class="col-md-4">
 								<div class="list-village-container">
-									<div class="list-village-header">
-										<label style="font-size: 20px; margin: 0; color: #4272d7;">Chọn tất cả</label>
+                                    <div class="list-village-search">
+                                        <input type="text" id="search-input" placeholder="Search...">
+                                        <button id="search-btn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+									<div id="list-village-header">
+										<!-- <label style="font-size: 20px; margin: 0; color: #4272d7;">Chọn tất cả</label>
 										<label class="switch switch-3d switch-primary mr-3" style="margin: auto;">
 					                      <input id="switch-all" type="checkbox" class="switch-input" checked>
 					                      <span class="switch-label"></span>
 					                      <span class="switch-handle"></span>
-					                    </label>
+					                    </label> -->
 									</div>
 									<div id="list-village-body">
 										
@@ -362,6 +376,7 @@
         });
     </script>
     <script th:src="@{/js/map.js}"></script>
+    <script th:src="@{/js/notification.js}"></script>
 </body>
 
 </html>

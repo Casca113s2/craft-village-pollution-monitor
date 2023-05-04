@@ -88,8 +88,8 @@
 	                            <div class="noti-wrap">
 	                            	<div class="noti__item js-item-menu">
                                         <i class="zmdi zmdi-notifications"></i>
-                                        <span class="quantity">!</span>
-                                        <div class="notifi-dropdown js-dropdown">
+                                        <span class="quantity" id="quantity-noti">!</span>
+                                        <div class="notifi-dropdown js-dropdown" id="noti-dropdown">
                                             <div class="notifi__item">
                                                 <div class="content">
                                                     <p>Title</p>
@@ -232,21 +232,21 @@
                                             <a href="https://www.maptiler.com" style="position:absolute;left:10px;bottom:10px;z-index:999;"><img src="https://api.maptiler.com/resources/logo.svg" alt="MapTiler logo"></a>
                                         </div>
                                         <!-- <p><a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a></p> -->
-                                        <!-- <div class="filter-pollution">
+                                        <div class="filter-pollution">
                                             <label for="filter" class="filter"><b>Lọc:</b></label> 
-                                            <label for="earth" class="pollution-label-filter">
+                                            <label for="earth-filter" class="pollution-label-filter">
                                               <input id="earth-filter" type="checkbox">
                                               Đất
                                             </label>
-                                            <label for="air" class="pollution-label-filter">
+                                            <label for="air-filter" class="pollution-label-filter">
                                               <input id="air-filter" type="checkbox">
                                               Không khí
                                             </label>
-                                            <label for="water" class="pollution-label-filter">
+                                            <label for="water-filter" class="pollution-label-filter">
                                               <input id="water-filter" type="checkbox">
                                               Nước
                                             </label>
-                                        </div> -->
+                                        </div>
                                     </div>
 									<div class="map-detail">
 										<div class="map-label-container">
@@ -492,6 +492,8 @@
         //var map = L.map('map').setView([9.2940, 105.7216], 13); 
         var map;
         var marker ={};
+        var id_marker = [];
+        var villages = [];
         fetch("/api/map/getVillageLocation")
          .then((res) => res.json())
          .then((data) => {           
@@ -509,7 +511,7 @@
             }).addTo(map);
 
             //Hiện các marker làng nghề
-            let villages =  data.villages
+            villages =  data.villages
             //console.log();
             var markers = {}
             villages.map((item) => {
@@ -536,6 +538,9 @@
                 markers[item.villageId].on('mouseout', function(e){
                     this.closePopup();
                 });
+
+                //luwu de xoa marker
+                id_marker.push(item.villageId)
             })           
         });
 
@@ -659,6 +664,7 @@
         });
         
     </script>
+    <script th:src="@{/js/notification.js}"></script>
 </body>
 
 </html>
