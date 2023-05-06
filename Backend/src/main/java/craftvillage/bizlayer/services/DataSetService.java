@@ -53,7 +53,7 @@ public class DataSetService {
         // add answer
         answers.add(answer);
         // question
-        Question newQuestion = new Question(content, answers);
+        Question newQuestion = new Question(dataSet.getQuestionId(), content, answers);
         questions.add(newQuestion);
       }
     }
