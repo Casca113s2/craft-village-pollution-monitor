@@ -88,8 +88,8 @@
 	                            <div class="noti-wrap">
 	                            	<div class="noti__item js-item-menu">
                                         <i class="zmdi zmdi-notifications"></i>
-                                        <span class="quantity">!</span>
-                                        <div class="notifi-dropdown js-dropdown">
+                                        <span class="quantity" id="quantity-noti">!</span>
+                                        <div class="notifi-dropdown js-dropdown" id="noti-dropdown">
                                             <div class="notifi__item">
                                                 <div class="content">
                                                     <p>Title</p>
@@ -232,21 +232,21 @@
                                             <a href="https://www.maptiler.com" style="position:absolute;left:10px;bottom:10px;z-index:999;"><img src="https://api.maptiler.com/resources/logo.svg" alt="MapTiler logo"></a>
                                         </div>
                                         <!-- <p><a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a></p> -->
-                                        <!-- <div class="filter-pollution">
+                                        <div class="filter-pollution">
                                             <label for="filter" class="filter"><b>Lọc:</b></label> 
-                                            <label for="earth" class="pollution-label-filter">
-                                              <input id="earth-filter" type="checkbox">
+                                            <label for="earth-filter" class="pollution-label-filter">
+                                              <input id="earth-filter" type="checkbox" class="pollution-filter">
                                               Đất
                                             </label>
-                                            <label for="air" class="pollution-label-filter">
-                                              <input id="air-filter" type="checkbox">
+                                            <label for="air-filter" class="pollution-label-filter" >
+                                              <input id="air-filter" type="checkbox" class="pollution-filter">
                                               Không khí
                                             </label>
-                                            <label for="water" class="pollution-label-filter">
-                                              <input id="water-filter" type="checkbox">
+                                            <label for="water-filter" class="pollution-label-filter">
+                                              <input id="water-filter" type="checkbox" class="pollution-filter">
                                               Nước
                                             </label>
-                                        </div> -->
+                                        </div>
                                     </div>
 									<div class="map-detail">
 										<div class="map-label-container">
@@ -491,35 +491,103 @@
         //set View ban đầu
         //var map = L.map('map').setView([9.2940, 105.7216], 13); 
         var map;
-        var marker ={};
-        fetch("/api/map/getVillageLocation")
-         .then((res) => res.json())
-         .then((data) => {           
-            //console.log(data)
-            //set view ban đầu
-            var coordinate = data.districtCoordinate.split(",")
-            //console.log(coordinate);
-            map = L.map('map').setView([+coordinate[0], +coordinate[1]], 13); //CL
-            L.tileLayer('https://api.maptiler.com/maps/bright/256/{z}/{x}/{y}.png?key=Xx2LVdpWdk1UyVYRKzN0',{
-            tileSize: 512,
-            zoomOffset: -1,
-            minZoom: 1,
-            attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
-            crossOrigin: true
-            }).addTo(map);
+        var markers = {}
+            //icon villages
+        var myIcon = L.icon({
+            iconUrl: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|e85141&chf=a,s,ee00FFFF",
+            iconSize: [21, 34],
+        })
 
-            //Hiện các marker làng nghề
-            let villages =  data.villages
-            //console.log();
-            var markers = {}
-            villages.map((item) => {
 
-                //icon villages
-                var myIcon = L.icon({
-                    iconUrl: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|e85141&chf=a,s,ee00FFFF",
-                    iconSize: [21, 34],
-                })
+        var markerImagePollution ={};
+        var id_marker = []; //Save marker id for delete
+        var villages = [];  
 
+        function removeAllMarker() {
+            for(let i=0; i<id_marker.length; i++){
+                if(map.hasLayer(markers[id_marker[i]])) {
+                    map.removeLayer(markers[id_marker[i]])
+                }
+            }
+        }
+
+        function clearInformationVillage(filter = 0) {
+            if (map.hasLayer(markerImagePollution)) map.removeLayer(markerImagePollution);
+
+            $('#image-container').empty();
+            $('#no-data').append("No data");
+
+            $('#date').empty().append("---");
+            $('#pollution').empty().append("---");            
+            $('#note').empty().append("---");
+
+            btn_prev.onclick = null;
+            btn_next.onclick = null;
+
+            $('#household-table').empty();
+            
+            if(filter != 0) {
+                $('#ward-name').empty().append("---");
+                $('#village-name').empty().append("---");
+                $('#household-number').empty().append("---");
+                $('#latitude').empty().append("---")
+                $('#longitude').empty().append("---");
+                $('#earth').prop('checked', false);
+                $('#air').prop('checked', false);
+                $('#water').prop('checked', false);
+            }
+        }
+
+        //filter by pollution
+        function filterByPollution() {         
+            $('.pollution-filter').change(function() {
+                
+                clearInformationVillage(1);
+                //Condition for filter
+                let pollution = "";
+                $('.pollution-filter').each(function() {
+                    if($(this).prop('checked')) pollution += "1"
+                    else pollution += "0";
+                });
+                
+                if(pollution === '000') {
+                    loadAllMarker();
+                    return;
+                }
+                //get all village filter
+                let villagesFilter = villages.filter(function(village) {
+                    const stateLookup = {
+                        '100' : ['100', '110', '101', '111'],
+                        '010' : ['010', '110', '011', '111'],
+                        '001' : ['001', '101', '011', '111'],
+                        '110' : ['110', '111'],
+                        '101' : ['101', '111'],
+                        '011' : ['011', '111'],
+                        '111' : ['111']
+                    }
+                    return stateLookup[pollution]?.includes(village.state); 
+                });
+
+                //console.log(villagesFilter);
+                loadAllMarker(villagesFilter);
+            })
+        }
+
+        //Load All marker
+        function loadAllMarker(villagesFilter = []) {
+            //console.log(villageFilter.length);
+            //reset all marker
+            removeAllMarker();
+            id_marker = [];
+            let villageMarker = []; //village will create marker
+            if(villagesFilter.length == 0) {
+                villageMarker = villages;              
+            }
+            else {
+                villageMarker = villagesFilter;
+            }
+
+            villageMarker.map((item) => {
                 // Create and save a reference to each marker
                 markers[item.villageId] = L.marker([item.latitude, item.longitude],{
                     icon: myIcon,              
@@ -527,7 +595,6 @@
                 // Add the ID
                 markers[item.villageId]._icon.id = item.villageId + ", " + item.villageName;
                 //gắn popup khi mouseover vào
-                //var bigIcon = new L.Icon.Big();
                 markers[item.villageId].bindPopup(item.villageName)
                 markers[item.villageId].on('mouseover', function(e){
                     this.openPopup();
@@ -536,50 +603,34 @@
                 markers[item.villageId].on('mouseout', function(e){
                     this.closePopup();
                 });
-            })           
-        });
+
+                //push for delete when filter
+                id_marker.push(item.villageId);
+            }) 
+            //Onclick marker
+            onClickMarker();
+        }
 
         //Onclick Marker 
-        $(document).ready(function() {
-           setTimeout(() => {
+        function onClickMarker() {
             $('.leaflet-marker-icon').click(function(e) {
                 // Use the event to find the clicked element
                 var el = $(e.srcElement || e.target),
                 id_name = el.attr('id').split(', ');
                 id = id_name[0]
                 village_name = id_name[1]
-                //console.log(id_name);
-                //alert('Here is the markers ID: ' + id + '. Use it as you wish.')'                
-                // fetch("/api/map/getVillage?villageId="+id)
-                //  .then((res) => res.json())
-                //  .then((data) => {
-                //     if(map.hasLayer(marker)) map.removeLayer(marker);
-                //     var coordinate = data.coordinate.split(", ")
-                //     //console.log(coordinate)
-                //     document.getElementById('ward-name').innerHTML = data.wardName
-                //     document.getElementById('latitude').innerHTML = (+coordinate[0]).toFixed(5)
-                //     document.getElementById('longitude').innerHTML = (+coordinate[1]).toFixed(5)                   
-                //  });
-
-                // fetch("/api/map/getHousehold?villageId="+id)
-                //  .then((res) => res.json())
-                //  .then((data) => {
-                //     document.getElementById('household-number').innerHTML = data.length               
-                // });
-                // document.getElementById('village-name').innerHTML = village_name
-
                 $.getJSON("/api/map/getVillage?villageId="+id, function(data) {
-                    console.log(data);
-                    if (map.hasLayer(marker)) map.removeLayer(marker);
-                        var coordinate = data.coordinate.split(", ");
-                        $("#ward-name").html(data.wardName);
-                        $("#latitude").html(parseFloat(coordinate[0]).toFixed(5));
-                        $("#longitude").html(parseFloat(coordinate[1]).toFixed(5));
-                        
-                        //Pollution
-                        if(data.state[0] === '1') $('#earth').prop('checked', true); else $('#earth').prop('checked', false);
-                        if(data.state[1] === '1') $('#air').prop('checked', true); else $('#air').prop('checked', false);
-                        if(data.state[2] === '1') $('#water').prop('checked', true); else $('#water').prop('checked', false);
+                    //console.log(data);
+                    if (map.hasLayer(markerImagePollution)) map.removeLayer(markerImagePollution);
+                    var coordinate = data.coordinate.split(", ");
+                    $("#ward-name").html(data.wardName);
+                    $("#latitude").html(parseFloat(coordinate[0]).toFixed(5));
+                    $("#longitude").html(parseFloat(coordinate[1]).toFixed(5));
+                    
+                    //Pollution
+                    if(data.state[0] === '1') $('#earth').prop('checked', true); else $('#earth').prop('checked', false);
+                    if(data.state[1] === '1') $('#air').prop('checked', true); else $('#air').prop('checked', false);
+                    if(data.state[2] === '1') $('#water').prop('checked', true); else $('#water').prop('checked', false);
                 });
 
                     $.getJSON("/api/map/getHousehold?villageId="+id, function(data) {
@@ -607,17 +658,7 @@
                         } 
                     }
                     else {
-                        $('#image-container').empty();
-                        $('#no-data').append("No data");
-
-                        $('#date').empty();
-                        $('#date').append("---");
-
-                        $('#pollution').empty();
-                        $('#pollution').append("---");
-                        
-                        $('#note').empty();
-                        $('#note').append("---");
+                        clearInformationVillage();
                     }
                 });
 
@@ -655,10 +696,34 @@
                     }
                 });               
             });         
-           }, 1000);
+        }
+        $(document).ready(function() {         
+            fetch("/api/map/getVillageLocation")
+            .then((res) => res.json())
+            .then((data) => {           
+                //console.log(data)
+                //set view ban đầu
+                var coordinate = data.districtCoordinate.split(",")
+                //console.log(coordinate);
+                map = L.map('map').setView([+coordinate[0], +coordinate[1]], 13); //CL
+                L.tileLayer('https://api.maptiler.com/maps/bright/256/{z}/{x}/{y}.png?key=Xx2LVdpWdk1UyVYRKzN0',{
+                tileSize: 512,
+                zoomOffset: -1,
+                minZoom: 1,
+                attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
+                crossOrigin: true
+                }).addTo(map);
+
+                villages =  data.villages
+                //Hiện các marker làng nghề 
+                loadAllMarker();
+                //Filter by pollution
+                filterByPollution();
+            });
         });
         
     </script>
+    <script th:src="@{/js/notification.js}"></script>
 </body>
 
 </html>

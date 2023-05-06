@@ -68,8 +68,17 @@
 
 #map {
 	border-radius: 20px;
-	/* height: 90%; */
+	height: 90%;
 	/* margin-top: 56px; */
+}
+
+.filter-pollution {
+	position: absolute;
+	top: calc(100% - 30px);
+	left: 0;
+	font-size: 20px;
+	display: flex; 
+	gap: 20px;
 }
 
 .filter-pollution {
@@ -80,6 +89,22 @@
 .pollution-label-filter {
 	margin-left: 10px;
 }
+
+#earth-filter, #air-filter, #water-filter {
+	transform: scale(1.25);
+}
+#earth-filter {
+	accent-color: red;
+}
+
+#air-filter {
+	accent-color: green;
+}
+
+#water-filter {
+	accent-color: #007bff;
+}
+
 
 .image-view {
 	display: flex;
