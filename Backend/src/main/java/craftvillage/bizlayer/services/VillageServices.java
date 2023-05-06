@@ -85,7 +85,6 @@ public class VillageServices {
     village.setVillageName(villageInfo.get("villageName"));
     village.setCoordinate(villageInfo.get("latitude") + ", " + villageInfo.get("longitude"));
     village.setNote(villageInfo.get("note"));
-    village.setState(villageInfo.get("state"));
     return villageRepo.save(village);
   }
 

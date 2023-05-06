@@ -72,8 +72,8 @@
                             	<div class="noti-wrap">
 	                            	<div class="noti__item js-item-menu">
                                         <i class="zmdi zmdi-notifications"></i>
-                                        <span class="quantity">!</span>
-                                        <div class="notifi-dropdown js-dropdown">
+                                        <span class="quantity" id="quantity-noti">!</span>
+                                        <div class="notifi-dropdown js-dropdown" id="noti-dropdown">
                                             <div class="notifi__item">
                                                 <div class="content">
                                                     <p>Title</p>
@@ -434,7 +434,7 @@
 		    });
 		})
     </script>
-
+    <script th:src="@{/js/notification.js}"></script>
 </body>
 
 </html>
