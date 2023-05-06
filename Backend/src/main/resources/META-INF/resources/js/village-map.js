@@ -1,10 +1,8 @@
-//var marker;
-
 function getImage(id){
 		$.get("/craftvillage/api/survey/getImage?surveyId=" + id, function(data){
 			//console.log(data)
 			//Remove marker before
-			if(map.hasLayer(marker)) map.removeLayer(marker);
+			if(map.hasLayer(markerImagePollution)) map.removeLayer(markerImagePollution);
 			//Marker icon
 			var pollution_icon = L.icon({
 				iconUrl: "https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|0B08DF&chf=a,s,ee00FFFF",
@@ -15,7 +13,7 @@ function getImage(id){
 			var coordinate = data['coordinate'].split(', ');
 			//console.log(coordinate);
 			//marker = L.marker([+coordinate[0], +coordinate[1]], {icon: pollution_icon}).addTo(map);
-			marker= L.marker([+coordinate[1], +coordinate[0]],{
+			markerImagePollution= L.marker([+coordinate[1], +coordinate[0]],{
 				icon: pollution_icon,              
 			}).addTo(map);
 	  		$('#image-container').empty();

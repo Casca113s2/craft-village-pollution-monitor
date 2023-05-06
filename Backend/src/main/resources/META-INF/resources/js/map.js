@@ -64,7 +64,7 @@ $( document ).ready(function(){
 
 	var index;
 
-	function clearAllMarker() {
+	function removeAllMarker() {
 		for(let i = 0; i < mapMarkers.length; i++)
 			if(map.hasLayer(markers[mapMarkers[i]])) {
 				map.removeLayer(markers[mapMarkers[i]])
@@ -139,9 +139,9 @@ $( document ).ready(function(){
 			$("#longitude").val(coordinate[1]);
 			$("#latitude").val(coordinate[0]);
 			$("#note").val(villages[index].note);
-			if(villages[index].state[0] === '1') $('#earth').prop('checked', true); else $('#earth').prop('checked', false);
-            if(villages[index].state[1] === '1') $('#air').prop('checked', true); else $('#air').prop('checked', false);
-            if(villages[index].state[2] === '1') $('#water').prop('checked', true); else $('#water').prop('checked', false);
+			// if(villages[index].state[0] === '1') $('#earth').prop('checked', true); else $('#earth').prop('checked', false);
+            // if(villages[index].state[1] === '1') $('#air').prop('checked', true); else $('#air').prop('checked', false);
+            // if(villages[index].state[2] === '1') $('#water').prop('checked', true); else $('#water').prop('checked', false);
 			point_index_temp = index;
 
 			//khi chưa click nào cả
@@ -218,26 +218,26 @@ $( document ).ready(function(){
 		data.longitude   = $("#longitude").val().trim();
 		data.latitude	= $("#latitude").val().trim();
 		data.villageName = $("#villageName").val().trim();
-		let state = "";
-		if($('#earth').is(':checked')){
-			state += "1";
-		}
-		else {
-			state += "0";
-		}
-		if($('#air').is(':checked')){
-			state += "1";
-		}
-		else {
-			state += "0";
-		}
-		if($('#water').is(':checked')){
-			state += "1";
-		}
-		else {
-			state += "0";
-		}
-		data.state = state;
+		// let state = "";
+		// if($('#earth').is(':checked')){
+		// 	state += "1";
+		// }
+		// else {
+		// 	state += "0";
+		// }
+		// if($('#air').is(':checked')){
+		// 	state += "1";
+		// }
+		// else {
+		// 	state += "0";
+		// }
+		// if($('#water').is(':checked')){
+		// 	state += "1";
+		// }
+		// else {
+		// 	state += "0";
+		// }
+		// data.state = state;
 		data = JSON.stringify(data);
 		//console.log(data);
 
@@ -256,8 +256,8 @@ $( document ).ready(function(){
 					villages[point_index].villageName = $("#villageName").val();
 					villages[point_index].coordinate = $("#latitude").val() + ", " + $("#longitude").val();
 					villages[point_index].note = $("#note").val();
-					villages[point_index].state = state;
-					console.log(villages[point_index]);
+					//villages[point_index].state = state;
+					//console.log(villages[point_index]);
 					//console.log(data);
 					//đặt thành marker chính khi update thành công
 					if(map.hasLayer(point_marker_temp)) {
@@ -328,7 +328,7 @@ $( document ).ready(function(){
 		// 	return village.villageName.toLowerCase().indexOf(query.toLowerCase()) > -1;
 		// });
 
-		clearAllMarker();
+		removeAllMarker();
 
 		//bỏ nút chọn tất cả
 		$("#list-village-header").empty();
@@ -341,7 +341,7 @@ $( document ).ready(function(){
 				filteredVillages[i] = "null";
 			}
 		}
-		console.log(filteredVillages);
+		//console.log(filteredVillages);
 
 		// display the filtered villages
 		$('#list-village-body').empty();
@@ -378,7 +378,7 @@ $( document ).ready(function(){
 		var query = $(this).val();
 		//console.log(query);
 		if(query == ""){
-			clearAllMarker();
+			removeAllMarker();
 			loadAllMarker();
 			return;
 		}
