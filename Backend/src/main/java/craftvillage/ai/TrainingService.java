@@ -4,61 +4,41 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import craftvillage.bizlayer.services.DataSetService;
-import craftvillage.datalayer.entities.Village;
 import craftvillage.datalayer.repositories.VillageRepository;
 
 @Service
 public class TrainingService {
-  private static String base = "";
+  @Value("${host.ai.url}")
+  private static String base;
   @Autowired
   DataSetService dataSetService;
 
   @Autowired
   VillageRepository villageRepository;
 
-  public boolean trainData() {
-    Map<String, List<DataSetDTO>> bodyMap = new HashMap<String, List<DataSetDTO>>();
-    bodyMap.put("data", dataSetService.getAllDataSetAndPollution());
-    WebClient webClient = WebClient.create(base);
-    boolean responseSpec = webClient.post().uri("").body(BodyInserters.fromValue(bodyMap))
-        .exchange().flatMap(clientResponse -> {
-          if (clientResponse.statusCode().is5xxServerError()) {
-            clientResponse.body((clientHttpResponse, context) -> {
-              return clientHttpResponse.getBody();
-            });
-            return clientResponse.bodyToMono(Boolean.class);
-          } else
-            return clientResponse.bodyToMono(Boolean.class);
-        }).block();
-    return responseSpec;
+  public boolean sendTrainingData() {
+    return true;
   }
 
-  public boolean detectPollution() {
-    Map<String, List<DetectedDataDTO>> bodyMap = new HashMap<String, List<DetectedDataDTO>>();
-    bodyMap.put("data", dataSetService.getAllDataSetAndVillageId());
+  public String detectPollution(int villageId) {
+    Map<String, List<Question>> bodyMap = new HashMap<String, List<Question>>();
+    bodyMap.put("data", dataSetService.getDataSetByVillage(villageId));
     WebClient webClient = WebClient.create(base);
-    DetectedPollutionDTO[] responseSpec = webClient.post().uri("")
-        .body(BodyInserters.fromValue(bodyMap)).exchange().flatMap(clientResponse -> {
+    String responseSpec = webClient.post().uri("").body(BodyInserters.fromValue(bodyMap)).exchange()
+        .flatMap(clientResponse -> {
           if (clientResponse.statusCode().is5xxServerError()) {
             clientResponse.body((clientHttpResponse, context) -> {
               return clientHttpResponse.getBody();
             });
-            return clientResponse.bodyToMono(DetectedPollutionDTO[].class);
+            return clientResponse.bodyToMono(String.class);
           } else
-            return clientResponse.bodyToMono(DetectedPollutionDTO[].class);
+            return clientResponse.bodyToMono(String.class);
         }).block();
-    if (responseSpec.length == 0) {
-      return false;
-    }
-    for (DetectedPollutionDTO detectedPollutionDTO : responseSpec) {
-      Village village = villageRepository.getOne(detectedPollutionDTO.getVillageId());
-      village.setState(detectedPollutionDTO.getState());
-      villageRepository.save(village);
-    }
-    return true;
+    return responseSpec;
   }
 }

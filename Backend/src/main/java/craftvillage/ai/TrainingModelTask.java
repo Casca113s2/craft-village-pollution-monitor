@@ -15,20 +15,10 @@ public class TrainingModelTask {
   @Scheduled(cron = "${task.training.cron}", zone = "${timeZone}")
   public void scheduleTrainingTask() {
     logger.info("Training task run...");
-    if (trainingService.trainData()) {
+    if (trainingService.sendTrainingData()) {
       logger.info("Training task completed!");
     } else {
       logger.error("Training task fail!");
-    }
-  }
-
-  @Scheduled(cron = "${task.detecting.cron}", zone = "${timeZone}")
-  public void scheduleDetectingTask() {
-    logger.info("Detecting task run...");
-    if (trainingService.detectPollution()) {
-      logger.info("Detecting task completed!");
-    } else {
-      logger.error("Detecting task fail!");
     }
   }
 }
