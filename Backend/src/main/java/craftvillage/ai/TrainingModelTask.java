@@ -13,7 +13,7 @@ public class TrainingModelTask {
   TrainingService trainingService;
 
   @Scheduled(cron = "${task.training.cron}", zone = "${timeZone}")
-  public void scheduleTrainingTask() {
+  public void scheduleSendTrainingDataTask() {
     logger.info("Training task run...");
     if (trainingService.sendTrainingData()) {
       logger.info("Training task completed!");
