@@ -209,6 +209,8 @@
 	text-align: center;
 	position: absolute;
     bottom: 0px;
+	display: flex;
+    align-items: center;
 }
 
 #btn-previous-image, #btn-next-image {
@@ -233,7 +235,9 @@
 
 .image-index-container {
 	display: inline-block;
-	transform: translate(0, -50%);
+	/* transform: translate(0, -50%); */
+	display: flex;
+	flex-shrink: 0;
 }
 
 .image-index {

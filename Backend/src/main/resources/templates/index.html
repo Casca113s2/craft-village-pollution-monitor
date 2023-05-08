@@ -273,15 +273,15 @@
 	                                    </div>
 										<div>Cảnh báo ô nhiễm:</div>
 										<div style="display: flex; width: 100%; justify-content: space-between;">
-											<div style="width: 30%;">
+											<div>
 												<input id="earth" type="checkbox" />
 												<label for="earth" class="pollution-label">Đất</label>
 											</div>
-											<div style="width: 30%;">
+											<div>
 												<input id="air" type="checkbox" />
 												<label for="air" class="pollution-label">Không khí</label>
 											</div>
-											<div style="width: 30%;">
+											<div>
 												<input id="water" type="checkbox"/>
 												<label for="water" class="pollution-label">Nước</label>
 											</div>			
@@ -672,10 +672,12 @@
                     var html="";
                     for(var i = 0; i < data.length; i++) {
                         html += `
-                            <div class="household-record">
-                                <div class="household-index-field">${i+1}</div>
-                                <div class="household-name-field">${data[i].householdName}</div>
-                                <div class="household-info-field"><a id="${data[i].householdId}" href="#" style="color: white;" class="household-info" >Chi tiết >></a> </div>
+                            <div class="household-record" style="align-items: center; justify-content: space-between;">
+                                <div style="display: flex; gap: 30px;">
+                                    <div class="household-index-field">${i+1}</div>
+                                    <div class="household-name-field" style="white-space:nowrap;">${data[i].householdName}</div>
+                                </div>
+                                <div class="household-info-field" style="flex-shrink: 0;"><a id="${data[i].householdId}" href="#" style="color: white;" class="household-info" >Chi tiết >></a> </div>
                             </div>
                         `
                         //console.log(html)
