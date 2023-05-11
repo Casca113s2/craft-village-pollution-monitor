@@ -17,7 +17,7 @@ import pandas as pd
 
 import pathlib
 temp = pathlib.PosixPath
-#pathlib.PosixPath = pathlib.WindowsPath
+pathlib.PosixPath = pathlib.WindowsPath
 
 # Khởi tạo server
 app = Flask(__name__)
@@ -104,5 +104,5 @@ def predict_img():
 
 # Thực thi server
 if __name__ == "__main__":
-    app.run(host="http://150.95.113.16", port=8000, debug=False) #server host
-    #  app.run(debug=False, host='0.0.0.0',port=8000)
+    # app.run(host="http://150.95.113.16", port=8000, debug=False) #server host
+     app.run(debug=False, host='0.0.0.0',port=8000)
