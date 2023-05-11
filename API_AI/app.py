@@ -48,9 +48,7 @@ def convert_json_to_dataframe(data):
                         new_array.append(1)
                     else:
                         new_array.append(2)
-
-                else:
-                    elif (id == 66 or id == 67):
+                elif (id == 66 or id == 67):
                     x = 0
                     if (answer[0]["count"] == 1):
                         if (answer[0]["value"] == "<20%"):
@@ -64,6 +62,7 @@ def convert_json_to_dataframe(data):
                         elif (answer[0]["value"] == "> 80%"):
                             x = 90
                     new_array.append(x)
+                else:
                     if (answer[0]["count"] == 1):
                         new_array.append(float(answer[0]["value"]))
                     else:
