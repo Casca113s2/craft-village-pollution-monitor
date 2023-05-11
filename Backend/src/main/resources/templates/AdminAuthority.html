@@ -55,7 +55,26 @@
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="header-wrap">
+							<div class="download-button">
+								<a href="#" class="btn btn-download">
+									<i class="bi bi-cloud-download" ></i>Download
+								</a>
+							</div>
                             <div class="header-button">
+								<div class="noti-wrap">
+	                            	<div class="noti__item js-item-menu">
+                                        <i class="zmdi zmdi-notifications"></i>
+                                        <span class="quantity" id="quantity-noti">!</span>
+                                        <div class="notifi-dropdown js-dropdown" id="noti-dropdown">
+                                            <div class="notifi__item">
+                                                <div class="content">
+                                                    <p>Title</p>
+                                                    <span class="date">content</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+	                            </div>
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
@@ -287,6 +306,35 @@
     <script th:src="@{/js/admin.js}"></script>
 	<script type="text/javascript">
 		
+		function downloadDataSet() {
+			fetch('/craftvillage/api/dataSet/getAll')
+			.then(response => response.json())
+			.then(data => {
+				const jsonData = JSON.stringify(data);
+				const filename = 'dataset.json';
+				//console.log(data);
+
+				const blob = new Blob([jsonData], { type: 'application/json' });
+				const url = URL.createObjectURL(blob);
+				//console.log(blob);
+				//console.log(url);
+
+				const a = $('<a>', {
+					href: url,
+					download: filename,
+					style: 'display: none'
+				}).appendTo('body');
+
+				a[0].click();
+				a.remove();
+
+				URL.revokeObjectURL(url);
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+		}
+
 		$(document).ready(function() {
 			$.get("/craftvillage/api/survey/question", function(data) {
 				//console.log(data);
@@ -396,8 +444,13 @@
 		        }
 		    });
 		})
+
+		$('.btn-download').on('click', function() {
+        	downloadDataSet();
+    	});
 		
 	</script>
+	<script th:src="@{/js/notification.js}"></script>
 </body>
 
 </html>
