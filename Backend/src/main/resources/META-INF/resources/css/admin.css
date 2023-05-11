@@ -24,7 +24,7 @@
 }
 
 #questionList {
-	max-height: 750px;
+	max-height: 550px;
 	overflow-x: hidden;
   	overflow-y: scroll;
   	margin-bottom: 20px;
@@ -43,4 +43,26 @@
 
 .question-content {
 	max-width: 95%;
+}
+
+#btn-download {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 60px;
+	width: 60px;
+	color: #b7b7b7;
+	background-color: white;
+	padding: 10px;
+    border-radius: 50%;
+	position: fixed;
+	bottom: 90px;
+    right: 30px;
+    z-index: 10;
+}
+
+#btn-download:hover {
+	color: #007bff;
+	background-color: white;
+    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
 }

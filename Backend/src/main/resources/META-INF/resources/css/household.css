@@ -65,8 +65,7 @@
 }
   
 .question_text-filed input:focus {
-    /* border-bottom-color: rgb(115, 11, 115); */
-    border-bottom: 2px solid rgb(115, 11, 115);
+    border-bottom: 2px solid #007bff;
 }
   
 .question_checkbox ul li,
@@ -80,7 +79,7 @@
 .question_radio ul li input {
     width: 18px;
     height: 18px;
-    accent-color: rgb(115, 11, 115);
+    accent-color: #007bff;
     margin-right: 20px;
     flex-shrink: 0;
 }
