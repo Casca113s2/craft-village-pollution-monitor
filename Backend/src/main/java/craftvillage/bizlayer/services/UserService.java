@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import craftvillage.datalayer.entities.UrRole;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.Village;
+import craftvillage.datalayer.repositories.DataSetRepository;
 import craftvillage.datalayer.repositories.RoleRepository;
 import craftvillage.datalayer.repositories.UserRepository;
 import craftvillage.datalayer.repositories.VillageRepository;
@@ -18,12 +19,12 @@ import craftvillage.datalayer.repositories.VillageRepository;
 public class UserService {
   @Autowired
   private UserRepository userRepo;
-
   @Autowired
   RoleRepository roleRepo;
-
   @Autowired
   VillageRepository villageRepo;
+  @Autowired
+  DataSetRepository dataSetRepo;
 
   public UrUser findById(int userId) {
     return userRepo.getOne(userId);
@@ -123,5 +124,25 @@ public class UserService {
       }
     }
     return result;
+  }
+
+  public String updateVillage(int villageId, String username) {
+    UrUser user = userRepo.findByAccount(username);
+    if (user.getVillage() == null) {
+      Village village = villageRepo.getOne(villageId);
+      user.setVillage(village);
+      userRepo.save(user);
+      return village.getVillageName();
+    } else if (user.getVillage().getVillageId() == villageId) {
+      return user.getVillage().getVillageName();
+    } else {
+      int oldId = user.getVillage().getVillageId();
+      dataSetRepo.updateDataSetByVillageId(oldId);
+      Village village = villageRepo.getOne(villageId);
+      user.setVillage(village);
+      userRepo.save(user);
+      dataSetRepo.updateDataSetByVillageId(villageId);
+      return village.getVillageName();
+    }
   }
 }

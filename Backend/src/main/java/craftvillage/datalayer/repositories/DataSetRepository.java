@@ -11,11 +11,11 @@ import craftvillage.ai.DataSet;
 @Repository
 @Transactional
 public interface DataSetRepository extends JpaRepository<DataSet, Integer> {
-  @Procedure(procedureName = "proc_update_all_data_set")
-  double updateAllDataSet();
+  @Procedure(procedureName = "proc_insert_new_data_set")
+  int addNewDataSet(int villageId);
 
   @Procedure(procedureName = "proc_update_data_set_by_village_id")
-  double updateDataSetByVillageId(int villageId);
+  int updateDataSetByVillageId(int villageId);
 
   List<DataSet> findByVillageId(int villageId);
 

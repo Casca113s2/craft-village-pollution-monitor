@@ -27,7 +27,7 @@ public class DataSetService {
     List<DataSetDTO> result = new ArrayList<DataSetDTO>();
     List<Integer> villageIds = dataSetRepo.getAllVillageId();
     for (Integer villageId : villageIds) {
-      String pollution = "000";
+      String pollution = villageRepo.getOne(villageId).getState();
       result.add(new DataSetDTO(pollution, dataSetFormatter(villageId)));
     }
     return result;

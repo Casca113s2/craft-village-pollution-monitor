@@ -99,20 +99,18 @@ public class SurveyServices {
         return false;
       }
     }
-    // if(dataSetRepo.updateDataSetByVillageId(villageId) == 0) {
-    // logger.error("Fail to update data set villageId: "+ villageId);
-    // }
-    // else {
-    // String result = trainingService.detectPollution(villageId);
-    // if(result.length()!= 3) {
-    // logger.error("Fail to detect pollution villageId: "+ villageId);
-    // }
-    // else {
-    // Village village = villageRepository.getOne(villageId);
-    // village.setState(result);
-    // villageRepository.save(village);
-    // }
-    // }
+    if (dataSetRepo.updateDataSetByVillageId(villageId) == 0) {
+      logger.error("Fail to update data set villageId: " + villageId);
+    } else {
+      String result = trainingService.detectPollution(villageId);
+      if (result.length() != 3) {
+        logger.error("Fail to detect pollution villageId: " + villageId);
+      } else {
+        Village village = villageRepository.getOne(villageId);
+        village.setState(result);
+        villageRepository.save(village);
+      }
+    }
     return true;
   }
 

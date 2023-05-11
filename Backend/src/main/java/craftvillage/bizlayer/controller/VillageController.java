@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import craftvillage.bizlayer.services.AddressServices;
-import craftvillage.bizlayer.services.DataSetService;
 import craftvillage.bizlayer.services.MyUserDetailsService;
 import craftvillage.bizlayer.services.SurveyServices;
 import craftvillage.bizlayer.services.VillageServices;
@@ -41,8 +40,6 @@ public class VillageController {
   private AddressServices addressService;
   @Autowired
   private VillageServices villageService;
-  @Autowired
-  private DataSetService dataSetService;
 
 
   /**
