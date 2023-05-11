@@ -48,21 +48,22 @@ def convert_json_to_dataframe(data):
                         new_array.append(1)
                     else:
                         new_array.append(2)
-                elif (id == 66 or id == 67):
+
+                else:
+                    elif (id == 66 or id == 67):
                     x = 0
                     if (answer[0]["count"] == 1):
-                        if(answer[0]["value"]=="<20%"):
+                        if (answer[0]["value"] == "<20%"):
                             x = 10
                         elif (answer[0]["value"] == "20% - 40%"):
                             x = 30
-                        elif(answer[0]["value"]=="40%- 60%"):
+                        elif (answer[0]["value"] == "40%- 60%"):
                             x = 50
                         elif (answer[0]["value"] == "60% - 80%"):
                             x = 70
                         elif (answer[0]["value"] == "> 80%"):
                             x = 90
                     new_array.append(x)
-                else:
                     if (answer[0]["count"] == 1):
                         new_array.append(float(answer[0]["value"]))
                     else:
@@ -94,7 +95,7 @@ def predict():
 
     # Convert prediction to list and return as JSON response
     output = ''.join(map(str, prediction.tolist()[0]))
-    return {'result':output}
+    return output
 
 # Khai báo hàm xử lý request detect
 @app.route('/detect', methods=['POST'])
