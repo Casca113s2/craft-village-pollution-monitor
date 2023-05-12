@@ -33,7 +33,8 @@ dependencies:
   shared_preferences: 
   masked_text: 
   nice_button: 
-  exif: 
+  exif:
+  flutter_exif_plugin: ^1.1.0
   
   geopoint:
   connectivity: 

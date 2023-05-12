@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:exif/exif.dart';
+import 'package:flutter_exif_plugin/flutter_exif_plugin.dart';
 import 'package:fl_nynberapp/src/app.dart';
 import 'package:fl_nynberapp/src/blocs/address_bloc.dart';
 import 'package:fl_nynberapp/src/blocs/answer_bloc.dart';
@@ -2737,34 +2738,89 @@ class _CraftPageState extends State<CraftPage> {
     });
   }
 
-  getImageGPSTag(String path) async {
+  // _updateImageCoordinates(String imagePath, double latitude, double longitude) async {
+  //   // Load the image file
+  //   File imageFile = File(imagePath);
+  //   Uint8List imageBytes = await imageFile.readAsBytes();
 
-    final fileBytes = File(path).readAsBytesSync();
-    final data = await readExifFromBytes(fileBytes);
+  //   // Get the image's EXIF data
+  //   Map<String, dynamic> exifData = await readExifFromBytes(imageBytes);
 
-    final latitudeValue = data['GPS GPSLatitude'].values.map<double>( (item) => (item.numerator.toDouble() / item.denominator.toDouble()) ).toList();
-    final latitudeSignal = data['GPS GPSLatitudeRef'].printable;
+  //   // Update the GPS coordinates
+  //   exifData['GPS'] = {
+  //     'GPSLatitude': _toRational(latitude),
+  //     'GPSLatitudeRef': latitude < 0 ? 'S' : 'N',
+  //     'GPSLongitude': _toRational(longitude),
+  //     'GPSLongitudeRef': longitude < 0 ? 'W' : 'E',
+  //   };
 
+  //   // // Write the updated EXIF data back to the image file
+  //   // List<int> updatedBytes = await writeExifToBytes(imageBytes, exifData);
+  //   // await imageFile.writeAsBytes(updatedBytes);
+  // }
 
-    final longitudeValue = data['GPS GPSLongitude'].values.map<double>( (item) => (item.numerator.toDouble() / item.denominator.toDouble()) ).toList();
-    final longitudeSignal = data['GPS GPSLongitudeRef'].printable;
+  // // Helper function to convert a decimal degree value to a rational value
+  // List<int> _toRational(double value) {
+  //   int degrees = value.floor();
+  //   double minutesDouble = (value - degrees) * 60;
+  //   int minutes = minutesDouble.floor();
+  //   double secondsDouble = (minutesDouble - minutes) * 60;
+  //   int seconds = secondsDouble.floor();
 
-    double latitude = latitudeValue[0]
-      + (latitudeValue[1] / 60)
-      + (latitudeValue[2] / 3600);
+  //   return [
+  //     _toRationalPart(degrees),
+  //     _toRationalPart(minutes),
+  //     _toRationalPart(seconds),
+  //   ];
+  // }
 
-    double longitude = longitudeValue[0]
-      + (longitudeValue[1] / 60)
-      + (longitudeValue[2] / 3600);
+  // // Helper function to convert a number to a rational part
+  // int _toRationalPart(int number) {
+  //   return number == 0 ? 0 : 1 << 32 ~/ number;
+  // }
 
-    if (latitudeSignal == 'S') latitude = -latitude;
-    if (longitudeSignal == 'W') longitude = -longitude;
+  // _getImageGPSTag(String path) async {
 
-    print("Image GPS: " + latitude.toString() + " " + longitude.toString());
+  //   final fileBytes = File(path).readAsBytesSync();
+  //   final data = await readExifFromBytes(fileBytes);
 
-    _latController.text = latitude.toStringAsFixed(7);
-    _longController.text = longitude.toStringAsFixed(7);
-  }
+  //   print("DEBUG HERE!");
+
+  //   final latitudeValue = data['GPS GPSLatitude'].values.map<double>( (item) => (item.numerator.toDouble() / item.denominator.toDouble()) ).toList();
+  //   final latitudeSignal = data['GPS GPSLatitudeRef'].printable;
+
+  //   final longitudeValue = data['GPS GPSLongitude'].values.map<double>( (item) => (item.numerator.toDouble() / item.denominator.toDouble()) ).toList();
+  //   final longitudeSignal = data['GPS GPSLongitudeRef'].printable;
+
+  //   double latitude = latitudeValue[0]
+  //     + (latitudeValue[1] / 60)
+  //     + (latitudeValue[2] / 3600);
+
+  //   double longitude = longitudeValue[0]
+  //     + (longitudeValue[1] / 60)
+  //     + (longitudeValue[2] / 3600);
+
+  //   if (latitudeSignal == 'S') latitude = -latitude;
+  //   if (longitudeSignal == 'W') longitude = -longitude;
+
+  //   print("Image GPS: " + latitude.toString() + " " + longitude.toString());
+
+  //   _latController.text = latitude.toStringAsFixed(7);
+  //   _longController.text = longitude.toStringAsFixed(7);
+  // }
+
+  // Map<String, String> positionToMap(Position position) {
+  //   final map = <String, String>{};
+  //   map['latitude'] = position.latitude.toString();
+  //   map['longitude'] = position.longitude.toString();
+  //   map['accuracy'] = position.accuracy.toString();
+  //   map['altitude'] = position.altitude?.toString() ?? '';
+  //   map['speed'] = position.speed?.toString() ?? '';
+  //   map['speedAccuracy'] = position.speedAccuracy?.toString() ?? '';
+  //   map['heading'] = position.heading?.toString() ?? '';
+  //   map['time'] = position.timestamp.toIso8601String();
+  //   return map;
+  // }
 
   _onTakePhotoImageClick(int index, BuildContext context) async {
     bool serviceEnabled;
@@ -2781,6 +2837,7 @@ class _CraftPageState extends State<CraftPage> {
     } else {
       _imageFile = ImagePicker().getImage(source: ImageSource.camera);
       // _imageFile = ImagePicker().getImage(source: ImageSource.gallery);
+      if (_imageFile == null) return;
 
       _imageFile.then((image) async {
         Position _locationData = await Geolocator.getCurrentPosition();
@@ -2788,8 +2845,15 @@ class _CraftPageState extends State<CraftPage> {
         // _latController.text = _locationData.latitude.toString();
         // _longController.text = _locationData.longitude.toString();
 
+        //Upadte GPS tags for image
+        final imageExifArr = await FlutterExif.fromPath(image.path);
+        await imageExifArr.setLatLong(_locationData.latitude, _locationData.longitude);
+
         //Get GPS from image
-        await getImageGPSTag(image.path);
+        final resLatLong = await imageExifArr.getLatLong();
+        // print("DEBUG REST = " + resLatLong.toString());
+        _latController.text = resLatLong[0].toStringAsFixed(7);
+        _longController.text = resLatLong[1].toStringAsFixed(7);
 
         setState(() {
           // print("IM HERE RIGHT NOW");
@@ -2853,7 +2917,7 @@ class _CraftPageState extends State<CraftPage> {
                   lsProvince = pro;
                   lsProvince.forEach((f) {
                     print("Debug here: " + value.toString());
-                    if (f.provinceId == int.parse(value[0]["provinceId"]))
+                    if (f.provinceId == value[0]["provinceId"])
                       setState(() {
                         selectedProvince = f;
                       });
@@ -2864,12 +2928,12 @@ class _CraftPageState extends State<CraftPage> {
               //Set District
               addressBloc
                   .fetchDistrict(
-                      int.parse(value[0]["provinceId"]), () {}, (msg) {})
+                      value[0]["provinceId"], () {}, (msg) {})
                   .then((dis) {
                 setState(() {
                   lsDistrict = dis;
                   lsDistrict.forEach((f) {
-                    if (f.districtId == int.parse(value[0]["districtId"]))
+                    if (f.districtId == value[0]["districtId"])
                       setState(() {
                         selectedDistrict = f;
                       });
@@ -2879,12 +2943,12 @@ class _CraftPageState extends State<CraftPage> {
 
               //Set Ward
               addressBloc
-                  .fetchWard(int.parse(value[0]["districtId"]), () {}, (msg) {})
+                  .fetchWard(value[0]["districtId"], () {}, (msg) {})
                   .then((ward) {
                 setState(() {
                   lsWard = ward;
                   lsWard.forEach((f) {
-                    if (f.wardId == int.parse(value[0]["wardId"]))
+                    if (f.wardId == value[0]["wardId"])
                       setState(() {
                         selectedWard = f;
                       });
@@ -2897,18 +2961,18 @@ class _CraftPageState extends State<CraftPage> {
                 String coordinate =
                     item["villageLatitude"] + ", " + item["villageLongitude"];
                 lsVillage.add(new Village(
-                  villageId: int.parse(item["villageId"]),
+                  villageId: item["villageId"],
                   villageName: item["villageName"],
                   coordinate: coordinate,
                   note: item["villageNote"],
-                  provinceId: item["provinceId"],
-                  districtId: item["districtId"],
-                  wardId: item["wardId"],
+                  provinceId: item["provinceId"].toString(),
+                  districtId: item["districtId"].toString(),
+                  wardId: item["wardId"].toString(),
                 ));
               }
 
               lsVillage.forEach((f) {
-                if (f.villageId == int.parse(value[0]["villageId"]))
+                if (f.villageId == value[0]["villageId"])
                   setState(() {
                     selectedVillage = f;
                     _infoCraftVillage.text = selectedVillage.note;
@@ -2918,10 +2982,10 @@ class _CraftPageState extends State<CraftPage> {
                     for (var item in value) {
                       _nearbyVillages.addAll({
                         "Village_" + count.toString(): {
-                          "villageId": item["villageId"],
-                          "villageName": item["villageName"],
-                          "villageLatitude": item["villageLatitude"],
-                          "villageLongitude": item["villageLongitude"]
+                          "villageId": item["villageId"].toString(),
+                          "villageName": item["villageName"].toString(),
+                          "villageLatitude": item["villageLatitude"].toString(),
+                          "villageLongitude": item["villageLongitude"].toString()
                         }
                       });
                       count++;
