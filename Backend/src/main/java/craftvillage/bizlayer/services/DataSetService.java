@@ -23,7 +23,7 @@ public class DataSetService {
   @Autowired
   SrSurveyQuestionRepository questionRepo;
 
-  public List<DataSetDTO> getAllDataSet() {
+  public List<DataSetDTO> getAllDataSetAndPollution() {
     List<DataSetDTO> result = new ArrayList<DataSetDTO>();
     List<Integer> villageIds = dataSetRepo.getAllVillageId();
     for (Integer villageId : villageIds) {
@@ -33,8 +33,8 @@ public class DataSetService {
     return result;
   }
 
-  public List<Question> getDetectedDataByVillageId(int villageId) {
-    return dataSetFormatter(villageId);
+  public List<Question> getDataSetByVillage(int villageId) {
+    return this.dataSetFormatter(villageId);
   }
 
   private List<Question> dataSetFormatter(int villageId) {

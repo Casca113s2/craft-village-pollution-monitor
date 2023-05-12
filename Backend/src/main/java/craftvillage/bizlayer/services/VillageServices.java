@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import craftvillage.bizlayer.support_api.location.Coordinate;
 import craftvillage.datalayer.entities.Village;
+import craftvillage.datalayer.repositories.DataSetRepository;
 import craftvillage.datalayer.repositories.VillageRepository;
 import craftvillage.datalayer.repositories.WardRepository;
 
@@ -17,12 +20,18 @@ public class VillageServices {
   VillageRepository villageRepo;
   @Autowired
   WardRepository wardRepo;
+  @Autowired
+  DataSetRepository dataSetRepo;
+
+  private static final Logger logger = LoggerFactory.getLogger(VillageServices.class);
 
   public int newVillage(Village village) {
     try {
       if (villageRepo.countByVillageName(village.getVillageName()) > 0)
         return -1;
-      return villageRepo.save(village).getVillageId();
+      int villageId = villageRepo.save(village).getVillageId();
+      this.insertDataSet(villageId);
+      return villageId;
     } catch (Exception e) {
       return 0;
     }
@@ -33,6 +42,7 @@ public class VillageServices {
       Village village = villageRepo.getOne(villageId);
       village.setHasAdded(1);
       villageRepo.save(village);
+      this.insertDataSet(villageId);
       return true;
     } catch (Exception e) {
       return false;
@@ -104,5 +114,13 @@ public class VillageServices {
     x = Double.parseDouble(strX);
     y = Double.parseDouble(strY);
     return new Coordinate(x, y);
+  }
+
+  private void insertDataSet(int villageId) {
+    if (dataSetRepo.addNewDataSet(villageId) > 0) {
+      logger.info("Inserted new data set, village id: " + villageId);
+    } else {
+      logger.info("Failed to insert new data set, village id: " + villageId);
+    }
   }
 }

@@ -65,10 +65,6 @@ public class HouseholdController {
   @PostMapping("/village")
   @ResponseBody
   public String village(@RequestParam Map<String, String> form, Principal principal) {
-    UrUser user = userService.findByUsername(principal.getName());
-    int villageId = Integer.parseInt(form.get("village"));
-    Village village = villageService.findVillageById(villageId);
-    user.setVillage(village);
-    return userService.save(user) != null ? village.getVillageName() : "";
+    return userService.updateVillage(Integer.parseInt(form.get("village")), principal.getName());
   }
 }

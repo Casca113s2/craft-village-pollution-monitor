@@ -9,8 +9,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import craftvillage.ai.TrainingService;
 import craftvillage.datalayer.entities.HouseholdSurvey;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.UserSurvey;
@@ -25,6 +28,7 @@ import craftvillage.datalayer.repositories.VillageRepository;
 
 @Service
 public class SurveyServices {
+  private static Logger logger = LoggerFactory.getLogger(SurveyServices.class);
   @Autowired
   UserSurveyRepository userSurveyRepo;
   @Autowired
@@ -39,6 +43,8 @@ public class SurveyServices {
   VillageRepository villageRepository;
   @Autowired
   DataSetRepository dataSetRepo;
+  @Autowired
+  TrainingService trainingService;
 
   public int countMonthlySurvey(Village village) {
     int count = 0;
@@ -79,10 +85,10 @@ public class SurveyServices {
   }
 
   public boolean addHouseholdSurvey(UrUser user, List<Map<String, String>> answers) {
+    int villageId = user.getVillage().getVillageId();
     for (HouseholdSurvey item : householdSurveyRepo.findByHousehold(user)) {
       householdSurveyRepo.delete(item);
     }
-
     for (Map<String, String> answer : answers) {
       HouseholdSurvey householdSurvey = new HouseholdSurvey();
       householdSurvey.setSrSurveyQuestionAnswer(
@@ -93,12 +99,18 @@ public class SurveyServices {
         return false;
       }
     }
-    // int villageId = user.getVillage().getVillageId();
-    // if (dataSetRepo.updateDataSetByVillageId(villageId) > 0) {
-    // System.out.println("Updated dataset with villageId: " + villageId);
-    // } else {
-    // System.out.println("Failed to update dataset with villageId: " + villageId);
-    // }
+    if (dataSetRepo.updateDataSetByVillageId(villageId) == 0) {
+      logger.error("Fail to update data set villageId: " + villageId);
+    } else {
+      String result = trainingService.detectPollution(villageId);
+      if (result.length() != 3) {
+        logger.error("Fail to detect pollution villageId: " + villageId);
+      } else {
+        Village village = villageRepository.getOne(villageId);
+        village.setState(result);
+        villageRepository.save(village);
+      }
+    }
     return true;
   }
 
