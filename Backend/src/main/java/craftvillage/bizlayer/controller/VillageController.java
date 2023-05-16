@@ -22,6 +22,7 @@ import craftvillage.bizlayer.services.MyUserDetailsService;
 import craftvillage.bizlayer.services.SurveyServices;
 import craftvillage.bizlayer.services.VillageServices;
 import craftvillage.bizlayer.support_api.location.Coordinate;
+import craftvillage.corelayer.utilities.CommonUtil;
 import craftvillage.corelayer.utilities.ConstantParameter;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.UserSurvey;
@@ -85,6 +86,7 @@ public class VillageController {
     UrUser user = userDeailsService.getUrUser(username);
     UserSurvey userSurvey = new UserSurvey();
     Village village = addressService.getVillageInfo(Integer.parseInt(villageId));
+    userSurvey.setWarning(CommonUtil.makePollutionWarning(pollution, village.getState()));
     userSurvey.setDateSubmitSurvey(new Date());
     userSurvey.setVillage(village);
     userSurvey.setCoordinate(coordinate);

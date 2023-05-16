@@ -20,6 +20,7 @@ import craftvillage.datalayer.entities.UserSurvey;
 import craftvillage.datalayer.entities.Village;
 import craftvillage.datalayer.entities.dto.HouseholdSurveyDTO;
 import craftvillage.datalayer.repositories.DataSetRepository;
+import craftvillage.datalayer.repositories.DistrictRepository;
 import craftvillage.datalayer.repositories.HouseholdSurveyRepository;
 import craftvillage.datalayer.repositories.SrSurveyQuestionAnswerRepository;
 import craftvillage.datalayer.repositories.UserRepository;
@@ -32,8 +33,6 @@ public class SurveyServices {
   @Autowired
   UserSurveyRepository userSurveyRepo;
   @Autowired
-  UserSurveyRepository userSurveyRepository;
-  @Autowired
   HouseholdSurveyRepository householdSurveyRepo;
   @Autowired
   SrSurveyQuestionAnswerRepository surveyQuestionAnswerRepository;
@@ -45,6 +44,8 @@ public class SurveyServices {
   DataSetRepository dataSetRepo;
   @Autowired
   TrainingService trainingService;
+  @Autowired
+  DistrictRepository districtRepo;
 
   public int countMonthlySurvey(Village village) {
     int count = 0;
@@ -60,7 +61,7 @@ public class SurveyServices {
   }
 
   public Map<String, String> getImageBySurveyId(int id) {
-    UserSurvey userSurvey = userSurveyRepository.getOne(id);
+    UserSurvey userSurvey = userSurveyRepo.getOne(id);
     Map<String, String> result = new HashMap<String, String>();
     result.put("date", userSurvey.getDateSubmitSurvey().toString());
     result.put("pollution", getPollution(userSurvey.getPollution()));
@@ -122,5 +123,17 @@ public class SurveyServices {
   public List<Integer> getListImage(int villageId) {
     return villageRepository.getOne(villageId).getUserSurveys().stream()
         .map(survey -> survey.getId()).collect(Collectors.toList());
+  }
+
+  public boolean seenSurvey(int surveyId) {
+    try {
+      UserSurvey survey = userSurveyRepo.getOne(surveyId);
+      survey.setWarning(false);
+      userSurveyRepo.save(survey);
+      return true;
+    } catch (Exception e) {
+      e.printStackTrace();
+      return false;
+    }
   }
 }

@@ -11,4 +11,13 @@ public class CommonUtil {
           .charAt(random.nextInt(ConstantParameter.CHARACTER_FOR_CREATE_PASSWORD.length())));
     return password.toString();
   }
+
+  public static boolean makePollutionWarning(String surveyPollution, String villageState) {
+    for (int i = 0; i < 3; i++) {
+      if (surveyPollution.charAt(i) - villageState.charAt(i) == 1) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
