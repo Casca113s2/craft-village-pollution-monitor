@@ -44,22 +44,6 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     String url_user = url + ConstantParameter.ServiceUser._USER_SERVICE;
     String url_village = url + ConstantParameter.ServiceVillage._VILLAGE_SERVICE;
 
-    // http.csrf().ignoringAntMatchers("/craftvillage/api/village/newvillage", "/administration/**",
-    // "/craftvillage/api/village/newvillage", "/web/household/**", "/web/authority/**", "/report",
-    // "/craftvillage/api/survey/answer", "/craftvillage/api/village/update",
-    // url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_GET_COMPLETED,
-    // url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_GET_INPROGRESS,
-    // url_answer + "/" + ConstantParameter.ServiceAnswer._ANSWER_UPLOAD_FILE,
-    // url_user + "/" + ConstantParameter.ServiceUser._USER_LOGIN,
-    // url_user + "/" + ConstantParameter.ServiceUser._USER_REGISTER,
-    // url_user + "/" + ConstantParameter.ServiceUser._USER_FORGOTTEN_PASS,
-    // url_user + "/" + ConstantParameter.ServiceUser._USER_ACTIVATE,
-    // url_user + "/" + ConstantParameter.ServiceUser._USER_GET_PASSWORD,
-    // url_user + "/" + ConstantParameter.ServiceUser._USER_CHANGE_PASS,
-    // url_user + "/" + ConstantParameter.ServiceUser._USER_UPDATE_INFOR,
-    // url_village + "/" + ConstantParameter.ServiceVillage._VILLAGE_SUBMIT,
-    // url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_CHECK_VILLAGE);
-
     http.csrf().disable().authorizeRequests()
         .antMatchers("/web/login", "/web/logout", "/vendor/**", "/css/*", "/fonts/**", "/images/**",
             "/js/**", "/media/**", "/web/forgetpassword", "/craftvillage/api/survey/question",
@@ -76,7 +60,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_WARD,
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_VILLAGE,
             "/craftvillage/api/dataSet/getAll", "/craftvillage/api/survey/question",
-            "/craftvillage/api/notification")
+            "/craftvillage/api/notification/**")
         .permitAll()
         .antMatchers("/craftvillage/api/village/newvillage",
             url_address + "/" + ConstantParameter.ServiceAddress._ADDRESS_GET_ADDRESS,
