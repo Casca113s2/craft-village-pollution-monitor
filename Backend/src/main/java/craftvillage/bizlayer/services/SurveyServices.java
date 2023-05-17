@@ -128,7 +128,7 @@ public class SurveyServices {
   public boolean seenSurvey(int surveyId) {
     try {
       UserSurvey survey = userSurveyRepo.getOne(surveyId);
-      survey.setChecked(false);
+      survey.setChecked(true);
       userSurveyRepo.save(survey);
       return true;
     } catch (Exception e) {
