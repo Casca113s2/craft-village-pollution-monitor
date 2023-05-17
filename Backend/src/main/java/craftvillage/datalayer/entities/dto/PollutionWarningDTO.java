@@ -8,12 +8,14 @@ public class PollutionWarningDTO {
   private int surveyId;
   private Date date;
   private String villageName;
+  private boolean seen;
 
   private PollutionWarningDTO(UserSurvey userSurvey) {
     this.villageId = userSurvey.getVillage().getVillageId();
     this.surveyId = userSurvey.getId();
     this.date = userSurvey.getDateSubmitSurvey();
     this.villageName = userSurvey.getVillage().getVillageName();
+    this.seen = userSurvey.getChecked();
   }
 
   public static PollutionWarningDTO from(UserSurvey userSurvey) {
@@ -50,5 +52,13 @@ public class PollutionWarningDTO {
 
   public void setVillageName(String villageName) {
     this.villageName = villageName;
+  }
+
+  public boolean isSeen() {
+    return seen;
+  }
+
+  public void setSeen(boolean seen) {
+    this.seen = seen;
   }
 }

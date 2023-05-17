@@ -36,6 +36,7 @@ public class UserSurvey implements java.io.Serializable {
   private String pollution;
   private String note;
   private Boolean warning;
+  private Boolean checked;
   private Village village;
 
   @Id
@@ -137,5 +138,14 @@ public class UserSurvey implements java.io.Serializable {
 
   public void setWarning(Boolean warning) {
     this.warning = warning;
+  }
+
+  @Column(name = "CHECKED", columnDefinition = "boolean default TRUE")
+  public Boolean getChecked() {
+    return checked;
+  }
+
+  public void setChecked(Boolean checked) {
+    this.checked = checked;
   }
 }
