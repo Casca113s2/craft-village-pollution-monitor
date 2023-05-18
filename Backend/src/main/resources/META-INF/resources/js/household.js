@@ -27,29 +27,22 @@ handleSlide();
 let questionUI = [];
 
 function getQuestionList(render) {
-  //console.log(document.getElementById('hsx').textContent)
   fetch("/craftvillage/api/survey/question")
     .then((res) => res.json())
     .then((data) => {
-      //console.log(data);
       fetch("/craftvillage/api/survey/answer")
       .then((res) => res.json())
       .then((data1) => {
-      //console.log(data1.length == 0)
       //Khi đã khai báo
       if(data1.length != 0) {
           var question_list = document.querySelector(".question_list");
           questionUI = data.map((item) => {
-            // console.log(item.required === 1);
           var question_label = (item.questionLabel) ? "(" + item.questionLabel + ")" : "";
           if (
             item.questionType === "TextFieldNumber" ||
             item.questionType === "TextField"           
           ){
-            //console.log(item.srSurveyQuestionAnswers[0].id)
             var answer = data1.find(function(item1) {
-              //console.log(item.srSurveyQuestionAnswers.id)
-              //console.log(item1.answerId)
               return item1.answerId === item.srSurveyQuestionAnswers[0].id
             })            
             
@@ -76,11 +69,9 @@ function getQuestionList(render) {
           else if (item.questionType === "RadioCheckBox"){
             var answer = data1.find(function(item1) {
               return item.srSurveyQuestionAnswers.find(function(item_temp) {
-                //console.log
                 return item_temp.id === item1.answerId
               })
             })
-            //console.log(answer);
             return `
               <div class="question_item question_radio">
                   <div class="question_content">${item.questionContent} <label style="color: red">${item.required === 1 ? "*" :""}</lable></div>
@@ -133,7 +124,6 @@ function getQuestionList(render) {
                           id="${item2.id}" 
                           value="${item2.id}"
                           ${answer.find(function(item_temp) {
-                            //console.log(item2.id === item_temp.answerId)
                             return item2.id === item_temp.answerId
                           }) ? "checked" : ""}
                         />

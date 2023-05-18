@@ -1,20 +1,23 @@
 function getImage(id){
 		$.get("/craftvillage/api/survey/getImage?surveyId=" + id, function(data){
-			//console.log(data)
+			console.log(data['warning'] === true);
 			//Remove marker before
 			if(map.hasLayer(markerImagePollution)) map.removeLayer(markerImagePollution);
+			if(map.hasLayer(markerWarning)) map.removeLayer(markerWarning);
 			//Marker icon
 			var pollution_icon = L.icon({
 				iconUrl: "https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|0B08DF&chf=a,s,ee00FFFF",
 				iconSize: [21, 34],
 			})
-			//console.log(myIcon);
+			var warning_icon = L.icon({
+				iconUrl: "https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FFD700&chf=a,s,ee00FFFF",
+				iconSize: [21, 34],
+			})
 			//Create new marker
 			var coordinate = data['coordinate'].split(', ');
-			//console.log(coordinate);
 			//marker = L.marker([+coordinate[0], +coordinate[1]], {icon: pollution_icon}).addTo(map);
 			markerImagePollution= L.marker([+coordinate[1], +coordinate[0]],{
-				icon: pollution_icon,              
+				icon: (data['warning'] === false) ? pollution_icon :  warning_icon            
 			}).addTo(map);
 	  		$('#image-container').empty();
 	  		$('#image-container').append("<img src='data:image/jpeg;base64,"+ data['image'] +"' alt= Picture style='object-fit:cover' />");
@@ -27,6 +30,9 @@ function getImage(id){
 			
 			$('#note').empty();
 	  		$('#note').append(data['note']);
+
+			if(data['warning'] === true) $('#warning').show();
+			else $('#warning').hide();
 	  	});
 }
 
@@ -47,15 +53,12 @@ $("#btn-next-image").click(function(){
 
 let QAUI = []
 function getQuestionList(id) {
-	//console.log(document.getElementById('hsx').textContent)
 	fetch("/craftvillage/api/survey/question")
 	  .then((res) => res.json())
 	  .then((data) => {
-		//console.log(data);
 		fetch("/craftvillage/api/survey/answerHousehold?householdId="+id)
 		.then((res) => res.json())
 		.then((data1) => {
-		//console.log(data1.length == 0)
 		//Khi đã khai báo
 		if(data1.length != 0) {
 			var question_list = document.querySelector(".question_list");
@@ -65,13 +68,9 @@ function getQuestionList(id) {
 			  item.questionType === "TextFieldNumber" ||
 			  item.questionType === "TextField"           
 			){
-			  //console.log(item.srSurveyQuestionAnswers[0].id)
 			  let answer = data1.find(function(item1) {
-				//console.log(item.srSurveyQuestionAnswers.id)
-				//console.log(item1.answerId)
 				return item1.answerId === item.srSurveyQuestionAnswers[0].id
 			  })
-			  //console.log(answer);
 			  
 			  return `
 				<div class="question_item question_text-filed">
@@ -96,11 +95,10 @@ function getQuestionList(id) {
 			else if (item.questionType === "RadioCheckBox"){
 			  var answer = data1.find(function(item1) {
 				return item.srSurveyQuestionAnswers.find(function(item_temp) {
-				  //console.log
 				  return item_temp.id === item1.answerId
 				})
 			  })
-			  //console.log(answer);
+
 			  return `
 				<div class="question_item question_radio">
 					<div class="question_content">${item.questionContent}</div>
@@ -146,7 +144,6 @@ function getQuestionList(id) {
 							id="${item2.id}" 
 							value="${item2.id}"
 							${answer.find(function(item_temp) {
-							  //console.log(item2.id === item_temp.answerId)
 							  return item2.id === item_temp.answerId
 							}) ? "checked" : ""}
 							disabled
