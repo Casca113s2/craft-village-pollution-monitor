@@ -73,7 +73,7 @@ public class SurveyController {
 
   @GetMapping("/getImage")
   @ResponseBody
-  public Map<String, String> getImage(@RequestParam("surveyId") int id) {
+  public Map<String, Object> getImage(@RequestParam("surveyId") int id) {
     return surveyServices.getImageBySurveyId(id);
   }
 

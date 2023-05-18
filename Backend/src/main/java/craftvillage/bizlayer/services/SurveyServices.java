@@ -60,14 +60,15 @@ public class SurveyServices {
     return count;
   }
 
-  public Map<String, String> getImageBySurveyId(int id) {
+  public Map<String, Object> getImageBySurveyId(int id) {
     UserSurvey userSurvey = userSurveyRepo.getOne(id);
-    Map<String, String> result = new HashMap<String, String>();
+    Map<String, Object> result = new HashMap<String, Object>();
     result.put("date", userSurvey.getDateSubmitSurvey().toString());
     result.put("pollution", getPollution(userSurvey.getPollution()));
     result.put("coordinate", userSurvey.getCoordinate());
     result.put("note", userSurvey.getNote());
     result.put("image", userSurvey.getImage());
+    result.put("warning", userSurvey.getWarning());
     return result;
   }
 
