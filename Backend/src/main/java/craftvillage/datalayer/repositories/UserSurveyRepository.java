@@ -13,6 +13,7 @@ public interface UserSurveyRepository extends JpaRepository<UserSurvey, Integer>
 
   @Query(value = "select us.*"
       + " from user_survey us join village v on us.village_id = v.village_id join ad_ward w on v.ward_id = w.ward_id join ad_district d on w.district_id = d.district_id"
-      + " where d.district_id = :districtId", nativeQuery = true)
+      + " where d.district_id = :districtId order by us.date_submit_survey desc",
+      nativeQuery = true)
   List<UserSurvey> getUserSurveyByDistrictId(@Param("districtId") Integer districtId);
 }

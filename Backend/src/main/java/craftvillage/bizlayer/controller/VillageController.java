@@ -86,7 +86,9 @@ public class VillageController {
     UrUser user = userDeailsService.getUrUser(username);
     UserSurvey userSurvey = new UserSurvey();
     Village village = addressService.getVillageInfo(Integer.parseInt(villageId));
-    userSurvey.setWarning(CommonUtil.makePollutionWarning(pollution, village.getState()));
+    boolean checkDiff = CommonUtil.makePollutionWarning(pollution, village.getState());
+    userSurvey.setWarning(village.getHasAdded() == 1 ? checkDiff : false);
+    userSurvey.setChecked(!userSurvey.getWarning());
     userSurvey.setDateSubmitSurvey(new Date());
     userSurvey.setVillage(village);
     userSurvey.setCoordinate(coordinate);
