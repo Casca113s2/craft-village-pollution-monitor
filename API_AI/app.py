@@ -69,13 +69,13 @@ def convert_json_to_dataframe(data):
                         new_array.append(0)
 
     x = np.array(new_array)
-    feature_names = ["Lượng khí ga đã sử dụng >0", "Lượng than đã sử dụng >0", "Đốt cháy >0", "Sử dụng khí ga 1",
-                     "Sử dụng than 1", "Sử dụng dầu 1", "Tỷ lệ nước thải được thu gom và xử lý tại nhà máy <30",
-                     "Có nhà máy xử lý nước thải nào tại xã không? 2", "Lượng dầu đã sử dụng >0",
-                     "Lượng nước đầu vào >0", "Lượng chất thải rắn đã sử dụng >0",
-                     "Sử dụng chất thải rắn làm nhiên liệu CÓ", "Tỷ lệ không được thu gom >20",
-                     "Tỷ lệ được thu mua <20", "Lượng chất thải sinh hoạt trung bình của hộ gia đình >0",
-                     "Tỷ lệ: tái chế <30", "Tỷ lệ: bãi rác tập trung <30", "Tỷ lệ: bãi rác địa phương <30"]
+    feature_names = ["Lượng khí ga đã sử dụng", "Lượng than đã sử dụng", "Đốt cháy", "Sử dụng khí ga",
+                     "Sử dụng than", "Sử dụng dầu", "Tỷ lệ nước thải được thu gom và xử lý tại nhà máy",
+                     "Có nhà máy xử lý nước thải nào tại xã không?", "Lượng dầu đã sử dụng",
+                     "Lượng nước đầu vào", "Lượng chất thải rắn đã sử dụng",
+                     "Sử dụng chất thải rắn làm nhiên liệu", "Tỷ lệ không được thu gom",
+                     "Tỷ lệ được thu mua", "Lượng chất thải sinh hoạt trung bình của hộ gia đình",
+                     "Tỷ lệ: tái chế", "Tỷ lệ: bãi rác tập trung", "Tỷ lệ: bãi rác địa phương"]
 
     df = pd.DataFrame(data=x.reshape(1, -1), columns=feature_names)
     return df
