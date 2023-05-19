@@ -131,7 +131,7 @@ public class UserSurvey implements java.io.Serializable {
     this.note = note;
   }
 
-  @Column(name = "WARNING")
+  @Column(name = "WARNING", columnDefinition = "tinyint(1) default FALSE")
   public Boolean getWarning() {
     return warning;
   }
@@ -140,7 +140,7 @@ public class UserSurvey implements java.io.Serializable {
     this.warning = warning;
   }
 
-  @Column(name = "CHECKED", columnDefinition = "boolean default TRUE")
+  @Column(name = "CHECKED", columnDefinition = "tinyint(1) default TRUE")
   public Boolean getChecked() {
     return checked;
   }

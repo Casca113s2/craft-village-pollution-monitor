@@ -135,7 +135,7 @@ function loadAllMarker() {
 		}).addTo(map)
 		
 		mapMarkers.push(villages[i].villageId)
-		markers[item.villageId]._icon.id = item.villageId + ", " + item.villageName;
+		markers[villages[i].villageId]._icon.id = villages[i].villageId + ", " + villages[i].villageName;
 		//popup
 		markers[villages[i].villageId].bindPopup(villages[i].villageName)
 
@@ -380,7 +380,7 @@ function searchVillages(query) {
 			markers[villages[index].villageId] = L.marker([+coordinate[0], +coordinate[1]], {
 				icon: myIcon,
 			}).addTo(map)
-			markers[item.villageId]._icon.id = item.villageId + ", " + item.villageName;
+			markers[villages[index].villageId]._icon.id = villages[index].villageId + ", " + villages[index].villageName;
 			markers[villages[index].villageId].bindPopup(villages[index].villageName)
 					markers[villages[index].villageId].on('mouseover', function(e){
 						this.openPopup();

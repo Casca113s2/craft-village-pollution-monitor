@@ -90,12 +90,7 @@
                                         <i class="zmdi zmdi-notifications"></i>
                                         <span class="quantity" id="quantity-noti">1</span>
                                         <div class="notifi-dropdown js-dropdown" id="noti-dropdown">
-                                            <div class="notifi__item">
-                                                <div class="content">
-                                                    <p>Title</p>
-                                                    <span class="date">content</span>
-                                                </div>
-                                            </div>
+                                            
                                         </div>
                                     </div>
 	                            </div>
@@ -306,13 +301,14 @@
 		                            	<div class="no-data" id="no-data">No data</div>
 		                            </div>
 		                            <div class="image-detail">
+                                        <!-- <div id="loading" style="font-weight: bold; font-size: 16px; color: #333;">Loading...</div> -->
 		                            	<div class="label">Ngày</div>
 		                            	<div class="value" id="date">---</div>
 		                            	<div class="label">Loại ô nhiễm</div>
 		                            	<div class="value" id="pollution">---</div>
 		                            	<div class="label">Ghi chú</div>
 		                            	<div class="value" id="note">---</div>   
-                                        <div class="label" id="warning"><img th:src="@{/images/attention.png}" alt=""></div>                                   
+                                        <div class="label" id="warning"><img th:src="@{/images/attention.png}" alt=""><label for="" style="color:#797a2e"><b>Warning</b></label></div>                                   
 		                            	<div class="image-button-container">
 		                            		<a id="btn-previous-image" title="Ảnh trước">
 		                            			<i class="fa-solid fa-chevron-left fa-2x"></i>
@@ -479,244 +475,6 @@
 	<script th:src="@{/js/myfunction.js}"></script>
 	<script th:src="@{/js/village-map.js}"></script>
 
-    <!--  Map -->
-    <script type="text/javascript">
-
-        // var current = document.querySelector('#current-image');
-        // var total = document.querySelector('#total-image');
-        // var btn_prev = document.querySelector('#btn-previous-image');
-        // var btn_next = document.querySelector('#btn-next-image');
-
-        // //set View ban đầu
-        // //var map = L.map('map').setView([9.2940, 105.7216], 13); 
-        // var map;
-        // var markers = {}
-        //     //icon villages
-        // var myIcon = L.icon({
-        //     iconUrl: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|e85141&chf=a,s,ee00FFFF",
-        //     iconSize: [21, 34],
-        // })
-
-
-        // var markerImagePollution ={};
-        // var id_marker = []; //Save marker id for delete
-        // var villages = [];  
-
-        // function removeAllMarker() {
-        //     for(let i=0; i<id_marker.length; i++){
-        //         if(map.hasLayer(markers[id_marker[i]])) {
-        //             map.removeLayer(markers[id_marker[i]])
-        //         }
-        //     }
-        // }
-
-        // function clearInformationVillage(filter = 0) {
-        //     if (map.hasLayer(markerImagePollution)) map.removeLayer(markerImagePollution);
-
-        //     $('#image-container').empty();
-        //     $('#no-data').append("No data");
-
-        //     $('#date').empty().append("---");
-        //     $('#pollution').empty().append("---");            
-        //     $('#note').empty().append("---");
-
-        //     btn_prev.onclick = null;
-        //     btn_next.onclick = null;
-
-        //     $('#household-table').empty();
-            
-        //     if(filter != 0) {
-        //         $('#ward-name').empty().append("---");
-        //         $('#village-name').empty().append("---");
-        //         $('#household-number').empty().append("---");
-        //         $('#latitude').empty().append("---")
-        //         $('#longitude').empty().append("---");
-        //         $('#earth').prop('checked', false);
-        //         $('#air').prop('checked', false);
-        //         $('#water').prop('checked', false);
-
-        //         current.textContent = "--";
-        //         total.textContent= "--";
-
-        //     }
-        // }
-
-        // //filter by pollution
-        // function filterByPollution() {         
-        //     $('.pollution-filter').change(function() {
-                
-        //         clearInformationVillage(1);
-        //         //Condition for filter
-        //         let pollution = "";
-        //         $('.pollution-filter').each(function() {
-        //             if($(this).prop('checked')) pollution += "1"
-        //             else pollution += "0";
-        //         });
-                
-        //         if(pollution === '000') {
-        //             loadAllMarker();
-        //             return;
-        //         }
-        //         //get all village filter
-        //         let villagesFilter = villages.filter(function(village) {
-        //             const stateLookup = {
-        //                 '100' : ['100', '110', '101', '111'],
-        //                 '010' : ['010', '110', '011', '111'],
-        //                 '001' : ['001', '101', '011', '111'],
-        //                 '110' : ['110', '111'],
-        //                 '101' : ['101', '111'],
-        //                 '011' : ['011', '111'],
-        //                 '111' : ['111']
-        //             }
-        //             return stateLookup[pollution]?.includes(village.state); 
-        //         });
-
-        //         if(villagesFilter.length != 0) loadAllMarker(villagesFilter);
-        //         else removeAllMarker();
-        //     })
-        // }
-
-        // //Load All marker
-        // function loadAllMarker(villagesFilter = []) {
-        //     //reset all marker
-        //     removeAllMarker();
-        //     id_marker = [];
-        //     let villageMarker = []; //village will create marker
-        //     if(villagesFilter.length == 0) {
-        //         villageMarker = villages;              
-        //     }
-        //     else {
-        //         villageMarker = villagesFilter;
-        //     }
-
-        //     villageMarker.map((item) => {
-        //         // Create and save a reference to each marker
-        //         markers[item.villageId] = L.marker([item.latitude, item.longitude],{
-        //             icon: myIcon,              
-        //         }).addTo(map);
-        //         // Add the ID
-        //         markers[item.villageId]._icon.id = item.villageId + ", " + item.villageName;
-        //         //gắn popup khi mouseover vào
-        //         markers[item.villageId].bindPopup(item.villageName)
-        //         markers[item.villageId].on('mouseover', function(e){
-        //             this.openPopup();
-
-        //         });
-        //         markers[item.villageId].on('mouseout', function(e){
-        //             this.closePopup();
-        //         });
-
-        //         //push for delete when filter
-        //         id_marker.push(item.villageId);
-        //     }) 
-        //     //Onclick marker
-        //     onClickMarker();
-        // }
-
-        // //Onclick Marker 
-        // function onClickMarker() {
-        //     $('.leaflet-marker-icon').click(function(e) {
-        //         // Use the event to find the clicked element
-        //         var el = $(e.srcElement || e.target),
-        //         id_name = el.attr('id').split(', ');
-        //         id = id_name[0]
-        //         village_name = id_name[1]
-        //         $.getJSON("/api/map/getVillage?villageId="+id, function(data) {
-        //             if (map.hasLayer(markerImagePollution)) map.removeLayer(markerImagePollution);
-        //             var coordinate = data.coordinate.split(", ");
-        //             $("#ward-name").html(data.wardName);
-        //             $("#latitude").html(parseFloat(coordinate[0]).toFixed(5));
-        //             $("#longitude").html(parseFloat(coordinate[1]).toFixed(5));
-                    
-        //             //Pollution
-        //             if(data.state[0] === '1') $('#earth').prop('checked', true); else $('#earth').prop('checked', false);
-        //             if(data.state[1] === '1') $('#air').prop('checked', true); else $('#air').prop('checked', false);
-        //             if(data.state[2] === '1') $('#water').prop('checked', true); else $('#water').prop('checked', false);
-        //         });
-
-        //             $.getJSON("/api/map/getHousehold?villageId="+id, function(data) {
-        //             $("#household-number").html(data.length);               
-        //         });
-
-        //         $("#village-name").html(village_name);
-
-        //         //Ảnh
-        //         fetch("/craftvillage/api/survey/listImage?villageId="+id)
-        //          .then((res) => res.json())
-        //          .then((data) => {
-        //             current.textContent= (data.length) ? 1 : 0
-        //             total.textContent=data.length 
-        //             if(data.length != 0) {
-        //                 data.sort(function(a,b) {return b-a})
-        //                 getImage(data[0]) 
-        //                 btn_prev.onclick = function() {
-        //                     getImage(data[Number(current.textContent)-1])
-        //                 }
-        //                 btn_next.onclick = function() {
-        //                     getImage(data[Number(current.textContent)-1])
-        //                 } 
-        //             }
-        //             else {
-        //                 clearInformationVillage();
-        //             }
-        //         });
-
-        //         //Khai báo
-        //         fetch("/api/map/getHousehold?villageId="+id)
-        //          .then((res) => res.json())
-        //          .then((data) => {
-        //             var html="";
-        //             for(var i = 0; i < data.length; i++) {
-        //                 html += `
-        //                     <div class="household-record" style="align-items: center; justify-content: space-between;">
-        //                         <div style="display: flex; gap: 30px;">
-        //                             <div class="household-index-field">${i+1}</div>
-        //                             <div class="household-name-field" style="white-space:nowrap;">${data[i].householdName}</div>
-        //                         </div>
-        //                         <div class="household-info-field" style="flex-shrink: 0;"><a id="${data[i].householdId}" href="#" style="color: white;" class="household-info" >Chi tiết >></a> </div>
-        //                     </div>
-        //                 `
-        //             }
-        //             let householdRecord = document.getElementById("household-table")
-        //             householdRecord.innerHTML = html
-
-        //             //Xem khai báo chi tiết của household
-        //             detail = document.querySelectorAll(".household-info");
-        //             for(var i=0; i<detail.length; i++) {
-        //                 detail[i].onclick = function(e) {
-        //                     var html = "";
-        //                     var id = $(e.srcElement || e.target).attr('id')
-        //                     getQuestionList(id)
-        //                     $('#staticModal3').modal();
-        //                 }
-        //             }
-        //         });               
-        //     });         
-        // }
-        // $(document).ready(function() {         
-        //     fetch("/api/map/getVillageLocation")
-        //     .then((res) => res.json())
-        //     .then((data) => {           
-        //         //set view ban đầu
-        //         var coordinate = data.districtCoordinate.split(",")
-        //         map = L.map('map').setView([+coordinate[0], +coordinate[1]], 13); //CL
-        //         L.tileLayer('https://api.maptiler.com/maps/bright/256/{z}/{x}/{y}.png?key=Xx2LVdpWdk1UyVYRKzN0',{
-        //         tileSize: 512,
-        //         zoomOffset: -1,
-        //         minZoom: 1,
-        //         attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
-        //         crossOrigin: true
-        //         }).addTo(map);
-
-        //         villages =  data.villages
-        //         //Hiện các marker làng nghề 
-        //         loadAllMarker();
-        //         //Filter by pollution
-        //         filterByPollution();
-        //     });
-        // });
-        
-    </script>
     <!-- <script th:src="@{/js/notification.js}"></script> -->
     <script th:src="@{/js/dashboard.js}"></script>
 </body>

@@ -65,6 +65,8 @@ function clearInformationVillage(filter = 0) {
     $('#pollution').empty().append("---");            
     $('#note').empty().append("---");
 
+    $('#warning').hide()
+
     btn_prev.onclick = null;
     btn_next.onclick = null;
 
@@ -278,11 +280,12 @@ function loadNotification() {
             var quantity = 0;
             $("#noti-dropdown").empty();
             data.map(function(item) {
+                console.log(item);
                 if(item.seen === false) quantity++;
                 dateTime = changeFormatDateTime(item.date)
                 id_name = item.villageName.replaceAll(' ', '-');
                 $("#noti-dropdown").append(`
-                    <div class="notifi__item" id=${item.villageId + "," + item.surveyId + "," + id_name}>
+                    <div class="notifi__item" id=${item.villageId + "," + item.surveyId + "," + id_name + "," + item.seen}>
                         <div class="content">
                             <p ${(item.seen === false ? 'style="font-weight: bold"' : "" )}>Cảnh báo ô nhiễm tại ${item.villageName}</p>
                             <span class="date" ${(item.seen === false ? 'style="color: blue"' : "" )}>${dateTime}</span>
@@ -309,26 +312,28 @@ function onclickNotification() {
             loadAllMarker();
         }
         idItem = $(this).attr('id').split(',');
-        //console.log(idItem);
+        console.log(idItem);
         villageId = idItem[0];
         surveyId  = idItem[1];
         villageName = idItem[2].replaceAll('-', ' ');
+        checked = idItem[3];
 
         loadVillageInformation(villageId, villageName)
         loadDeclare(villageId)
         //console.log(typeof(villageId));
         loadImage(villageId, surveyId)
         
-        $.ajax({
-            type: "PUT",
-            url: "/craftvillage/api/notification?id="+surveyId,
-            success: function(result){
-                if(result == true){
-                    loadNotification();
+        if(checked !== 'true'){
+            $.ajax({
+                type: "PUT",
+                url: "/craftvillage/api/notification?id="+surveyId,
+                success: function(result){
+                    if(result == true){
+                        loadNotification();
+                    }
                 }
-            }
-        });
-
+            });
+        }
     })
 }
 

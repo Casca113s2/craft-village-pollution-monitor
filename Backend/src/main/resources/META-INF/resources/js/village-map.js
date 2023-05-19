@@ -1,6 +1,7 @@
 function getImage(id){
+		$('#loading').show();
 		$.get("/craftvillage/api/survey/getImage?surveyId=" + id, function(data){
-			console.log(data['warning'] === true);
+			//console.log(data);
 			//Remove marker before
 			if(map.hasLayer(markerImagePollution)) map.removeLayer(markerImagePollution);
 			if(map.hasLayer(markerWarning)) map.removeLayer(markerWarning);
@@ -16,7 +17,7 @@ function getImage(id){
 			//Create new marker
 			var coordinate = data['coordinate'].split(', ');
 			//marker = L.marker([+coordinate[0], +coordinate[1]], {icon: pollution_icon}).addTo(map);
-			markerImagePollution= L.marker([+coordinate[1], +coordinate[0]],{
+			markerImagePollution= L.marker([+coordinate[0], +coordinate[1]],{
 				icon: (data['warning'] === false) ? pollution_icon :  warning_icon            
 			}).addTo(map);
 	  		$('#image-container').empty();
@@ -33,6 +34,7 @@ function getImage(id){
 
 			if(data['warning'] === true) $('#warning').show();
 			else $('#warning').hide();
+			$('#loading').hide();
 	  	});
 }
 
