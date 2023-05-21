@@ -553,9 +553,6 @@
         $('#form-new-village').submit(function(e) {
             e.preventDefault();
             var form = $(this);
-            //console.log(form)
-
-            //console.log()
 
             //Kiểm tra đã khai báo hộ sx và hoàn thành profile hay chưa
             const khaibao = document.getElementById('hsx').textContent;
@@ -569,10 +566,8 @@
 
             //validate question checkbox required
             for(let i=0; i<required_checkbox.length; i++) {
-                //console.log(required_checkbox[i]);
                 if(($("input[name*='"+ required_checkbox[i] +"']:checked").length) <= 0) {
                     //alert("You must check at least 1 box");
-                    //console.log(($("input[name*='"+ required_checkbox[i] +"']:checked").length));
                     $('input[name*="' + required_checkbox[i] + '"]:first').focus();
                     return;
                 }
@@ -602,11 +597,9 @@
 
             var QA_obj = {};
             QA_obj.answers = QA;
-            //console.log(QA_obj);
             
             
             var QA_json = JSON.stringify(QA_obj);
-            console.log(QA_json);
             
             var actionUrl = form.attr('action')
 
@@ -620,7 +613,6 @@
                         alert("Phát hiện lỗi!")
 		        	}
 		        	else{
-                        //console.log(data);
                         alert("Yêu cầu đã được gửi")
 		        	}
 		        }

@@ -4,7 +4,6 @@ function downloadDataSet() {
 	.then(data => {
 		const jsonData = JSON.stringify(data);
 		const filename = 'dataset.json';
-		//console.log(data);
 
 		const blob = new Blob([jsonData], { type: 'application/json' });
 		const url = URL.createObjectURL(blob);
@@ -27,7 +26,6 @@ function downloadDataSet() {
 
 $(document).ready(function() {
 	$.get("/craftvillage/api/survey/question", function(data) {
-		//console.log(data);
 		let QL = ``;
 		$('#questionList').empty();
 		for(let i=0; i<data.length; i++) {
@@ -109,7 +107,6 @@ $('#form1').submit(function(e){
 $('#update-question').submit(function(e) {
 	e.preventDefault();
 	var form = $(this);
-	//console.log(form);
 	var questions = [];
 	form.find('input[type="checkbox"]').each(function() {
 		let question_temp = {}
