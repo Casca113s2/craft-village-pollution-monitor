@@ -280,7 +280,7 @@ function loadNotification() {
             var quantity = 0;
             $("#noti-dropdown").empty();
             data.map(function(item) {
-                console.log(item);
+                //console.log(item);
                 if(item.seen === false) quantity++;
                 dateTime = changeFormatDateTime(item.date)
                 id_name = item.villageName.replaceAll(' ', '-');
@@ -312,7 +312,7 @@ function onclickNotification() {
             loadAllMarker();
         }
         idItem = $(this).attr('id').split(',');
-        console.log(idItem);
+        //console.log(idItem);
         villageId = idItem[0];
         surveyId  = idItem[1];
         villageName = idItem[2].replaceAll('-', ' ');

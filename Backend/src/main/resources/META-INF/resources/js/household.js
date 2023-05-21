@@ -58,6 +58,8 @@ function getQuestionList(render) {
                             placeholder = '${item.questionType === "TextFieldNumber" ? "" : item2.answerContent}' 
                             value = '${typeof answer === "undefined" ? "" : answer.answerContent}'
                             ${item.required===1 ? "required" :""}
+                            min = 0
+                            ${item.questionLabel === "%" ? "max = 100" : ""}  
                       />
                     `
                   })
@@ -160,7 +162,9 @@ function getQuestionList(render) {
                       <input type = ${(item.questionType === "TextFieldNumber" ? "number" : "text")}
                             name = t${item2.id}
                             placeholder = '${item.questionType === "TextFieldNumber" ? "" : item2.answerContent}'
-                            ${item.required===1 ? "required" :""}       
+                            ${item.required===1 ? "required" :""}
+                            min = 0
+                            ${item.questionLabel === "%" ? "max = 100" : ""}       
                       />
                     `
                   })

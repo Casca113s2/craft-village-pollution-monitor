@@ -88,6 +88,17 @@ function switchChildHandler(){
 var index;
 
 function removeAllMarker() {
+	//delete village information
+	clearVillageInformation();
+
+	//set click = null
+	$(".village-tag").click(function() {
+		$(this).text(null);
+	});
+
+	map.off('click');
+
+	if(map.hasLayer(point_marker_temp)) map.removeLayer(point_marker_temp)
 	for(let i = 0; i < mapMarkers.length; i++)
 		if(map.hasLayer(markers[mapMarkers[i]])) {
 			map.removeLayer(markers[mapMarkers[i]])
