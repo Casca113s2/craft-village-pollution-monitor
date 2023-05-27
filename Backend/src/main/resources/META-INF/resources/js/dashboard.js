@@ -192,9 +192,9 @@ function loadVillageInformation(id, village_name) {
         if(data.state[1] === '1') $('#air').prop('checked', true); else $('#air').prop('checked', false);
         if(data.state[2] === '1') $('#water').prop('checked', true); else $('#water').prop('checked', false);
 
-        $.getJSON("/api/map/getHousehold?villageId="+id, function(data) {
-            $("#household-number").html(data.length);               
-        });
+        // $.getJSON("/api/map/getHousehold?villageId="+id, function(data) {
+                          
+        // });
 
         $("#village-name").html(village_name);
     });
@@ -237,6 +237,7 @@ function loadDeclare(id) {
     fetch("/api/map/getHousehold?villageId="+id)
          .then((res) => res.json())
          .then((data) => {
+            $("#household-number").html(data.length); 
             data = data.sort(function(a,b) { return a.householdId - b.householdId})
             var html="";
             for(var i = 0; i < data.length; i++) {

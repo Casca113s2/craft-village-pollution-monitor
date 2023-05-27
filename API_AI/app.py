@@ -16,19 +16,20 @@ import numpy as np
 import pandas as pd
 
 import pathlib
-temp = pathlib.PosixPath
-pathlib.PosixPath = pathlib.WindowsPath
+#temp = pathlib.PosixPath
+#pathlib.PosixPath = pathlib.WindowsPath
 
 # Khởi tạo server
 app = Flask(__name__)
 CORS(app)
 # Khai báo đường dẫn thư mục
-current_directory = os.getcwd()
-path = Path(current_directory)
+#current_directory = os.getcwd()
+#path = Path(current_directory)
 
 # Load model
-learner = load_learner(path/'export.pkl')
-random_forest = load('random_forest.joblib')
+learner = load_learner('/root/API_AI/export.pkl')
+random_forest = load('/root/API_AI/random_forest.joblib')
+
 
 # Convert json to DataFrame
 def convert_json_to_dataframe(data):
@@ -44,13 +45,13 @@ def convert_json_to_dataframe(data):
             if (id == array[i]):
                 answer = question["answer"]
                 if (id == 35 or id == 32 or id == 36 or id == 77 or id == 34):
-                    if (answer[0]["count"] == 1):
+                    if (answer[0]["count"] >= 1 and answer[0]["value"] == "Có"):
                         new_array.append(1)
                     else:
                         new_array.append(2)
                 elif (id == 66 or id == 67):
                     x = 0
-                    if (answer[0]["count"] == 1):
+                    if (answer[0]["count"] >= 1):
                         if (answer[0]["value"] == "<20%"):
                             x = 10
                         elif (answer[0]["value"] == "20% - 40%"):
@@ -63,7 +64,7 @@ def convert_json_to_dataframe(data):
                             x = 90
                     new_array.append(x)
                 else:
-                    if (answer[0]["count"] == 1):
+                    if (answer[0]["count"] >= 1):
                         new_array.append(float(answer[0]["value"]))
                     else:
                         new_array.append(0)
