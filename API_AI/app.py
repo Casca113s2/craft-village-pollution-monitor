@@ -16,19 +16,20 @@ import numpy as np
 import pandas as pd
 
 import pathlib
-temp = pathlib.PosixPath
-pathlib.PosixPath = pathlib.WindowsPath
+#temp = pathlib.PosixPath
+#pathlib.PosixPath = pathlib.WindowsPath
 
 # Khởi tạo server
 app = Flask(__name__)
 CORS(app)
 # Khai báo đường dẫn thư mục
-current_directory = os.getcwd()
-path = Path(current_directory)
+#current_directory = os.getcwd()
+#path = Path(current_directory)
 
 # Load model
-learner = load_learner(path/'export.pkl')
-random_forest = load('random_forest.joblib')
+learner = load_learner('/root/API_AI/export.pkl')
+random_forest = load('/root/API_AI/random_forest.joblib')
+
 
 # Convert json to DataFrame
 def convert_json_to_dataframe(data):
