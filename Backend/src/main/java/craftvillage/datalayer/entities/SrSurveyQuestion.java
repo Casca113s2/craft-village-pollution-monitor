@@ -1,6 +1,7 @@
 package craftvillage.datalayer.entities;
 // Generated Mar 10, 2020 9:28:01 AM by Hibernate Tools 4.3.5.Final
 
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,7 +27,9 @@ public class SrSurveyQuestion implements java.io.Serializable {
   private String questionType;
   private String questionLabel;
   private int active;
-  private Set<SrSurveyQuestionAnswer> srSurveyQuestionAnswers;
+  private int required;
+  private Set<SrSurveyQuestionAnswer> srSurveyQuestionAnswers =
+      new HashSet<SrSurveyQuestionAnswer>();
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,11 +61,11 @@ public class SrSurveyQuestion implements java.io.Serializable {
   }
 
   @Column(name = "QUESTION_LABEL", length = 40)
-  public String getquestionLabel() {
+  public String getQuestionLabel() {
     return questionLabel;
   }
 
-  public void setquestionLabel(String questionLabel) {
+  public void setQuestionLabel(String questionLabel) {
     this.questionLabel = questionLabel;
   }
 
@@ -73,6 +76,15 @@ public class SrSurveyQuestion implements java.io.Serializable {
 
   public void setActive(int active) {
     this.active = active;
+  }
+
+  @Column(name = "REQUIRED", columnDefinition = "integer default 0")
+  public int getRequired() {
+    return required;
+  }
+
+  public void setRequired(int required) {
+    this.required = required;
   }
 
   @OrderBy("id ASC")

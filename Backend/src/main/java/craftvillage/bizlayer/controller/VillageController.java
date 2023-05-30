@@ -22,6 +22,7 @@ import craftvillage.bizlayer.services.MyUserDetailsService;
 import craftvillage.bizlayer.services.SurveyServices;
 import craftvillage.bizlayer.services.VillageServices;
 import craftvillage.bizlayer.support_api.location.Coordinate;
+import craftvillage.corelayer.utilities.CommonUtil;
 import craftvillage.corelayer.utilities.ConstantParameter;
 import craftvillage.datalayer.entities.UrUser;
 import craftvillage.datalayer.entities.UserSurvey;
@@ -53,7 +54,7 @@ public class VillageController {
   public int newVillage(@RequestBody Map<String, String> newVillage) {
     int wardId = Integer.parseInt(newVillage.get("wardId"));
     int hasAdded = Integer.parseInt(newVillage.get("hasAdded"));
-    String coordinate = newVillage.get("longitude") + ", " + newVillage.get("latitude");
+    String coordinate = newVillage.get("latitude") + ", " + newVillage.get("longitude");
     Village village = new Village();
     village.setAdWard(addressService.getAdward(wardId));
     village.setCoordinate(coordinate);
@@ -78,13 +79,16 @@ public class VillageController {
       Principal principal) {
     String username = principal.getName();
     String villageId = VillageInfoForm.get("villageId");
-    String coordinate = VillageInfoForm.get("longitude") + ", " + VillageInfoForm.get("latitude");
+    String coordinate = VillageInfoForm.get("latitude") + ", " + VillageInfoForm.get("longitude");
     String image = VillageInfoForm.get("image");
     String pollution = VillageInfoForm.get("result");
     String note = VillageInfoForm.get("note");
     UrUser user = userDeailsService.getUrUser(username);
     UserSurvey userSurvey = new UserSurvey();
     Village village = addressService.getVillageInfo(Integer.parseInt(villageId));
+    boolean checkDiff = CommonUtil.makePollutionWarning(pollution, village.getState());
+    userSurvey.setWarning(village.getHasAdded() == 1 ? checkDiff : false);
+    userSurvey.setChecked(!userSurvey.getWarning());
     userSurvey.setDateSubmitSurvey(new Date());
     userSurvey.setVillage(village);
     userSurvey.setCoordinate(coordinate);
@@ -110,53 +114,43 @@ public class VillageController {
    */
   @RequestMapping(value = "/" + ConstantParameter.ServiceVillage._VILLAGE_DETECT,
       method = RequestMethod.GET, produces = "application/json")
-  public List<Map<String, String>> detectVillage(@RequestParam String latitude,
+  public List<Map<String, Object>> detectVillage(@RequestParam String latitude,
       @RequestParam String longitude) {
 
     Coordinate coordinate =
         new Coordinate(Double.parseDouble(latitude), Double.parseDouble(longitude));
 
     List<Village> villages = villageService.findVillageByCoordinate(coordinate);
-    System.out.println("coordinate: " + coordinate.x + " - " + coordinate.y);
 
-    List<Map<String, String>> res = new ArrayList<Map<String, String>>();
+    List<Map<String, Object>> res = new ArrayList<Map<String, Object>>();
 
     for (Village village : villages) {
-      Map<String, String> villageInfo = new HashMap<>();
+      Map<String, Object> villageInfo = new HashMap<>();
 
-      String villageId = String.valueOf(village.getVillageId());
-      String strHasAdded = String.valueOf(village.getHasAdded());
-      String wardName = String.valueOf(village.getAdWard().getWardName());
-      String districtName = String.valueOf(village.getAdWard().getAdDistrict().getDistrictName());
-      String provinceName =
-          String.valueOf(village.getAdWard().getAdDistrict().getAdProvince().getProvinceName());
-      String wardId = String.valueOf(village.getAdWard().getWardId());
-      String districtId = String.valueOf(village.getAdWard().getAdDistrict().getDistrictId());
-      String provinceId =
-          String.valueOf(village.getAdWard().getAdDistrict().getAdProvince().getProvinceId());
-      String villageNote = village.getNote();
-
-      villageInfo.put("villageId", villageId);
-      villageInfo.put("hasAdded", strHasAdded);
+      villageInfo.put("villageId", village.getVillageId());
+      villageInfo.put("hasAdded", village.getHasAdded());
       villageInfo.put("villageName", village.getVillageName());
 
-      villageInfo.put("wardName", wardName);
-      villageInfo.put("districtName", districtName);
-      villageInfo.put("provinceName", provinceName);
+      villageInfo.put("wardName", village.getAdWard().getWardName());
+      villageInfo.put("districtName", village.getAdWard().getAdDistrict().getDistrictName());
+      villageInfo.put("provinceName",
+          village.getAdWard().getAdDistrict().getAdProvince().getProvinceName());
 
-      villageInfo.put("wardId", wardId);
-      villageInfo.put("districtId", districtId);
-      villageInfo.put("provinceId", provinceId);
+      villageInfo.put("wardId", village.getAdWard().getWardId());
+      villageInfo.put("districtId", village.getAdWard().getAdDistrict().getDistrictId());
+      villageInfo.put("provinceId",
+          village.getAdWard().getAdDistrict().getAdProvince().getProvinceId());
 
-      villageInfo.put("villageNote", villageNote);
+      villageInfo.put("villageNote", village.getNote());
 
       String villagecoordinate[] = village.getCoordinate().split(", ");
       villageInfo.put("villageLatitude", villagecoordinate[0]);
       villageInfo.put("villageLongitude", villagecoordinate[1]);
 
+      villageInfo.put("state", village.getState());
+
       res.add(villageInfo);
     }
-
     return res;
   }
 }

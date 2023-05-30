@@ -28,6 +28,7 @@ public class Village implements java.io.Serializable {
   private String note;
   private AdWard adWard;
   private int hasAdded;
+  private String state;
 
   private Set<UserSurvey> userSurveys = new HashSet<UserSurvey>();
   private Set<UrUser> households = new HashSet<UrUser>();
@@ -84,6 +85,15 @@ public class Village implements java.io.Serializable {
 
   public void setVillageName(String villageName) {
     this.villageName = villageName;
+  }
+
+  @Column(name = "STATE", columnDefinition = "varchar(3) default '000'")
+  public String getState() {
+    return state;
+  }
+
+  public void setState(String state) {
+    this.state = state;
   }
 
   @JsonBackReference

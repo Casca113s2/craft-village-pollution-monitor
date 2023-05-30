@@ -85,6 +85,15 @@
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <div class="header-button">
+	                            <div class="noti-wrap">
+	                            	<div class="noti__item js-item-menu">
+                                        <i class="zmdi zmdi-notifications"></i>
+                                        <span class="quantity" id="quantity-noti">1</span>
+                                        <div class="notifi-dropdown js-dropdown" id="noti-dropdown">
+                                            
+                                        </div>
+                                    </div>
+	                            </div>
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
@@ -209,6 +218,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="map-container">
@@ -216,7 +226,22 @@
                                         <div id="map">
                                             <a href="https://www.maptiler.com" style="position:absolute;left:10px;bottom:10px;z-index:999;"><img src="https://api.maptiler.com/resources/logo.svg" alt="MapTiler logo"></a>
                                         </div>
-                                        <p><a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a></p>
+                                        <!-- <p><a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a></p> -->
+                                        <div class="filter-pollution">
+                                            <label for="filter" class="filter"><b>Lọc:</b></label> 
+                                            <label for="earth-filter" class="pollution-label-filter">
+                                              <input id="earth-filter" type="checkbox" class="pollution-filter">
+                                              Đất
+                                            </label>
+                                            <label for="air-filter" class="pollution-label-filter" >
+                                              <input id="air-filter" type="checkbox" class="pollution-filter">
+                                              Không khí
+                                            </label>
+                                            <label for="water-filter" class="pollution-label-filter">
+                                              <input id="water-filter" type="checkbox" class="pollution-filter">
+                                              Nước
+                                            </label>
+                                        </div>
                                     </div>
 									<div class="map-detail">
 										<div class="map-label-container">
@@ -231,16 +256,31 @@
 	                                        <div>Số hộ sản xuất</div>
 	                                        <div class="value" id=""><span id="household-number">---</span></div>										
 										</div>
-                                        <div style="display: flex;">
+                                        <div style="display: flex; width: 100%; justify-content: space-between;">
+	                                        <div class="map-location-label">
+	                                            <div>Vĩ độ</div>
+	                                            <div class="value" id=""><span id="latitude">---</span></div>
+	                                        </div>
 	                                        <div class="map-location-label">
 	                                            <div>Kinh độ</div>
 	                                            <div class="value" id=""><span id="longitude">---</span></div>
 	                                        </div>
-	                                        <div class="map-location-label" style="margin-left: auto;">
-	                                            <div>Vĩ độ</div>
-	                                            <div class="value" id=""><span id="latitude">---</span></div>
-	                                        </div>
 	                                    </div>
+										<div>Cảnh báo ô nhiễm:</div>
+										<div style="display: flex; width: 100%; justify-content: space-between;">
+											<div>
+												<input id="earth" type="checkbox"  disabled/>
+												<label for="earth" class="pollution-label">Đất</label>
+											</div>
+											<div>
+												<input id="air" type="checkbox" disabled/>
+												<label for="air" class="pollution-label">Không khí</label>
+											</div>
+											<div>
+												<input id="water" type="checkbox" disabled/>
+												<label for="water" class="pollution-label">Nước</label>
+											</div>			
+										</div>
 									</div>
                                 </div>
                             </div>
@@ -250,12 +290,6 @@
                             <div class="col-md-4">
                             	<div class="table-layout">
                             		<div style="text-align: center; font-size: 22px; color: white; padding: 5px 0; font-weight: bold;">Khai báo</div>
-	                                <!-- <div class="household-table" >
-	                                	<div class="household-record" >
-	                                		<div class="household-index-field">1</div>
-	                                		<div class="household-name-field">Hua Hoang Phuc</div>
-	                                		<div class="household-info-field"><a id="modal-household-info" href="#" style="color: white; position: right">Chi tiết >></a> </div>
-	                                	</div> -->
 	                                <div class="household-table" id="household-table">
 	                                	
 	                                </div>
@@ -264,15 +298,17 @@
                             <div class="col-md-8">
                                 <div class="image-view" id="image-view">
 		                            <div id="image-container">
-		                            	<div class="no-data">No data</div>
+		                            	<div class="no-data" id="no-data">No data</div>
 		                            </div>
 		                            <div class="image-detail">
+                                        <!-- <div id="loading" style="font-weight: bold; font-size: 16px; color: #333;">Loading...</div> -->
 		                            	<div class="label">Ngày</div>
 		                            	<div class="value" id="date">---</div>
 		                            	<div class="label">Loại ô nhiễm</div>
 		                            	<div class="value" id="pollution">---</div>
 		                            	<div class="label">Ghi chú</div>
-		                            	<div class="value" id="note">---</div>
+		                            	<div class="value" id="note">---</div>   
+                                        <div class="label" id="warning"><img th:src="@{/images/attention.png}" alt=""><label for="" style="color:#797a2e"><b>Warning</b></label></div>                                   
 		                            	<div class="image-button-container">
 		                            		<a id="btn-previous-image" title="Ảnh trước">
 		                            			<i class="fa-solid fa-chevron-left fa-2x"></i>
@@ -293,7 +329,7 @@
                     </div>
                     
                 </div>
-                 <a href="#" title="Báo lỗi" class="btn-report" id="btn-report">
+                 <a href="#" title="Báo lỗi" id="btn-report">
                    	<i class="fa-regular fa-comment-dots fa-2x"></i>
                	</a>
                    
@@ -439,150 +475,8 @@
 	<script th:src="@{/js/myfunction.js}"></script>
 	<script th:src="@{/js/village-map.js}"></script>
 
-    <!--  Map -->
-    <script type="text/javascript">
-
-        var current = document.querySelector('#current-image');
-        var total = document.querySelector('#total-image');
-        var btn_prev = document.querySelector('#btn-previous-image');
-        var btn_next = document.querySelector('#btn-next-image');
-
-        //console.log(total);
-
-        //set View ban đầu
-        //var map = L.map('map').setView([9.2940, 105.7216], 13); 
-        var map;
-        fetch("/api/map/getVillageLocation")
-         .then((res) => res.json())
-         .then((data) => {           
-            //console.log(data)
-            //set view ban đầu
-            var coordinate = data.districtCoordinate.split(",")
-            //console.log(coordinate);
-            map = L.map('map').setView([+coordinate[0], +coordinate[1]], 13); //CL
-            L.tileLayer('https://api.maptiler.com/maps/bright/256/{z}/{x}/{y}.png?key=Xx2LVdpWdk1UyVYRKzN0',{
-            tileSize: 512,
-            zoomOffset: -1,
-            minZoom: 1,
-            attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
-            crossOrigin: true
-            }).addTo(map);
-
-            //Hiện các marker làng nghề
-            villages =  data.villages
-            var markers = {}
-            villages.map((item) => {
-
-                //icon villages
-                var myIcon = L.icon({
-                    iconUrl: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|e85141&chf=a,s,ee00FFFF",
-                    iconSize: [21, 34],
-                })
-
-                // Create and save a reference to each marker
-                markers[item.villageId] = L.marker([item.longitude, item.latitude],{
-                    icon: myIcon,              
-                }).addTo(map);
-                // Add the ID
-                markers[item.villageId]._icon.id = item.villageId + ", " + item.villageName;
-                //gắn popup khi mouseover vào
-                //var bigIcon = new L.Icon.Big();
-                markers[item.villageId].bindPopup(item.villageName)
-                markers[item.villageId].on('mouseover', function(e){
-                    this.openPopup();
-
-                });
-                markers[item.villageId].on('mouseout', function(e){
-                    this.closePopup();
-                });
-            })           
-        });
-
-        //Onclick Marker 
-        $(document).ready(function() {
-           setTimeout(() => {
-            $('.leaflet-marker-icon').click(function(e) {
-                // Use the event to find the clicked element
-                var el = $(e.srcElement || e.target),
-                id_name = el.attr('id').split(', ');
-                id = id_name[0]
-                village_name = id_name[1]
-                //console.log(id_name);
-                //alert('Here is the markers ID: ' + id + '. Use it as you wish.')'
-                fetch("/api/map/getVillage?villageId="+id)
-                 .then((res) => res.json())
-                 .then((data) => {
-                    var coordinate = data.coordinate.split(", ")
-                    //console.log(coordinate)
-                    document.getElementById('ward-name').innerHTML = data.wardName
-                    document.getElementById('latitude').innerHTML = coordinate[0]
-                    document.getElementById('longitude').innerHTML = coordinate[1]                   
-                 });
-
-                fetch("/api/map/getHousehold?villageId="+id)
-                 .then((res) => res.json())
-                 .then((data) => {
-                    document.getElementById('household-number').innerHTML = data.length               
-                });
-                document.getElementById('village-name').innerHTML = village_name
-
-                //Ảnh
-                fetch("/craftvillage/api/survey/listImage?villageId="+id)
-                 .then((res) => res.json())
-                 .then((data) => {
-                    //if(data.length != 0) {
-                        data.sort(function(a,b) {return b-a})
-                        getImage(data[0])
-                        //console.log(data);
-                        current.textContent= (data.length) ? 1 : 0
-                        total.textContent=data.length       
-                        btn_prev.onclick = function() {
-                            getImage(data[Number(current.textContent)-1])
-                        }
-                        btn_next.onclick = function() {
-                            getImage(data[Number(current.textContent)-1])
-                        } 
-                    //}
-                });
-
-                //Khai báo
-                //console.log(id);
-                fetch("/api/map/getHousehold?villageId="+id)
-                 .then((res) => res.json())
-                 .then((data) => {
-                    //console.log(data);
-                    var html="";
-                    for(var i = 0; i < data.length; i++) {
-                        html += `
-                            <div class="household-record">
-                                <div class="household-index-field">${i+1}</div>
-                                <div class="household-name-field">${data[i].householdName}</div>
-                                <div class="household-info-field"><a id="${data[i].householdId}" href="#" style="color: white;" class="household-info" >Chi tiết >></a> </div>
-                            </div>
-                        `
-                        //console.log(html)
-                    }
-                    let householdRecord = document.getElementById("household-table")
-                    //console.log(html)
-                    householdRecord.innerHTML = html
-
-                    //Xem khai báo chi tiết của household
-                    detail = document.querySelectorAll(".household-info");
-                    for(var i=0; i<detail.length; i++) {
-                        detail[i].onclick = function(e) {
-                            var html = "";
-                            var id = $(e.srcElement || e.target).attr('id')
-                            //console.log(id);
-                            getQuestionList(id)
-                            $('#staticModal3').modal();
-                        }
-                    }
-                });               
-            });         
-           }, 1000);
-        });
-        
-    </script>
+    <!-- <script th:src="@{/js/notification.js}"></script> -->
+    <script th:src="@{/js/dashboard.js}"></script>
 </body>
 
 </html>

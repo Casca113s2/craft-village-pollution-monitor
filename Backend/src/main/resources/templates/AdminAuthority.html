@@ -27,6 +27,7 @@
 
     <!-- Main CSS-->
     <link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
+    <link th:href="@{/css/admin.css}" rel="stylesheet" media="all">
 
 </head>
 
@@ -55,6 +56,20 @@
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <div class="header-button">
+								<!-- <div class="noti-wrap">
+	                            	<div class="noti__item js-item-menu">
+                                        <i class="zmdi zmdi-notifications"></i>
+                                        <span class="quantity" id="quantity-noti">!</span>
+                                        <div class="notifi-dropdown js-dropdown" id="noti-dropdown">
+                                            <div class="notifi__item">
+                                                <div class="content">
+                                                    <p>Title</p>
+                                                    <span class="date">content</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+	                            </div> -->
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
@@ -109,7 +124,7 @@
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-8">
                                 <div class="card">
                                     <div class="card-header">Create Account</div>
                                     <div class="card-body">
@@ -143,32 +158,16 @@
                                                 placeholder="Name">
                                         </div>
                                         <div class="row form-group">
-	                                          <div class="col-6">
-	                                              <label for="x_card_code" class="control-label mb-1">Username</label>
+                                        	<div class="col-6">
+	                                              <label for="x_card_code" class="control-label mb-1">Email</label>
 	                                              <div class="input-group">
-	                                                  <input id="longitude" name="username" type="text" class="form-control cc-cvc">
-	
+	                                                  <input name="email" type="email" class="form-control cc-cvc">
 	                                              </div>
 	                                          </div>
-	                                          <div class="col-6">
-	                                              <label for="x_card_code" class="control-label mb-1">Password</label>
-	                                              <div class="input-group">
-	                                                  <input id="latitude" name="password" type="password" class="form-control cc-cvc">
-	                                              </div>
-	                                          </div>
-                                        </div>
-                                        <div class="row form-group">
 	                                          <div class="col-6">
 	                                              <label for="x_card_code" class="control-label mb-1">Phone</label>
 	                                              <div class="input-group">
-	                                                  <input id="longitude" name="phone" type="tel" class="form-control cc-cvc">
-	
-	                                              </div>
-	                                          </div>
-	                                          <div class="col-6">
-	                                              <label for="x_card_code" class="control-label mb-1">Email</label>
-	                                              <div class="input-group">
-	                                                  <input id="latitude" name="email" type="email" class="form-control cc-cvc">
+	                                                  <input name="phone" type="number" class="form-control cc-cvc">
 	                                              </div>
 	                                          </div>
                                         </div>
@@ -179,11 +178,25 @@
                                     </div>
                                 </div>
                             </div>
-                            
+                            <div class="col-lg-4">
+                                <div class="card">
+                                    <div class="card-header">Question</div>
+                                    <div class="card-body">
+										<form id="update-question" th:action="@{/craftvillage/api/survey/question}">
+											<div id="questionList">
+
+											</div>
+											<button class="btn btn-primary" style="margin-left: auto; margin-right: 0; display: block;">Save</button>
+										</form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        
                     </div>
                 </div>
+                <a href="#" title="Download Data" id="btn-download">
+                   	<i class="fa-solid fa-download fa-2x"></i>
+               	</a>
             </div>
             <!-- END MAIN CONTENT-->
             <!-- modal static -->
@@ -283,68 +296,8 @@
     <!-- Main JS-->
     <script th:src="@{/js/main.js}"></script>
     <script th:src="@{/js/myfunction.js}"></script>
-	<script type="text/javascript">
-		
-		$('#select-province1').on('change', function() {
-		  	$.get("/craftvillage/api/address/getdistrictlist?provinceid=" + this.value, function(data){
-		  		$('#select-district1').empty()
-		  		for(let i=0;i < data.length; i++){
-		  			$('#select-district1').append($('<option>',
-		  					{
-			  				    value: data[i].districtId,
-			  				    text : data[i].districtName
-		  					}));
-		  		}
-		  	});
-		});
-		
-		$('#select-district1').on('change', function() {
-		  	$.get("/craftvillage/api/address/getwardlist?districtid=" + this.value, function(data){
-		  		$('#select-ward1').empty()
-		  		for(let i=0;i < data.length; i++){
-		  			$('#select-ward1').append($('<option>',
-		  					{
-			  				    value: data[i].wardId,
-			  				    text : data[i].wardName
-		  					}));
-		  		}
-		  	});
-		});
-		
-		$('#form1').submit(function(e){
-			e.preventDefault();
-		    var form = $(this);
-		    for (const item of form.serializeArray()){
-		    	if(item.value == '0' || item.value.length == 0){
-		    		$('#success-message1').removeClass("display");
-		    		$('#error-message1').text("Vui lòng điền đầy đủ thông tin!");
-		    		$('#error-message1').addClass("display");
-					return;		    		
-		    	}
-		    }
-		    
-		    var actionUrl = form.attr('action');
-		    
-		    $.ajax({
-		        type: "POST",
-		        url: actionUrl,
-		        data: form.serialize(),
-		        success: function(data){
-		        	if(data.key == "1"){
-		        		$('#success-message1').text(data.message);
-		        		$('#success-message1').addClass("display");
-			    		$('#error-message1').removeClass("display");
-		        	}
-		        	else{
-			        	$('#success-message1').removeClass("display");
-			    		$('#error-message1').text(data.message);
-			    		$('#error-message1').addClass("display");
-		        	}
-		        }
-		    });
-		})
-		
-	</script>
+    <script th:src="@{/js/admin.js}"></script>
+	<!-- <script th:src="@{/js/notification.js}"></script> -->
 </body>
 
 </html>

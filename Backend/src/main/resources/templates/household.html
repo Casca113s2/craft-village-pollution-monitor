@@ -206,19 +206,17 @@
                                             </div>
                                         </div>
                                         <div class="row form-group">
-                                                <div class="col-6">
-                                                    <label for="x_card_code" class="control-label mb-1">Kinh độ</label>
-                                                    <div class="input-group">
-                                                        <input id="longitude" name="longitude" type="text" class="form-control cc-cvc">
-
-                                                    </div>
+                                                <div class="col-12" style="display: flex; width: 100%;justify-content: space-between;">
+	                                                <div style="width: 40%;">
+	                                                    <div class="control-label mb-1">Vĩ độ</div>
+	                                                    <input id="latitude" name="latitude" type="text" class="form-control cc-cvc">
+	                                                </div>
+	                                                <div style="width: 40%;">
+	                                                    <div class="control-label mb-1">Kinh độ</div>
+	                                                    <input id="longitude" name="longitude" type="text" class="form-control cc-cvc">
+	                                                </div>
                                                 </div>
-                                                <div class="col-6">
-                                                    <label for="x_card_code" class="control-label mb-1">Vĩ độ</label>
-                                                    <div class="input-group">
-                                                        <input id="latitude" name="latitude" type="text" class="form-control cc-cvc">
-                                                    </div>
-                                                </div>
+                                                
                                             </div>
                                         <div class="form-group">
                                             <label>Tên làng nghề</label>
@@ -268,7 +266,7 @@
                     </div>
                 </div>
                 
-                 <a href="#" title="Báo lỗi" class="btn-report" id="btn-report">
+                 <a href="#" title="Báo lỗi" id="btn-report">
                    	<i class="fa-regular fa-comment-dots fa-2x"></i>
                	</a>
                    
@@ -498,15 +496,16 @@
 		        url: actionUrl,
 		        data: form.serialize(),
 		        success: function(data){
-		        	if(!data){
+		        	if(data.lenght == 0){
 			        	$('#success-message1').removeClass("display");
 			    		$('#error-message1').text("Phát hiện lỗi!");
 			    		$('#error-message1').addClass("display");
 		        	}
 		        	else{
-		        		$('#success-message1').text("Yêu cầu đã được gửi");
+		        		$('#success-message1').text("Khai báo thành công!");
 		        		$('#success-message1').addClass("display");
 			    		$('#error-message1').removeClass("display");
+			    		$('#hsx').text(`: ${data}`);
 		        	}
 		        }
 		    });
@@ -554,9 +553,6 @@
         $('#form-new-village').submit(function(e) {
             e.preventDefault();
             var form = $(this);
-            //console.log(form)
-
-            console.log()
 
             //Kiểm tra đã khai báo hộ sx và hoàn thành profile hay chưa
             const khaibao = document.getElementById('hsx').textContent;
@@ -568,33 +564,42 @@
                 return;
             }
 
+            //validate question checkbox required
+            for(let i=0; i<required_checkbox.length; i++) {
+                if(($("input[name*='"+ required_checkbox[i] +"']:checked").length) <= 0) {
+                    //alert("You must check at least 1 box");
+                    $('input[name*="' + required_checkbox[i] + '"]:first').focus();
+                    return;
+                }
+            }
+
             var QA = [];
-            for (item of form.serializeArray()) {                   
-                if(item.name.includes("t")) {
-                    var QA_temp = {}
+            for (item of form.serializeArray()) {   
+                var QA_temp = {}  
+                if(item.name.includes("n")) {
+                    QA_temp.id = parseInt(item.name.slice(1))
+                    QA_temp.value = item.value;
+                }
+                else if(item.name.includes("t")) {
                     QA_temp.id = item.name.slice(1)
                     QA_temp.value = item.value;
-                    QA.push(QA_temp)
                 }
-                else {
-                    var QA_temp = {}
+                else {          
                     QA_temp.id = item.value;
-                    QA_temp.value = "true";
-                    QA.push(QA_temp)
+                    QA_temp.value = "true";                   
                 }
+                QA.push(QA_temp)
             }
             
             //remove token (phần tử token đầu tiên)
-            QA.shift();
+            //QA.shift();
             
 
             var QA_obj = {};
             QA_obj.answers = QA;
-            console.log(QA_obj);
             
             
             var QA_json = JSON.stringify(QA_obj);
-            console.log(QA_json);
             
             var actionUrl = form.attr('action')
 

@@ -1,6 +1,7 @@
 package craftvillage.datalayer.entities;
 // Generated Mar 10, 2020 9:28:01 AM by Hibernate Tools 4.3.5.Final
 
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -29,7 +30,7 @@ public class SrSurveyQuestionAnswer implements java.io.Serializable {
   private String answerContent;
   private Double indicate;
   private String answerType;
-  private Set<HouseholdSurvey> householdSurveys;
+  private Set<HouseholdSurvey> householdSurveys = new HashSet<HouseholdSurvey>();
 
   public SrSurveyQuestionAnswer() {}
 

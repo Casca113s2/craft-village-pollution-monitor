@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,20 +18,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import craftvillage.bizlayer.services.AddressServices;
 import craftvillage.bizlayer.services.MyUserDetailsService;
 import craftvillage.bizlayer.services.UserService;
+import craftvillage.corelayer.utilities.CommonUtil;
 import craftvillage.datalayer.entities.UrUser;
+import craftvillage.datalayer.services.MailService;
 
 @Controller
 @RequestMapping("/administration")
 public class AdminController {
-
   @Autowired
   private AddressServices addressService;
-
   @Autowired
   private MyUserDetailsService userDetailsService;
-
   @Autowired
   private UserService userService;
+  @Autowired
+  private MailService mailService;
 
   @GetMapping("/localauthority")
   public String localAuthoirityPage(Model model, Principal principal) {
@@ -44,8 +46,8 @@ public class AdminController {
   public HashMap<String, String> createAuthority(@RequestParam Map<String, String> form)
       throws ClassNotFoundException, SQLException, ParseException {
     HashMap<String, String> console = new HashMap<>();
-    String username = form.get("username");
-    String password = form.get("password");
+    String username = form.get("email");
+    String password = CommonUtil.stringGenerator(10);
     String name = form.get("name");
     String phone = form.get("phone");
     String email = form.get("email");
@@ -60,6 +62,15 @@ public class AdminController {
       UrUser localAuthority = userDetailsService.getUrUser(username);
       localAuthority.setDistrict(addressService.getAdDistrict(districtId));
       userService.save(localAuthority);
+
+      SimpleMailMessage mailMessage = new SimpleMailMessage();
+      mailMessage.setTo(email);
+      mailMessage.setSubject("Craftvillage: Tài khoản");
+      mailMessage.setText("Tài khoản: " + username + "\nMật khẩu: " + password);
+      mailMessage.setText("\n");
+      mailMessage
+          .setText("<a href=\"http://150.95.113.16:5000/web/login\">Đi đến trang chủ >>></a>");
+      mailService.sendEmail(mailMessage);
     } else if (register == 2) {
       console.put("key", "2");
       console.put("message", "Người dùng này đã tồn tại!");

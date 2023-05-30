@@ -48,9 +48,10 @@ public class VillageMapController {
           Map<String, Object> villageInfo = new HashMap<String, Object>();
           villageInfo.put("villageId", village.getVillageId());
           String[] coordinate = village.getCoordinate().split(", ");
-          villageInfo.put("longitude", coordinate[0]);
-          villageInfo.put("latitude", coordinate[1]);
+          villageInfo.put("latitude", coordinate[0]);
+          villageInfo.put("longitude", coordinate[1]);
           villageInfo.put("villageName", village.getVillageName());
+          villageInfo.put("state", village.getState());
           villages.add(villageInfo);
         }
       }

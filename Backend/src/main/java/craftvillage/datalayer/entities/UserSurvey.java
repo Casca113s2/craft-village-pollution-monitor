@@ -25,7 +25,7 @@ import craftvillage.corelayer.utilities.ConstantParameter;
 @Entity
 @Table(name = "USER_SURVEY", schema = ConstantParameter._SCHEMA_NAME)
 public class UserSurvey implements java.io.Serializable {
-
+  private static final long serialVersionUID = 1L;
   private int id;
   private UrUser urUser;
   private String isTemporary;
@@ -35,6 +35,8 @@ public class UserSurvey implements java.io.Serializable {
   private String coordinate;
   private String pollution;
   private String note;
+  private Boolean warning;
+  private Boolean checked;
   private Village village;
 
   @Id
@@ -129,4 +131,21 @@ public class UserSurvey implements java.io.Serializable {
     this.note = note;
   }
 
+  @Column(name = "WARNING", columnDefinition = "tinyint(1) default FALSE")
+  public Boolean getWarning() {
+    return warning;
+  }
+
+  public void setWarning(Boolean warning) {
+    this.warning = warning;
+  }
+
+  @Column(name = "CHECKED", columnDefinition = "tinyint(1) default TRUE")
+  public Boolean getChecked() {
+    return checked;
+  }
+
+  public void setChecked(Boolean checked) {
+    this.checked = checked;
+  }
 }

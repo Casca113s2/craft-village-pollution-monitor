@@ -66,6 +66,46 @@
 	margin-bottom: 15px;
 }
 
+#map {
+	border-radius: 20px;
+	height: 90%;
+	/* margin-top: 56px; */
+}
+
+.filter-pollution {
+	position: absolute;
+	top: calc(100% - 30px);
+	left: 0;
+	font-size: 20px;
+	display: flex; 
+	gap: 20px;
+}
+
+.filter-pollution {
+	margin-left: 10px;
+	margin-top: 3px;
+}
+
+.pollution-label-filter {
+	margin-left: 10px;
+}
+
+#earth-filter, #air-filter, #water-filter {
+	transform: scale(1.25);
+}
+#earth-filter {
+	accent-color: red;
+}
+
+#air-filter {
+	accent-color: green;
+}
+
+#water-filter {
+	accent-color: #007bff;
+}
+
+
 .image-view {
 	display: flex;
 	background-color: white;
@@ -169,6 +209,8 @@
 	text-align: center;
 	position: absolute;
     bottom: 0px;
+	display: flex;
+    align-items: center;
 }
 
 #btn-previous-image, #btn-next-image {
@@ -193,7 +235,9 @@
 
 .image-index-container {
 	display: inline-block;
-	transform: translate(0, -50%);
+	/* transform: translate(0, -50%); */
+	display: flex;
+	flex-shrink: 0;
 }
 
 .image-index {
@@ -251,3 +295,23 @@
     margin-right: 20px;
     flex-shrink: 0;
 }
+
+#earth, #air, #water {
+	transform: scale(1.25);
+}
+
+#earth {
+	accent-color: red;
+}
+
+#air {
+	accent-color: green;
+}
+
+#water {
+	accent-color: #007bff;
+}
+
+.leaflet-popup-close-button {
+	display: none; 
+ }
